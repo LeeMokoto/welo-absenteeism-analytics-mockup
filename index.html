@@ -3,38 +3,50 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=1280, initial-scale=1">
-<title>Welo Workforce Intelligence</title>
+<meta name="robots" content="noindex">
+<title>welo. — Workforce Intelligence</title>
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Serif:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=general-sans@500,600,700,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
-  --navy: #232e63;
-  --navy-soft: #2d3a76;
-  --navy-deep: #1a2350;
-  --teal: #85c3b6;
-  --teal-deep: #5fa495;
-  --teal-soft: #d8ebe6;
-  --red: #d14242;
-  --red-soft: #fce8e8;
-  --amber: #e8961a;
-  --amber-soft: #fdf2dc;
-  --green: #2d8a5e;
-  --green-soft: #dff1e7;
-  --ink: #1a1d2e;
-  --ink-soft: #4a4f63;
-  --ink-mute: #8b90a3;
-  --line: #e6e8ef;
-  --line-soft: #f1f3f8;
-  --bg: #f7f8fb;
-  --card: #ffffff;
-  --radius: 10px;
-  --radius-sm: 6px;
-  --shadow: 0 1px 2px rgba(26, 35, 80, 0.04), 0 4px 16px rgba(26, 35, 80, 0.04);
-  --shadow-lift: 0 4px 12px rgba(26, 35, 80, 0.08), 0 12px 32px rgba(26, 35, 80, 0.08);
-  --mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
-  --sans: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --serif: 'IBM Plex Serif', 'Georgia', serif;
+  --red:        #C0392B;
+  --red-deep:   #9E2A1E;
+  --red-bright: #D34534;
+  --red-soft:   #FCEDE8;
+  --red-faint:  #FDF6F3;
+
+  --ink:        #0D0D0D;
+  --ink-2:      #1A1A1A;
+  --ink-soft:   #3A3A3A;
+  --ink-mute:   #777777;
+  --ink-faint:  #A8A29E;
+
+  --cream:      #FAF7F2;
+  --cream-2:    #F4F0E9;
+  --line:       #E8E2D8;
+  --line-soft:  #F0EBE2;
+  --card:       #FFFFFF;
+
+  --critical:   #C0392B;
+  --critical-soft: #FCEDE8;
+  --high:       #D97706;
+  --high-soft:  #FDF1DC;
+  --medium:     #B8853D;
+  --medium-soft: #F7EDDC;
+  --low:        #3D8559;
+  --low-soft:   #E1EEE5;
+
+  --radius:     12px;
+  --radius-sm:  8px;
+  --radius-lg:  16px;
+  --shadow:     0 1px 2px rgba(13, 13, 13, 0.03), 0 4px 16px rgba(13, 13, 13, 0.04);
+  --shadow-lift:0 4px 12px rgba(13, 13, 13, 0.06), 0 16px 40px rgba(13, 13, 13, 0.08);
+
+  --sans:       'General Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --mono:       'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -42,7 +54,7 @@
 html, body {
   font-family: var(--sans);
   color: var(--ink);
-  background: var(--bg);
+  background: var(--cream);
   font-size: 14px;
   line-height: 1.45;
   -webkit-font-smoothing: antialiased;
@@ -52,88 +64,69 @@ html, body {
 button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
 table { border-collapse: collapse; width: 100%; }
 
-/* ──────── HEADER ──────── */
 .app-header {
-  background: var(--card);
+  background: var(--cream);
   border-bottom: 1px solid var(--line);
-  padding: 0 32px;
+  padding: 0 40px;
   display: flex;
   align-items: center;
-  height: 64px;
+  height: 72px;
   position: sticky;
   top: 0;
   z-index: 10;
+  backdrop-filter: blur(8px);
 }
 .brand {
   display: flex;
-  align-items: center;
-  gap: 10px;
+  align-items: baseline;
+  gap: 14px;
   padding-right: 32px;
   border-right: 1px solid var(--line);
   margin-right: 32px;
 }
-.brand-mark {
-  width: 28px; height: 28px;
-  background: var(--navy);
-  border-radius: 6px;
-  position: relative;
-  display: flex; align-items: center; justify-content: center;
-}
-.brand-mark::after {
-  content: '';
-  position: absolute;
-  width: 14px; height: 14px;
-  border: 2px solid var(--teal);
-  border-radius: 50%;
-  border-right-color: transparent;
-  border-bottom-color: transparent;
-  transform: rotate(-45deg);
-}
 .brand-name {
   font-weight: 600;
-  font-size: 15px;
-  color: var(--navy);
-  letter-spacing: -0.01em;
+  font-size: 20px;
+  color: var(--ink);
+  letter-spacing: -0.025em;
 }
+.brand-name::after { content: '.'; color: var(--red); }
 .brand-module {
-  font-size: 13px;
+  font-size: 12.5px;
   color: var(--ink-mute);
-  margin-left: 4px;
+  letter-spacing: 0.01em;
 }
-.brand-module::before { content: '·'; margin: 0 8px; color: var(--line); }
 
-.nav-tabs { display: flex; gap: 4px; flex: 1; }
+.nav-tabs { display: flex; gap: 2px; flex: 1; }
 .nav-tab {
-  padding: 8px 16px;
+  padding: 9px 16px;
   font-size: 13.5px;
   font-weight: 500;
   color: var(--ink-soft);
   border-radius: var(--radius-sm);
   position: relative;
   transition: all 0.15s ease;
+  letter-spacing: -0.005em;
 }
-.nav-tab:hover { color: var(--navy); background: var(--line-soft); }
-.nav-tab.active {
-  color: var(--navy);
-  background: var(--line-soft);
-}
+.nav-tab:hover { color: var(--ink); }
+.nav-tab.active { color: var(--ink); }
 .nav-tab.active::after {
   content: '';
   position: absolute;
   left: 16px; right: 16px;
-  bottom: -22px;
+  bottom: -26px;
   height: 2px;
-  background: var(--navy);
+  background: var(--red);
   border-radius: 1px;
 }
 
 .header-meta {
-  display: flex; align-items: center; gap: 16px;
+  display: flex; align-items: center; gap: 14px;
   font-size: 12.5px; color: var(--ink-mute);
 }
 .period-selector {
   display: flex; align-items: center; gap: 6px;
-  padding: 6px 10px;
+  padding: 7px 12px;
   border: 1px solid var(--line);
   border-radius: var(--radius-sm);
   background: var(--card);
@@ -141,378 +134,472 @@ table { border-collapse: collapse; width: 100%; }
   font-size: 12.5px;
   color: var(--ink-soft);
   transition: border-color 0.15s;
+  font-weight: 500;
 }
 .period-selector:hover { border-color: var(--ink-mute); }
 .live-dot {
-  width: 6px; height: 6px; border-radius: 50%;
-  background: var(--green);
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--low);
   display: inline-block;
-  box-shadow: 0 0 0 2px var(--green-soft);
+  box-shadow: 0 0 0 2px var(--low-soft);
   animation: pulse 2s ease-in-out infinite;
+  flex-shrink: 0;
 }
 @keyframes pulse {
   0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.6; transform: scale(0.85); }
+  50% { opacity: 0.55; transform: scale(0.85); }
 }
 
-/* ──────── LAYOUT ──────── */
-.screen { display: none; padding: 28px 32px 48px; max-width: 1440px; margin: 0 auto; }
-.screen.active { display: block; animation: fadeIn 0.35s ease; }
+.cta-btn {
+  background: var(--red);
+  color: white;
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.15s ease;
+  letter-spacing: -0.005em;
+}
+.cta-btn:hover { background: var(--red-deep); transform: translateY(-1px); }
+
+.screen { display: none; padding: 36px 40px 60px; max-width: 1480px; margin: 0 auto; }
+.screen.active { display: block; animation: fadeIn 0.4s ease; }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(4px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 .screen-header {
-  display: flex; align-items: baseline; justify-content: space-between;
-  margin-bottom: 24px;
-  padding-bottom: 16px;
+  display: flex; align-items: flex-end; justify-content: space-between;
+  margin-bottom: 32px;
+  padding-bottom: 24px;
   border-bottom: 1px solid var(--line);
+  gap: 24px;
 }
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--red);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 14px;
+}
+.eyebrow::before {
+  content: '';
+  width: 6px; height: 6px;
+  background: var(--red);
+  border-radius: 50%;
+}
+
 .screen-title {
-  font-size: 22px; font-weight: 600;
-  color: var(--navy);
-  letter-spacing: -0.02em;
-  font-family: var(--serif);
+  font-size: 36px; font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -0.035em;
+  line-height: 1.05;
 }
 .screen-sub {
-  font-size: 13px;
+  font-size: 15px;
   color: var(--ink-mute);
-  margin-top: 4px;
+  margin-top: 12px;
+  max-width: 560px;
+  line-height: 1.5;
 }
 .screen-context {
   font-size: 12.5px;
   color: var(--ink-mute);
   font-family: var(--mono);
+  text-align: right;
+  flex-shrink: 0;
 }
 
-/* ──────── METRIC CARDS ──────── */
 .metrics-row {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 16px;
-  margin-bottom: 24px;
+  margin-bottom: 32px;
 }
 .metric-card {
   background: var(--card);
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  padding: 18px 20px;
+  padding: 22px 24px 20px;
   position: relative;
   overflow: hidden;
   transition: all 0.2s ease;
 }
 .metric-card:hover {
-  border-color: #d6d9e3;
+  border-color: var(--ink-faint);
   box-shadow: var(--shadow);
   transform: translateY(-1px);
 }
 .metric-card.highlight {
-  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-deep) 100%);
-  color: var(--card);
-  border-color: var(--navy);
+  background: var(--ink);
+  color: var(--cream);
+  border-color: var(--ink);
 }
 .metric-card.highlight .metric-label,
-.metric-card.highlight .metric-detail { color: rgba(255,255,255,0.7); }
-.metric-card.highlight .metric-sub { color: var(--teal); }
+.metric-card.highlight .metric-detail { color: rgba(250, 247, 242, 0.55); }
+.metric-card.highlight .metric-sub { color: var(--red-bright); }
+
 .metric-label {
-  font-size: 11.5px;
+  font-size: 10.5px;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--ink-mute);
-  font-weight: 500;
-  margin-bottom: 8px;
-}
-.metric-value {
-  font-family: var(--serif);
-  font-size: 28px;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  line-height: 1.1;
-}
-.metric-detail {
-  font-size: 11.5px;
-  color: var(--ink-mute);
-  margin-top: 4px;
-  font-family: var(--mono);
-}
-.metric-sub {
-  font-size: 12px;
-  margin-top: 8px;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  color: var(--green);
-  font-weight: 500;
-}
-.metric-sub.down { color: var(--red); }
-.metric-sparkline {
-  position: absolute;
-  right: 16px; top: 18px;
-  opacity: 0.5;
-}
-
-/* ──────── CARDS / PANELS ──────── */
-.panel {
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  padding: 20px 22px;
-  margin-bottom: 16px;
-}
-.panel-header {
-  display: flex; align-items: center; justify-content: space-between;
-  margin-bottom: 16px;
-}
-.panel-title {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--ink);
-  letter-spacing: -0.005em;
-}
-.panel-sub {
-  font-size: 12px;
-  color: var(--ink-mute);
-  margin-top: 2px;
-  font-family: var(--mono);
-}
-.panel-actions { display: flex; gap: 8px; }
-.chip {
-  font-size: 11px;
-  padding: 3px 8px;
-  border-radius: 999px;
-  background: var(--line-soft);
-  color: var(--ink-soft);
-  font-weight: 500;
-}
-.chip.green { background: var(--green-soft); color: var(--green); }
-.chip.amber { background: var(--amber-soft); color: var(--amber); }
-.chip.red   { background: var(--red-soft);   color: var(--red); }
-.chip.teal  { background: var(--teal-soft);  color: var(--teal-deep); }
-
-/* ──────── GRID LAYOUTS ──────── */
-.two-col-65-35 { display: grid; grid-template-columns: 65fr 35fr; gap: 16px; margin-bottom: 16px; }
-.two-col-60-40 { display: grid; grid-template-columns: 60fr 40fr; gap: 16px; margin-bottom: 16px; }
-.two-col-50-50 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
-
-/* ──────── RISK BAND BARS ──────── */
-.risk-bars { display: flex; flex-direction: column; gap: 14px; }
-.risk-row { display: grid; grid-template-columns: 90px 1fr 100px; align-items: center; gap: 14px; font-size: 12.5px; }
-.risk-label { display: flex; align-items: center; gap: 8px; color: var(--ink); font-weight: 500; }
-.risk-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-.risk-dot.critical { background: var(--red); }
-.risk-dot.high     { background: var(--amber); }
-.risk-dot.medium   { background: var(--teal-deep); }
-.risk-dot.low      { background: var(--green); }
-.risk-track { height: 10px; background: var(--line-soft); border-radius: 5px; overflow: hidden; position: relative; }
-.risk-fill { height: 100%; border-radius: 5px; transition: width 0.8s cubic-bezier(0.34, 1.20, 0.64, 1); }
-.risk-fill.critical { background: var(--red); }
-.risk-fill.high     { background: var(--amber); }
-.risk-fill.medium   { background: var(--teal-deep); }
-.risk-fill.low      { background: var(--green); }
-.risk-delta {
-  font-size: 11.5px;
-  font-family: var(--mono);
-  display: flex; align-items: center; justify-content: flex-end; gap: 4px;
-  color: var(--ink-mute);
-}
-.risk-delta.down { color: var(--green); }
-.risk-delta.up   { color: var(--red); }
-
-/* ──────── GEO LIST ──────── */
-.geo-list { display: flex; flex-direction: column; gap: 12px; }
-.geo-row { display: grid; grid-template-columns: 56px 1fr 56px; align-items: center; gap: 12px; font-size: 13px; }
-.geo-name { color: var(--ink); font-weight: 500; }
-.geo-bar-wrap { height: 8px; background: var(--line-soft); border-radius: 4px; overflow: hidden; }
-.geo-bar { height: 100%; background: linear-gradient(90deg, var(--navy) 0%, var(--teal-deep) 100%); border-radius: 4px; }
-.geo-pct { font-family: var(--mono); font-size: 12px; color: var(--ink-soft); text-align: right; }
-
-/* ──────── DATA TABLE ──────── */
-.data-table { font-size: 13px; }
-.data-table th {
-  text-align: left;
-  font-weight: 500;
-  font-size: 11.5px;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--ink-mute);
-  padding: 10px 12px;
-  border-bottom: 1px solid var(--line);
-  background: var(--line-soft);
-}
-.data-table th:first-child { border-top-left-radius: var(--radius-sm); }
-.data-table th:last-child  { border-top-right-radius: var(--radius-sm); text-align: right; }
-.data-table td {
-  padding: 12px;
-  border-bottom: 1px solid var(--line-soft);
-  vertical-align: middle;
-}
-.data-table td:last-child { text-align: right; }
-.data-table tr:last-child td { border-bottom: none; }
-.data-table tbody tr { transition: background 0.15s; cursor: pointer; }
-.data-table tbody tr:hover { background: var(--line-soft); }
-.data-table tbody tr.selected { background: var(--teal-soft); }
-.cell-mono { font-family: var(--mono); font-size: 12.5px; color: var(--ink-soft); }
-.cell-id   { font-family: var(--mono); font-size: 12px; color: var(--ink-mute); }
-
-/* ──────── BIG NUMBER CARDS ──────── */
-.bignum {
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  padding: 24px 26px;
-}
-.bignum-label {
-  font-size: 11.5px;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.1em;
   color: var(--ink-mute);
   font-weight: 500;
   margin-bottom: 12px;
 }
-.bignum-value {
-  font-family: var(--serif);
-  font-size: 40px;
+.metric-value {
+  font-size: 38px;
   font-weight: 600;
-  letter-spacing: -0.025em;
+  letter-spacing: -0.035em;
   line-height: 1;
-  color: var(--navy);
+  font-feature-settings: 'tnum';
 }
-.bignum-rand {
+.metric-value .metric-unit {
   font-size: 18px;
   font-weight: 500;
+  color: var(--ink-mute);
+  margin-left: 4px;
+  letter-spacing: -0.02em;
+}
+.metric-card.highlight .metric-value .metric-unit { color: rgba(250, 247, 242, 0.45); }
+
+.stat-rand { color: var(--red); }
+.stat-pct  { color: var(--red); }
+.stat-lt   { color: var(--red); }
+
+.metric-detail {
+  font-size: 11.5px;
+  color: var(--ink-mute);
+  margin-top: 8px;
+  font-family: var(--mono);
+}
+.metric-sub {
+  font-size: 12px;
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--low);
+  font-weight: 500;
+}
+.metric-sub.down { color: var(--red); }
+
+.card-watermark {
+  position: absolute;
+  top: 8px; right: 16px;
+  font-size: 64px;
+  font-weight: 600;
+  color: var(--cream-2);
+  letter-spacing: -0.05em;
+  pointer-events: none;
+  z-index: 0;
+}
+.metric-card.highlight .card-watermark { color: rgba(250, 247, 242, 0.04); }
+.metric-card > * { position: relative; z-index: 1; }
+
+.panel {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 24px 26px;
+  margin-bottom: 16px;
+}
+.panel-header {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  margin-bottom: 20px;
+  gap: 16px;
+}
+.panel-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -0.015em;
+}
+.panel-sub {
+  font-size: 12.5px;
+  color: var(--ink-mute);
+  margin-top: 3px;
+  font-weight: 400;
+}
+.panel-actions { display: flex; gap: 8px; flex-shrink: 0; }
+.chip {
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--line-soft);
   color: var(--ink-soft);
-  margin-top: 6px;
-  font-family: var(--serif);
+  font-weight: 500;
+  letter-spacing: -0.005em;
+}
+.chip.red    { background: var(--red-soft);     color: var(--red); }
+.chip.green  { background: var(--low-soft);     color: var(--low); }
+.chip.amber  { background: var(--high-soft);    color: var(--high); }
+
+.two-col-65-35 { display: grid; grid-template-columns: 65fr 35fr; gap: 16px; margin-bottom: 16px; }
+.two-col-60-40 { display: grid; grid-template-columns: 60fr 40fr; gap: 16px; margin-bottom: 16px; }
+.two-col-50-50 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+
+.risk-bars { display: flex; flex-direction: column; gap: 18px; }
+.risk-row {
+  display: grid;
+  grid-template-columns: 100px 1fr 130px;
+  align-items: center;
+  gap: 16px;
+  font-size: 13px;
+}
+.risk-label { display: flex; align-items: center; gap: 9px; color: var(--ink); font-weight: 500; }
+.risk-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.risk-dot.critical { background: var(--critical); }
+.risk-dot.high     { background: var(--high); }
+.risk-dot.medium   { background: var(--medium); }
+.risk-dot.low      { background: var(--low); }
+.risk-track {
+  height: 10px;
+  background: var(--line-soft);
+  border-radius: 5px;
+  overflow: hidden;
+}
+.risk-fill {
+  height: 100%;
+  border-radius: 5px;
+  transition: width 0.8s cubic-bezier(0.34, 1.20, 0.64, 1);
+}
+.risk-fill.critical { background: var(--critical); }
+.risk-fill.high     { background: var(--high); }
+.risk-fill.medium   { background: var(--medium); }
+.risk-fill.low      { background: var(--low); }
+.risk-delta {
+  font-size: 11.5px;
+  font-family: var(--mono);
+  display: flex; align-items: center; justify-content: flex-end; gap: 5px;
+  color: var(--ink-mute);
+  font-feature-settings: 'tnum';
+}
+.risk-delta.down { color: var(--low); }
+.risk-delta.up   { color: var(--red); }
+.risk-delta .subtle { color: var(--ink-faint); }
+
+.geo-list { display: flex; flex-direction: column; gap: 14px; }
+.geo-row { display: grid; grid-template-columns: 110px 1fr 56px; align-items: center; gap: 12px; font-size: 13px; }
+.geo-name { color: var(--ink); font-weight: 500; }
+.geo-bar-wrap { height: 8px; background: var(--line-soft); border-radius: 4px; overflow: hidden; }
+.geo-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--red) 0%, var(--red-bright) 100%);
+  border-radius: 4px;
+  transition: width 0.8s cubic-bezier(0.34, 1.20, 0.64, 1);
+}
+.geo-pct { font-family: var(--mono); font-size: 12px; color: var(--ink-soft); text-align: right; font-weight: 500; font-feature-settings: 'tnum'; }
+
+.data-table { font-size: 13px; }
+.data-table th {
+  text-align: left;
+  font-weight: 500;
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-mute);
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--line);
+  background: var(--cream);
+}
+.data-table th:first-child { border-top-left-radius: var(--radius-sm); padding-left: 4px; }
+.data-table th:last-child  { border-top-right-radius: var(--radius-sm); text-align: right; padding-right: 4px; }
+.data-table td {
+  padding: 14px;
+  border-bottom: 1px solid var(--line-soft);
+  vertical-align: middle;
+}
+.data-table td:first-child { padding-left: 4px; }
+.data-table td:last-child { text-align: right; padding-right: 4px; }
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tbody tr { transition: background 0.15s; cursor: pointer; }
+.data-table tbody tr:hover { background: var(--cream); }
+.cell-mono { font-family: var(--mono); font-size: 12.5px; color: var(--ink-soft); font-feature-settings: 'tnum'; }
+.cell-id   { font-family: var(--mono); font-size: 12px; color: var(--ink-mute); font-feature-settings: 'tnum'; }
+
+.bignum {
+  background: var(--ink);
+  color: var(--cream);
+  border: 1px solid var(--ink);
+  border-radius: var(--radius);
+  padding: 28px 30px;
+  position: relative;
+  overflow: hidden;
+}
+.bignum-label {
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(250, 247, 242, 0.55);
+  font-weight: 500;
+  margin-bottom: 16px;
+}
+.bignum-value {
+  font-size: 64px;
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+  font-feature-settings: 'tnum';
+}
+.bignum-value .num-unit {
+  font-size: 22px;
+  font-weight: 500;
+  color: rgba(250, 247, 242, 0.5);
+  margin-left: 6px;
+  letter-spacing: -0.02em;
+}
+.bignum-rand {
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--red-bright);
+  margin-top: 12px;
+  font-feature-settings: 'tnum';
+  letter-spacing: -0.015em;
 }
 .bignum-ci {
   font-size: 11.5px;
   font-family: var(--mono);
-  color: var(--ink-mute);
-  margin-top: 14px;
-  padding-top: 12px;
-  border-top: 1px dashed var(--line);
+  color: rgba(250, 247, 242, 0.5);
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px dashed rgba(250, 247, 242, 0.15);
+  line-height: 1.65;
+}
+.bignum-decor {
+  position: absolute;
+  top: -10px; right: -10px;
+  width: 120px; height: 120px;
+  background-image: radial-gradient(circle, rgba(192, 57, 43, 0.22) 1.5px, transparent 1.5px);
+  background-size: 12px 12px;
+  pointer-events: none;
 }
 
-/* ──────── DRIVER BARS ──────── */
-.driver-bars { display: flex; flex-direction: column; gap: 13px; }
-.driver-row { display: grid; grid-template-columns: 140px 1fr 50px; align-items: center; gap: 14px; font-size: 13px; }
-.driver-name { color: var(--ink); font-weight: 500; display: flex; align-items: center; gap: 8px; }
+.driver-bars { display: flex; flex-direction: column; gap: 14px; }
+.driver-row { display: grid; grid-template-columns: 170px 1fr 60px; align-items: center; gap: 16px; font-size: 13px; }
+.driver-name { color: var(--ink); font-weight: 500; display: flex; align-items: center; gap: 10px; }
 .driver-icon {
-  width: 22px; height: 22px;
-  background: var(--line-soft);
+  width: 26px; height: 26px;
+  background: var(--red-soft);
   border-radius: var(--radius-sm);
   display: flex; align-items: center; justify-content: center;
-  font-size: 12px;
+  font-size: 13px;
+  color: var(--red);
 }
-.driver-track { height: 22px; background: var(--line-soft); border-radius: var(--radius-sm); overflow: hidden; position: relative; }
+.driver-track { height: 26px; background: var(--cream-2); border-radius: var(--radius-sm); overflow: hidden; position: relative; }
 .driver-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--navy) 0%, var(--navy-soft) 100%);
   border-radius: var(--radius-sm);
   transition: width 0.8s cubic-bezier(0.34, 1.20, 0.64, 1);
-  display: flex; align-items: center; padding-left: 10px;
-  color: var(--card);
+  display: flex; align-items: center; padding-left: 12px;
+  color: var(--cream);
   font-size: 11.5px;
-  font-weight: 500;
+  font-weight: 600;
   font-family: var(--mono);
 }
-.driver-pct { font-family: var(--mono); font-size: 12.5px; color: var(--ink-soft); text-align: right; }
-.driver-row:nth-child(2) .driver-fill { background: linear-gradient(90deg, #3a4a8a 0%, #4d5e9e 100%); }
-.driver-row:nth-child(3) .driver-fill { background: linear-gradient(90deg, #5a6aa8 0%, #6d7ebc 100%); }
-.driver-row:nth-child(4) .driver-fill { background: linear-gradient(90deg, #7c8bc4 0%, var(--teal-deep) 100%); }
-.driver-row:nth-child(5) .driver-fill { background: linear-gradient(90deg, var(--teal-deep) 0%, var(--teal) 100%); }
-.driver-row:nth-child(6) .driver-fill { background: var(--teal); color: var(--navy-deep); }
+.driver-pct { font-family: var(--mono); font-size: 12.5px; color: var(--ink-soft); text-align: right; font-weight: 500; font-feature-settings: 'tnum'; }
+.driver-row:nth-child(1) .driver-fill { background: var(--ink); }
+.driver-row:nth-child(2) .driver-fill { background: var(--ink-2); }
+.driver-row:nth-child(3) .driver-fill { background: var(--ink-soft); }
+.driver-row:nth-child(4) .driver-fill { background: #5C5550; color: var(--cream); }
+.driver-row:nth-child(5) .driver-fill { background: #8B8278; color: var(--cream); }
+.driver-row:nth-child(6) .driver-fill { background: #B3A89C; color: var(--ink); }
 
-/* ──────── INTERVENTION QUEUE ──────── */
-.queue-row .risk-pill {
-  font-size: 11px;
-  padding: 3px 8px;
+.risk-pill {
+  font-size: 10.5px;
+  padding: 4px 10px;
   border-radius: 999px;
   font-weight: 600;
   font-family: var(--mono);
   display: inline-block;
 }
-.risk-pill.critical { background: var(--red-soft);   color: var(--red); }
-.risk-pill.high     { background: var(--amber-soft); color: var(--amber); }
-.risk-pill.medium   { background: var(--teal-soft);  color: var(--teal-deep); }
+.risk-pill.critical { background: var(--critical-soft); color: var(--critical); }
+.risk-pill.high     { background: var(--high-soft);     color: var(--high); }
+.risk-pill.medium   { background: var(--medium-soft);   color: var(--medium); }
 .action-btn {
   font-size: 11.5px;
   font-weight: 500;
-  padding: 5px 10px;
+  padding: 6px 12px;
   border-radius: var(--radius-sm);
   border: 1px solid var(--line);
   background: var(--card);
-  color: var(--navy);
+  color: var(--red);
   transition: all 0.15s;
 }
-.action-btn:hover { border-color: var(--navy); background: var(--navy); color: var(--card); }
-.saving-cell { font-family: var(--mono); font-weight: 600; color: var(--green); }
+.action-btn:hover { border-color: var(--red); background: var(--red); color: var(--cream); }
+.saving-cell { font-family: var(--mono); font-weight: 600; color: var(--low); font-feature-settings: 'tnum'; }
 
-/* ──────── COHORT COMPARISON ──────── */
-.cohort-wrap { padding: 12px 8px; }
+.cohort-wrap { padding: 14px 8px 6px; }
 .cohort-row {
-  display: grid; grid-template-columns: 200px 1fr 80px;
-  align-items: center; gap: 18px;
-  margin-bottom: 22px;
+  display: grid; grid-template-columns: 220px 1fr 110px;
+  align-items: center; gap: 22px;
+  margin-bottom: 26px;
 }
-.cohort-label {
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--ink);
-}
+.cohort-row:last-child { margin-bottom: 8px; }
+.cohort-label { font-size: 14px; font-weight: 500; color: var(--ink); }
 .cohort-label-detail {
   font-size: 11.5px;
   color: var(--ink-mute);
   font-family: var(--mono);
-  margin-top: 2px;
+  margin-top: 3px;
 }
-.cohort-track { height: 32px; background: var(--line-soft); border-radius: var(--radius-sm); position: relative; overflow: hidden; }
+.cohort-track {
+  height: 36px;
+  background: var(--cream-2);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
 .cohort-fill {
   height: 100%;
   border-radius: var(--radius-sm);
   display: flex; align-items: center; justify-content: flex-end;
-  padding-right: 14px;
-  color: var(--card);
+  padding-right: 16px;
+  color: var(--cream);
   font-family: var(--mono);
   font-weight: 600;
-  font-size: 13px;
+  font-size: 13.5px;
   transition: width 0.9s cubic-bezier(0.34, 1.20, 0.64, 1);
 }
-.cohort-fill.baseline { background: linear-gradient(90deg, var(--ink-soft) 0%, var(--ink-mute) 100%); }
-.cohort-fill.welo     { background: linear-gradient(90deg, var(--teal-deep) 0%, var(--teal) 100%); color: var(--navy-deep); }
+.cohort-fill.baseline { background: var(--ink-soft); }
+.cohort-fill.welo     { background: var(--red); }
 .cohort-delta {
-  font-family: var(--mono);
-  font-size: 18px;
+  font-size: 32px;
   font-weight: 600;
-  color: var(--green);
+  color: var(--low);
   text-align: right;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  font-feature-settings: 'tnum';
 }
 .cohort-delta-label {
   font-size: 10.5px;
   color: var(--ink-mute);
-  font-family: var(--sans);
   font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-top: 2px;
+  letter-spacing: 0.1em;
+  margin-top: 6px;
 }
 
-/* ──────── QUARTERLY BARS ──────── */
 .quarter-bars {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 14px;
+  gap: 16px;
   align-items: end;
-  height: 180px;
-  padding: 12px 8px 4px;
+  height: 200px;
+  padding: 14px 8px 8px;
   position: relative;
 }
-.quarter-col { display: flex; flex-direction: column; align-items: center; gap: 8px; height: 100%; justify-content: flex-end; }
+.quarter-col { display: flex; flex-direction: column; align-items: center; gap: 10px; height: 100%; justify-content: flex-end; }
 .quarter-bar {
-  width: 70%;
-  background: linear-gradient(180deg, var(--teal) 0%, var(--teal-deep) 100%);
+  width: 72%;
+  background: linear-gradient(180deg, var(--red-bright) 0%, var(--red) 100%);
   border-radius: var(--radius-sm) var(--radius-sm) 0 0;
   position: relative;
   transition: height 0.8s cubic-bezier(0.34, 1.20, 0.64, 1);
@@ -521,189 +608,189 @@ table { border-collapse: collapse; width: 100%; }
 .quarter-bar::after {
   content: attr(data-value);
   position: absolute;
-  top: -22px;
+  top: -26px;
   left: 50%;
   transform: translateX(-50%);
   font-family: var(--mono);
-  font-size: 12px;
+  font-size: 12.5px;
   font-weight: 600;
-  color: var(--navy);
+  color: var(--ink);
   white-space: nowrap;
+  font-feature-settings: 'tnum';
 }
 .quarter-label {
   font-size: 12px;
-  color: var(--ink-soft);
+  color: var(--ink-mute);
   font-weight: 500;
   font-family: var(--mono);
 }
 .quarter-total {
-  margin-top: 16px;
-  padding-top: 12px;
+  margin-top: 20px;
+  padding-top: 16px;
   border-top: 1px solid var(--line);
   display: flex; align-items: baseline; justify-content: space-between;
 }
 .quarter-total-label {
-  font-size: 11.5px;
+  font-size: 10.5px;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.1em;
   color: var(--ink-mute);
+  font-weight: 500;
 }
 .quarter-total-value {
-  font-family: var(--serif);
-  font-size: 22px;
+  font-size: 26px;
   font-weight: 600;
-  color: var(--navy);
-  letter-spacing: -0.02em;
+  color: var(--ink);
+  letter-spacing: -0.03em;
+  font-feature-settings: 'tnum';
 }
 
-/* ──────── SCENARIO MODEL ──────── */
-.scenario {
-  display: flex; flex-direction: column; gap: 14px;
-  padding: 4px;
-}
-.scenario-prompt {
-  font-size: 13px;
-  color: var(--ink-soft);
-  line-height: 1.55;
-}
-.scenario-input-row {
-  display: flex; align-items: center; gap: 14px;
-  margin-top: 6px;
-}
+.scenario { display: flex; flex-direction: column; gap: 16px; padding: 6px; }
+.scenario-prompt { font-size: 14px; color: var(--ink-soft); line-height: 1.6; }
+.scenario-prompt strong { color: var(--ink); font-weight: 600; }
+.scenario-input-row { display: flex; align-items: center; gap: 16px; margin-top: 4px; }
 .scenario-slider {
   flex: 1;
   -webkit-appearance: none;
   appearance: none;
-  height: 5px;
+  height: 6px;
   border-radius: 3px;
-  background: var(--line);
+  background: var(--cream-2);
   outline: none;
 }
 .scenario-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 20px; height: 20px;
+  width: 22px; height: 22px;
   border-radius: 50%;
-  background: var(--navy);
+  background: var(--red);
   cursor: pointer;
-  box-shadow: 0 0 0 4px var(--card), 0 0 0 5px var(--navy);
+  box-shadow: 0 0 0 4px var(--card), 0 0 0 5px var(--red);
   transition: transform 0.15s;
 }
 .scenario-slider::-webkit-slider-thumb:hover { transform: scale(1.1); }
 .scenario-slider::-moz-range-thumb {
-  width: 20px; height: 20px;
+  width: 22px; height: 22px;
   border-radius: 50%;
-  background: var(--navy);
+  background: var(--red);
   cursor: pointer;
   border: 4px solid var(--card);
-  box-shadow: 0 0 0 1px var(--navy);
+  box-shadow: 0 0 0 1px var(--red);
 }
 .scenario-value-box {
   font-family: var(--mono);
   font-size: 16px;
   font-weight: 600;
-  color: var(--navy);
-  background: var(--line-soft);
-  padding: 6px 14px;
+  color: var(--ink);
+  background: var(--cream-2);
+  padding: 7px 16px;
   border-radius: var(--radius-sm);
-  min-width: 70px;
+  min-width: 80px;
   text-align: center;
+  font-feature-settings: 'tnum';
 }
 .scenario-output {
-  margin-top: 8px;
-  padding: 16px;
-  background: linear-gradient(135deg, var(--teal-soft) 0%, #e6f3ee 100%);
+  margin-top: 6px;
+  padding: 20px 22px;
+  background: var(--ink);
+  color: var(--cream);
   border-radius: var(--radius-sm);
-  border-left: 3px solid var(--teal-deep);
+  position: relative;
+  overflow: hidden;
+}
+.scenario-output::before {
+  content: '';
+  position: absolute;
+  top: -20px; right: -20px;
+  width: 100px; height: 100px;
+  background-image: radial-gradient(circle, rgba(192, 57, 43, 0.25) 1.5px, transparent 1.5px);
+  background-size: 12px 12px;
 }
 .scenario-output-label {
-  font-size: 11.5px;
+  font-size: 10.5px;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--teal-deep);
+  letter-spacing: 0.1em;
+  color: var(--red-bright);
   font-weight: 600;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
+  position: relative;
 }
 .scenario-output-value {
-  font-family: var(--serif);
-  font-size: 28px;
+  font-size: 36px;
   font-weight: 600;
-  color: var(--navy);
-  letter-spacing: -0.02em;
-  line-height: 1.1;
+  color: var(--cream);
+  letter-spacing: -0.035em;
+  line-height: 1.05;
+  font-feature-settings: 'tnum';
+  position: relative;
 }
+.scenario-output-value .stat-rand-bright { color: var(--red-bright); }
 .scenario-output-detail {
   font-size: 12px;
-  color: var(--ink-soft);
-  margin-top: 6px;
+  color: rgba(250, 247, 242, 0.6);
+  margin-top: 8px;
   font-family: var(--mono);
+  position: relative;
 }
 
-/* ──────── ROI INTERVENTION ──────── */
-.roi-bars { display: flex; flex-direction: column; gap: 14px; }
-.roi-row { display: grid; grid-template-columns: 200px 1fr 90px; align-items: center; gap: 14px; font-size: 13px; }
+.roi-bars { display: flex; flex-direction: column; gap: 16px; }
+.roi-row { display: grid; grid-template-columns: 220px 1fr 100px; align-items: center; gap: 16px; font-size: 13px; }
 .roi-name { color: var(--ink); font-weight: 500; }
-.roi-track { height: 18px; background: var(--line-soft); border-radius: var(--radius-sm); overflow: hidden; }
+.roi-track { height: 20px; background: var(--cream-2); border-radius: var(--radius-sm); overflow: hidden; }
 .roi-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--green) 0%, var(--teal-deep) 100%);
+  background: linear-gradient(90deg, var(--red) 0%, var(--red-bright) 100%);
   border-radius: var(--radius-sm);
   transition: width 0.8s cubic-bezier(0.34, 1.20, 0.64, 1);
 }
-.roi-value { font-family: var(--mono); font-size: 12.5px; font-weight: 600; color: var(--green); text-align: right; }
+.roi-value { font-family: var(--mono); font-size: 13px; font-weight: 600; color: var(--ink); text-align: right; font-feature-settings: 'tnum'; }
 
-/* ──────── FOOTNOTES ──────── */
 .footnote {
-  font-size: 11px;
+  font-size: 11.5px;
   color: var(--ink-mute);
   font-family: var(--mono);
-  padding: 16px 32px 24px;
-  max-width: 1440px;
-  margin: 0 auto;
+  padding: 20px 40px 32px;
+  max-width: 1480px;
+  margin: 32px auto 0;
   border-top: 1px dashed var(--line);
-  margin-top: 24px;
+  line-height: 1.7;
 }
 .footnote strong { color: var(--ink-soft); font-weight: 600; }
 
-/* ──────── ICONS (inline SVG helpers) ──────── */
-.icon { width: 14px; height: 14px; display: inline-block; vertical-align: middle; }
+.icon { width: 14px; height: 14px; display: inline-block; vertical-align: middle; stroke-width: 2; }
 .icon-sm { width: 12px; height: 12px; }
 
-/* ──────── BREADCRUMB ──────── */
 .crumb {
   display: flex; align-items: center; gap: 8px;
   font-size: 12.5px;
   color: var(--ink-mute);
-  margin-bottom: 10px;
+  margin-bottom: 16px;
 }
-.crumb a { color: var(--navy); text-decoration: none; cursor: pointer; font-weight: 500; }
+.crumb a { color: var(--red); text-decoration: none; cursor: pointer; font-weight: 500; }
 .crumb a:hover { text-decoration: underline; }
 
-/* ──────── CLIENT SELECT ──────── */
 .client-select {
   display: flex; align-items: center; gap: 10px;
-  padding: 8px 14px;
+  padding: 9px 16px;
   background: var(--card);
   border: 1px solid var(--line);
   border-radius: var(--radius-sm);
   font-size: 13px;
   cursor: pointer;
+  transition: border-color 0.15s;
+  flex-shrink: 0;
 }
 .client-select:hover { border-color: var(--ink-mute); }
-.client-select-name { font-weight: 500; color: var(--navy); }
+.client-select-name { font-weight: 600; color: var(--ink); letter-spacing: -0.005em; }
 .client-select-meta { color: var(--ink-mute); font-family: var(--mono); font-size: 12px; }
-
 </style>
 </head>
 <body>
 
-<!-- ──────── HEADER ──────── -->
 <header class="app-header">
   <div class="brand">
-    <div class="brand-mark"></div>
-    <div>
-      <span class="brand-name">Welo</span><span class="brand-module">Workforce Intelligence</span>
-    </div>
+    <span class="brand-name">welo</span>
+    <span class="brand-module">Workforce Intelligence</span>
   </div>
   <nav class="nav-tabs" id="navTabs">
     <button class="nav-tab active" data-screen="portfolio">Portfolio</button>
@@ -714,70 +801,71 @@ table { border-collapse: collapse; width: 100%; }
     <span class="live-dot"></span>
     <span>Live · synced 3 min ago</span>
     <div class="period-selector">
-      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
       Q2 2026
-      <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="6 9 12 15 18 9"/></svg>
     </div>
+    <button class="cta-btn">Export</button>
   </div>
 </header>
 
-<!-- ══════════════════════════════════════════════════════════════ -->
-<!-- SCREEN 1: PORTFOLIO INTELLIGENCE                                -->
-<!-- ══════════════════════════════════════════════════════════════ -->
 <section class="screen active" id="screen-portfolio">
 
   <div class="screen-header">
     <div>
-      <h1 class="screen-title">Portfolio intelligence</h1>
-      <div class="screen-sub">Workforce health and absence exposure across active client engagements</div>
+      <div class="eyebrow">Portfolio overview</div>
+      <h1 class="screen-title">Workforce health <br>across your <span style="color: var(--red)">active engagements</span>.</h1>
+      <div class="screen-sub">Real-time absence exposure, risk distribution, and intervention impact across all client deployments.</div>
     </div>
     <div class="screen-context">6 active clients · 18,432 covered lives · 2 pilots</div>
   </div>
 
-  <!-- HERO METRICS -->
   <div class="metrics-row">
     <div class="metric-card">
+      <div class="card-watermark">01</div>
       <div class="metric-label">Covered lives</div>
       <div class="metric-value">18,432</div>
       <div class="metric-detail">across 6 clients</div>
       <div class="metric-sub">
-        <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+        <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="18 15 12 9 6 15"/></svg>
         +1,847 QoQ
       </div>
     </div>
 
     <div class="metric-card highlight">
+      <div class="card-watermark">02</div>
       <div class="metric-label">Predicted absent days · next 90d</div>
       <div class="metric-value">12,840</div>
       <div class="metric-detail">±12% (95% CI)</div>
       <div class="metric-sub">
-        <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="6 9 12 15 18 9"/></svg>
         8% below trend
       </div>
     </div>
 
     <div class="metric-card">
+      <div class="card-watermark">03</div>
       <div class="metric-label">Absence cost exposure</div>
-      <div class="metric-value">R 23.4M</div>
+      <div class="metric-value"><span class="stat-rand">R</span> 23.4M</div>
       <div class="metric-detail">annualised @ R850/day</div>
       <div class="metric-sub down">
-        <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="6 9 12 15 18 9"/></svg>
         R 1.8M reduction YTD
       </div>
     </div>
 
     <div class="metric-card">
+      <div class="card-watermark">04</div>
       <div class="metric-label">Realised savings · YTD</div>
-      <div class="metric-value">R 4.1M</div>
+      <div class="metric-value"><span class="stat-rand">R</span> 4.1M</div>
       <div class="metric-detail">from intervention cohorts</div>
       <div class="metric-sub">
-        <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+        <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="18 15 12 9 6 15"/></svg>
         +14% QoQ
       </div>
     </div>
   </div>
 
-  <!-- RISK + GEO ROW -->
   <div class="two-col-60-40">
     <div class="panel">
       <div class="panel-header">
@@ -790,23 +878,23 @@ table { border-collapse: collapse; width: 100%; }
       <div class="risk-bars">
         <div class="risk-row">
           <div class="risk-label"><span class="risk-dot critical"></span>Critical</div>
-          <div class="risk-track"><div class="risk-fill critical" style="width: 3%"></div></div>
-          <div class="risk-delta down">3% <span style="opacity:.6">↓ from 5%</span></div>
+          <div class="risk-track"><div class="risk-fill critical" style="width: 6%"></div></div>
+          <div class="risk-delta down">3% <span class="subtle">↓ from 5%</span></div>
         </div>
         <div class="risk-row">
           <div class="risk-label"><span class="risk-dot high"></span>High</div>
-          <div class="risk-track"><div class="risk-fill high" style="width: 12%"></div></div>
-          <div class="risk-delta down">12% <span style="opacity:.6">↓ from 14%</span></div>
+          <div class="risk-track"><div class="risk-fill high" style="width: 24%"></div></div>
+          <div class="risk-delta down">12% <span class="subtle">↓ from 14%</span></div>
         </div>
         <div class="risk-row">
           <div class="risk-label"><span class="risk-dot medium"></span>Medium</div>
-          <div class="risk-track"><div class="risk-fill medium" style="width: 28%"></div></div>
-          <div class="risk-delta down">28% <span style="opacity:.6">↓ from 30%</span></div>
+          <div class="risk-track"><div class="risk-fill medium" style="width: 56%"></div></div>
+          <div class="risk-delta down">28% <span class="subtle">↓ from 30%</span></div>
         </div>
         <div class="risk-row">
           <div class="risk-label"><span class="risk-dot low"></span>Low</div>
-          <div class="risk-track"><div class="risk-fill low" style="width: 57%"></div></div>
-          <div class="risk-delta up">57% <span style="opacity:.6">↑ from 51%</span></div>
+          <div class="risk-track"><div class="risk-fill low" style="width: 100%"></div></div>
+          <div class="risk-delta up">57% <span class="subtle">↑ from 51%</span></div>
         </div>
       </div>
     </div>
@@ -828,7 +916,6 @@ table { border-collapse: collapse; width: 100%; }
     </div>
   </div>
 
-  <!-- CLIENTS TABLE -->
   <div class="panel">
     <div class="panel-header">
       <div>
@@ -837,7 +924,7 @@ table { border-collapse: collapse; width: 100%; }
       </div>
       <div class="panel-actions">
         <span class="chip">6 clients</span>
-        <span class="chip teal">View as list</span>
+        <span class="chip red">View as list</span>
       </div>
     </div>
     <table class="data-table">
@@ -913,19 +1000,17 @@ table { border-collapse: collapse; width: 100%; }
 
 </section>
 
-<!-- ══════════════════════════════════════════════════════════════ -->
-<!-- SCREEN 2: CLIENT DEEP-DIVE                                      -->
-<!-- ══════════════════════════════════════════════════════════════ -->
 <section class="screen" id="screen-client">
 
   <div class="crumb">
     <a data-screen="portfolio">Portfolio</a>
-    <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+    <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="9 18 15 12 9 6"/></svg>
     <span>Client deep-dive</span>
   </div>
 
   <div class="screen-header">
     <div>
+      <div class="eyebrow">Client view</div>
       <h1 class="screen-title">Acme Logistics</h1>
       <div class="screen-sub">Transport &amp; logistics · 4,200 covered lives · 14 sites · enrolled since Aug 2024</div>
     </div>
@@ -935,7 +1020,6 @@ table { border-collapse: collapse; width: 100%; }
     </div>
   </div>
 
-  <!-- POPULATION RISK + PREDICTED -->
   <div class="two-col-50-50">
     <div class="panel">
       <div class="panel-header">
@@ -947,39 +1031,39 @@ table { border-collapse: collapse; width: 100%; }
       <div class="risk-bars">
         <div class="risk-row">
           <div class="risk-label"><span class="risk-dot critical"></span>Critical</div>
-          <div class="risk-track"><div class="risk-fill critical" style="width: 4%"></div></div>
+          <div class="risk-track"><div class="risk-fill critical" style="width: 8%"></div></div>
           <div class="risk-delta">4% · 168 ppl</div>
         </div>
         <div class="risk-row">
           <div class="risk-label"><span class="risk-dot high"></span>High</div>
-          <div class="risk-track"><div class="risk-fill high" style="width: 14%"></div></div>
+          <div class="risk-track"><div class="risk-fill high" style="width: 28%"></div></div>
           <div class="risk-delta">14% · 588 ppl</div>
         </div>
         <div class="risk-row">
           <div class="risk-label"><span class="risk-dot medium"></span>Medium</div>
-          <div class="risk-track"><div class="risk-fill medium" style="width: 28%"></div></div>
+          <div class="risk-track"><div class="risk-fill medium" style="width: 56%"></div></div>
           <div class="risk-delta">28% · 1,176 ppl</div>
         </div>
         <div class="risk-row">
           <div class="risk-label"><span class="risk-dot low"></span>Low</div>
-          <div class="risk-track"><div class="risk-fill low" style="width: 54%"></div></div>
+          <div class="risk-track"><div class="risk-fill low" style="width: 100%"></div></div>
           <div class="risk-delta">54% · 2,268 ppl</div>
         </div>
       </div>
     </div>
 
     <div class="bignum">
+      <div class="bignum-decor"></div>
       <div class="bignum-label">Predicted absence · next 90 days</div>
-      <div class="bignum-value">3,840 <span style="font-size: 18px; color: var(--ink-mute); font-weight: 500;">days</span></div>
-      <div class="bignum-rand">R 3.26M @ R850 / day</div>
+      <div class="bignum-value">3,840 <span class="num-unit">days</span></div>
+      <div class="bignum-rand"><span style="color: var(--red-bright)">R</span> 3.26M @ R850 / day</div>
       <div class="bignum-ci">
-        95% CI: 3,378 - 4,302 days · ±12%<br>
+        95% CI: 3,378 – 4,302 days · ±12%<br>
         Model: clinical risk × workload × historical × industry baseline
       </div>
     </div>
   </div>
 
-  <!-- DRIVERS -->
   <div class="panel">
     <div class="panel-header">
       <div>
@@ -1022,15 +1106,14 @@ table { border-collapse: collapse; width: 100%; }
     </div>
   </div>
 
-  <!-- INTERVENTION QUEUE -->
   <div class="panel">
     <div class="panel-header">
       <div>
         <div class="panel-title">Intervention queue</div>
-        <div class="panel-sub">ranked by predicted 12-month ROI · top opportunities for WeloCARE enrolment</div>
+        <div class="panel-sub">ranked by predicted 12-month ROI · top opportunities for Welo enrolment</div>
       </div>
       <div class="panel-actions">
-        <span class="chip teal">42 candidates</span>
+        <span class="chip red">42 candidates</span>
         <span class="chip">Flag top 20</span>
       </div>
     </div>
@@ -1107,15 +1190,13 @@ table { border-collapse: collapse; width: 100%; }
 
 </section>
 
-<!-- ══════════════════════════════════════════════════════════════ -->
-<!-- SCREEN 3: OUTCOME & ROI                                         -->
-<!-- ══════════════════════════════════════════════════════════════ -->
 <section class="screen" id="screen-roi">
 
   <div class="screen-header">
     <div>
-      <h1 class="screen-title">Outcomes &amp; ROI</h1>
-      <div class="screen-sub">Measured impact of WeloCARE interventions · Acme Logistics · trailing 12 months</div>
+      <div class="eyebrow">Outcomes</div>
+      <h1 class="screen-title">Numbers that move boards, <br><span style="color: var(--ink-faint)">not just HR decks.</span></h1>
+      <div class="screen-sub">Measured impact of Welo interventions · Acme Logistics · trailing 12 months.</div>
     </div>
     <div class="client-select">
       <span class="client-select-name">Acme Logistics</span>
@@ -1123,11 +1204,10 @@ table { border-collapse: collapse; width: 100%; }
     </div>
   </div>
 
-  <!-- COHORT COMPARISON -->
   <div class="panel">
     <div class="panel-header">
       <div>
-        <div class="panel-title">Cohort comparison · WeloCARE enrolled vs not enrolled</div>
+        <div class="panel-title">Cohort comparison · Welo enrolled vs not enrolled</div>
         <div class="panel-sub">absence days per 100 employees, last 12 months · matched on age, tenure, role, risk-band-at-baseline</div>
       </div>
       <span class="chip green">31% reduction · p &lt; 0.01</span>
@@ -1145,7 +1225,7 @@ table { border-collapse: collapse; width: 100%; }
       </div>
       <div class="cohort-row">
         <div>
-          <div class="cohort-label">WeloCARE enrolled</div>
+          <div class="cohort-label">Welo enrolled</div>
           <div class="cohort-label-detail">n = 1,293 · ≥6 months engagement</div>
         </div>
         <div class="cohort-track">
@@ -1159,7 +1239,6 @@ table { border-collapse: collapse; width: 100%; }
     </div>
   </div>
 
-  <!-- SAVINGS + SCENARIO -->
   <div class="two-col-50-50">
     <div class="panel">
       <div class="panel-header">
@@ -1201,7 +1280,7 @@ table { border-collapse: collapse; width: 100%; }
       </div>
       <div class="scenario">
         <div class="scenario-prompt">
-          If Welo enrolled the next <strong id="scenN">50</strong> highest-risk employees in WeloCARE today, projected 12-month outcome:
+          If Welo enrolled the next <strong id="scenN">50</strong> highest-risk employees today, projected 12-month outcome:
         </div>
         <div class="scenario-input-row">
           <input type="range" min="10" max="200" value="50" step="5" class="scenario-slider" id="scenSlider">
@@ -1209,21 +1288,20 @@ table { border-collapse: collapse; width: 100%; }
         </div>
         <div class="scenario-output">
           <div class="scenario-output-label">Projected 12-month saving</div>
-          <div class="scenario-output-value" id="scenSave">R 1.84M</div>
+          <div class="scenario-output-value"><span class="stat-rand-bright">R</span> <span id="scenSave">1.84M</span></div>
           <div class="scenario-output-detail" id="scenDetail">Payback: 3.2 months · ROI: 5.4x program cost</div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ROI BY INTERVENTION -->
   <div class="panel">
     <div class="panel-header">
       <div>
         <div class="panel-title">ROI by intervention type</div>
         <div class="panel-sub">cumulative Rand value realised · last 12 months</div>
       </div>
-      <span class="chip teal">5.4x portfolio ROI</span>
+      <span class="chip red">5.4x portfolio ROI</span>
     </div>
     <div class="roi-bars">
       <div class="roi-row">
@@ -1251,13 +1329,11 @@ table { border-collapse: collapse; width: 100%; }
 
 </section>
 
-<!-- FOOTER NOTE -->
 <div class="footnote">
-  <strong>Note.</strong> Workforce Intelligence module · representative client view shown for Acme Logistics. Predictive model: gradient-boosted ensemble over clinical screening, workload, claims history, and industry baseline. Cost basis: R850 / day, configurable per client. Cohort matching: propensity-score weighted on age, tenure, role, baseline risk band.
+  <strong>Methodology note.</strong> Workforce Intelligence module · representative client view shown for Acme Logistics. Predictive model: gradient-boosted ensemble over clinical screening, workload, claims history, and industry baseline. Cost basis: R850 / day, configurable per client. Cohort matching: propensity-score weighted on age, tenure, role, baseline risk band.
 </div>
 
 <script>
-// ──────── TAB SWITCHING ────────
 const tabs = document.querySelectorAll('.nav-tab');
 const screens = document.querySelectorAll('.screen');
 const crumbLinks = document.querySelectorAll('.crumb a[data-screen]');
@@ -1268,34 +1344,24 @@ function switchScreen(screenName) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-tabs.forEach(tab => {
-  tab.addEventListener('click', () => switchScreen(tab.dataset.screen));
-});
+tabs.forEach(tab => tab.addEventListener('click', () => switchScreen(tab.dataset.screen)));
+crumbLinks.forEach(link => link.addEventListener('click', () => switchScreen(link.dataset.screen)));
 
-crumbLinks.forEach(link => {
-  link.addEventListener('click', () => switchScreen(link.dataset.screen));
-});
-
-// ──────── CLIENT TABLE → DRILL TO SCREEN 2 ────────
 document.querySelectorAll('#clientsTableBody tr').forEach(row => {
   row.addEventListener('click', () => switchScreen('client'));
 });
 
-// ──────── SCENARIO MODEL ────────
 const slider = document.getElementById('scenSlider');
 const box = document.getElementById('scenBox');
 const nLabel = document.getElementById('scenN');
 const saveOut = document.getElementById('scenSave');
 const detailOut = document.getElementById('scenDetail');
 
-// Calibration: 50 ppl → R 1.84M, scaling roughly linearly but with diminishing returns
 function projectSavings(n) {
-  // Per-person 12-month saving, with mild diminishing returns
   const perPerson = 36800 * (1 - Math.min(0.18, n / 1000));
   return Math.round(n * perPerson);
 }
 function paybackMonths(n) {
-  // Program cost ~R 6,800 / person / year; saving ratio determines payback
   const annualCostPerPerson = 6800;
   const totalSaving = projectSavings(n);
   const totalCost = n * annualCostPerPerson;
@@ -1303,9 +1369,9 @@ function paybackMonths(n) {
   return (12 / ratio).toFixed(1);
 }
 function fmtRand(v) {
-  if (v >= 1000000) return 'R ' + (v / 1000000).toFixed(2) + 'M';
-  if (v >= 1000)    return 'R ' + Math.round(v / 1000) + 'k';
-  return 'R ' + v;
+  if (v >= 1000000) return (v / 1000000).toFixed(2) + 'M';
+  if (v >= 1000)    return Math.round(v / 1000) + 'k';
+  return v;
 }
 
 slider.addEventListener('input', e => {
@@ -1319,10 +1385,8 @@ slider.addEventListener('input', e => {
   detailOut.textContent = `Payback: ${payback} months · ROI: ${roi}x program cost`;
 });
 
-// ──────── ANIMATE BARS ON SCREEN ENTRY ────────
-// Re-trigger CSS transitions when a screen becomes active.
 const observer = new MutationObserver(() => {
-  document.querySelectorAll('.screen.active .risk-fill, .screen.active .driver-fill, .screen.active .cohort-fill, .screen.active .roi-fill').forEach(el => {
+  document.querySelectorAll('.screen.active .risk-fill, .screen.active .driver-fill, .screen.active .cohort-fill, .screen.active .roi-fill, .screen.active .geo-bar').forEach(el => {
     const w = el.style.width;
     el.style.width = '0%';
     requestAnimationFrame(() => requestAnimationFrame(() => { el.style.width = w; }));
@@ -1335,9 +1399,8 @@ const observer = new MutationObserver(() => {
 });
 screens.forEach(s => observer.observe(s, { attributes: true, attributeFilter: ['class'] }));
 
-// Trigger initial animation
 window.addEventListener('load', () => {
-  document.querySelectorAll('.screen.active .risk-fill, .screen.active .driver-fill, .screen.active .cohort-fill, .screen.active .roi-fill').forEach(el => {
+  document.querySelectorAll('.screen.active .risk-fill, .screen.active .driver-fill, .screen.active .cohort-fill, .screen.active .roi-fill, .screen.active .geo-bar').forEach(el => {
     const w = el.style.width;
     el.style.width = '0%';
     setTimeout(() => { el.style.width = w; }, 100);
