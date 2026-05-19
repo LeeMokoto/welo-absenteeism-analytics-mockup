@@ -1,0 +1,1354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1280, initial-scale=1">
+<title>Welo Workforce Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Serif:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #232e63;
+  --navy-soft: #2d3a76;
+  --navy-deep: #1a2350;
+  --teal: #85c3b6;
+  --teal-deep: #5fa495;
+  --teal-soft: #d8ebe6;
+  --red: #d14242;
+  --red-soft: #fce8e8;
+  --amber: #e8961a;
+  --amber-soft: #fdf2dc;
+  --green: #2d8a5e;
+  --green-soft: #dff1e7;
+  --ink: #1a1d2e;
+  --ink-soft: #4a4f63;
+  --ink-mute: #8b90a3;
+  --line: #e6e8ef;
+  --line-soft: #f1f3f8;
+  --bg: #f7f8fb;
+  --card: #ffffff;
+  --radius: 10px;
+  --radius-sm: 6px;
+  --shadow: 0 1px 2px rgba(26, 35, 80, 0.04), 0 4px 16px rgba(26, 35, 80, 0.04);
+  --shadow-lift: 0 4px 12px rgba(26, 35, 80, 0.08), 0 12px 32px rgba(26, 35, 80, 0.08);
+  --mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --sans: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --serif: 'IBM Plex Serif', 'Georgia', serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  font-family: var(--sans);
+  color: var(--ink);
+  background: var(--bg);
+  font-size: 14px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+table { border-collapse: collapse; width: 100%; }
+
+/* ──────── HEADER ──────── */
+.app-header {
+  background: var(--card);
+  border-bottom: 1px solid var(--line);
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  height: 64px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-right: 32px;
+  border-right: 1px solid var(--line);
+  margin-right: 32px;
+}
+.brand-mark {
+  width: 28px; height: 28px;
+  background: var(--navy);
+  border-radius: 6px;
+  position: relative;
+  display: flex; align-items: center; justify-content: center;
+}
+.brand-mark::after {
+  content: '';
+  position: absolute;
+  width: 14px; height: 14px;
+  border: 2px solid var(--teal);
+  border-radius: 50%;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+  transform: rotate(-45deg);
+}
+.brand-name {
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--navy);
+  letter-spacing: -0.01em;
+}
+.brand-module {
+  font-size: 13px;
+  color: var(--ink-mute);
+  margin-left: 4px;
+}
+.brand-module::before { content: '·'; margin: 0 8px; color: var(--line); }
+
+.nav-tabs { display: flex; gap: 4px; flex: 1; }
+.nav-tab {
+  padding: 8px 16px;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--ink-soft);
+  border-radius: var(--radius-sm);
+  position: relative;
+  transition: all 0.15s ease;
+}
+.nav-tab:hover { color: var(--navy); background: var(--line-soft); }
+.nav-tab.active {
+  color: var(--navy);
+  background: var(--line-soft);
+}
+.nav-tab.active::after {
+  content: '';
+  position: absolute;
+  left: 16px; right: 16px;
+  bottom: -22px;
+  height: 2px;
+  background: var(--navy);
+  border-radius: 1px;
+}
+
+.header-meta {
+  display: flex; align-items: center; gap: 16px;
+  font-size: 12.5px; color: var(--ink-mute);
+}
+.period-selector {
+  display: flex; align-items: center; gap: 6px;
+  padding: 6px 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--card);
+  cursor: pointer;
+  font-size: 12.5px;
+  color: var(--ink-soft);
+  transition: border-color 0.15s;
+}
+.period-selector:hover { border-color: var(--ink-mute); }
+.live-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--green);
+  display: inline-block;
+  box-shadow: 0 0 0 2px var(--green-soft);
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(0.85); }
+}
+
+/* ──────── LAYOUT ──────── */
+.screen { display: none; padding: 28px 32px 48px; max-width: 1440px; margin: 0 auto; }
+.screen.active { display: block; animation: fadeIn 0.35s ease; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.screen-header {
+  display: flex; align-items: baseline; justify-content: space-between;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--line);
+}
+.screen-title {
+  font-size: 22px; font-weight: 600;
+  color: var(--navy);
+  letter-spacing: -0.02em;
+  font-family: var(--serif);
+}
+.screen-sub {
+  font-size: 13px;
+  color: var(--ink-mute);
+  margin-top: 4px;
+}
+.screen-context {
+  font-size: 12.5px;
+  color: var(--ink-mute);
+  font-family: var(--mono);
+}
+
+/* ──────── METRIC CARDS ──────── */
+.metrics-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.metric-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+.metric-card:hover {
+  border-color: #d6d9e3;
+  box-shadow: var(--shadow);
+  transform: translateY(-1px);
+}
+.metric-card.highlight {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-deep) 100%);
+  color: var(--card);
+  border-color: var(--navy);
+}
+.metric-card.highlight .metric-label,
+.metric-card.highlight .metric-detail { color: rgba(255,255,255,0.7); }
+.metric-card.highlight .metric-sub { color: var(--teal); }
+.metric-label {
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-mute);
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+.metric-value {
+  font-family: var(--serif);
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+.metric-detail {
+  font-size: 11.5px;
+  color: var(--ink-mute);
+  margin-top: 4px;
+  font-family: var(--mono);
+}
+.metric-sub {
+  font-size: 12px;
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--green);
+  font-weight: 500;
+}
+.metric-sub.down { color: var(--red); }
+.metric-sparkline {
+  position: absolute;
+  right: 16px; top: 18px;
+  opacity: 0.5;
+}
+
+/* ──────── CARDS / PANELS ──────── */
+.panel {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 20px 22px;
+  margin-bottom: 16px;
+}
+.panel-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 16px;
+}
+.panel-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -0.005em;
+}
+.panel-sub {
+  font-size: 12px;
+  color: var(--ink-mute);
+  margin-top: 2px;
+  font-family: var(--mono);
+}
+.panel-actions { display: flex; gap: 8px; }
+.chip {
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: var(--line-soft);
+  color: var(--ink-soft);
+  font-weight: 500;
+}
+.chip.green { background: var(--green-soft); color: var(--green); }
+.chip.amber { background: var(--amber-soft); color: var(--amber); }
+.chip.red   { background: var(--red-soft);   color: var(--red); }
+.chip.teal  { background: var(--teal-soft);  color: var(--teal-deep); }
+
+/* ──────── GRID LAYOUTS ──────── */
+.two-col-65-35 { display: grid; grid-template-columns: 65fr 35fr; gap: 16px; margin-bottom: 16px; }
+.two-col-60-40 { display: grid; grid-template-columns: 60fr 40fr; gap: 16px; margin-bottom: 16px; }
+.two-col-50-50 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+
+/* ──────── RISK BAND BARS ──────── */
+.risk-bars { display: flex; flex-direction: column; gap: 14px; }
+.risk-row { display: grid; grid-template-columns: 90px 1fr 100px; align-items: center; gap: 14px; font-size: 12.5px; }
+.risk-label { display: flex; align-items: center; gap: 8px; color: var(--ink); font-weight: 500; }
+.risk-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.risk-dot.critical { background: var(--red); }
+.risk-dot.high     { background: var(--amber); }
+.risk-dot.medium   { background: var(--teal-deep); }
+.risk-dot.low      { background: var(--green); }
+.risk-track { height: 10px; background: var(--line-soft); border-radius: 5px; overflow: hidden; position: relative; }
+.risk-fill { height: 100%; border-radius: 5px; transition: width 0.8s cubic-bezier(0.34, 1.20, 0.64, 1); }
+.risk-fill.critical { background: var(--red); }
+.risk-fill.high     { background: var(--amber); }
+.risk-fill.medium   { background: var(--teal-deep); }
+.risk-fill.low      { background: var(--green); }
+.risk-delta {
+  font-size: 11.5px;
+  font-family: var(--mono);
+  display: flex; align-items: center; justify-content: flex-end; gap: 4px;
+  color: var(--ink-mute);
+}
+.risk-delta.down { color: var(--green); }
+.risk-delta.up   { color: var(--red); }
+
+/* ──────── GEO LIST ──────── */
+.geo-list { display: flex; flex-direction: column; gap: 12px; }
+.geo-row { display: grid; grid-template-columns: 56px 1fr 56px; align-items: center; gap: 12px; font-size: 13px; }
+.geo-name { color: var(--ink); font-weight: 500; }
+.geo-bar-wrap { height: 8px; background: var(--line-soft); border-radius: 4px; overflow: hidden; }
+.geo-bar { height: 100%; background: linear-gradient(90deg, var(--navy) 0%, var(--teal-deep) 100%); border-radius: 4px; }
+.geo-pct { font-family: var(--mono); font-size: 12px; color: var(--ink-soft); text-align: right; }
+
+/* ──────── DATA TABLE ──────── */
+.data-table { font-size: 13px; }
+.data-table th {
+  text-align: left;
+  font-weight: 500;
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink-mute);
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line);
+  background: var(--line-soft);
+}
+.data-table th:first-child { border-top-left-radius: var(--radius-sm); }
+.data-table th:last-child  { border-top-right-radius: var(--radius-sm); text-align: right; }
+.data-table td {
+  padding: 12px;
+  border-bottom: 1px solid var(--line-soft);
+  vertical-align: middle;
+}
+.data-table td:last-child { text-align: right; }
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tbody tr { transition: background 0.15s; cursor: pointer; }
+.data-table tbody tr:hover { background: var(--line-soft); }
+.data-table tbody tr.selected { background: var(--teal-soft); }
+.cell-mono { font-family: var(--mono); font-size: 12.5px; color: var(--ink-soft); }
+.cell-id   { font-family: var(--mono); font-size: 12px; color: var(--ink-mute); }
+
+/* ──────── BIG NUMBER CARDS ──────── */
+.bignum {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 24px 26px;
+}
+.bignum-label {
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-mute);
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+.bignum-value {
+  font-family: var(--serif);
+  font-size: 40px;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1;
+  color: var(--navy);
+}
+.bignum-rand {
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--ink-soft);
+  margin-top: 6px;
+  font-family: var(--serif);
+}
+.bignum-ci {
+  font-size: 11.5px;
+  font-family: var(--mono);
+  color: var(--ink-mute);
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--line);
+}
+
+/* ──────── DRIVER BARS ──────── */
+.driver-bars { display: flex; flex-direction: column; gap: 13px; }
+.driver-row { display: grid; grid-template-columns: 140px 1fr 50px; align-items: center; gap: 14px; font-size: 13px; }
+.driver-name { color: var(--ink); font-weight: 500; display: flex; align-items: center; gap: 8px; }
+.driver-icon {
+  width: 22px; height: 22px;
+  background: var(--line-soft);
+  border-radius: var(--radius-sm);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px;
+}
+.driver-track { height: 22px; background: var(--line-soft); border-radius: var(--radius-sm); overflow: hidden; position: relative; }
+.driver-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--navy) 0%, var(--navy-soft) 100%);
+  border-radius: var(--radius-sm);
+  transition: width 0.8s cubic-bezier(0.34, 1.20, 0.64, 1);
+  display: flex; align-items: center; padding-left: 10px;
+  color: var(--card);
+  font-size: 11.5px;
+  font-weight: 500;
+  font-family: var(--mono);
+}
+.driver-pct { font-family: var(--mono); font-size: 12.5px; color: var(--ink-soft); text-align: right; }
+.driver-row:nth-child(2) .driver-fill { background: linear-gradient(90deg, #3a4a8a 0%, #4d5e9e 100%); }
+.driver-row:nth-child(3) .driver-fill { background: linear-gradient(90deg, #5a6aa8 0%, #6d7ebc 100%); }
+.driver-row:nth-child(4) .driver-fill { background: linear-gradient(90deg, #7c8bc4 0%, var(--teal-deep) 100%); }
+.driver-row:nth-child(5) .driver-fill { background: linear-gradient(90deg, var(--teal-deep) 0%, var(--teal) 100%); }
+.driver-row:nth-child(6) .driver-fill { background: var(--teal); color: var(--navy-deep); }
+
+/* ──────── INTERVENTION QUEUE ──────── */
+.queue-row .risk-pill {
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-family: var(--mono);
+  display: inline-block;
+}
+.risk-pill.critical { background: var(--red-soft);   color: var(--red); }
+.risk-pill.high     { background: var(--amber-soft); color: var(--amber); }
+.risk-pill.medium   { background: var(--teal-soft);  color: var(--teal-deep); }
+.action-btn {
+  font-size: 11.5px;
+  font-weight: 500;
+  padding: 5px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--navy);
+  transition: all 0.15s;
+}
+.action-btn:hover { border-color: var(--navy); background: var(--navy); color: var(--card); }
+.saving-cell { font-family: var(--mono); font-weight: 600; color: var(--green); }
+
+/* ──────── COHORT COMPARISON ──────── */
+.cohort-wrap { padding: 12px 8px; }
+.cohort-row {
+  display: grid; grid-template-columns: 200px 1fr 80px;
+  align-items: center; gap: 18px;
+  margin-bottom: 22px;
+}
+.cohort-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink);
+}
+.cohort-label-detail {
+  font-size: 11.5px;
+  color: var(--ink-mute);
+  font-family: var(--mono);
+  margin-top: 2px;
+}
+.cohort-track { height: 32px; background: var(--line-soft); border-radius: var(--radius-sm); position: relative; overflow: hidden; }
+.cohort-fill {
+  height: 100%;
+  border-radius: var(--radius-sm);
+  display: flex; align-items: center; justify-content: flex-end;
+  padding-right: 14px;
+  color: var(--card);
+  font-family: var(--mono);
+  font-weight: 600;
+  font-size: 13px;
+  transition: width 0.9s cubic-bezier(0.34, 1.20, 0.64, 1);
+}
+.cohort-fill.baseline { background: linear-gradient(90deg, var(--ink-soft) 0%, var(--ink-mute) 100%); }
+.cohort-fill.welo     { background: linear-gradient(90deg, var(--teal-deep) 0%, var(--teal) 100%); color: var(--navy-deep); }
+.cohort-delta {
+  font-family: var(--mono);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--green);
+  text-align: right;
+}
+.cohort-delta-label {
+  font-size: 10.5px;
+  color: var(--ink-mute);
+  font-family: var(--sans);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 2px;
+}
+
+/* ──────── QUARTERLY BARS ──────── */
+.quarter-bars {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  align-items: end;
+  height: 180px;
+  padding: 12px 8px 4px;
+  position: relative;
+}
+.quarter-col { display: flex; flex-direction: column; align-items: center; gap: 8px; height: 100%; justify-content: flex-end; }
+.quarter-bar {
+  width: 70%;
+  background: linear-gradient(180deg, var(--teal) 0%, var(--teal-deep) 100%);
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  position: relative;
+  transition: height 0.8s cubic-bezier(0.34, 1.20, 0.64, 1);
+  min-height: 8px;
+}
+.quarter-bar::after {
+  content: attr(data-value);
+  position: absolute;
+  top: -22px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--navy);
+  white-space: nowrap;
+}
+.quarter-label {
+  font-size: 12px;
+  color: var(--ink-soft);
+  font-weight: 500;
+  font-family: var(--mono);
+}
+.quarter-total {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+  display: flex; align-items: baseline; justify-content: space-between;
+}
+.quarter-total-label {
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink-mute);
+}
+.quarter-total-value {
+  font-family: var(--serif);
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--navy);
+  letter-spacing: -0.02em;
+}
+
+/* ──────── SCENARIO MODEL ──────── */
+.scenario {
+  display: flex; flex-direction: column; gap: 14px;
+  padding: 4px;
+}
+.scenario-prompt {
+  font-size: 13px;
+  color: var(--ink-soft);
+  line-height: 1.55;
+}
+.scenario-input-row {
+  display: flex; align-items: center; gap: 14px;
+  margin-top: 6px;
+}
+.scenario-slider {
+  flex: 1;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 5px;
+  border-radius: 3px;
+  background: var(--line);
+  outline: none;
+}
+.scenario-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: var(--navy);
+  cursor: pointer;
+  box-shadow: 0 0 0 4px var(--card), 0 0 0 5px var(--navy);
+  transition: transform 0.15s;
+}
+.scenario-slider::-webkit-slider-thumb:hover { transform: scale(1.1); }
+.scenario-slider::-moz-range-thumb {
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: var(--navy);
+  cursor: pointer;
+  border: 4px solid var(--card);
+  box-shadow: 0 0 0 1px var(--navy);
+}
+.scenario-value-box {
+  font-family: var(--mono);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--navy);
+  background: var(--line-soft);
+  padding: 6px 14px;
+  border-radius: var(--radius-sm);
+  min-width: 70px;
+  text-align: center;
+}
+.scenario-output {
+  margin-top: 8px;
+  padding: 16px;
+  background: linear-gradient(135deg, var(--teal-soft) 0%, #e6f3ee 100%);
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--teal-deep);
+}
+.scenario-output-label {
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--teal-deep);
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.scenario-output-value {
+  font-family: var(--serif);
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--navy);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+.scenario-output-detail {
+  font-size: 12px;
+  color: var(--ink-soft);
+  margin-top: 6px;
+  font-family: var(--mono);
+}
+
+/* ──────── ROI INTERVENTION ──────── */
+.roi-bars { display: flex; flex-direction: column; gap: 14px; }
+.roi-row { display: grid; grid-template-columns: 200px 1fr 90px; align-items: center; gap: 14px; font-size: 13px; }
+.roi-name { color: var(--ink); font-weight: 500; }
+.roi-track { height: 18px; background: var(--line-soft); border-radius: var(--radius-sm); overflow: hidden; }
+.roi-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--green) 0%, var(--teal-deep) 100%);
+  border-radius: var(--radius-sm);
+  transition: width 0.8s cubic-bezier(0.34, 1.20, 0.64, 1);
+}
+.roi-value { font-family: var(--mono); font-size: 12.5px; font-weight: 600; color: var(--green); text-align: right; }
+
+/* ──────── FOOTNOTES ──────── */
+.footnote {
+  font-size: 11px;
+  color: var(--ink-mute);
+  font-family: var(--mono);
+  padding: 16px 32px 24px;
+  max-width: 1440px;
+  margin: 0 auto;
+  border-top: 1px dashed var(--line);
+  margin-top: 24px;
+}
+.footnote strong { color: var(--ink-soft); font-weight: 600; }
+
+/* ──────── ICONS (inline SVG helpers) ──────── */
+.icon { width: 14px; height: 14px; display: inline-block; vertical-align: middle; }
+.icon-sm { width: 12px; height: 12px; }
+
+/* ──────── BREADCRUMB ──────── */
+.crumb {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 12.5px;
+  color: var(--ink-mute);
+  margin-bottom: 10px;
+}
+.crumb a { color: var(--navy); text-decoration: none; cursor: pointer; font-weight: 500; }
+.crumb a:hover { text-decoration: underline; }
+
+/* ──────── CLIENT SELECT ──────── */
+.client-select {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 14px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  cursor: pointer;
+}
+.client-select:hover { border-color: var(--ink-mute); }
+.client-select-name { font-weight: 500; color: var(--navy); }
+.client-select-meta { color: var(--ink-mute); font-family: var(--mono); font-size: 12px; }
+
+</style>
+</head>
+<body>
+
+<!-- ──────── HEADER ──────── -->
+<header class="app-header">
+  <div class="brand">
+    <div class="brand-mark"></div>
+    <div>
+      <span class="brand-name">Welo</span><span class="brand-module">Workforce Intelligence</span>
+    </div>
+  </div>
+  <nav class="nav-tabs" id="navTabs">
+    <button class="nav-tab active" data-screen="portfolio">Portfolio</button>
+    <button class="nav-tab" data-screen="client">Client view</button>
+    <button class="nav-tab" data-screen="roi">Outcomes &amp; ROI</button>
+  </nav>
+  <div class="header-meta">
+    <span class="live-dot"></span>
+    <span>Live · synced 3 min ago</span>
+    <div class="period-selector">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      Q2 2026
+      <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+  </div>
+</header>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- SCREEN 1: PORTFOLIO INTELLIGENCE                                -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<section class="screen active" id="screen-portfolio">
+
+  <div class="screen-header">
+    <div>
+      <h1 class="screen-title">Portfolio intelligence</h1>
+      <div class="screen-sub">Workforce health and absence exposure across active client engagements</div>
+    </div>
+    <div class="screen-context">6 active clients · 18,432 covered lives · 2 pilots</div>
+  </div>
+
+  <!-- HERO METRICS -->
+  <div class="metrics-row">
+    <div class="metric-card">
+      <div class="metric-label">Covered lives</div>
+      <div class="metric-value">18,432</div>
+      <div class="metric-detail">across 6 clients</div>
+      <div class="metric-sub">
+        <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+        +1,847 QoQ
+      </div>
+    </div>
+
+    <div class="metric-card highlight">
+      <div class="metric-label">Predicted absent days · next 90d</div>
+      <div class="metric-value">12,840</div>
+      <div class="metric-detail">±12% (95% CI)</div>
+      <div class="metric-sub">
+        <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        8% below trend
+      </div>
+    </div>
+
+    <div class="metric-card">
+      <div class="metric-label">Absence cost exposure</div>
+      <div class="metric-value">R 23.4M</div>
+      <div class="metric-detail">annualised @ R850/day</div>
+      <div class="metric-sub down">
+        <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        R 1.8M reduction YTD
+      </div>
+    </div>
+
+    <div class="metric-card">
+      <div class="metric-label">Realised savings · YTD</div>
+      <div class="metric-value">R 4.1M</div>
+      <div class="metric-detail">from intervention cohorts</div>
+      <div class="metric-sub">
+        <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+        +14% QoQ
+      </div>
+    </div>
+  </div>
+
+  <!-- RISK + GEO ROW -->
+  <div class="two-col-60-40">
+    <div class="panel">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">Risk band trajectory</div>
+          <div class="panel-sub">% of covered population by current risk band · vs 4 quarters ago</div>
+        </div>
+        <span class="chip green">Net positive shift</span>
+      </div>
+      <div class="risk-bars">
+        <div class="risk-row">
+          <div class="risk-label"><span class="risk-dot critical"></span>Critical</div>
+          <div class="risk-track"><div class="risk-fill critical" style="width: 3%"></div></div>
+          <div class="risk-delta down">3% <span style="opacity:.6">↓ from 5%</span></div>
+        </div>
+        <div class="risk-row">
+          <div class="risk-label"><span class="risk-dot high"></span>High</div>
+          <div class="risk-track"><div class="risk-fill high" style="width: 12%"></div></div>
+          <div class="risk-delta down">12% <span style="opacity:.6">↓ from 14%</span></div>
+        </div>
+        <div class="risk-row">
+          <div class="risk-label"><span class="risk-dot medium"></span>Medium</div>
+          <div class="risk-track"><div class="risk-fill medium" style="width: 28%"></div></div>
+          <div class="risk-delta down">28% <span style="opacity:.6">↓ from 30%</span></div>
+        </div>
+        <div class="risk-row">
+          <div class="risk-label"><span class="risk-dot low"></span>Low</div>
+          <div class="risk-track"><div class="risk-fill low" style="width: 57%"></div></div>
+          <div class="risk-delta up">57% <span style="opacity:.6">↑ from 51%</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">Geographic distribution</div>
+          <div class="panel-sub">covered lives by province</div>
+        </div>
+      </div>
+      <div class="geo-list">
+        <div class="geo-row"><div class="geo-name">Gauteng</div><div class="geo-bar-wrap"><div class="geo-bar" style="width: 100%"></div></div><div class="geo-pct">48%</div></div>
+        <div class="geo-row"><div class="geo-name">KwaZulu-Natal</div><div class="geo-bar-wrap"><div class="geo-bar" style="width: 44%"></div></div><div class="geo-pct">21%</div></div>
+        <div class="geo-row"><div class="geo-name">Western Cape</div><div class="geo-bar-wrap"><div class="geo-bar" style="width: 38%"></div></div><div class="geo-pct">18%</div></div>
+        <div class="geo-row"><div class="geo-name">Eastern Cape</div><div class="geo-bar-wrap"><div class="geo-bar" style="width: 16%"></div></div><div class="geo-pct">7%</div></div>
+        <div class="geo-row"><div class="geo-name">Other</div><div class="geo-bar-wrap"><div class="geo-bar" style="width: 12%"></div></div><div class="geo-pct">6%</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CLIENTS TABLE -->
+  <div class="panel">
+    <div class="panel-header">
+      <div>
+        <div class="panel-title">Active engagements</div>
+        <div class="panel-sub">sorted by absence cost exposure · click to drill</div>
+      </div>
+      <div class="panel-actions">
+        <span class="chip">6 clients</span>
+        <span class="chip teal">View as list</span>
+      </div>
+    </div>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Client</th>
+          <th>Sector</th>
+          <th>Covered lives</th>
+          <th>High-risk %</th>
+          <th>90-day predicted</th>
+          <th>Annualised exposure</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="clientsTableBody">
+        <tr data-client="acme">
+          <td><strong>Acme Logistics</strong></td>
+          <td>Transport &amp; logistics</td>
+          <td class="cell-mono">4,200</td>
+          <td><span class="risk-pill high">18%</span></td>
+          <td class="cell-mono">3,840 days</td>
+          <td class="cell-mono"><strong>R 6.2M</strong></td>
+          <td><span class="chip green">Active</span></td>
+        </tr>
+        <tr data-client="riverdale">
+          <td><strong>Riverdale Mining</strong></td>
+          <td>Mining</td>
+          <td class="cell-mono">3,124</td>
+          <td><span class="risk-pill high">22%</span></td>
+          <td class="cell-mono">3,210 days</td>
+          <td class="cell-mono"><strong>R 5.8M</strong></td>
+          <td><span class="chip green">Active</span></td>
+        </tr>
+        <tr data-client="coastal">
+          <td><strong>Coastal Foods</strong></td>
+          <td>FMCG manufacturing</td>
+          <td class="cell-mono">2,847</td>
+          <td><span class="risk-pill medium">11%</span></td>
+          <td class="cell-mono">1,920 days</td>
+          <td class="cell-mono"><strong>R 3.1M</strong></td>
+          <td><span class="chip green">Active</span></td>
+        </tr>
+        <tr data-client="veld">
+          <td><strong>Veld Manufacturing</strong></td>
+          <td>Industrial manufacturing</td>
+          <td class="cell-mono">2,418</td>
+          <td><span class="risk-pill high">14%</span></td>
+          <td class="cell-mono">1,790 days</td>
+          <td class="cell-mono"><strong>R 2.9M</strong></td>
+          <td><span class="chip green">Active</span></td>
+        </tr>
+        <tr data-client="sentinel">
+          <td><strong>Sentinel Security</strong></td>
+          <td>Security services</td>
+          <td class="cell-mono">1,943</td>
+          <td><span class="risk-pill medium">9%</span></td>
+          <td class="cell-mono">1,140 days</td>
+          <td class="cell-mono"><strong>R 1.8M</strong></td>
+          <td><span class="chip amber">Pilot</span></td>
+        </tr>
+        <tr data-client="northbridge">
+          <td><strong>Northbridge Health</strong></td>
+          <td>Healthcare ops</td>
+          <td class="cell-mono">3,900</td>
+          <td><span class="risk-pill medium">8%</span></td>
+          <td class="cell-mono">940 days</td>
+          <td class="cell-mono"><strong>R 1.6M</strong></td>
+          <td><span class="chip amber">Pilot</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- SCREEN 2: CLIENT DEEP-DIVE                                      -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<section class="screen" id="screen-client">
+
+  <div class="crumb">
+    <a data-screen="portfolio">Portfolio</a>
+    <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+    <span>Client deep-dive</span>
+  </div>
+
+  <div class="screen-header">
+    <div>
+      <h1 class="screen-title">Acme Logistics</h1>
+      <div class="screen-sub">Transport &amp; logistics · 4,200 covered lives · 14 sites · enrolled since Aug 2024</div>
+    </div>
+    <div class="client-select">
+      <span class="client-select-name">Acme Logistics</span>
+      <span class="client-select-meta">switch ▾</span>
+    </div>
+  </div>
+
+  <!-- POPULATION RISK + PREDICTED -->
+  <div class="two-col-50-50">
+    <div class="panel">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">Population risk profile</div>
+          <div class="panel-sub">based on screening cohort of 3,140 employees · last 6 months</div>
+        </div>
+      </div>
+      <div class="risk-bars">
+        <div class="risk-row">
+          <div class="risk-label"><span class="risk-dot critical"></span>Critical</div>
+          <div class="risk-track"><div class="risk-fill critical" style="width: 4%"></div></div>
+          <div class="risk-delta">4% · 168 ppl</div>
+        </div>
+        <div class="risk-row">
+          <div class="risk-label"><span class="risk-dot high"></span>High</div>
+          <div class="risk-track"><div class="risk-fill high" style="width: 14%"></div></div>
+          <div class="risk-delta">14% · 588 ppl</div>
+        </div>
+        <div class="risk-row">
+          <div class="risk-label"><span class="risk-dot medium"></span>Medium</div>
+          <div class="risk-track"><div class="risk-fill medium" style="width: 28%"></div></div>
+          <div class="risk-delta">28% · 1,176 ppl</div>
+        </div>
+        <div class="risk-row">
+          <div class="risk-label"><span class="risk-dot low"></span>Low</div>
+          <div class="risk-track"><div class="risk-fill low" style="width: 54%"></div></div>
+          <div class="risk-delta">54% · 2,268 ppl</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bignum">
+      <div class="bignum-label">Predicted absence · next 90 days</div>
+      <div class="bignum-value">3,840 <span style="font-size: 18px; color: var(--ink-mute); font-weight: 500;">days</span></div>
+      <div class="bignum-rand">R 3.26M @ R850 / day</div>
+      <div class="bignum-ci">
+        95% CI: 3,378 - 4,302 days · ±12%<br>
+        Model: clinical risk × workload × historical × industry baseline
+      </div>
+    </div>
+  </div>
+
+  <!-- DRIVERS -->
+  <div class="panel">
+    <div class="panel-header">
+      <div>
+        <div class="panel-title">Predicted absence drivers</div>
+        <div class="panel-sub">contribution to predicted absent days · clinical screening + claims signals</div>
+      </div>
+      <span class="chip">90-day window</span>
+    </div>
+    <div class="driver-bars">
+      <div class="driver-row">
+        <div class="driver-name"><div class="driver-icon">♥</div>Cardiovascular</div>
+        <div class="driver-track"><div class="driver-fill" style="width: 32%">32%</div></div>
+        <div class="driver-pct">1,229 d</div>
+      </div>
+      <div class="driver-row">
+        <div class="driver-name"><div class="driver-icon">⚙</div>Metabolic</div>
+        <div class="driver-track"><div class="driver-fill" style="width: 24%">24%</div></div>
+        <div class="driver-pct">922 d</div>
+      </div>
+      <div class="driver-row">
+        <div class="driver-name"><div class="driver-icon">⚊</div>Musculoskeletal</div>
+        <div class="driver-track"><div class="driver-fill" style="width: 19%">19%</div></div>
+        <div class="driver-pct">730 d</div>
+      </div>
+      <div class="driver-row">
+        <div class="driver-name"><div class="driver-icon">◐</div>Mental health</div>
+        <div class="driver-track"><div class="driver-fill" style="width: 13%">13%</div></div>
+        <div class="driver-pct">499 d</div>
+      </div>
+      <div class="driver-row">
+        <div class="driver-name"><div class="driver-icon">◯</div>Respiratory</div>
+        <div class="driver-track"><div class="driver-fill" style="width: 8%">8%</div></div>
+        <div class="driver-pct">307 d</div>
+      </div>
+      <div class="driver-row">
+        <div class="driver-name"><div class="driver-icon">·</div>Other</div>
+        <div class="driver-track"><div class="driver-fill" style="width: 4%">4%</div></div>
+        <div class="driver-pct">153 d</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INTERVENTION QUEUE -->
+  <div class="panel">
+    <div class="panel-header">
+      <div>
+        <div class="panel-title">Intervention queue</div>
+        <div class="panel-sub">ranked by predicted 12-month ROI · top opportunities for WeloCARE enrolment</div>
+      </div>
+      <div class="panel-actions">
+        <span class="chip teal">42 candidates</span>
+        <span class="chip">Flag top 20</span>
+      </div>
+    </div>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Employee</th>
+          <th>Risk band</th>
+          <th>Primary driver</th>
+          <th>Site</th>
+          <th>Predicted absence (90d)</th>
+          <th>Saving opportunity</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="cell-id">#EMP-4821</td>
+          <td><span class="risk-pill critical">Critical</span></td>
+          <td>CV + metabolic</td>
+          <td>Johannesburg North</td>
+          <td class="cell-mono">22 days</td>
+          <td class="saving-cell">R 18,400</td>
+          <td><button class="action-btn">Flag for outreach</button></td>
+        </tr>
+        <tr>
+          <td class="cell-id">#EMP-2156</td>
+          <td><span class="risk-pill critical">Critical</span></td>
+          <td>Metabolic</td>
+          <td>Durban Port</td>
+          <td class="cell-mono">19 days</td>
+          <td class="saving-cell">R 16,200</td>
+          <td><button class="action-btn">Flag for outreach</button></td>
+        </tr>
+        <tr>
+          <td class="cell-id">#EMP-7733</td>
+          <td><span class="risk-pill high">High</span></td>
+          <td>MSK + workload</td>
+          <td>Cape Town Depot</td>
+          <td class="cell-mono">14 days</td>
+          <td class="saving-cell">R 12,100</td>
+          <td><button class="action-btn">Flag for outreach</button></td>
+        </tr>
+        <tr>
+          <td class="cell-id">#EMP-1098</td>
+          <td><span class="risk-pill high">High</span></td>
+          <td>Mental health</td>
+          <td>Johannesburg South</td>
+          <td class="cell-mono">14 days</td>
+          <td class="saving-cell">R 11,800</td>
+          <td><button class="action-btn">Flag for outreach</button></td>
+        </tr>
+        <tr>
+          <td class="cell-id">#EMP-5544</td>
+          <td><span class="risk-pill high">High</span></td>
+          <td>Cardiovascular</td>
+          <td>Pretoria East</td>
+          <td class="cell-mono">12 days</td>
+          <td class="saving-cell">R 9,900</td>
+          <td><button class="action-btn">Flag for outreach</button></td>
+        </tr>
+        <tr>
+          <td class="cell-id">#EMP-3309</td>
+          <td><span class="risk-pill high">High</span></td>
+          <td>Respiratory</td>
+          <td>Witbank Yard</td>
+          <td class="cell-mono">11 days</td>
+          <td class="saving-cell">R 9,200</td>
+          <td><button class="action-btn">Flag for outreach</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- SCREEN 3: OUTCOME & ROI                                         -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<section class="screen" id="screen-roi">
+
+  <div class="screen-header">
+    <div>
+      <h1 class="screen-title">Outcomes &amp; ROI</h1>
+      <div class="screen-sub">Measured impact of WeloCARE interventions · Acme Logistics · trailing 12 months</div>
+    </div>
+    <div class="client-select">
+      <span class="client-select-name">Acme Logistics</span>
+      <span class="client-select-meta">switch ▾</span>
+    </div>
+  </div>
+
+  <!-- COHORT COMPARISON -->
+  <div class="panel">
+    <div class="panel-header">
+      <div>
+        <div class="panel-title">Cohort comparison · WeloCARE enrolled vs not enrolled</div>
+        <div class="panel-sub">absence days per 100 employees, last 12 months · matched on age, tenure, role, risk-band-at-baseline</div>
+      </div>
+      <span class="chip green">31% reduction · p &lt; 0.01</span>
+    </div>
+    <div class="cohort-wrap">
+      <div class="cohort-row">
+        <div>
+          <div class="cohort-label">Not enrolled</div>
+          <div class="cohort-label-detail">n = 1,847 · baseline cohort</div>
+        </div>
+        <div class="cohort-track">
+          <div class="cohort-fill baseline" style="width: 92%">142 days / 100</div>
+        </div>
+        <div></div>
+      </div>
+      <div class="cohort-row">
+        <div>
+          <div class="cohort-label">WeloCARE enrolled</div>
+          <div class="cohort-label-detail">n = 1,293 · ≥6 months engagement</div>
+        </div>
+        <div class="cohort-track">
+          <div class="cohort-fill welo" style="width: 63%">98 days / 100</div>
+        </div>
+        <div>
+          <div class="cohort-delta">↓ 31%</div>
+          <div class="cohort-delta-label">vs baseline</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SAVINGS + SCENARIO -->
+  <div class="two-col-50-50">
+    <div class="panel">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">Savings realised</div>
+          <div class="panel-sub">quarterly · attributable to intervention cohort</div>
+        </div>
+      </div>
+      <div class="quarter-bars">
+        <div class="quarter-col">
+          <div class="quarter-bar" data-value="R 480k" style="height: 30%"></div>
+          <div class="quarter-label">Q3 '24</div>
+        </div>
+        <div class="quarter-col">
+          <div class="quarter-bar" data-value="R 720k" style="height: 48%"></div>
+          <div class="quarter-label">Q4 '24</div>
+        </div>
+        <div class="quarter-col">
+          <div class="quarter-bar" data-value="R 980k" style="height: 68%"></div>
+          <div class="quarter-label">Q1 '25</div>
+        </div>
+        <div class="quarter-col">
+          <div class="quarter-bar" data-value="R 1.24M" style="height: 95%"></div>
+          <div class="quarter-label">Q2 '25</div>
+        </div>
+      </div>
+      <div class="quarter-total">
+        <div class="quarter-total-label">Trailing 12 months</div>
+        <div class="quarter-total-value">R 3.42M</div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">Scenario model</div>
+          <div class="panel-sub">project savings from additional cohort enrolment</div>
+        </div>
+      </div>
+      <div class="scenario">
+        <div class="scenario-prompt">
+          If Welo enrolled the next <strong id="scenN">50</strong> highest-risk employees in WeloCARE today, projected 12-month outcome:
+        </div>
+        <div class="scenario-input-row">
+          <input type="range" min="10" max="200" value="50" step="5" class="scenario-slider" id="scenSlider">
+          <div class="scenario-value-box" id="scenBox">50 ppl</div>
+        </div>
+        <div class="scenario-output">
+          <div class="scenario-output-label">Projected 12-month saving</div>
+          <div class="scenario-output-value" id="scenSave">R 1.84M</div>
+          <div class="scenario-output-detail" id="scenDetail">Payback: 3.2 months · ROI: 5.4x program cost</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROI BY INTERVENTION -->
+  <div class="panel">
+    <div class="panel-header">
+      <div>
+        <div class="panel-title">ROI by intervention type</div>
+        <div class="panel-sub">cumulative Rand value realised · last 12 months</div>
+      </div>
+      <span class="chip teal">5.4x portfolio ROI</span>
+    </div>
+    <div class="roi-bars">
+      <div class="roi-row">
+        <div class="roi-name">Chronic disease management</div>
+        <div class="roi-track"><div class="roi-fill" style="width: 92%"></div></div>
+        <div class="roi-value">R 1.68M</div>
+      </div>
+      <div class="roi-row">
+        <div class="roi-name">Mental health &amp; EAP</div>
+        <div class="roi-track"><div class="roi-fill" style="width: 52%"></div></div>
+        <div class="roi-value">R 0.94M</div>
+      </div>
+      <div class="roi-row">
+        <div class="roi-name">Occupational health</div>
+        <div class="roi-track"><div class="roi-fill" style="width: 29%"></div></div>
+        <div class="roi-value">R 0.52M</div>
+      </div>
+      <div class="roi-row">
+        <div class="roi-name">Targeted screening campaigns</div>
+        <div class="roi-track"><div class="roi-fill" style="width: 16%"></div></div>
+        <div class="roi-value">R 0.28M</div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- FOOTER NOTE -->
+<div class="footnote">
+  <strong>Note.</strong> Workforce Intelligence module · representative client view shown for Acme Logistics. Predictive model: gradient-boosted ensemble over clinical screening, workload, claims history, and industry baseline. Cost basis: R850 / day, configurable per client. Cohort matching: propensity-score weighted on age, tenure, role, baseline risk band.
+</div>
+
+<script>
+// ──────── TAB SWITCHING ────────
+const tabs = document.querySelectorAll('.nav-tab');
+const screens = document.querySelectorAll('.screen');
+const crumbLinks = document.querySelectorAll('.crumb a[data-screen]');
+
+function switchScreen(screenName) {
+  tabs.forEach(t => t.classList.toggle('active', t.dataset.screen === screenName));
+  screens.forEach(s => s.classList.toggle('active', s.id === 'screen-' + screenName));
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+tabs.forEach(tab => {
+  tab.addEventListener('click', () => switchScreen(tab.dataset.screen));
+});
+
+crumbLinks.forEach(link => {
+  link.addEventListener('click', () => switchScreen(link.dataset.screen));
+});
+
+// ──────── CLIENT TABLE → DRILL TO SCREEN 2 ────────
+document.querySelectorAll('#clientsTableBody tr').forEach(row => {
+  row.addEventListener('click', () => switchScreen('client'));
+});
+
+// ──────── SCENARIO MODEL ────────
+const slider = document.getElementById('scenSlider');
+const box = document.getElementById('scenBox');
+const nLabel = document.getElementById('scenN');
+const saveOut = document.getElementById('scenSave');
+const detailOut = document.getElementById('scenDetail');
+
+// Calibration: 50 ppl → R 1.84M, scaling roughly linearly but with diminishing returns
+function projectSavings(n) {
+  // Per-person 12-month saving, with mild diminishing returns
+  const perPerson = 36800 * (1 - Math.min(0.18, n / 1000));
+  return Math.round(n * perPerson);
+}
+function paybackMonths(n) {
+  // Program cost ~R 6,800 / person / year; saving ratio determines payback
+  const annualCostPerPerson = 6800;
+  const totalSaving = projectSavings(n);
+  const totalCost = n * annualCostPerPerson;
+  const ratio = totalSaving / totalCost;
+  return (12 / ratio).toFixed(1);
+}
+function fmtRand(v) {
+  if (v >= 1000000) return 'R ' + (v / 1000000).toFixed(2) + 'M';
+  if (v >= 1000)    return 'R ' + Math.round(v / 1000) + 'k';
+  return 'R ' + v;
+}
+
+slider.addEventListener('input', e => {
+  const n = parseInt(e.target.value);
+  box.textContent = n + ' ppl';
+  nLabel.textContent = n;
+  const saving = projectSavings(n);
+  saveOut.textContent = fmtRand(saving);
+  const payback = paybackMonths(n);
+  const roi = (saving / (n * 6800)).toFixed(1);
+  detailOut.textContent = `Payback: ${payback} months · ROI: ${roi}x program cost`;
+});
+
+// ──────── ANIMATE BARS ON SCREEN ENTRY ────────
+// Re-trigger CSS transitions when a screen becomes active.
+const observer = new MutationObserver(() => {
+  document.querySelectorAll('.screen.active .risk-fill, .screen.active .driver-fill, .screen.active .cohort-fill, .screen.active .roi-fill').forEach(el => {
+    const w = el.style.width;
+    el.style.width = '0%';
+    requestAnimationFrame(() => requestAnimationFrame(() => { el.style.width = w; }));
+  });
+  document.querySelectorAll('.screen.active .quarter-bar').forEach(el => {
+    const h = el.style.height;
+    el.style.height = '0%';
+    requestAnimationFrame(() => requestAnimationFrame(() => { el.style.height = h; }));
+  });
+});
+screens.forEach(s => observer.observe(s, { attributes: true, attributeFilter: ['class'] }));
+
+// Trigger initial animation
+window.addEventListener('load', () => {
+  document.querySelectorAll('.screen.active .risk-fill, .screen.active .driver-fill, .screen.active .cohort-fill, .screen.active .roi-fill').forEach(el => {
+    const w = el.style.width;
+    el.style.width = '0%';
+    setTimeout(() => { el.style.width = w; }, 100);
+  });
+  document.querySelectorAll('.screen.active .quarter-bar').forEach(el => {
+    const h = el.style.height;
+    el.style.height = '0%';
+    setTimeout(() => { el.style.height = h; }, 100);
+  });
+});
+</script>
+
+</body>
+</html>
