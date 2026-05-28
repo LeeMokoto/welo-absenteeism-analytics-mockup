@@ -817,51 +817,49 @@ table { border-collapse: collapse; width: 100%; }
       <h1 class="screen-title">Workforce health <br>across your <span style="color: var(--red)">active engagements</span>.</h1>
       <div class="screen-sub">Real-time absence exposure, risk distribution, and intervention impact across all client deployments.</div>
     </div>
-    <div class="screen-context">6 active clients · 18,432 covered lives · 2 pilots</div>
+    <div class="screen-context">6 active clients · 4,540 covered lives · 2 pilots</div>
   </div>
 
   <div class="metrics-row">
     <div class="metric-card">
       <div class="card-watermark">01</div>
       <div class="metric-label">Covered lives</div>
-      <div class="metric-value">18,432</div>
+      <div class="metric-value">4,540</div>
       <div class="metric-detail">across 6 clients</div>
       <div class="metric-sub">
         <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="18 15 12 9 6 15"/></svg>
-        +1,847 QoQ
+        +620 QoQ
       </div>
     </div>
 
     <div class="metric-card highlight">
       <div class="card-watermark">02</div>
       <div class="metric-label">Predicted absent days · next 90d</div>
-      <div class="metric-value">12,840</div>
+      <div class="metric-value">1,510</div>
       <div class="metric-detail">±12% (95% CI)</div>
       <div class="metric-sub">
         <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="6 9 12 15 18 9"/></svg>
-        8% below trend
+        winter-weighted
       </div>
     </div>
 
     <div class="metric-card">
       <div class="card-watermark">03</div>
       <div class="metric-label">Absence cost exposure</div>
-      <div class="metric-value"><span class="stat-rand">R</span> 23.4M</div>
-      <div class="metric-detail">annualised @ R850/day</div>
-      <div class="metric-sub down">
-        <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="6 9 12 15 18 9"/></svg>
-        R 1.8M reduction YTD
+      <div class="metric-value"><span class="stat-rand">R</span> 4.9M</div>
+      <div class="metric-detail">annualised · blended day-rate</div>
+      <div class="metric-sub" style="color: var(--ink-mute)">
+        benchmark-modelled exposure
       </div>
     </div>
 
     <div class="metric-card">
       <div class="card-watermark">04</div>
-      <div class="metric-label">Realised savings · YTD</div>
-      <div class="metric-value"><span class="stat-rand">R</span> 4.1M</div>
-      <div class="metric-detail">from intervention cohorts</div>
-      <div class="metric-sub">
-        <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="18 15 12 9 6 15"/></svg>
-        +14% QoQ
+      <div class="metric-label">Projected addressable saving</div>
+      <div class="metric-value"><span class="stat-rand">R</span> 205k</div>
+      <div class="metric-detail">modelled · benchmark-anchored</div>
+      <div class="metric-sub" style="color: var(--ink-mute)">
+        illustrative · modelled
       </div>
     </div>
   </div>
@@ -939,59 +937,59 @@ table { border-collapse: collapse; width: 100%; }
           <th>Status</th>
         </tr>
       </thead>
-      <tbody id="clientsTableBody">
-        <tr data-client="acme">
-          <td><strong>Acme Logistics</strong></td>
+            <tbody id="clientsTableBody">
+        <tr data-client="anchor">
+          <td><strong>Mining &amp; resources</strong> <span style="color:var(--ink-faint);font-size:11px">· anonymised</span></td>
+          <td>Mining &amp; resources</td>
+          <td class="cell-mono">1,200</td>
+          <td><span class="risk-pill high">21%</span></td>
+          <td class="cell-mono">410 days</td>
+          <td class="cell-mono"><strong>R 1.48M</strong></td>
+          <td><span class="chip green">Active</span></td>
+        </tr>
+        <tr data-client="gold">
+          <td><strong>Gold producer</strong> <span style="color:var(--ink-faint);font-size:11px">· anonymised</span></td>
+          <td>Mining &amp; resources</td>
+          <td class="cell-mono">850</td>
+          <td><span class="risk-pill high">23%</span></td>
+          <td class="cell-mono">300 days</td>
+          <td class="cell-mono"><strong>R 1.25M</strong></td>
+          <td><span class="chip green">Active</span></td>
+        </tr>
+        <tr data-client="mfg">
+          <td><strong>Energy / manufacturing</strong> <span style="color:var(--ink-faint);font-size:11px">· anonymised</span></td>
+          <td>Manufacturing</td>
+          <td class="cell-mono">342</td>
+          <td><span class="risk-pill medium">14%</span></td>
+          <td class="cell-mono">110 days</td>
+          <td class="cell-mono"><strong>R 0.43M</strong></td>
+          <td><span class="chip green">Active</span></td>
+        </tr>
+        <tr data-client="transport">
+          <td><strong>Transport &amp; logistics</strong> <span style="color:var(--ink-faint);font-size:11px">· anonymised</span></td>
           <td>Transport &amp; logistics</td>
-          <td class="cell-mono">4,200</td>
-          <td><span class="risk-pill high">18%</span></td>
-          <td class="cell-mono">3,840 days</td>
-          <td class="cell-mono"><strong>R 6.2M</strong></td>
+          <td class="cell-mono">620</td>
+          <td><span class="risk-pill medium">15%</span></td>
+          <td class="cell-mono">240 days</td>
+          <td class="cell-mono"><strong>R 0.95M</strong></td>
           <td><span class="chip green">Active</span></td>
         </tr>
-        <tr data-client="riverdale">
-          <td><strong>Riverdale Mining</strong></td>
-          <td>Mining</td>
-          <td class="cell-mono">3,124</td>
-          <td><span class="risk-pill high">22%</span></td>
-          <td class="cell-mono">3,210 days</td>
-          <td class="cell-mono"><strong>R 5.8M</strong></td>
-          <td><span class="chip green">Active</span></td>
-        </tr>
-        <tr data-client="coastal">
-          <td><strong>Coastal Foods</strong></td>
-          <td>FMCG manufacturing</td>
-          <td class="cell-mono">2,847</td>
-          <td><span class="risk-pill medium">11%</span></td>
-          <td class="cell-mono">1,920 days</td>
-          <td class="cell-mono"><strong>R 3.1M</strong></td>
-          <td><span class="chip green">Active</span></td>
-        </tr>
-        <tr data-client="veld">
-          <td><strong>Veld Manufacturing</strong></td>
-          <td>Industrial manufacturing</td>
-          <td class="cell-mono">2,418</td>
-          <td><span class="risk-pill high">14%</span></td>
-          <td class="cell-mono">1,790 days</td>
-          <td class="cell-mono"><strong>R 2.9M</strong></td>
-          <td><span class="chip green">Active</span></td>
-        </tr>
-        <tr data-client="sentinel">
-          <td><strong>Sentinel Security</strong></td>
-          <td>Security services</td>
-          <td class="cell-mono">1,943</td>
+        <tr data-client="retail">
+          <td><strong>Retail group</strong> <span style="color:var(--ink-faint);font-size:11px">· anonymised</span></td>
+          <td>Retail &amp; wholesale</td>
+          <td class="cell-mono">1,100</td>
           <td><span class="risk-pill medium">9%</span></td>
-          <td class="cell-mono">1,140 days</td>
-          <td class="cell-mono"><strong>R 1.8M</strong></td>
+          <td class="cell-mono">290 days</td>
+          <td class="cell-mono"><strong>R 0.87M</strong></td>
           <td><span class="chip amber">Pilot</span></td>
         </tr>
-        <tr data-client="northbridge">
-          <td><strong>Northbridge Health</strong></td>
-          <td>Healthcare ops</td>
-          <td class="cell-mono">3,900</td>
-          <td><span class="risk-pill medium">8%</span></td>
-          <td class="cell-mono">940 days</td>
-          <td class="cell-mono"><strong>R 1.6M</strong></td>
+        <tr data-client="construction">
+          <td><strong>Construction</strong> <span style="color:var(--ink-faint);font-size:11px">· anonymised</span></td>
+          <td>Construction</td>
+          <td class="cell-mono">430</td>
+          <td><span class="risk-pill high">19%</span></td>
+          <td class="cell-mono">160 days</td>
+          <td class="cell-mono"><strong>R 0.62M</strong></td>
           <td><span class="chip amber">Pilot</span></td>
         </tr>
       </tbody>
@@ -1011,11 +1009,11 @@ table { border-collapse: collapse; width: 100%; }
   <div class="screen-header">
     <div>
       <div class="eyebrow">Client view</div>
-      <h1 class="screen-title">Acme Logistics</h1>
-      <div class="screen-sub">Transport &amp; logistics · 4,200 covered lives · 14 sites · enrolled since Aug 2024</div>
+      <h1 class="screen-title">Mining &amp; resources client</h1>
+      <div class="screen-sub">Anonymised · 1,200 covered lives · 6 sites · enrolled since Aug 2024</div>
     </div>
     <div class="client-select">
-      <span class="client-select-name">Acme Logistics</span>
+      <span class="client-select-name">Mining &amp; resources</span>
       <span class="client-select-meta">switch ▾</span>
     </div>
   </div>
@@ -1025,29 +1023,29 @@ table { border-collapse: collapse; width: 100%; }
       <div class="panel-header">
         <div>
           <div class="panel-title">Population risk profile</div>
-          <div class="panel-sub">based on screening cohort of 3,140 employees · last 6 months</div>
+          <div class="panel-sub">WHtR-based scoring · 1,050 screened employees · last 6 months</div>
         </div>
       </div>
       <div class="risk-bars">
         <div class="risk-row">
           <div class="risk-label"><span class="risk-dot critical"></span>Critical</div>
-          <div class="risk-track"><div class="risk-fill critical" style="width: 8%"></div></div>
-          <div class="risk-delta">4% · 168 ppl</div>
+          <div class="risk-track"><div class="risk-fill critical" style="width: 10%"></div></div>
+          <div class="risk-delta">5% · 60 ppl</div>
         </div>
         <div class="risk-row">
           <div class="risk-label"><span class="risk-dot high"></span>High</div>
-          <div class="risk-track"><div class="risk-fill high" style="width: 28%"></div></div>
-          <div class="risk-delta">14% · 588 ppl</div>
+          <div class="risk-track"><div class="risk-fill high" style="width: 32%"></div></div>
+          <div class="risk-delta">16% · 192 ppl</div>
         </div>
         <div class="risk-row">
           <div class="risk-label"><span class="risk-dot medium"></span>Medium</div>
-          <div class="risk-track"><div class="risk-fill medium" style="width: 56%"></div></div>
-          <div class="risk-delta">28% · 1,176 ppl</div>
+          <div class="risk-track"><div class="risk-fill medium" style="width: 60%"></div></div>
+          <div class="risk-delta">30% · 360 ppl</div>
         </div>
         <div class="risk-row">
           <div class="risk-label"><span class="risk-dot low"></span>Low</div>
           <div class="risk-track"><div class="risk-fill low" style="width: 100%"></div></div>
-          <div class="risk-delta">54% · 2,268 ppl</div>
+          <div class="risk-delta">49% · 588 ppl</div>
         </div>
       </div>
     </div>
@@ -1055,11 +1053,11 @@ table { border-collapse: collapse; width: 100%; }
     <div class="bignum">
       <div class="bignum-decor"></div>
       <div class="bignum-label">Predicted absence · next 90 days</div>
-      <div class="bignum-value">3,840 <span class="num-unit">days</span></div>
-      <div class="bignum-rand"><span style="color: var(--red-bright)">R</span> 3.26M @ R850 / day</div>
+      <div class="bignum-value">410 <span class="num-unit">days</span></div>
+      <div class="bignum-rand"><span style="color: var(--red-bright)">R</span> 451k @ R1,100 / day</div>
       <div class="bignum-ci">
-        95% CI: 3,378 – 4,302 days · ±12%<br>
-        Model: clinical risk × workload × historical × industry baseline
+        Winter quarter · ±15% modelling range<br>
+        Model: WHtR-based clinical risk × industry baseline × seasonal weighting
       </div>
     </div>
   </div>
@@ -1068,40 +1066,40 @@ table { border-collapse: collapse; width: 100%; }
     <div class="panel-header">
       <div>
         <div class="panel-title">Predicted absence drivers</div>
-        <div class="panel-sub">contribution to predicted absent days · clinical screening + claims signals</div>
+        <div class="panel-sub">contribution to predicted absent days · WHtR, glucose, BP, chronic flags</div>
       </div>
       <span class="chip">90-day window</span>
     </div>
     <div class="driver-bars">
       <div class="driver-row">
         <div class="driver-name"><div class="driver-icon">♥</div>Cardiovascular</div>
-        <div class="driver-track"><div class="driver-fill" style="width: 32%">32%</div></div>
-        <div class="driver-pct">1,229 d</div>
+        <div class="driver-track"><div class="driver-fill" style="width: 34%">34%</div></div>
+        <div class="driver-pct">139 d</div>
       </div>
       <div class="driver-row">
         <div class="driver-name"><div class="driver-icon">⚙</div>Metabolic</div>
-        <div class="driver-track"><div class="driver-fill" style="width: 24%">24%</div></div>
-        <div class="driver-pct">922 d</div>
-      </div>
-      <div class="driver-row">
-        <div class="driver-name"><div class="driver-icon">⚊</div>Musculoskeletal</div>
-        <div class="driver-track"><div class="driver-fill" style="width: 19%">19%</div></div>
-        <div class="driver-pct">730 d</div>
-      </div>
-      <div class="driver-row">
-        <div class="driver-name"><div class="driver-icon">◐</div>Mental health</div>
-        <div class="driver-track"><div class="driver-fill" style="width: 13%">13%</div></div>
-        <div class="driver-pct">499 d</div>
+        <div class="driver-track"><div class="driver-fill" style="width: 26%">26%</div></div>
+        <div class="driver-pct">107 d</div>
       </div>
       <div class="driver-row">
         <div class="driver-name"><div class="driver-icon">◯</div>Respiratory</div>
-        <div class="driver-track"><div class="driver-fill" style="width: 8%">8%</div></div>
-        <div class="driver-pct">307 d</div>
+        <div class="driver-track"><div class="driver-fill" style="width: 18%">18%</div></div>
+        <div class="driver-pct">74 d</div>
+      </div>
+      <div class="driver-row">
+        <div class="driver-name"><div class="driver-icon">◐</div>Mental health</div>
+        <div class="driver-track"><div class="driver-fill" style="width: 12%">12%</div></div>
+        <div class="driver-pct">49 d</div>
+      </div>
+      <div class="driver-row">
+        <div class="driver-name"><div class="driver-icon">⚊</div>Musculoskeletal</div>
+        <div class="driver-track"><div class="driver-fill" style="width: 7%">7%</div></div>
+        <div class="driver-pct">29 d</div>
       </div>
       <div class="driver-row">
         <div class="driver-name"><div class="driver-icon">·</div>Other</div>
-        <div class="driver-track"><div class="driver-fill" style="width: 4%">4%</div></div>
-        <div class="driver-pct">153 d</div>
+        <div class="driver-track"><div class="driver-fill" style="width: 3%">3%</div></div>
+        <div class="driver-pct">12 d</div>
       </div>
     </div>
   </div>
@@ -1110,10 +1108,10 @@ table { border-collapse: collapse; width: 100%; }
     <div class="panel-header">
       <div>
         <div class="panel-title">Intervention queue</div>
-        <div class="panel-sub">ranked by predicted 12-month ROI · top opportunities for Welo enrolment</div>
+        <div class="panel-sub">ranked by benchmark-modelled saving · candidates for WeloCARE enrolment</div>
       </div>
       <div class="panel-actions">
-        <span class="chip red">42 candidates</span>
+        <span class="chip red">252 high-risk</span>
         <span class="chip">Flag top 20</span>
       </div>
     </div>
@@ -1134,54 +1132,54 @@ table { border-collapse: collapse; width: 100%; }
           <td class="cell-id">#EMP-4821</td>
           <td><span class="risk-pill critical">Critical</span></td>
           <td>CV + metabolic</td>
-          <td>Johannesburg North</td>
+          <td>Rustenburg Shaft 2</td>
           <td class="cell-mono">22 days</td>
-          <td class="saving-cell">R 18,400</td>
+          <td class="saving-cell">R 1,920</td>
           <td><button class="action-btn">Flag for outreach</button></td>
         </tr>
         <tr>
           <td class="cell-id">#EMP-2156</td>
           <td><span class="risk-pill critical">Critical</span></td>
           <td>Metabolic</td>
-          <td>Durban Port</td>
+          <td>Welkom Plant</td>
           <td class="cell-mono">19 days</td>
-          <td class="saving-cell">R 16,200</td>
+          <td class="saving-cell">R 1,760</td>
           <td><button class="action-btn">Flag for outreach</button></td>
         </tr>
         <tr>
           <td class="cell-id">#EMP-7733</td>
           <td><span class="risk-pill high">High</span></td>
-          <td>MSK + workload</td>
-          <td>Cape Town Depot</td>
+          <td>Metabolic + resp.</td>
+          <td>Rustenburg Shaft 4</td>
           <td class="cell-mono">14 days</td>
-          <td class="saving-cell">R 12,100</td>
+          <td class="saving-cell">R 1,340</td>
           <td><button class="action-btn">Flag for outreach</button></td>
         </tr>
         <tr>
           <td class="cell-id">#EMP-1098</td>
           <td><span class="risk-pill high">High</span></td>
           <td>Mental health</td>
-          <td>Johannesburg South</td>
+          <td>Carletonville</td>
           <td class="cell-mono">14 days</td>
-          <td class="saving-cell">R 11,800</td>
+          <td class="saving-cell">R 1,280</td>
           <td><button class="action-btn">Flag for outreach</button></td>
         </tr>
         <tr>
           <td class="cell-id">#EMP-5544</td>
           <td><span class="risk-pill high">High</span></td>
           <td>Cardiovascular</td>
-          <td>Pretoria East</td>
+          <td>Welkom Plant</td>
           <td class="cell-mono">12 days</td>
-          <td class="saving-cell">R 9,900</td>
+          <td class="saving-cell">R 1,090</td>
           <td><button class="action-btn">Flag for outreach</button></td>
         </tr>
         <tr>
           <td class="cell-id">#EMP-3309</td>
           <td><span class="risk-pill high">High</span></td>
           <td>Respiratory</td>
-          <td>Witbank Yard</td>
+          <td>Rustenburg Smelter</td>
           <td class="cell-mono">11 days</td>
-          <td class="saving-cell">R 9,200</td>
+          <td class="saving-cell">R 980</td>
           <td><button class="action-btn">Flag for outreach</button></td>
         </tr>
       </tbody>
@@ -1196,10 +1194,10 @@ table { border-collapse: collapse; width: 100%; }
     <div>
       <div class="eyebrow">Outcomes</div>
       <h1 class="screen-title">Numbers that move boards, <br><span style="color: var(--ink-faint)">not just HR decks.</span></h1>
-      <div class="screen-sub">Measured impact of Welo interventions · Acme Logistics · trailing 12 months.</div>
+      <div class="screen-sub">Projected impact · anonymised mining &amp; resources client · benchmark-anchored model.</div>
     </div>
     <div class="client-select">
-      <span class="client-select-name">Acme Logistics</span>
+      <span class="client-select-name">Mining &amp; resources</span>
       <span class="client-select-meta">switch ▾</span>
     </div>
   </div>
@@ -1207,35 +1205,38 @@ table { border-collapse: collapse; width: 100%; }
   <div class="panel">
     <div class="panel-header">
       <div>
-        <div class="panel-title">Cohort comparison · Welo enrolled vs not enrolled</div>
-        <div class="panel-sub">absence days per 100 employees, last 12 months · matched on age, tenure, role, risk-band-at-baseline</div>
+        <div class="panel-title">Modelled saving · benchmark applied to this workforce</div>
+        <div class="panel-sub">annual absence cost vs projected addressable saving · high-risk band, illustrative benchmark</div>
       </div>
-      <span class="chip green">31% reduction · p &lt; 0.01</span>
+      <span class="chip amber">Projected · not yet measured</span>
     </div>
     <div class="cohort-wrap">
       <div class="cohort-row">
         <div>
-          <div class="cohort-label">Not enrolled</div>
-          <div class="cohort-label-detail">n = 1,847 · baseline cohort</div>
+          <div class="cohort-label">Current annual absence cost</div>
+          <div class="cohort-label-detail">1,345 days × R1,100 day-rate</div>
         </div>
         <div class="cohort-track">
-          <div class="cohort-fill baseline" style="width: 92%">142 days / 100</div>
+          <div class="cohort-fill baseline" style="width: 100%">R 1.48M</div>
         </div>
         <div></div>
       </div>
       <div class="cohort-row">
         <div>
-          <div class="cohort-label">Welo enrolled</div>
-          <div class="cohort-label-detail">n = 1,293 · ≥6 months engagement</div>
+          <div class="cohort-label">Projected addressable saving</div>
+          <div class="cohort-label-detail">high-risk band × illustrative 20% benchmark</div>
         </div>
         <div class="cohort-track">
-          <div class="cohort-fill welo" style="width: 63%">98 days / 100</div>
+          <div class="cohort-fill welo" style="width: 14%">R 205k</div>
         </div>
         <div>
-          <div class="cohort-delta">↓ 31%</div>
-          <div class="cohort-delta-label">vs baseline</div>
+          <div class="cohort-delta">~14%</div>
+          <div class="cohort-delta-label">of exposure</div>
         </div>
       </div>
+    </div>
+    <div style="margin-top: 16px; padding-top: 14px; border-top: 1px dashed var(--line); font-size: 12px; color: var(--ink-mute); font-family: var(--mono); line-height: 1.6;">
+      Illustrative benchmark: published workplace-health studies suggest a 15&ndash;25% absence reduction in high-risk cohorts under structured chronic-care intervention. Shown here at a conservative 20%, applied only to the high-risk band. Client-specific effect to be validated as pilot data matures.
     </div>
   </div>
 
@@ -1243,31 +1244,32 @@ table { border-collapse: collapse; width: 100%; }
     <div class="panel">
       <div class="panel-header">
         <div>
-          <div class="panel-title">Savings realised</div>
-          <div class="panel-sub">quarterly · attributable to intervention cohort</div>
+          <div class="panel-title">Absence seasonality</div>
+          <div class="panel-sub">quarterly absent days · SA winter is peak respiratory season</div>
         </div>
+        <span class="chip red">Winter peak</span>
       </div>
       <div class="quarter-bars">
         <div class="quarter-col">
-          <div class="quarter-bar" data-value="R 480k" style="height: 30%"></div>
-          <div class="quarter-label">Q3 '24</div>
+          <div class="quarter-bar" data-value="340 d" style="height: 64%"></div>
+          <div class="quarter-label">Q1 · summer</div>
         </div>
         <div class="quarter-col">
-          <div class="quarter-bar" data-value="R 720k" style="height: 48%"></div>
-          <div class="quarter-label">Q4 '24</div>
+          <div class="quarter-bar" data-value="295 d" style="height: 55%"></div>
+          <div class="quarter-label">Q2 · autumn</div>
         </div>
         <div class="quarter-col">
-          <div class="quarter-bar" data-value="R 980k" style="height: 68%"></div>
-          <div class="quarter-label">Q1 '25</div>
+          <div class="quarter-bar" data-value="410 d" style="height: 95%"></div>
+          <div class="quarter-label">Q3 · winter</div>
         </div>
         <div class="quarter-col">
-          <div class="quarter-bar" data-value="R 1.24M" style="height: 95%"></div>
-          <div class="quarter-label">Q2 '25</div>
+          <div class="quarter-bar" data-value="300 d" style="height: 56%"></div>
+          <div class="quarter-label">Q4 · spring</div>
         </div>
       </div>
       <div class="quarter-total">
-        <div class="quarter-total-label">Trailing 12 months</div>
-        <div class="quarter-total-value">R 3.42M</div>
+        <div class="quarter-total-label">Annual absent days</div>
+        <div class="quarter-total-value">1,345</div>
       </div>
     </div>
 
@@ -1275,21 +1277,21 @@ table { border-collapse: collapse; width: 100%; }
       <div class="panel-header">
         <div>
           <div class="panel-title">Scenario model</div>
-          <div class="panel-sub">project savings from additional cohort enrolment</div>
+          <div class="panel-sub">project saving from enrolling high-risk employees</div>
         </div>
       </div>
       <div class="scenario">
         <div class="scenario-prompt">
-          If Welo enrolled the next <strong id="scenN">50</strong> highest-risk employees today, projected 12-month outcome:
+          If WeloCARE enrolled the next <strong id="scenN">50</strong> highest-risk employees, projected 12-month saving at the illustrative benchmark:
         </div>
         <div class="scenario-input-row">
-          <input type="range" min="10" max="200" value="50" step="5" class="scenario-slider" id="scenSlider">
+          <input type="range" min="10" max="252" value="50" step="5" class="scenario-slider" id="scenSlider">
           <div class="scenario-value-box" id="scenBox">50 ppl</div>
         </div>
         <div class="scenario-output">
           <div class="scenario-output-label">Projected 12-month saving</div>
-          <div class="scenario-output-value"><span class="stat-rand-bright">R</span> <span id="scenSave">1.84M</span></div>
-          <div class="scenario-output-detail" id="scenDetail">Payback: 3.2 months · ROI: 5.4x program cost</div>
+          <div class="scenario-output-value"><span class="stat-rand-bright">R</span> <span id="scenSave">79k</span></div>
+          <div class="scenario-output-detail" id="scenDetail">Illustrative · 20% benchmark on high-risk absence cost</div>
         </div>
       </div>
     </div>
@@ -1298,31 +1300,31 @@ table { border-collapse: collapse; width: 100%; }
   <div class="panel">
     <div class="panel-header">
       <div>
-        <div class="panel-title">ROI by intervention type</div>
-        <div class="panel-sub">cumulative Rand value realised · last 12 months</div>
+        <div class="panel-title">Addressable saving by driver</div>
+        <div class="panel-sub">projected · illustrative benchmark applied per clinical category</div>
       </div>
-      <span class="chip red">5.4x portfolio ROI</span>
+      <span class="chip amber">Projected · R 205k total</span>
     </div>
     <div class="roi-bars">
       <div class="roi-row">
-        <div class="roi-name">Chronic disease management</div>
+        <div class="roi-name">Cardiovascular management</div>
         <div class="roi-track"><div class="roi-fill" style="width: 92%"></div></div>
-        <div class="roi-value">R 1.68M</div>
+        <div class="roi-value">R 78k</div>
+      </div>
+      <div class="roi-row">
+        <div class="roi-name">Metabolic / diabetes care</div>
+        <div class="roi-track"><div class="roi-fill" style="width: 68%"></div></div>
+        <div class="roi-value">R 58k</div>
+      </div>
+      <div class="roi-row">
+        <div class="roi-name">Respiratory (winter-targeted)</div>
+        <div class="roi-track"><div class="roi-fill" style="width: 48%"></div></div>
+        <div class="roi-value">R 41k</div>
       </div>
       <div class="roi-row">
         <div class="roi-name">Mental health &amp; EAP</div>
-        <div class="roi-track"><div class="roi-fill" style="width: 52%"></div></div>
-        <div class="roi-value">R 0.94M</div>
-      </div>
-      <div class="roi-row">
-        <div class="roi-name">Occupational health</div>
-        <div class="roi-track"><div class="roi-fill" style="width: 29%"></div></div>
-        <div class="roi-value">R 0.52M</div>
-      </div>
-      <div class="roi-row">
-        <div class="roi-name">Targeted screening campaigns</div>
-        <div class="roi-track"><div class="roi-fill" style="width: 16%"></div></div>
-        <div class="roi-value">R 0.28M</div>
+        <div class="roi-track"><div class="roi-fill" style="width: 33%"></div></div>
+        <div class="roi-value">R 28k</div>
       </div>
     </div>
   </div>
@@ -1330,7 +1332,7 @@ table { border-collapse: collapse; width: 100%; }
 </section>
 
 <div class="footnote">
-  <strong>Methodology note.</strong> Workforce Intelligence module · representative client view shown for Acme Logistics. Predictive model: gradient-boosted ensemble over clinical screening, workload, claims history, and industry baseline. Cost basis: R850 / day, configurable per client. Cohort matching: propensity-score weighted on age, tenure, role, baseline risk band.
+  <strong>Methodology note.</strong> Workforce Intelligence module · anonymised mining &amp; resources client shown for illustration. Risk scoring: WHtR-based clinical model with per-industry multiplier (mining 1.30), banded Low/Medium/High/Critical. Cost basis: R1,100 / absent day, configurable per client. Saving projections apply an <strong>illustrative published benchmark (15&ndash;25%, shown at 20%)</strong> for absence reduction in high-risk cohorts under structured chronic-care intervention; these are modelled, not yet measured, and would be validated against client outcomes as pilot data accumulates. All figures synthetic and for demonstration.
 </div>
 
 <script>
@@ -1357,16 +1359,14 @@ const nLabel = document.getElementById('scenN');
 const saveOut = document.getElementById('scenSave');
 const detailOut = document.getElementById('scenDetail');
 
+// Welo's actual model, honestly applied:
+// per high-risk employee, attributable absence ~7.2 days/yr at R1,100/day,
+// benchmark saving = 20% of that attributable cost.
+const DAY_RATE = 1100;
+const ATTRIB_DAYS_PER_HIGHRISK = 7.2;
+const BENCHMARK = 0.20;
 function projectSavings(n) {
-  const perPerson = 36800 * (1 - Math.min(0.18, n / 1000));
-  return Math.round(n * perPerson);
-}
-function paybackMonths(n) {
-  const annualCostPerPerson = 6800;
-  const totalSaving = projectSavings(n);
-  const totalCost = n * annualCostPerPerson;
-  const ratio = totalSaving / totalCost;
-  return (12 / ratio).toFixed(1);
+  return Math.round(n * ATTRIB_DAYS_PER_HIGHRISK * DAY_RATE * BENCHMARK);
 }
 function fmtRand(v) {
   if (v >= 1000000) return (v / 1000000).toFixed(2) + 'M';
@@ -1380,9 +1380,7 @@ slider.addEventListener('input', e => {
   nLabel.textContent = n;
   const saving = projectSavings(n);
   saveOut.textContent = fmtRand(saving);
-  const payback = paybackMonths(n);
-  const roi = (saving / (n * 6800)).toFixed(1);
-  detailOut.textContent = `Payback: ${payback} months · ROI: ${roi}x program cost`;
+  detailOut.textContent = 'Illustrative · 20% benchmark on high-risk absence cost';
 });
 
 const observer = new MutationObserver(() => {
