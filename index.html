@@ -425,6 +425,27 @@ table { border-collapse: collapse; width: 100%; }
 .cell-mono { font-family: var(--mono); font-size: 12.5px; color: var(--ink-soft); font-feature-settings: 'tnum'; }
 .cell-id   { font-family: var(--mono); font-size: 12px; color: var(--ink-mute); font-feature-settings: 'tnum'; }
 
+/* shift panel */
+
+.shift-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border-top: 1px solid var(--line); }
+.shift-col { padding: 18px 20px; border-right: 1px solid var(--line); }
+.shift-col:last-child { border-right: none; }
+.shift-col.night { background: rgba(192, 57, 43, 0.025); }
+.shift-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.shift-name { font-family: var(--display); font-size: 16px; font-weight: 600; color: var(--ink); letter-spacing: -0.01em; }
+.shift-tag { font-family: var(--mono); font-size: 10px; color: var(--ink-faint); letter-spacing: 0.04em; text-transform: uppercase; }
+.shift-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 18px; margin-bottom: 14px; }
+.shift-stat-label { font-family: var(--mono); font-size: 10px; color: var(--ink-faint); letter-spacing: 0.03em; text-transform: uppercase; margin-bottom: 4px; }
+.shift-stat-value { font-family: var(--display); font-size: 22px; font-weight: 600; color: var(--ink); letter-spacing: -0.015em; }
+.shift-stat-sub { font-family: var(--mono); font-size: 11px; color: var(--ink-mute); }
+.shift-cost-block { padding-top: 12px; border-top: 1px dashed var(--line); }
+.shift-cost-row { display: flex; justify-content: space-between; align-items: baseline; font-size: 13px; padding: 3px 0; color: var(--ink-mute); font-family: var(--mono); }
+.shift-cost-row.total { color: var(--ink); font-weight: 600; padding-top: 6px; margin-top: 4px; border-top: 1px solid var(--line); font-size: 14px; }
+.shift-cost-row .v { font-family: var(--mono); }
+.shift-cost-row.premium .v { color: var(--red-bright); }
+.shift-disparity { padding: 14px 20px; background: var(--cream-deep); border-top: 1px solid var(--line); font-family: var(--mono); font-size: 12px; color: var(--ink-mute); line-height: 1.5; }
+.shift-disparity strong { color: var(--ink); font-weight: 600; }
+
 .bignum {
   background: var(--ink);
   color: var(--cream);
@@ -689,6 +710,18 @@ table { border-collapse: collapse; width: 100%; }
   text-align: center;
   font-feature-settings: 'tnum';
 }
+/* dual-stat scenario layout */
+.scenario-caption { font-family: var(--mono); font-size: 11px; color: var(--ink-faint); margin-top: -4px; padding-left: 2px; letter-spacing: 0.02em; }
+.scenario-dual { display: grid; grid-template-columns: 1fr 1fr; gap: 0; margin-top: 4px; border-top: 2px solid var(--ink); padding-top: 16px; }
+.scenario-dual-col { padding: 0 4px; border-right: 1px solid var(--line); }
+.scenario-dual-col:last-child { border-right: none; padding-left: 18px; }
+.scenario-dual-label { font-family: var(--mono); font-size: 10px; color: var(--ink-faint); letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 6px; }
+.scenario-dual-value { font-family: var(--display); font-size: 30px; font-weight: 600; color: var(--ink); letter-spacing: -0.02em; line-height: 1.1; }
+.scenario-dual-value .stat-rand-bright { color: var(--red-bright); }
+.scenario-dual-sub { font-family: var(--mono); font-size: 11px; color: var(--ink-mute); margin-top: 4px; }
+.scenario-context { margin-top: 14px; padding-top: 12px; border-top: 1px dashed var(--line); font-family: var(--mono); font-size: 11px; color: var(--ink-mute); line-height: 1.6; }
+.scenario-context strong { color: var(--ink); font-weight: 600; }
+
 .scenario-output {
   margin-top: 6px;
   padding: 20px 22px;
@@ -798,6 +831,7 @@ table { border-collapse: collapse; width: 100%; }
     <button class="nav-tab" data-screen="roi">Outcomes &amp; ROI</button>
   </nav>
   <div class="header-meta">
+    <span class="live-dot"></span>
     <span>Modelled preview · pre-pilot</span>
     <div class="period-selector">
       <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
@@ -1030,6 +1064,68 @@ table { border-collapse: collapse; width: 100%; }
     </div>
   </div>
 
+  <div class="panel" style="padding: 0;">
+    <div class="panel-header" style="padding: 18px 20px 16px;">
+      <div>
+        <div class="panel-title">Absence by shift</div>
+        <div class="panel-sub">two-shift mining operation · operational view including night-shift cover premium</div>
+      </div>
+      <span class="chip amber">Night carries 1.35x rate</span>
+    </div>
+    <div class="shift-grid">
+      <div class="shift-col">
+        <div class="shift-head">
+          <div class="shift-name">Morning shift</div>
+          <div class="shift-tag">06:00 - 18:00</div>
+        </div>
+        <div class="shift-stats">
+          <div>
+            <div class="shift-stat-label">Workforce</div>
+            <div class="shift-stat-value">1,100</div>
+            <div class="shift-stat-sub">55% of site</div>
+          </div>
+          <div>
+            <div class="shift-stat-label">Days / employee / yr</div>
+            <div class="shift-stat-value">10.4</div>
+            <div class="shift-stat-sub">below site average</div>
+          </div>
+        </div>
+        <div class="shift-cost-block">
+          <div class="shift-cost-row"><span>Annual absence days</span><span class="v">11,400</span></div>
+          <div class="shift-cost-row"><span>Direct cost @ R1,100/day</span><span class="v">R 12.5M</span></div>
+          <div class="shift-cost-row total"><span>Operational impact</span><span class="v">R 12.5M</span></div>
+        </div>
+      </div>
+      <div class="shift-col night">
+        <div class="shift-head">
+          <div class="shift-name">Night shift</div>
+          <div class="shift-tag">18:00 - 06:00</div>
+        </div>
+        <div class="shift-stats">
+          <div>
+            <div class="shift-stat-label">Workforce</div>
+            <div class="shift-stat-value">900</div>
+            <div class="shift-stat-sub">45% of site</div>
+          </div>
+          <div>
+            <div class="shift-stat-label">Days / employee / yr</div>
+            <div class="shift-stat-value" style="color: var(--red)">14.0</div>
+            <div class="shift-stat-sub">1.35x morning rate</div>
+          </div>
+        </div>
+        <div class="shift-cost-block">
+          <div class="shift-cost-row"><span>Annual absence days</span><span class="v">12,600</span></div>
+          <div class="shift-cost-row"><span>Direct cost @ R1,100/day</span><span class="v">R 13.9M</span></div>
+          <div class="shift-cost-row premium"><span>+ cover premium @ R300/day</span><span class="v">R 3.8M</span></div>
+          <div class="shift-cost-row total"><span>Operational impact</span><span class="v">R 17.6M</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="shift-disparity">
+      <strong>Operational insight.</strong> Night shift represents 45% of headcount but absorbs 53% of absence days and 58% of operational cost once cover premium is included. Night-shift cover premium reflects overtime and standby pay to backfill an absent operator. Reducing night-shift absence by even 20% would recover ~R3.5M of operational impact annually at this site.
+    </div>
+  </div>
+
   <div class="panel">
     <div class="panel-header">
       <div>
@@ -1203,6 +1299,9 @@ table { border-collapse: collapse; width: 100%; }
         </div>
       </div>
     </div>
+    <div style="margin-top: 16px; padding-top: 14px; border-top: 1px dashed var(--line); font-size: 12px; color: var(--ink-mute); font-family: var(--mono); line-height: 1.6;">
+      Illustrative benchmark: published workplace-health studies suggest a 15-25% absence reduction in high-risk cohorts under structured chronic-care intervention. Shown here at a conservative 20%, applied only to the high-risk band. Client-specific effect to be validated as pilot data matures.
+    </div>
   </div>
 
   <div class="two-col-50-50">
@@ -1241,22 +1340,34 @@ table { border-collapse: collapse; width: 100%; }
     <div class="panel">
       <div class="panel-header">
         <div>
-          <div class="panel-title">Scenario model</div>
-          <div class="panel-sub">project saving from enrolling high-risk employees</div>
+          <div class="panel-title">Intervention scenario</div>
+          <div class="panel-sub">modelled outcomes from routing high-risk employees into existing care pathways</div>
         </div>
+        <span class="chip">12-month projection</span>
       </div>
       <div class="scenario">
         <div class="scenario-prompt">
-          If WeloCARE enrolled the next <strong id="scenN">50</strong> highest-risk employees across the pilot, projected 12-month saving at the illustrative benchmark:
+          Enrol the next <strong id="scenN">380</strong> highest-risk employees in structured care:
         </div>
         <div class="scenario-input-row">
-          <input type="range" min="10" max="1260" value="50" step="10" class="scenario-slider" id="scenSlider">
-          <div class="scenario-value-box" id="scenBox">50 ppl</div>
+          <input type="range" min="10" max="1260" value="380" step="10" class="scenario-slider" id="scenSlider">
+          <div class="scenario-value-box" id="scenBox">380 ppl</div>
         </div>
-        <div class="scenario-output">
-          <div class="scenario-output-label">Projected 12-month saving</div>
-          <div class="scenario-output-value"><span class="stat-rand-bright">R</span> <span id="scenSave">132k</span></div>
-          <div class="scenario-output-detail" id="scenDetail">Illustrative · 20% benchmark on high-risk absence cost</div>
+        <div class="scenario-caption">Year-1 realistic reach ≈ 380 (30% of high-risk band)</div>
+        <div class="scenario-dual">
+          <div class="scenario-dual-col">
+            <div class="scenario-dual-label">Absence cost addressed</div>
+            <div class="scenario-dual-value"><span class="stat-rand-bright">R</span> <span id="scenSave">1.00M</span></div>
+            <div class="scenario-dual-sub">recovered absence cost, annual</div>
+          </div>
+          <div class="scenario-dual-col">
+            <div class="scenario-dual-label">Work days recovered</div>
+            <div class="scenario-dual-value"><span id="scenDays">912</span></div>
+            <div class="scenario-dual-sub"><span id="scenPct">30</span>% of high-risk band reached</div>
+          </div>
+        </div>
+        <div class="scenario-context">
+          <strong>How.</strong> Welo identifies and routes high-risk employees into existing medical aid chronic-care programmes, on-site clinical monitoring, and EAP pathways. Outcome modelled at the conservative 20% absence-reduction benchmark applied to each enrolled employee.
         </div>
       </div>
     </div>
@@ -1296,6 +1407,10 @@ table { border-collapse: collapse; width: 100%; }
 
 </section>
 
+<div class="footnote">
+  <strong>Methodology note.</strong> Illustrative absenteeism pilot, 3 sites, 6,000 employees (2,000 per site), shown as a pre-pilot model. Exposure assumes <strong>12 absence days / employee / year</strong> (SA published average) at <strong>R1,100 / absent day</strong>; both are configurable inputs the pilot replaces with client actuals once HR and screening data connects. Risk scoring: WHtR-based clinical model with mining multiplier (1.30), banded Low/Medium/High/Critical. Saving projections apply an <strong>illustrative published benchmark (15-25%, shown at a conservative 20%)</strong> for absence reduction in high-risk populations under structured chronic-care intervention. These figures are <strong>modelled projections, not measured outcomes</strong>; a pilot validates them against the client's own data.
+</div>
+
 <script>
 const tabs = document.querySelectorAll('.nav-tab');
 const screens = document.querySelectorAll('.screen');
@@ -1314,34 +1429,41 @@ document.querySelectorAll('#clientsTableBody tr').forEach(row => {
   row.addEventListener('click', () => switchScreen('client'));
 });
 
-const slider = document.getElementById('scenSlider');
-const box = document.getElementById('scenBox');
-const nLabel = document.getElementById('scenN');
-const saveOut = document.getElementById('scenSave');
-const detailOut = document.getElementById('scenDetail');
+const slider    = document.getElementById('scenSlider');
+const box       = document.getElementById('scenBox');
+const nLabel    = document.getElementById('scenN');
+const saveOut   = document.getElementById('scenSave');
+const daysOut   = document.getElementById('scenDays');
+const pctOut    = document.getElementById('scenPct');
 
-// Welo's actual model, honestly applied:
-// per high-risk employee, attributable absence ~7.2 days/yr at R1,100/day,
-// benchmark saving = 20% of that attributable cost.
+// Per high-risk employee: 12 attributable absence days/yr at R1,100/day,
+// 20% benchmark reduction. Days recovered = 12 * 0.20 = 2.4 per person.
 const DAY_RATE = 1100;
 const ATTRIB_DAYS_PER_HIGHRISK = 12;
 const BENCHMARK = 0.20;
+const HIGH_RISK_BAND = 1260; // pilot-wide high-risk population
 function projectSavings(n) {
   return Math.round(n * ATTRIB_DAYS_PER_HIGHRISK * DAY_RATE * BENCHMARK);
+}
+function projectDays(n) {
+  return Math.round(n * ATTRIB_DAYS_PER_HIGHRISK * BENCHMARK);
 }
 function fmtRand(v) {
   if (v >= 1000000) return (v / 1000000).toFixed(2) + 'M';
   if (v >= 1000)    return Math.round(v / 1000) + 'k';
   return v;
 }
+function fmtInt(v) {
+  return v.toLocaleString();
+}
 
 slider.addEventListener('input', e => {
   const n = parseInt(e.target.value);
-  box.textContent = n + ' ppl';
-  nLabel.textContent = n;
-  const saving = projectSavings(n);
-  saveOut.textContent = fmtRand(saving);
-  detailOut.textContent = 'Illustrative · 20% benchmark on high-risk absence cost';
+  box.textContent = n.toLocaleString() + ' ppl';
+  nLabel.textContent = n.toLocaleString();
+  saveOut.textContent = fmtRand(projectSavings(n));
+  daysOut.textContent = fmtInt(projectDays(n));
+  pctOut.textContent = Math.round(n / HIGH_RISK_BAND * 100);
 });
 
 const observer = new MutationObserver(() => {
