@@ -816,6 +816,153 @@ table { border-collapse: collapse; width: 100%; }
 .client-select:hover { border-color: var(--ink-mute); }
 .client-select-name { font-weight: 600; color: var(--ink); letter-spacing: -0.005em; }
 .client-select-meta { color: var(--ink-mute); font-family: var(--mono); font-size: 12px; }
+
+/* ===== heatmaps ===== */
+
+.heat-grid { display: grid; gap: 4px; margin-top: 4px; }
+.heat-driver-site { grid-template-columns: 200px repeat(4, 1fr); }
+.heat-shift-dow   { grid-template-columns: 150px repeat(7, 1fr); }
+
+.heat-corner { background: transparent; }
+.heat-col-label {
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-mute);
+  font-weight: 600;
+  text-align: center;
+  padding: 6px 4px 10px;
+  border-bottom: 1px solid var(--line);
+  font-family: var(--mono);
+}
+.heat-col-label.heat-total-label {
+  color: var(--ink);
+  border-left: 2px solid var(--ink);
+}
+.heat-row-label {
+  font-size: 13px;
+  color: var(--ink);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-right: 14px;
+  letter-spacing: -0.005em;
+}
+.heat-row-label .heat-icon {
+  width: 26px; height: 26px;
+  background: var(--red-soft);
+  border-radius: var(--radius-sm);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px;
+  color: var(--red);
+  flex-shrink: 0;
+}
+
+.heat-cell {
+  border-radius: var(--radius-sm);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--mono);
+  font-weight: 600;
+  font-size: 13.5px;
+  letter-spacing: -0.01em;
+  font-feature-settings: 'tnum';
+  min-height: 52px;
+  position: relative;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  cursor: pointer;
+}
+.heat-cell:hover {
+  transform: scale(1.045);
+  box-shadow: 0 4px 14px rgba(13, 13, 13, 0.10);
+  z-index: 2;
+}
+.heat-cell.heat-total {
+  background: transparent !important;
+  border: 1px dashed var(--line);
+  color: var(--ink) !important;
+  font-weight: 700;
+}
+
+/* shared cream → red intensity scale */
+.heat-0 { background: var(--cream-2);  color: var(--ink-faint); }
+.heat-1 { background: #F0DDCB;        color: var(--ink-soft); }
+.heat-2 { background: #E8B89A;        color: var(--ink-soft); }
+.heat-3 { background: #DC8D6C;        color: var(--cream); }
+.heat-4 { background: #C95E40;        color: var(--cream); }
+.heat-5 { background: var(--red-deep); color: var(--cream); }
+
+.heat-legend {
+  display: flex; align-items: center; gap: 10px;
+  margin-top: 20px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--line);
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-mute);
+  letter-spacing: 0.02em;
+}
+.heat-legend-bar { display: flex; gap: 2px; }
+.heat-legend-swatch { width: 26px; height: 12px; border-radius: 3px; }
+.heat-legend-note { margin-left: auto; color: var(--ink-soft); }
+
+/* shift × DoW small subtext under main number */
+.heat-shift-dow .heat-cell { min-height: 60px; flex-direction: column; gap: 3px; }
+.heat-cell-sub { font-family: var(--mono); font-size: 9.5px; opacity: 0.72; font-weight: 500; letter-spacing: 0.02em; }
+.heat-shift-dow .heat-row-label { flex-direction: column; align-items: flex-start; justify-content: center; gap: 3px; padding-left: 4px; }
+.heat-shift-meta { font-family: var(--mono); font-size: 10.5px; color: var(--ink-mute); font-weight: 500; }
+
+/* calendar heatmap */
+.heat-calendar {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  column-gap: 10px;
+  row-gap: 6px;
+  padding: 6px 0 0;
+}
+.cal-day-labels {
+  display: grid;
+  grid-template-rows: repeat(7, 1fr);
+  gap: 3px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--ink-mute);
+  letter-spacing: 0.02em;
+}
+.cal-day-labels span { display: flex; align-items: center; height: 16px; }
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(52, 1fr);
+  grid-template-rows: repeat(7, 16px);
+  grid-auto-flow: column;
+  gap: 3px;
+}
+.cal-cell {
+  border-radius: 2px;
+  height: 16px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  cursor: pointer;
+}
+.cal-cell:hover {
+  transform: scale(1.8);
+  z-index: 3;
+  box-shadow: 0 4px 10px rgba(13, 13, 13, 0.18);
+  border-radius: 3px;
+}
+.cal-month-axis {
+  grid-column: 2;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--ink-mute);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding-top: 6px;
+}
+
+/* utility heatmap tile values */
+.heat-cell-value { font-size: 13.5px; font-weight: 600; }
 </style>
 </head>
 <body>
@@ -939,6 +1086,73 @@ table { border-collapse: collapse; width: 100%; }
         <div class="geo-row"><div class="geo-name">Site 1 · Mpumalanga</div><div class="geo-bar-wrap"><div class="geo-bar" style="width: 91%"></div></div><div class="geo-pct">21%</div></div>
         <div class="geo-row"><div class="geo-name">Site 2 · North West</div><div class="geo-bar-wrap"><div class="geo-bar" style="width: 83%"></div></div><div class="geo-pct">19%</div></div>
       </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-header">
+      <div>
+        <div class="panel-title">Driver concentration · site × clinical band</div>
+        <div class="panel-sub">% of each site's predicted absence attributable to each driver · informs site-specific intervention mix</div>
+      </div>
+      <span class="chip amber">Modelled</span>
+    </div>
+    <div class="heat-grid heat-driver-site">
+      <div class="heat-corner"></div>
+      <div class="heat-col-label">Site 1 · Mpu</div>
+      <div class="heat-col-label">Site 2 · NW</div>
+      <div class="heat-col-label">Site 3 · Lim</div>
+      <div class="heat-col-label heat-total-label">Portfolio</div>
+
+      <div class="heat-row-label"><span class="heat-icon">♥</span>Cardiovascular</div>
+      <div class="heat-cell heat-5">34%</div>
+      <div class="heat-cell heat-3">28%</div>
+      <div class="heat-cell heat-4">31%</div>
+      <div class="heat-cell heat-total">31%</div>
+
+      <div class="heat-row-label"><span class="heat-icon">⚙</span>Metabolic</div>
+      <div class="heat-cell heat-3">26%</div>
+      <div class="heat-cell heat-5">33%</div>
+      <div class="heat-cell heat-2">21%</div>
+      <div class="heat-cell heat-total">27%</div>
+
+      <div class="heat-row-label"><span class="heat-icon">◯</span>Respiratory · winter</div>
+      <div class="heat-cell heat-2">14%</div>
+      <div class="heat-cell heat-2">15%</div>
+      <div class="heat-cell heat-4">25%</div>
+      <div class="heat-cell heat-total">18%</div>
+
+      <div class="heat-row-label"><span class="heat-icon">◐</span>Mental health</div>
+      <div class="heat-cell heat-2">13%</div>
+      <div class="heat-cell heat-2">11%</div>
+      <div class="heat-cell heat-2">12%</div>
+      <div class="heat-cell heat-total">12%</div>
+
+      <div class="heat-row-label"><span class="heat-icon">⚊</span>Musculoskeletal</div>
+      <div class="heat-cell heat-1">9%</div>
+      <div class="heat-cell heat-1">8%</div>
+      <div class="heat-cell heat-0">6%</div>
+      <div class="heat-cell heat-total">8%</div>
+
+      <div class="heat-row-label"><span class="heat-icon">·</span>Other</div>
+      <div class="heat-cell heat-0">4%</div>
+      <div class="heat-cell heat-0">5%</div>
+      <div class="heat-cell heat-0">5%</div>
+      <div class="heat-cell heat-total">4%</div>
+    </div>
+    <div class="heat-legend">
+      <span>% contribution</span>
+      <span style="color: var(--ink-faint);">low</span>
+      <div class="heat-legend-bar">
+        <div class="heat-legend-swatch heat-0"></div>
+        <div class="heat-legend-swatch heat-1"></div>
+        <div class="heat-legend-swatch heat-2"></div>
+        <div class="heat-legend-swatch heat-3"></div>
+        <div class="heat-legend-swatch heat-4"></div>
+        <div class="heat-legend-swatch heat-5"></div>
+      </div>
+      <span style="color: var(--ink-faint);">high</span>
+      <span class="heat-legend-note">Mpumalanga skews CV · North West skews metabolic · Limpopo carries the respiratory load</span>
     </div>
   </div>
 
@@ -1125,6 +1339,64 @@ table { border-collapse: collapse; width: 100%; }
   <div class="panel">
     <div class="panel-header">
       <div>
+        <div class="panel-title">Shift × day-of-week absence rhythm</div>
+        <div class="panel-sub">absence rate per shift × weekday · post-weekend Monday clustering layered on the night-shift premium</div>
+      </div>
+      <span class="chip">Days per 100 employees</span>
+    </div>
+    <div class="heat-grid heat-shift-dow">
+      <div class="heat-corner"></div>
+      <div class="heat-col-label">Mon</div>
+      <div class="heat-col-label">Tue</div>
+      <div class="heat-col-label">Wed</div>
+      <div class="heat-col-label">Thu</div>
+      <div class="heat-col-label">Fri</div>
+      <div class="heat-col-label">Sat</div>
+      <div class="heat-col-label">Sun</div>
+
+      <div class="heat-row-label">
+        <span>Morning shift</span>
+        <span class="heat-shift-meta">06:00–18:00 · 1,100 ppl</span>
+      </div>
+      <div class="heat-cell heat-4">3.8<span class="heat-cell-sub">/100</span></div>
+      <div class="heat-cell heat-2">2.6<span class="heat-cell-sub">/100</span></div>
+      <div class="heat-cell heat-1">2.1<span class="heat-cell-sub">/100</span></div>
+      <div class="heat-cell heat-2">2.4<span class="heat-cell-sub">/100</span></div>
+      <div class="heat-cell heat-3">3.1<span class="heat-cell-sub">/100</span></div>
+      <div class="heat-cell heat-1">1.9<span class="heat-cell-sub">/100</span></div>
+      <div class="heat-cell heat-0">1.4<span class="heat-cell-sub">/100</span></div>
+
+      <div class="heat-row-label">
+        <span>Night shift</span>
+        <span class="heat-shift-meta">18:00–06:00 · 900 ppl</span>
+      </div>
+      <div class="heat-cell heat-5">5.1<span class="heat-cell-sub">/100</span></div>
+      <div class="heat-cell heat-3">3.4<span class="heat-cell-sub">/100</span></div>
+      <div class="heat-cell heat-3">3.0<span class="heat-cell-sub">/100</span></div>
+      <div class="heat-cell heat-3">3.3<span class="heat-cell-sub">/100</span></div>
+      <div class="heat-cell heat-4">4.2<span class="heat-cell-sub">/100</span></div>
+      <div class="heat-cell heat-2">2.7<span class="heat-cell-sub">/100</span></div>
+      <div class="heat-cell heat-2">2.5<span class="heat-cell-sub">/100</span></div>
+    </div>
+    <div class="heat-legend">
+      <span>Absence rate</span>
+      <span style="color: var(--ink-faint);">low</span>
+      <div class="heat-legend-bar">
+        <div class="heat-legend-swatch heat-0"></div>
+        <div class="heat-legend-swatch heat-1"></div>
+        <div class="heat-legend-swatch heat-2"></div>
+        <div class="heat-legend-swatch heat-3"></div>
+        <div class="heat-legend-swatch heat-4"></div>
+        <div class="heat-legend-swatch heat-5"></div>
+      </div>
+      <span style="color: var(--ink-faint);">high</span>
+      <span class="heat-legend-note">Mondays cluster across both shifts · Mon night peaks at 1.34× Mon morning · cover demand spikes Mon &amp; Fri night</span>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-header">
+      <div>
         <div class="panel-title">Predicted absence drivers</div>
         <div class="panel-sub">contribution to predicted absent days · WHtR, glucose, BP, chronic flags</div>
       </div>
@@ -1297,6 +1569,51 @@ table { border-collapse: collapse; width: 100%; }
     </div>
   </div>
 
+  <div class="panel">
+    <div class="panel-header">
+      <div>
+        <div class="panel-title">Annual absence rhythm · week × day</div>
+        <div class="panel-sub">52-week calendar projection · day-of-week clustering layered on the winter respiratory peak</div>
+      </div>
+      <div class="panel-actions">
+        <span class="chip red">Winter peak Jun–Aug</span>
+        <span class="chip amber">Modelled · 52 wks</span>
+      </div>
+    </div>
+    <div class="heat-calendar">
+      <div class="cal-day-labels">
+        <span>Mon</span>
+        <span>Tue</span>
+        <span>Wed</span>
+        <span>Thu</span>
+        <span>Fri</span>
+        <span>Sat</span>
+        <span>Sun</span>
+      </div>
+      <div class="cal-grid" id="calGrid"></div>
+      <div></div>
+      <div class="cal-month-axis">
+        <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span>
+        <span>May</span><span>Jun</span><span>Jul</span><span>Aug</span>
+        <span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span>
+      </div>
+    </div>
+    <div class="heat-legend">
+      <span>Absent days · workforce share</span>
+      <span style="color: var(--ink-faint);">fewer</span>
+      <div class="heat-legend-bar">
+        <div class="heat-legend-swatch heat-0"></div>
+        <div class="heat-legend-swatch heat-1"></div>
+        <div class="heat-legend-swatch heat-2"></div>
+        <div class="heat-legend-swatch heat-3"></div>
+        <div class="heat-legend-swatch heat-4"></div>
+        <div class="heat-legend-swatch heat-5"></div>
+      </div>
+      <span style="color: var(--ink-faint);">more</span>
+      <span class="heat-legend-note">Winter respiratory band Jun–Aug · post-weekend Monday spine runs year-round · light shoulders Q1 &amp; late Q4</span>
+    </div>
+  </div>
+
   <div class="two-col-50-50">
     <div class="panel">
       <div class="panel-header">
@@ -1450,6 +1767,51 @@ slider.addEventListener('input', e => {
   daysOut.textContent = fmtInt(projectDays(n));
   pctOut.textContent = Math.round(n / HIGH_RISK_BAND * 100);
 });
+
+// Calendar heatmap generator: 52 weeks × 7 days.
+// Pattern encodes Monday post-weekend clustering + SA winter respiratory peak (Jun-Aug, weeks ~22-35).
+(function buildCalendar() {
+  const grid = document.getElementById('calGrid');
+  if (!grid) return;
+
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const days   = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+
+  // deterministic pseudo-random so the layout is stable on every render
+  let seed = 17;
+  const rand = () => { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; };
+
+  for (let w = 0; w < 52; w++) {
+    for (let d = 0; d < 7; d++) {
+      const cell = document.createElement('div');
+      cell.className = 'cal-cell';
+
+      let intensity = 1.0;
+      if (d === 0) intensity += 1.5;           // Monday spike
+      if (d === 4) intensity += 0.8;           // Friday lift
+      if (d === 5) intensity -= 0.4;           // Saturday dip
+      if (d === 6) intensity -= 0.6;           // Sunday dip
+      if (w >= 22 && w <= 35) intensity += 1.3; // SA winter
+      if (w === 21 || w === 36) intensity += 0.6; // winter shoulder
+      if (w >= 0 && w <= 5)   intensity -= 0.2;   // post-holiday lull
+      intensity += (rand() - 0.5) * 0.75;
+
+      let level;
+      if (intensity < 0.45)      level = 0;
+      else if (intensity < 1.10) level = 1;
+      else if (intensity < 1.80) level = 2;
+      else if (intensity < 2.55) level = 3;
+      else if (intensity < 3.30) level = 4;
+      else                       level = 5;
+
+      cell.classList.add('heat-' + level);
+
+      const monthIdx = Math.min(11, Math.floor(w / 4.33));
+      cell.title = days[d] + ' · ' + months[monthIdx] + ' wk ' + (w + 1) + ' · intensity ' + level;
+      grid.appendChild(cell);
+    }
+  }
+})();
 
 const observer = new MutationObserver(() => {
   document.querySelectorAll('.screen.active .risk-fill, .screen.active .driver-fill, .screen.active .cohort-fill, .screen.active .roi-fill, .screen.active .geo-bar').forEach(el => {
