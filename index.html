@@ -2074,7 +2074,7 @@ table { border-collapse: collapse; width: 100%; }
     </div>
     <div class="ind-action-row">
       <button class="cta-btn">Flag for outreach</button>
-      <button class="action-btn">Enrol in WeloCARE pathway</button>
+      <button class="action-btn">Enrol in medical program</button>
       <button class="action-btn">Add to intervention queue</button>
       <span class="ind-action-note" id="ind-action-note"></span>
     </div>
@@ -2791,7 +2791,7 @@ window.addEventListener('load', () => {
     $('#ind-action-chip').className = isHi ? 'chip red' : 'chip';
     $('#ind-action-sub').textContent = 'routing suggestion based on risk band and lead driver';
     $('#ind-action-note').innerHTML = isHi
-      ? `Lead driver: <strong>${lead}</strong>. Recommend outreach and a targeted WeloCARE pathway, projected to recover R ${fmtInt(savingOf(r.predicted_absent_days_90d))} over 90 days.`
+      ? `Lead driver: <strong>${lead}</strong>. Recommend outreach and a targeted medical program, projected to recover R ${fmtInt(savingOf(r.predicted_absent_days_90d))} over 90 days.`
       : `Lead signal: <strong>${lead}</strong>. Below the intervention threshold; keep under routine monitoring.`;
 
     switchScreen('individual');
