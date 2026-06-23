@@ -963,6 +963,360 @@ table { border-collapse: collapse; width: 100%; }
 
 /* utility heatmap tile values */
 .heat-cell-value { font-size: 13.5px; font-weight: 600; }
+
+/* ===== sick leave trend ===== */
+
+.trend-summary {
+  display: flex; align-items: center; gap: 28px;
+  padding: 4px 4px 16px;
+  border-bottom: 1px dashed var(--line);
+  margin-bottom: 14px;
+}
+.trend-yoy {
+  font-size: 32px;
+  font-weight: 600;
+  color: var(--red);
+  letter-spacing: -0.03em;
+  display: flex; align-items: baseline; gap: 6px;
+  font-feature-settings: 'tnum';
+  font-family: var(--sans);
+  line-height: 1;
+}
+.trend-yoy-arrow { font-size: 24px; line-height: 1; }
+.trend-yoy-block .label {
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ink-mute);
+  font-weight: 500;
+  margin-top: 6px;
+}
+.trend-yoy-block .sub {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-mute);
+  margin-top: 2px;
+}
+
+.trend-chart-wrap { padding: 0 4px; }
+.trend-chart { width: 100%; height: 180px; display: block; }
+.trend-axis-x {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--ink-mute);
+  letter-spacing: 0.04em;
+  margin-top: 4px;
+  padding: 0 14px;
+  text-transform: uppercase;
+}
+.trend-axis-x span { text-align: center; }
+.trend-axis-x span.now { color: var(--red); font-weight: 600; }
+
+.trend-legend {
+  display: flex; gap: 18px;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--line);
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-mute);
+}
+.trend-legend-item { display: flex; align-items: center; gap: 6px; }
+.trend-legend-line {
+  width: 22px; height: 2px;
+  background: var(--red);
+  border-radius: 1px;
+}
+.trend-legend-line.dashed {
+  background: repeating-linear-gradient(90deg, var(--red) 0 5px, transparent 5px 9px);
+}
+
+/* ===== predicted staffing risk ===== */
+
+.staffing-headline {
+  font-size: 40px;
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  color: var(--ink);
+  line-height: 1;
+  font-feature-settings: 'tnum';
+  display: flex; align-items: baseline; gap: 8px;
+  font-family: var(--sans);
+}
+.staffing-headline .num-unit {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--ink-mute);
+  letter-spacing: -0.01em;
+}
+.staffing-sub {
+  font-size: 11.5px;
+  color: var(--ink-mute);
+  font-family: var(--mono);
+  margin-top: 4px;
+  padding-bottom: 16px;
+  border-bottom: 1px dashed var(--line);
+  margin-bottom: 14px;
+}
+.staffing-rows { display: flex; flex-direction: column; gap: 14px; padding: 4px 0 2px; }
+.staffing-row {
+  display: grid;
+  grid-template-columns: 130px 1fr 68px;
+  align-items: center;
+  gap: 14px;
+  font-size: 13px;
+}
+.staffing-name { color: var(--ink); font-weight: 500; letter-spacing: -0.005em; }
+.staffing-track {
+  display: flex;
+  height: 22px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: var(--cream-2);
+}
+.staffing-seg {
+  height: 100%;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--cream);
+  display: flex; align-items: center; justify-content: center;
+  letter-spacing: 0.02em;
+  transition: flex 0.7s cubic-bezier(0.34, 1.20, 0.64, 1);
+  font-feature-settings: 'tnum';
+}
+.staffing-seg.severe   { background: var(--critical); }
+.staffing-seg.moderate { background: var(--high); }
+.staffing-seg.light    { background: var(--medium); }
+.staffing-total {
+  font-family: var(--mono);
+  font-size: 12.5px;
+  color: var(--ink-soft);
+  text-align: right;
+  font-weight: 600;
+  font-feature-settings: 'tnum';
+}
+.staffing-legend {
+  display: flex; gap: 18px;
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--line);
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-mute);
+}
+.staffing-legend-item { display: flex; align-items: center; gap: 6px; }
+.staffing-legend-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+.staffing-legend-dot.severe   { background: var(--critical); }
+.staffing-legend-dot.moderate { background: var(--high); }
+.staffing-legend-dot.light    { background: var(--medium); }
+
+/* ===== fatigue & burnout panel ===== */
+
+.fatigue-headline {
+  font-family: var(--sans);
+  font-size: 76px;
+  font-weight: 600;
+  letter-spacing: -0.045em;
+  color: var(--red);
+  line-height: 1;
+  font-feature-settings: 'tnum';
+  display: flex; align-items: baseline; gap: 4px;
+  margin-top: 6px;
+}
+.fatigue-headline-unit {
+  font-size: 36px;
+  font-weight: 500;
+  color: var(--red);
+  letter-spacing: -0.02em;
+}
+.fatigue-headline-caption {
+  font-size: 12px;
+  color: var(--ink-mute);
+  font-family: var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-top: 6px;
+}
+.fatigue-headline-divider {
+  height: 1px;
+  background: var(--line);
+  margin: 16px 0 14px;
+}
+.fatigue-stat-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px dashed var(--line);
+  margin-bottom: 14px;
+}
+.fatigue-stat-value {
+  font-family: var(--sans);
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+  line-height: 1;
+  font-feature-settings: 'tnum';
+}
+.fatigue-stat-label {
+  font-size: 10.5px;
+  color: var(--ink-mute);
+  font-family: var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-top: 6px;
+}
+.fatigue-note {
+  font-size: 12.5px;
+  color: var(--ink-soft);
+  line-height: 1.55;
+}
+.fatigue-note strong { color: var(--red); font-weight: 600; }
+
+/* ===== live model indicator ===== */
+
+.screen-context { display: flex; align-items: center; gap: 12px; }
+.live-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(192, 57, 43, 0.08);
+  color: var(--red);
+  font-family: var(--mono);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: 1px solid rgba(192, 57, 43, 0.18);
+}
+.live-pill[hidden] { display: none; }
+.live-dot {
+  width: 7px; height: 7px;
+  background: var(--red);
+  border-radius: 50%;
+  box-shadow: 0 0 0 0 rgba(192, 57, 43, 0.55);
+  animation: welo-live-pulse 1.6s infinite cubic-bezier(0.4, 0, 0.6, 1);
+}
+@keyframes welo-live-pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(192, 57, 43, 0.55); }
+  70%  { box-shadow: 0 0 0 7px rgba(192, 57, 43, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(192, 57, 43, 0); }
+}
+
+/* ===== cohort + individual screens (added) ===== */
+.dim-toggle { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 22px; }
+.dim-btn {
+  font-family: var(--sans); font-size: 13px; font-weight: 500;
+  color: var(--ink-mute); background: var(--card); border: 1px solid var(--line);
+  border-radius: 999px; padding: 8px 16px; cursor: pointer; transition: all .15s ease;
+}
+.dim-btn:hover { color: var(--ink); border-color: var(--ink-faint); }
+.dim-btn.active { color: #fff; background: var(--ink); border-color: var(--ink); }
+
+.cohort-card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin-bottom: 22px; }
+.cohort-empty { color: var(--ink-faint); padding: 20px; grid-column: 1 / -1; }
+.cohort-card {
+  background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 18px 18px 16px; cursor: pointer; transition: all .15s ease; box-shadow: var(--shadow);
+  display: flex; flex-direction: column; gap: 12px;
+}
+.cohort-card:hover { border-color: var(--ink-faint); box-shadow: var(--shadow-lift); transform: translateY(-2px); }
+.cohort-card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+.cohort-card-name { font-size: 16px; font-weight: 600; color: var(--ink); }
+.cohort-card-count { font-family: var(--mono); font-size: 12px; color: var(--ink-mute); }
+.cohort-card-hr { text-align: right; }
+.cohort-card-hr-val { font-size: 26px; font-weight: 700; line-height: 1; letter-spacing: -0.02em; }
+.cohort-card-hr-lab { font-size: 10px; color: var(--ink-mute); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 3px; }
+.cohort-mini-bar { display: flex; height: 8px; border-radius: 4px; overflow: hidden; background: var(--line-soft); }
+.cohort-mini-seg.critical { background: var(--critical); }
+.cohort-mini-seg.high { background: var(--high); }
+.cohort-mini-seg.medium { background: var(--medium); }
+.cohort-mini-seg.low { background: var(--low); }
+.cohort-card-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 14px; }
+.cohort-card-stat-label { font-size: 11px; color: var(--ink-mute); }
+.cohort-card-stat-value { font-size: 15px; font-weight: 600; color: var(--ink); font-family: var(--mono); }
+.cohort-card-cta { font-size: 12px; font-weight: 500; color: var(--red); margin-top: 2px; }
+
+/* filter bar */
+.filter-bar { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
+.filter-group { display: flex; align-items: center; gap: 6px; }
+.filter-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-mute); margin-right: 2px; }
+.filter-chip {
+  font-family: var(--sans); font-size: 12.5px; font-weight: 500; color: var(--ink-mute);
+  background: var(--card); border: 1px solid var(--line); border-radius: 999px;
+  padding: 6px 13px; cursor: pointer; transition: all .15s ease;
+}
+.filter-chip:hover { color: var(--ink); }
+.filter-chip.active { color: #fff; background: var(--red); border-color: var(--red); }
+.filter-cohort { display: flex; align-items: center; gap: 8px; padding-left: 12px; border-left: 1px solid var(--line); }
+.filter-active-cohort { font-size: 13px; font-weight: 600; color: var(--ink); }
+.filter-clear { font-size: 11px; color: var(--ink-mute); background: none; border: none; cursor: pointer; }
+.filter-clear:hover { color: var(--red); }
+.filter-spacer { flex: 1; }
+.filter-search {
+  font-family: var(--mono); font-size: 12.5px; padding: 8px 12px; border: 1px solid var(--line);
+  border-radius: var(--radius-sm); background: var(--card); color: var(--ink); width: 180px;
+}
+.filter-search:focus { outline: none; border-color: var(--ink-faint); }
+.filter-count { font-family: var(--mono); font-size: 12px; color: var(--ink-mute); }
+
+.ind-table th.sortable { cursor: pointer; }
+.ind-table th.active-sort { color: var(--red); }
+.ind-table tbody tr { cursor: pointer; }
+.ind-table tbody tr:hover { background: var(--red-faint); }
+.ind-more-wrap { padding: 14px; text-align: center; }
+.ind-more-btn { font-family: var(--sans); font-size: 13px; font-weight: 500; color: var(--ink); background: var(--cream-2); border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 9px 22px; cursor: pointer; }
+.ind-more-btn:hover { border-color: var(--ink-faint); }
+.fatigue-tag { font-family: var(--mono); font-size: 11px; color: var(--red); }
+
+/* profile drawer */
+.drawer-scrim { position: fixed; inset: 0; background: rgba(13,13,13,0.35); z-index: 40; }
+.profile-drawer {
+  position: fixed; top: 0; right: 0; height: 100vh; width: 480px; max-width: 94vw;
+  background: var(--cream); border-left: 1px solid var(--line); z-index: 41;
+  box-shadow: var(--shadow-lift); display: flex; flex-direction: column;
+  animation: drawerIn .22s ease;
+}
+@keyframes drawerIn { from { transform: translateX(30px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+.drawer-head { display: flex; justify-content: space-between; align-items: flex-start; padding: 22px 24px 16px; border-bottom: 1px solid var(--line); }
+.drawer-eyebrow { font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-mute); }
+.drawer-id { font-family: var(--mono); font-size: 22px; font-weight: 600; color: var(--ink); margin-top: 4px; }
+.drawer-close { font-size: 18px; color: var(--ink-mute); background: none; border: none; cursor: pointer; line-height: 1; padding: 4px; }
+.drawer-close:hover { color: var(--ink); }
+.drawer-body { padding: 20px 24px 40px; overflow-y: auto; }
+.pd-hero { display: flex; gap: 18px; align-items: center; margin-bottom: 20px; }
+.pd-hero-num { flex: 1; }
+.pd-hero-val { font-size: 34px; font-weight: 700; letter-spacing: -0.02em; line-height: 1; }
+.pd-hero-lab { font-size: 11px; color: var(--ink-mute); margin-top: 5px; }
+.pd-section-title { font-size: 11px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--ink-mute); margin: 22px 0 10px; }
+.pd-prob-row { display: flex; align-items: center; gap: 10px; margin-bottom: 7px; }
+.pd-prob-lab { width: 64px; font-size: 12px; color: var(--ink-soft); }
+.pd-prob-track { flex: 1; height: 7px; background: var(--line-soft); border-radius: 4px; overflow: hidden; }
+.pd-prob-fill { height: 100%; border-radius: 4px; }
+.pd-prob-fill.critical { background: var(--critical); }
+.pd-prob-fill.high { background: var(--high); }
+.pd-prob-fill.medium { background: var(--medium); }
+.pd-prob-fill.low { background: var(--low); }
+.pd-prob-pct { width: 42px; text-align: right; font-family: var(--mono); font-size: 12px; color: var(--ink-mute); }
+.pd-driver { display: flex; align-items: center; gap: 10px; padding: 9px 12px; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius-sm); margin-bottom: 7px; }
+.pd-driver-sev { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.pd-driver-sev.high { background: var(--critical); }
+.pd-driver-sev.medium { background: var(--high); }
+.pd-driver-sev.low { background: var(--medium); }
+.pd-driver-label { flex: 1; font-size: 13px; color: var(--ink); }
+.pd-driver-val { font-family: var(--mono); font-size: 12px; color: var(--ink-mute); }
+.pd-attr-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--radius-sm); overflow: hidden; }
+.pd-attr { background: var(--card); padding: 10px 12px; }
+.pd-attr-lab { font-size: 10.5px; color: var(--ink-mute); }
+.pd-attr-val { font-size: 14px; font-weight: 600; color: var(--ink); margin-top: 2px; }
+.pd-cohort-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.pd-shap-note { font-size: 11px; color: var(--ink-faint); margin-top: 8px; }
 </style>
 </head>
 <body>
@@ -974,7 +1328,8 @@ table { border-collapse: collapse; width: 100%; }
   </div>
   <nav class="nav-tabs" id="navTabs">
     <button class="nav-tab active" data-screen="portfolio">Portfolio</button>
-    <button class="nav-tab" data-screen="client">Client view</button>
+    <button class="nav-tab" data-screen="cohorts">Cohorts</button>
+    <button class="nav-tab" data-screen="individuals">Individuals</button>
     <button class="nav-tab" data-screen="roi">Outcomes &amp; ROI</button>
   </nav>
   <div class="header-meta">
@@ -992,28 +1347,31 @@ table { border-collapse: collapse; width: 100%; }
 
   <div class="screen-header">
     <div>
-      <div class="eyebrow">Pilot overview</div>
-      <h1 class="screen-title">Absenteeism intelligence <br>across <span style="color: var(--red)">3 pilot sites</span>.</h1>
-      <div class="screen-sub">Modelled absence exposure and addressable saving across a 3-site, 6,000-employee pilot. Figures are benchmark projections until the client HR and screening data connects.</div>
+      <div class="eyebrow">Workforce overview</div>
+      <h1 class="screen-title">Absenteeism intelligence <br>across the <span style="color: var(--red)">covered workforce</span>.</h1>
+      <div class="screen-sub">Predicted absence exposure and addressable saving across the modelled mining cohort. Every figure on this page is generated by the Welo absenteeism model — drill into a cohort, then down to the individual.</div>
     </div>
-    <div class="screen-context">3 sites · 6,000 covered lives · 2,000 per site</div>
+    <div class="screen-context">
+      <span data-welo="screen-context-text">6,000 covered lives · model output</span>
+      <span class="live-pill" data-welo="live-pill" hidden><span class="live-dot"></span>LIVE MODEL</span>
+    </div>
   </div>
 
   <div class="metrics-row">
     <div class="metric-card">
       <div class="card-watermark">01</div>
       <div class="metric-label">Covered lives</div>
-      <div class="metric-value">6,000</div>
-      <div class="metric-detail">3 sites · 2,000 each</div>
+      <div class="metric-value"><span data-welo="metric:covered_lives">6,000</span></div>
+      <div class="metric-detail">scored mining cohort</div>
       <div class="metric-sub" style="color: var(--ink-mute)">
-        full pilot scope
+        full model scope
       </div>
     </div>
 
     <div class="metric-card highlight">
       <div class="card-watermark">02</div>
       <div class="metric-label">Predicted absent days · next 90d</div>
-      <div class="metric-value">19,440</div>
+      <div class="metric-value"><span data-welo="metric:predicted_absent_days_90d">19,440</span></div>
       <div class="metric-detail">winter-weighted · ±15%</div>
       <div class="metric-sub" style="color: var(--red-bright)">
         modelled projection
@@ -1023,7 +1381,7 @@ table { border-collapse: collapse; width: 100%; }
     <div class="metric-card">
       <div class="card-watermark">03</div>
       <div class="metric-label">Absence cost exposure</div>
-      <div class="metric-value"><span class="stat-rand">R</span> 79.2M</div>
+      <div class="metric-value"><span class="stat-rand">R</span> <span data-welo="metric:absence_cost_exposure_rand">79.2M</span></div>
       <div class="metric-detail">annualised @ R1,100/day</div>
       <div class="metric-sub" style="color: var(--ink-mute)">
         72,000 days · 12/employee
@@ -1033,10 +1391,156 @@ table { border-collapse: collapse; width: 100%; }
     <div class="metric-card">
       <div class="card-watermark">04</div>
       <div class="metric-label">Projected addressable saving</div>
-      <div class="metric-value"><span class="stat-rand">R</span> 3.33M</div>
+      <div class="metric-value"><span class="stat-rand">R</span> <span data-welo="metric:projected_addressable_saving_rand">3.33M</span></div>
       <div class="metric-detail">~4.2% of exposure</div>
       <div class="metric-sub" style="color: var(--ink-mute)">
         modelled · benchmark-anchored
+      </div>
+    </div>
+  </div>
+
+  <div class="two-col-50-50">
+    <div class="panel">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">Sick leave trends · 12-month</div>
+          <div class="panel-sub">absent days/month across the 6,000-life pilot · solid = baseline, dashed = predicted</div>
+        </div>
+        <span class="chip amber">Modelled</span>
+      </div>
+
+      <div class="trend-summary">
+        <div class="trend-yoy-block">
+          <div class="trend-yoy">
+            <span class="trend-yoy-arrow">▲</span>6.4%
+          </div>
+          <div class="label">YoY · 90-day rolling</div>
+          <div class="sub">trending up, winter-driven</div>
+        </div>
+        <div class="trend-yoy-block" style="border-left: 1px dashed var(--line); padding-left: 24px;">
+          <div class="trend-yoy" style="color: var(--ink); font-size: 28px;">6,500</div>
+          <div class="label">Peak forecast · July</div>
+          <div class="sub">+22% vs. February low</div>
+        </div>
+        <div class="trend-yoy-block" style="border-left: 1px dashed var(--line); padding-left: 24px;">
+          <div class="trend-yoy" style="color: var(--ink); font-size: 28px;">70.8k</div>
+          <div class="label">12-month total · days</div>
+          <div class="sub">≈12 days per employee</div>
+        </div>
+      </div>
+
+      <div class="trend-chart-wrap">
+        <svg viewBox="0 0 600 180" preserveAspectRatio="none" class="trend-chart">
+          <defs>
+            <linearGradient id="trendFillPast" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#C0392B" stop-opacity="0.22"/>
+              <stop offset="100%" stop-color="#C0392B" stop-opacity="0.02"/>
+            </linearGradient>
+            <linearGradient id="trendFillFcst" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#C0392B" stop-opacity="0.12"/>
+              <stop offset="100%" stop-color="#C0392B" stop-opacity="0.01"/>
+            </linearGradient>
+          </defs>
+
+          <g stroke="#F0EBE2" stroke-width="1" vector-effect="non-scaling-stroke">
+            <line x1="0" y1="35" x2="600" y2="35"/>
+            <line x1="0" y1="90" x2="600" y2="90"/>
+            <line x1="0" y1="145" x2="600" y2="145"/>
+          </g>
+
+          <path d="M 20,123 L 71,151 L 122,132 L 173,95 L 224,67 L 275,39 L 275,170 L 20,170 Z"
+                fill="url(#trendFillPast)"/>
+          <path d="M 275,39 L 326,29 L 377,48 L 428,76 L 479,85 L 530,95 L 580,104 L 580,170 L 275,170 Z"
+                fill="url(#trendFillFcst)"/>
+
+          <polyline points="20,123 71,151 122,132 173,95 224,67 275,39"
+                    fill="none" stroke="#C0392B" stroke-width="2.5"
+                    stroke-linejoin="round" stroke-linecap="round"
+                    vector-effect="non-scaling-stroke"/>
+          <polyline points="275,39 326,29 377,48 428,76 479,85 530,95 580,104"
+                    fill="none" stroke="#C0392B" stroke-width="2.5"
+                    stroke-linejoin="round" stroke-linecap="round"
+                    stroke-dasharray="6 4"
+                    vector-effect="non-scaling-stroke"/>
+
+          <line x1="275" y1="20" x2="275" y2="170"
+                stroke="#A8A29E" stroke-width="1" stroke-dasharray="3 3"
+                vector-effect="non-scaling-stroke"/>
+
+          <circle cx="326" cy="29" r="5" fill="#FAF7F2" stroke="#C0392B" stroke-width="2.5"
+                  vector-effect="non-scaling-stroke"/>
+          <circle cx="275" cy="39" r="4.5" fill="#C0392B" stroke="#FAF7F2" stroke-width="2"
+                  vector-effect="non-scaling-stroke"/>
+
+          <text x="232" y="16" font-family="JetBrains Mono, monospace" font-size="9.5"
+                fill="#777777" letter-spacing="0.06em" text-anchor="end">BASELINE</text>
+          <text x="318" y="16" font-family="JetBrains Mono, monospace" font-size="9.5"
+                fill="#777777" letter-spacing="0.06em">FORECAST</text>
+          <text x="334" y="22" font-family="JetBrains Mono, monospace" font-size="10"
+                fill="#C0392B" letter-spacing="0.04em" font-weight="600">Peak · 6,500 d</text>
+        </svg>
+
+        <div class="trend-axis-x">
+          <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span>
+          <span>May</span><span class="now">Jun</span><span>Jul</span><span>Aug</span>
+          <span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span>
+        </div>
+      </div>
+
+      <div class="trend-legend">
+        <div class="trend-legend-item"><span class="trend-legend-line"></span>baseline (6m actuals modelled)</div>
+        <div class="trend-legend-item"><span class="trend-legend-line dashed"></span>predicted (next 6m)</div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">Predicted staffing risk · next 90 days</div>
+          <div class="panel-sub">site-shifts projected below minimum cover · summed across all roles</div>
+        </div>
+        <span class="chip red">Critical exposure</span>
+      </div>
+
+      <div class="staffing-headline">
+        2,180<span class="num-unit">cover-gap days</span>
+      </div>
+      <div class="staffing-sub">across operational-load cohorts · projected to next 90 days · winter loading applied</div>
+
+      <div class="staffing-rows">
+        <div class="staffing-row">
+          <div class="staffing-name">High-intensity</div>
+          <div class="staffing-track">
+            <div class="staffing-seg severe"   style="flex: 140">140</div>
+            <div class="staffing-seg moderate" style="flex: 290">290</div>
+            <div class="staffing-seg light"    style="flex: 380">380</div>
+          </div>
+          <div class="staffing-total">810 d</div>
+        </div>
+        <div class="staffing-row">
+          <div class="staffing-name">Standard ops</div>
+          <div class="staffing-track">
+            <div class="staffing-seg severe"   style="flex: 110">110</div>
+            <div class="staffing-seg moderate" style="flex: 250">250</div>
+            <div class="staffing-seg light"    style="flex: 360">360</div>
+          </div>
+          <div class="staffing-total">720 d</div>
+        </div>
+        <div class="staffing-row">
+          <div class="staffing-name">Light duty</div>
+          <div class="staffing-track">
+            <div class="staffing-seg severe"   style="flex: 90">90</div>
+            <div class="staffing-seg moderate" style="flex: 230">230</div>
+            <div class="staffing-seg light"    style="flex: 330">330</div>
+          </div>
+          <div class="staffing-total">650 d</div>
+        </div>
+      </div>
+
+      <div class="staffing-legend">
+        <div class="staffing-legend-item"><span class="staffing-legend-dot severe"></span>severe · cover &lt; 80%</div>
+        <div class="staffing-legend-item"><span class="staffing-legend-dot moderate"></span>moderate · 80–90%</div>
+        <div class="staffing-legend-item"><span class="staffing-legend-dot light"></span>light · 90–95%</div>
       </div>
     </div>
   </div>
@@ -1050,23 +1554,23 @@ table { border-collapse: collapse; width: 100%; }
         </div>
         <span class="chip amber">Modelled baseline</span>
       </div>
-      <div class="risk-bars">
-        <div class="risk-row">
+      <div class="risk-bars" data-welo="risk-distribution">
+        <div class="risk-row" data-welo-band="critical">
           <div class="risk-label"><span class="risk-dot critical"></span>Critical</div>
           <div class="risk-track"><div class="risk-fill critical" style="width: 10%"></div></div>
           <div class="risk-delta">5% · 300 lives</div>
         </div>
-        <div class="risk-row">
+        <div class="risk-row" data-welo-band="high">
           <div class="risk-label"><span class="risk-dot high"></span>High</div>
           <div class="risk-track"><div class="risk-fill high" style="width: 32%"></div></div>
           <div class="risk-delta">16% · 960 lives</div>
         </div>
-        <div class="risk-row">
+        <div class="risk-row" data-welo-band="medium">
           <div class="risk-label"><span class="risk-dot medium"></span>Medium</div>
           <div class="risk-track"><div class="risk-fill medium" style="width: 60%"></div></div>
           <div class="risk-delta">30% · 1,800 lives</div>
         </div>
-        <div class="risk-row">
+        <div class="risk-row" data-welo-band="low">
           <div class="risk-label"><span class="risk-dot low"></span>Low</div>
           <div class="risk-track"><div class="risk-fill low" style="width: 100%"></div></div>
           <div class="risk-delta">49% · 2,940 lives</div>
@@ -1077,14 +1581,77 @@ table { border-collapse: collapse; width: 100%; }
     <div class="panel">
       <div class="panel-header">
         <div>
-          <div class="panel-title">High-risk concentration by site</div>
-          <div class="panel-sub">% of site in high or critical band</div>
+          <div class="panel-title">High-risk concentration by cohort</div>
+          <div class="panel-sub" data-welo="cohort-conc-sub">% in high or critical band · by lifestyle risk</div>
+        </div>
+        <span class="chip" data-screen="cohorts" style="cursor:pointer;">All cohorts →</span>
+      </div>
+      <div class="geo-list" data-welo="cohort-concentration">
+        <div class="geo-row"><div class="geo-name">Smoker + drinker</div><div class="geo-bar-wrap"><div class="geo-bar" style="width: 100%"></div></div><div class="geo-pct">33%</div></div>
+        <div class="geo-row"><div class="geo-name">Smoker</div><div class="geo-bar-wrap"><div class="geo-bar" style="width: 57%"></div></div><div class="geo-pct">19%</div></div>
+        <div class="geo-row"><div class="geo-name">Regular drinker</div><div class="geo-bar-wrap"><div class="geo-bar" style="width: 37%"></div></div><div class="geo-pct">12%</div></div>
+        <div class="geo-row"><div class="geo-name">Low lifestyle risk</div><div class="geo-bar-wrap"><div class="geo-bar" style="width: 8%"></div></div><div class="geo-pct">3%</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="two-col-60-40">
+    <div class="panel">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">Fatigue &amp; burnout · cohort segment</div>
+          <div class="panel-sub">composite of sleep deficit, overtime, consecutive shifts, leave gap, workload and PSS-10 · ranked top model lever</div>
+        </div>
+        <span class="chip red" data-welo="fatigue-chip">Top model lever</span>
+      </div>
+      <div class="risk-bars" data-welo="fatigue-segment">
+        <div class="risk-row" data-welo-fatigue-band="critical">
+          <div class="risk-label"><span class="risk-dot critical"></span>Critical · 70+</div>
+          <div class="risk-track"><div class="risk-fill critical" style="width: 35%"></div></div>
+          <div class="risk-delta">18% · 177 lives</div>
+        </div>
+        <div class="risk-row" data-welo-fatigue-band="high">
+          <div class="risk-label"><span class="risk-dot high"></span>High · 50–69</div>
+          <div class="risk-track"><div class="risk-fill high" style="width: 80%"></div></div>
+          <div class="risk-delta">39% · 393 lives</div>
+        </div>
+        <div class="risk-row" data-welo-fatigue-band="moderate">
+          <div class="risk-label"><span class="risk-dot medium"></span>Moderate · 30–49</div>
+          <div class="risk-track"><div class="risk-fill medium" style="width: 62%"></div></div>
+          <div class="risk-delta">30% · 303 lives</div>
+        </div>
+        <div class="risk-row" data-welo-fatigue-band="low">
+          <div class="risk-label"><span class="risk-dot low"></span>Low · &lt; 30</div>
+          <div class="risk-track"><div class="risk-fill low" style="width: 26%"></div></div>
+          <div class="risk-delta">13% · 127 lives</div>
         </div>
       </div>
-      <div class="geo-list">
-        <div class="geo-row"><div class="geo-name">Site 3 · Limpopo</div><div class="geo-bar-wrap"><div class="geo-bar" style="width: 100%"></div></div><div class="geo-pct">23%</div></div>
-        <div class="geo-row"><div class="geo-name">Site 1 · Mpumalanga</div><div class="geo-bar-wrap"><div class="geo-bar" style="width: 91%"></div></div><div class="geo-pct">21%</div></div>
-        <div class="geo-row"><div class="geo-name">Site 2 · North West</div><div class="geo-bar-wrap"><div class="geo-bar" style="width: 83%"></div></div><div class="geo-pct">19%</div></div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">High or critical fatigue</div>
+          <div class="panel-sub">share of workforce screening above WHO occupational-fatigue threshold</div>
+        </div>
+      </div>
+      <div class="fatigue-headline">
+        <span data-welo="fatigue-share-pct">57</span><span class="fatigue-headline-unit">%</span>
+      </div>
+      <div class="fatigue-headline-caption">of the workforce</div>
+      <div class="fatigue-headline-divider"></div>
+      <div class="fatigue-stat-row">
+        <div class="fatigue-stat">
+          <div class="fatigue-stat-value" data-welo="fatigue-median">53.7</div>
+          <div class="fatigue-stat-label">Median score</div>
+        </div>
+        <div class="fatigue-stat">
+          <div class="fatigue-stat-value" data-welo="fatigue-p90">76.5</div>
+          <div class="fatigue-stat-label">P90 score</div>
+        </div>
+      </div>
+      <div class="fatigue-note">
+        Predicted absence drops <strong>~14%</strong> per 10-point reduction in fatigue score — the strongest lever in the model.
       </div>
     </div>
   </div>
@@ -1092,17 +1659,17 @@ table { border-collapse: collapse; width: 100%; }
   <div class="panel">
     <div class="panel-header">
       <div>
-        <div class="panel-title">Driver concentration · site × clinical band</div>
-        <div class="panel-sub">% of each site's predicted absence attributable to each driver · informs site-specific intervention mix</div>
+        <div class="panel-title">Driver concentration · cohort × clinical band</div>
+        <div class="panel-sub">% of each operational-load cohort's predicted absence attributable to each driver · informs the intervention mix</div>
       </div>
-      <span class="chip amber">Modelled</span>
+      <span class="chip amber">Benchmark-anchored</span>
     </div>
     <div class="heat-grid heat-driver-site">
       <div class="heat-corner"></div>
-      <div class="heat-col-label">Site 1 · Mpu</div>
-      <div class="heat-col-label">Site 2 · NW</div>
-      <div class="heat-col-label">Site 3 · Lim</div>
-      <div class="heat-col-label heat-total-label">Portfolio</div>
+      <div class="heat-col-label">High-intensity</div>
+      <div class="heat-col-label">Standard ops</div>
+      <div class="heat-col-label">Light duty</div>
+      <div class="heat-col-label heat-total-label">Workforce</div>
 
       <div class="heat-row-label"><span class="heat-icon">♥</span>Cardiovascular</div>
       <div class="heat-cell heat-5">34%</div>
@@ -1152,234 +1719,63 @@ table { border-collapse: collapse; width: 100%; }
         <div class="heat-legend-swatch heat-5"></div>
       </div>
       <span style="color: var(--ink-faint);">high</span>
-      <span class="heat-legend-note">Mpumalanga skews CV · North West skews metabolic · Limpopo carries the respiratory load</span>
+      <span class="heat-legend-note">High-intensity ops skew cardiovascular &amp; fatigue · light-duty load is dominated by metabolic and respiratory drivers</span>
     </div>
   </div>
 
   <div class="panel">
     <div class="panel-header">
       <div>
-        <div class="panel-title">Pilot sites</div>
-        <div class="panel-sub">3 sites · click to drill into a site</div>
+        <div class="panel-title">Chronic disease hotspots · cohort × condition</div>
+        <div class="panel-sub">% screened positive by operational-load cohort · anchored to SA mining-cohort benchmarks until pilot screening lands</div>
       </div>
-      <div class="panel-actions">
-        <span class="chip">3 sites</span>
-        <span class="chip red">6,000 lives</span>
-      </div>
+      <span class="chip amber">Benchmark-anchored</span>
     </div>
-    <table class="data-table">
-      <thead>
-        <tr>
-          <th>Site</th>
-          <th>Province</th>
-          <th>Covered lives</th>
-          <th>High-risk %</th>
-          <th>90-day predicted</th>
-          <th>Annualised exposure</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-                  <tbody id="clientsTableBody">
-        <tr data-client="anchor">
-          <td><strong>Site 1</strong></td>
-          <td>Mpumalanga</td>
-          <td class="cell-mono">2,000</td>
-          <td><span class="risk-pill high">21%</span></td>
-          <td class="cell-mono">6,480 days</td>
-          <td class="cell-mono"><strong>R 26.4M</strong></td>
-          <td><span class="chip amber">Pilot</span></td>
-        </tr>
-        <tr data-client="site2">
-          <td><strong>Site 2</strong></td>
-          <td>North West</td>
-          <td class="cell-mono">2,000</td>
-          <td><span class="risk-pill medium">19%</span></td>
-          <td class="cell-mono">6,180 days</td>
-          <td class="cell-mono"><strong>R 26.4M</strong></td>
-          <td><span class="chip amber">Pilot</span></td>
-        </tr>
-        <tr data-client="site3">
-          <td><strong>Site 3</strong></td>
-          <td>Limpopo</td>
-          <td class="cell-mono">2,000</td>
-          <td><span class="risk-pill high">23%</span></td>
-          <td class="cell-mono">6,780 days</td>
-          <td class="cell-mono"><strong>R 26.4M</strong></td>
-          <td><span class="chip amber">Pilot</span></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-</section>
-
-<section class="screen" id="screen-client">
-
-  <div class="crumb">
-    <a data-screen="portfolio">Portfolio</a>
-    <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="9 18 15 12 9 6"/></svg>
-    <span>Site deep-dive</span>
-  </div>
-
-  <div class="screen-header">
-    <div>
-      <div class="eyebrow">Site view</div>
-      <h1 class="screen-title">Site 1 · Mpumalanga</h1>
-      <div class="screen-sub">Pilot site · 2,000 covered lives · projected from HR + screening data</div>
-    </div>
-    <div class="client-select">
-      <span class="client-select-name">Site 1 · Mpumalanga</span>
-      <span class="client-select-meta">switch ▾</span>
-    </div>
-  </div>
-
-  <div class="two-col-50-50">
-    <div class="panel">
-      <div class="panel-header">
-        <div>
-          <div class="panel-title">Population risk profile</div>
-          <div class="panel-sub">WHtR-based scoring · projected at baseline · 2,000 employees</div>
-        </div>
-      </div>
-      <div class="risk-bars">
-        <div class="risk-row">
-          <div class="risk-label"><span class="risk-dot critical"></span>Critical</div>
-          <div class="risk-track"><div class="risk-fill critical" style="width: 10%"></div></div>
-          <div class="risk-delta">5% · 100 ppl</div>
-        </div>
-        <div class="risk-row">
-          <div class="risk-label"><span class="risk-dot high"></span>High</div>
-          <div class="risk-track"><div class="risk-fill high" style="width: 32%"></div></div>
-          <div class="risk-delta">16% · 320 ppl</div>
-        </div>
-        <div class="risk-row">
-          <div class="risk-label"><span class="risk-dot medium"></span>Medium</div>
-          <div class="risk-track"><div class="risk-fill medium" style="width: 60%"></div></div>
-          <div class="risk-delta">30% · 600 ppl</div>
-        </div>
-        <div class="risk-row">
-          <div class="risk-label"><span class="risk-dot low"></span>Low</div>
-          <div class="risk-track"><div class="risk-fill low" style="width: 100%"></div></div>
-          <div class="risk-delta">49% · 980 ppl</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="bignum">
-      <div class="bignum-decor"></div>
-      <div class="bignum-label">Predicted absence · next 90 days</div>
-      <div class="bignum-value">6,480 <span class="num-unit">days</span></div>
-      <div class="bignum-rand"><span style="color: var(--red-bright)">R</span> 7.13M @ R1,100 / day</div>
-      <div class="bignum-ci">
-        Winter quarter · ±15% modelling range<br>
-        Model: WHtR-based clinical risk × industry baseline × seasonal weighting
-      </div>
-    </div>
-  </div>
-
-  <div class="panel" style="padding: 0;">
-    <div class="panel-header" style="padding: 18px 20px 16px;">
-      <div>
-        <div class="panel-title">Absence by shift</div>
-        <div class="panel-sub">two-shift mining operation · operational view including night-shift cover premium</div>
-      </div>
-      <span class="chip amber">Night carries 1.35x rate</span>
-    </div>
-    <div class="shift-grid">
-      <div class="shift-col">
-        <div class="shift-head">
-          <div class="shift-name">Morning shift</div>
-          <div class="shift-tag">06:00 - 18:00</div>
-        </div>
-        <div class="shift-stats">
-          <div>
-            <div class="shift-stat-label">Workforce</div>
-            <div class="shift-stat-value">1,100</div>
-            <div class="shift-stat-sub">55% of site</div>
-          </div>
-          <div>
-            <div class="shift-stat-label">Days / employee / yr</div>
-            <div class="shift-stat-value">10.4</div>
-            <div class="shift-stat-sub">below site average</div>
-          </div>
-        </div>
-        <div class="shift-cost-block">
-          <div class="shift-cost-row"><span>Annual absence days</span><span class="v">11,400</span></div>
-          <div class="shift-cost-row"><span>Direct cost @ R1,100/day</span><span class="v">R 12.5M</span></div>
-          <div class="shift-cost-row total"><span>Operational impact</span><span class="v">R 12.5M</span></div>
-        </div>
-      </div>
-      <div class="shift-col night">
-        <div class="shift-head">
-          <div class="shift-name">Night shift</div>
-          <div class="shift-tag">18:00 - 06:00</div>
-        </div>
-        <div class="shift-stats">
-          <div>
-            <div class="shift-stat-label">Workforce</div>
-            <div class="shift-stat-value">900</div>
-            <div class="shift-stat-sub">45% of site</div>
-          </div>
-          <div>
-            <div class="shift-stat-label">Days / employee / yr</div>
-            <div class="shift-stat-value" style="color: var(--red)">14.0</div>
-            <div class="shift-stat-sub">1.35x morning rate</div>
-          </div>
-        </div>
-        <div class="shift-cost-block">
-          <div class="shift-cost-row"><span>Annual absence days</span><span class="v">12,600</span></div>
-          <div class="shift-cost-row"><span>Direct cost @ R1,100/day</span><span class="v">R 13.9M</span></div>
-          <div class="shift-cost-row premium"><span>+ cover premium @ R300/day</span><span class="v">R 3.8M</span></div>
-          <div class="shift-cost-row total"><span>Operational impact</span><span class="v">R 17.6M</span></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="panel">
-    <div class="panel-header">
-      <div>
-        <div class="panel-title">Shift × day-of-week absence rhythm</div>
-        <div class="panel-sub">absence rate per shift × weekday · post-weekend Monday clustering layered on the night-shift premium</div>
-      </div>
-      <span class="chip">Days per 100 employees</span>
-    </div>
-    <div class="heat-grid heat-shift-dow">
+    <div class="heat-grid heat-driver-site">
       <div class="heat-corner"></div>
-      <div class="heat-col-label">Mon</div>
-      <div class="heat-col-label">Tue</div>
-      <div class="heat-col-label">Wed</div>
-      <div class="heat-col-label">Thu</div>
-      <div class="heat-col-label">Fri</div>
-      <div class="heat-col-label">Sat</div>
-      <div class="heat-col-label">Sun</div>
+      <div class="heat-col-label">High-intensity</div>
+      <div class="heat-col-label">Standard ops</div>
+      <div class="heat-col-label">Light duty</div>
+      <div class="heat-col-label heat-total-label">Workforce</div>
 
-      <div class="heat-row-label">
-        <span>Morning shift</span>
-        <span class="heat-shift-meta">06:00–18:00 · 1,100 ppl</span>
-      </div>
-      <div class="heat-cell heat-4">3.8<span class="heat-cell-sub">/100</span></div>
-      <div class="heat-cell heat-2">2.6<span class="heat-cell-sub">/100</span></div>
-      <div class="heat-cell heat-1">2.1<span class="heat-cell-sub">/100</span></div>
-      <div class="heat-cell heat-2">2.4<span class="heat-cell-sub">/100</span></div>
-      <div class="heat-cell heat-3">3.1<span class="heat-cell-sub">/100</span></div>
-      <div class="heat-cell heat-1">1.9<span class="heat-cell-sub">/100</span></div>
-      <div class="heat-cell heat-0">1.4<span class="heat-cell-sub">/100</span></div>
+      <div class="heat-row-label"><span class="heat-icon">♥</span>Hypertension</div>
+      <div class="heat-cell heat-5">28%</div>
+      <div class="heat-cell heat-3">24%</div>
+      <div class="heat-cell heat-4">26%</div>
+      <div class="heat-cell heat-total">26%</div>
 
-      <div class="heat-row-label">
-        <span>Night shift</span>
-        <span class="heat-shift-meta">18:00–06:00 · 900 ppl</span>
-      </div>
-      <div class="heat-cell heat-5">5.1<span class="heat-cell-sub">/100</span></div>
-      <div class="heat-cell heat-3">3.4<span class="heat-cell-sub">/100</span></div>
-      <div class="heat-cell heat-3">3.0<span class="heat-cell-sub">/100</span></div>
-      <div class="heat-cell heat-3">3.3<span class="heat-cell-sub">/100</span></div>
-      <div class="heat-cell heat-4">4.2<span class="heat-cell-sub">/100</span></div>
-      <div class="heat-cell heat-2">2.7<span class="heat-cell-sub">/100</span></div>
-      <div class="heat-cell heat-2">2.5<span class="heat-cell-sub">/100</span></div>
+      <div class="heat-row-label"><span class="heat-icon">⚙</span>Obesity · WHtR &gt; 0.6</div>
+      <div class="heat-cell heat-4">31%</div>
+      <div class="heat-cell heat-5">34%</div>
+      <div class="heat-cell heat-3">28%</div>
+      <div class="heat-cell heat-total">31%</div>
+
+      <div class="heat-row-label"><span class="heat-icon">◇</span>Pre-diabetes</div>
+      <div class="heat-cell heat-3">19%</div>
+      <div class="heat-cell heat-4">22%</div>
+      <div class="heat-cell heat-2">17%</div>
+      <div class="heat-cell heat-total">19%</div>
+
+      <div class="heat-row-label"><span class="heat-icon">◆</span>Type 2 diabetes</div>
+      <div class="heat-cell heat-2">12%</div>
+      <div class="heat-cell heat-3">16%</div>
+      <div class="heat-cell heat-1">10%</div>
+      <div class="heat-cell heat-total">13%</div>
+
+      <div class="heat-row-label"><span class="heat-icon">◐</span>Depression / anxiety screen+</div>
+      <div class="heat-cell heat-3">17%</div>
+      <div class="heat-cell heat-2">15%</div>
+      <div class="heat-cell heat-3">16%</div>
+      <div class="heat-cell heat-total">16%</div>
+
+      <div class="heat-row-label"><span class="heat-icon">◯</span>Asthma / COPD</div>
+      <div class="heat-cell heat-1">8%</div>
+      <div class="heat-cell heat-1">9%</div>
+      <div class="heat-cell heat-4">14%</div>
+      <div class="heat-cell heat-total">10%</div>
     </div>
     <div class="heat-legend">
-      <span>Absence rate</span>
+      <span>% workforce affected</span>
       <span style="color: var(--ink-faint);">low</span>
       <div class="heat-legend-bar">
         <div class="heat-legend-swatch heat-0"></div>
@@ -1390,135 +1786,177 @@ table { border-collapse: collapse; width: 100%; }
         <div class="heat-legend-swatch heat-5"></div>
       </div>
       <span style="color: var(--ink-faint);">high</span>
-      <span class="heat-legend-note">Mondays cluster across both shifts · Mon night peaks at 1.34× Mon morning · cover demand spikes Mon &amp; Fri night</span>
+      <span class="heat-legend-note">3 in 4 workers carry ≥1 modifiable condition · CV + metabolic stack drives the 4.2% addressable saving</span>
     </div>
   </div>
 
   <div class="panel">
     <div class="panel-header">
       <div>
-        <div class="panel-title">Predicted absence drivers</div>
-        <div class="panel-sub">contribution to predicted absent days · WHtR, glucose, BP, chronic flags</div>
-      </div>
-      <span class="chip">90-day window</span>
-    </div>
-    <div class="driver-bars">
-      <div class="driver-row">
-        <div class="driver-name"><div class="driver-icon">♥</div>Cardiovascular</div>
-        <div class="driver-track"><div class="driver-fill" style="width: 34%">34%</div></div>
-        <div class="driver-pct">2,203 d</div>
-      </div>
-      <div class="driver-row">
-        <div class="driver-name"><div class="driver-icon">⚙</div>Metabolic</div>
-        <div class="driver-track"><div class="driver-fill" style="width: 26%">26%</div></div>
-        <div class="driver-pct">1,685 d</div>
-      </div>
-      <div class="driver-row">
-        <div class="driver-name"><div class="driver-icon">◯</div>Respiratory <span style="color:var(--ink-faint);font-size:10px">· winter</span></div>
-        <div class="driver-track"><div class="driver-fill" style="width: 18%">18%</div></div>
-        <div class="driver-pct">1,166 d</div>
-      </div>
-      <div class="driver-row">
-        <div class="driver-name"><div class="driver-icon">◐</div>Mental health</div>
-        <div class="driver-track"><div class="driver-fill" style="width: 12%">12%</div></div>
-        <div class="driver-pct">778 d</div>
-      </div>
-      <div class="driver-row">
-        <div class="driver-name"><div class="driver-icon">⚊</div>Musculoskeletal</div>
-        <div class="driver-track"><div class="driver-fill" style="width: 7%">7%</div></div>
-        <div class="driver-pct">454 d</div>
-      </div>
-      <div class="driver-row">
-        <div class="driver-name"><div class="driver-icon">·</div>Other</div>
-        <div class="driver-track"><div class="driver-fill" style="width: 3%">3%</div></div>
-        <div class="driver-pct">194 d</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="panel">
-    <div class="panel-header">
-      <div>
-        <div class="panel-title">Intervention queue</div>
-        <div class="panel-sub">ranked by benchmark-modelled saving · candidates for WeloCARE enrolment</div>
+        <div class="panel-title">Workforce cohorts · operational load</div>
+        <div class="panel-sub">grouped by workload, overtime &amp; consecutive shifts · click a cohort to drill in</div>
       </div>
       <div class="panel-actions">
-        <span class="chip red">420 high-risk</span>
-        <span class="chip">Flag top 20</span>
+        <span class="chip" data-screen="cohorts" style="cursor:pointer;">All cohort lenses →</span>
       </div>
     </div>
     <table class="data-table">
       <thead>
         <tr>
-          <th>Employee</th>
-          <th>Risk band</th>
-          <th>Primary driver</th>
-          <th>Site</th>
-          <th>Predicted absence (90d)</th>
-          <th>Saving opportunity</th>
-          <th>Action</th>
+          <th>Cohort</th>
+          <th>Covered lives</th>
+          <th>High-risk %</th>
+          <th>Days / head / yr</th>
+          <th>90-day predicted</th>
+          <th>Annualised exposure</th>
+          <th>Mean fatigue</th>
         </tr>
       </thead>
-      <tbody>
-        <tr>
-          <td class="cell-id">#EMP-4821</td>
-          <td><span class="risk-pill critical">Critical</span></td>
-          <td>CV + metabolic</td>
-          <td>Shaft 2</td>
-          <td class="cell-mono">28 days</td>
-          <td class="saving-cell">R 6,160</td>
-          <td><button class="action-btn">Flag for outreach</button></td>
-        </tr>
-        <tr>
-          <td class="cell-id">#EMP-2156</td>
-          <td><span class="risk-pill critical">Critical</span></td>
-          <td>Metabolic</td>
-          <td>Plant</td>
-          <td class="cell-mono">25 days</td>
-          <td class="saving-cell">R 5,500</td>
-          <td><button class="action-btn">Flag for outreach</button></td>
-        </tr>
-        <tr>
-          <td class="cell-id">#EMP-7733</td>
-          <td><span class="risk-pill high">High</span></td>
-          <td>Metabolic + resp.</td>
-          <td>Shaft 4</td>
-          <td class="cell-mono">21 days</td>
-          <td class="saving-cell">R 4,620</td>
-          <td><button class="action-btn">Flag for outreach</button></td>
-        </tr>
-        <tr>
-          <td class="cell-id">#EMP-1098</td>
-          <td><span class="risk-pill high">High</span></td>
-          <td>Mental health</td>
-          <td>Surface ops</td>
-          <td class="cell-mono">20 days</td>
-          <td class="saving-cell">R 4,400</td>
-          <td><button class="action-btn">Flag for outreach</button></td>
-        </tr>
-        <tr>
-          <td class="cell-id">#EMP-5544</td>
-          <td><span class="risk-pill high">High</span></td>
-          <td>Cardiovascular</td>
-          <td>Plant</td>
-          <td class="cell-mono">18 days</td>
-          <td class="saving-cell">R 3,960</td>
-          <td><button class="action-btn">Flag for outreach</button></td>
-        </tr>
-        <tr>
-          <td class="cell-id">#EMP-3309</td>
-          <td><span class="risk-pill high">High</span></td>
-          <td>Respiratory · winter</td>
-          <td>Smelter</td>
-          <td class="cell-mono">17 days</td>
-          <td class="saving-cell">R 3,740</td>
-          <td><button class="action-btn">Flag for outreach</button></td>
-        </tr>
+      <tbody data-welo="portfolio-cohort-table">
+        <tr><td colspan="7" style="color:var(--ink-faint);padding:20px;">Loading cohorts from model output…</td></tr>
       </tbody>
     </table>
   </div>
 
 </section>
+
+<section class="screen" id="screen-cohorts">
+
+  <div class="crumb">
+    <a data-screen="portfolio">Portfolio</a>
+    <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="9 18 15 12 9 6"/></svg>
+    <span>Cohorts</span>
+  </div>
+
+  <div class="screen-header">
+    <div>
+      <div class="eyebrow">Cohort view</div>
+      <h1 class="screen-title">Where the absence sits, <br>and what's driving it.</h1>
+      <div class="screen-sub" data-welo="cohort-dim-blurb">Group the covered workforce by the lever you want to act on. Every number is computed from the model's per-employee predictions.</div>
+    </div>
+    <div class="screen-context">
+      <span data-welo="cohort-screen-context">5,800 modelled lives</span>
+      <span class="live-pill" data-welo="live-pill-2" hidden><span class="live-dot"></span>LIVE MODEL</span>
+    </div>
+  </div>
+
+  <div class="dim-toggle" id="dimToggle">
+    <button class="dim-btn active" data-dim="cohort_load">Operational load</button>
+    <button class="dim-btn" data-dim="cohort_fatigue">Fatigue band</button>
+    <button class="dim-btn" data-dim="cohort_age">Age band</button>
+    <button class="dim-btn" data-dim="cohort_tenure">Tenure</button>
+    <button class="dim-btn" data-dim="cohort_lifestyle">Lifestyle risk</button>
+  </div>
+
+  <div class="cohort-card-grid" data-welo="cohort-cards">
+    <div class="cohort-empty">Loading cohorts from model output…</div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-header">
+      <div>
+        <div class="panel-title">Cohort comparison</div>
+        <div class="panel-sub">predicted absence and high-risk concentration per cohort · sorted by exposure</div>
+      </div>
+      <span class="chip amber">Model output</span>
+    </div>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Cohort</th>
+          <th>Covered lives</th>
+          <th>High / critical</th>
+          <th>Days / head / yr</th>
+          <th>90-day predicted</th>
+          <th>Annual exposure</th>
+          <th>Addressable</th>
+          <th>Mean fatigue</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody data-welo="cohort-detail-table">
+        <tr><td colspan="9" style="color:var(--ink-faint);padding:20px;">Loading…</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</section>
+
+<section class="screen" id="screen-individuals">
+
+  <div class="crumb">
+    <a data-screen="portfolio">Portfolio</a>
+    <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="9 18 15 12 9 6"/></svg>
+    <a data-screen="cohorts">Cohorts</a>
+    <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="9 18 15 12 9 6"/></svg>
+    <span>Individuals</span>
+  </div>
+
+  <div class="screen-header">
+    <div>
+      <div class="eyebrow">Individual view</div>
+      <h1 class="screen-title">Down to the <span style="color: var(--red)">individual</span>.</h1>
+      <div class="screen-sub">The model scores every covered life. High and critical employees are listed first — click any row for the full prediction, drivers and profile. <span style="color:var(--ink-faint)">IDs are synthetic mining-cohort records, not real people.</span></div>
+    </div>
+    <div class="screen-context">
+      <span data-welo="individuals-context">high &amp; critical first</span>
+    </div>
+  </div>
+
+  <div class="filter-bar">
+    <div class="filter-group" id="riskFilter">
+      <span class="filter-label">Risk</span>
+      <button class="filter-chip active" data-risk="all">All</button>
+      <button class="filter-chip" data-risk="Critical">Critical</button>
+      <button class="filter-chip" data-risk="High">High</button>
+      <button class="filter-chip" data-risk="Medium">Medium</button>
+      <button class="filter-chip" data-risk="Low">Low</button>
+    </div>
+    <div class="filter-cohort" id="cohortFilterWrap" hidden>
+      <span class="filter-label">Cohort</span>
+      <span class="filter-active-cohort" id="cohortFilterLabel"></span>
+      <button class="filter-clear" id="cohortFilterClear">clear ✕</button>
+    </div>
+    <div class="filter-spacer"></div>
+    <input type="search" class="filter-search" id="indSearch" placeholder="Search employee ID…">
+    <span class="filter-count" data-welo="individuals-count">—</span>
+  </div>
+
+  <div class="panel" style="padding:0;">
+    <table class="data-table ind-table">
+      <thead>
+        <tr>
+          <th data-sort="risk">Employee</th>
+          <th data-sort="risk">Risk band</th>
+          <th data-sort="days90" class="sortable active-sort">Predicted absence · 90d</th>
+          <th data-sort="annual">Days / yr</th>
+          <th data-sort="fatigue">Fatigue</th>
+          <th>Top driver</th>
+          <th>Saving opp.</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody data-welo="individuals-table">
+        <tr><td colspan="8" style="color:var(--ink-faint);padding:20px;">Loading individuals from model output…</td></tr>
+      </tbody>
+    </table>
+    <div class="ind-more-wrap"><button class="ind-more-btn" id="indMoreBtn" hidden>Show more</button></div>
+  </div>
+
+</section>
+
+<!-- Individual profile drawer -->
+<div class="drawer-scrim" id="drawerScrim" hidden></div>
+<aside class="profile-drawer" id="profileDrawer" hidden aria-hidden="true">
+  <div class="drawer-head">
+    <div>
+      <div class="drawer-eyebrow">Employee profile · model output</div>
+      <div class="drawer-id" id="pdId">#EMP-0000</div>
+    </div>
+    <button class="drawer-close" id="drawerClose">✕</button>
+  </div>
+  <div class="drawer-body" id="pdBody"></div>
+</aside>
 
 <section class="screen" id="screen-roi">
 
@@ -1526,10 +1964,10 @@ table { border-collapse: collapse; width: 100%; }
     <div>
       <div class="eyebrow">Outcomes</div>
       <h1 class="screen-title">Numbers that move boards, <br><span style="color: var(--ink-faint)">not just HR decks.</span></h1>
-      <div class="screen-sub">Projected pilot impact · 3-site, 6,000-employee pilot · benchmark-anchored model.</div>
+      <div class="screen-sub">Projected impact across the 6,000-life mining cohort · benchmark-anchored on model output.</div>
     </div>
     <div class="client-select">
-      <span class="client-select-name">Pilot · all sites</span>
+      <span class="client-select-name">All cohorts</span>
       <span class="client-select-meta">switch ▾</span>
     </div>
   </div>
@@ -1713,6 +2151,8 @@ table { border-collapse: collapse; width: 100%; }
 
 </section>
 
+<script src="model/data/outputs/dashboard_feed.js" onerror="window.WELO_FEED=null;"></script>
+
 <script>
 const tabs = document.querySelectorAll('.nav-tab');
 const screens = document.querySelectorAll('.screen');
@@ -1727,8 +2167,9 @@ function switchScreen(screenName) {
 tabs.forEach(tab => tab.addEventListener('click', () => switchScreen(tab.dataset.screen)));
 crumbLinks.forEach(link => link.addEventListener('click', () => switchScreen(link.dataset.screen)));
 
-document.querySelectorAll('#clientsTableBody tr').forEach(row => {
-  row.addEventListener('click', () => switchScreen('client'));
+// Any non-tab element carrying data-screen (chips, links) navigates too.
+document.querySelectorAll('[data-screen]:not(.nav-tab):not(.crumb a)').forEach(el => {
+  el.addEventListener('click', () => switchScreen(el.dataset.screen));
 });
 
 const slider    = document.getElementById('scenSlider');
@@ -1839,6 +2280,363 @@ window.addEventListener('load', () => {
     setTimeout(() => { el.style.height = h; }, 100);
   });
 });
+
+// =====================================================================
+// Live-model wiring: takes window.WELO_FEED (written by welo_pipeline.export)
+// and rewrites the elements tagged with data-welo=… attributes.
+// Falls through silently if no feed is loaded — dashboard stays as designed.
+// =====================================================================
+(function welo_wire() {
+  const feed = window.WELO_FEED;
+  if (!feed) return;
+
+  const $$ = (sel, root) => Array.from((root || document).querySelectorAll(sel));
+  const $  = (sel, root) => (root || document).querySelector(sel);
+
+  const fmtInt = v => Number(v).toLocaleString('en-ZA');
+  const fmtPct = (v, digits = 0) => (v * 100).toFixed(digits) + '%';
+  const fmtRandShort = v => {
+    if (v >= 1e9) return (v / 1e9).toFixed(2) + 'B';
+    if (v >= 1e6) return (v / 1e6).toFixed(2) + 'M';
+    if (v >= 1e3) return (v / 1e3).toFixed(0) + 'k';
+    return String(Math.round(v));
+  };
+
+  // 1. Headline metrics on the Portfolio page
+  const h = feed.headline || {};
+  const setText = (selector, value) => {
+    const el = $(selector);
+    if (el && value != null) el.textContent = value;
+  };
+  setText('[data-welo="metric:covered_lives"]', fmtInt(h.covered_lives));
+  setText('[data-welo="metric:predicted_absent_days_90d"]', fmtInt(Math.round(h.predicted_absent_days_90d)));
+  setText('[data-welo="metric:absence_cost_exposure_rand"]', fmtRandShort(h.absence_cost_exposure_rand));
+  setText('[data-welo="metric:projected_addressable_saving_rand"]', fmtRandShort(h.projected_addressable_saving_rand));
+
+  // Screen context: live covered-lives count + run name
+  setText('[data-welo="screen-context-text"]',
+    `${fmtInt(h.covered_lives || 0)} covered lives · ${feed.run_name || 'model output'}`);
+
+  // Show the LIVE chips
+  $$('[data-welo="live-pill"], [data-welo="live-pill-2"]').forEach(el => { el.hidden = false; });
+
+  // 2. Risk distribution — update each band's bar width and label
+  const rd = feed.risk_distribution || [];
+  const maxShare = Math.max(...rd.map(d => d.share), 0.01);
+  rd.forEach(d => {
+    const row = $(`[data-welo-band="${d.band.toLowerCase()}"]`);
+    if (!row) return;
+    const fill = $('.risk-fill', row);
+    const delta = $('.risk-delta', row);
+    if (fill) fill.style.width = (d.share / maxShare * 100).toFixed(1) + '%';
+    if (delta) delta.textContent = `${fmtPct(d.share, 1)} · ${fmtInt(d.count)} lives`;
+  });
+
+  // 3. Fatigue & burnout segment + headline card
+  const fb = feed.fatigue_burnout || {};
+  const seg = fb.segment || [];
+  const maxFatigueShare = Math.max(...seg.map(d => d.share), 0.01);
+  seg.forEach(d => {
+    const row = $(`[data-welo-fatigue-band="${d.band.toLowerCase()}"]`);
+    if (!row) return;
+    const fill = $('.risk-fill', row);
+    const delta = $('.risk-delta', row);
+    if (fill) fill.style.width = (d.share / maxFatigueShare * 100).toFixed(1) + '%';
+    if (delta) delta.textContent = `${fmtPct(d.share, 0)} · ${fmtInt(d.count)} lives`;
+  });
+  if (h.fatigue_high_or_critical_share != null) {
+    setText('[data-welo="fatigue-share-pct"]', Math.round(h.fatigue_high_or_critical_share * 100));
+  }
+  if (fb.summary) {
+    setText('[data-welo="fatigue-median"]', (fb.summary.median ?? '').toString());
+    setText('[data-welo="fatigue-p90"]', (fb.summary.p90 ?? '').toString());
+  }
+
+  // ===================================================================
+  // 4. Cohorts — model-driven aggregates across several grouping lenses
+  // ===================================================================
+  const bandToPill = { Critical: 'critical', High: 'high', Medium: 'medium', Low: 'low' };
+  const dims     = feed.cohort_dimensions || [];
+  const cohorts  = feed.cohorts || {};
+  const dimLabel = k => (dims.find(d => d.key === k) || {}).label || k;
+  const dimBlurb = k => (dims.find(d => d.key === k) || {}).blurb || '';
+  const savingOf = days90 => Math.round((days90 || 0) * 1100 * 0.20);
+  const concPill = s => s >= 0.20 ? 'critical' : s >= 0.12 ? 'high' : s >= 0.07 ? 'medium' : 'low';
+
+  const miniBar = c => {
+    const t = c.count || 1;
+    return `<div class="cohort-mini-bar">` +
+      ['Critical','High','Medium','Low'].map(b =>
+        `<div class="cohort-mini-seg ${b.toLowerCase()}" style="flex:${(c.risk_counts?.[b]||0)/t}" title="${b}: ${c.risk_counts?.[b]||0}"></div>`
+      ).join('') + `</div>`;
+  };
+
+  // 4a. Portfolio cohort summary table (operational load)
+  const portfolioDim = 'cohort_load';
+  const pTable = $('[data-welo="portfolio-cohort-table"]');
+  if (pTable && cohorts[portfolioDim]) {
+    pTable.innerHTML = cohorts[portfolioDim].map(c => `
+      <tr data-drill="${portfolioDim}|${c.key}">
+        <td><strong>${c.label}</strong></td>
+        <td class="cell-mono">${fmtInt(c.count)}</td>
+        <td><span class="risk-pill ${concPill(c.high_or_critical_share)}">${fmtPct(c.high_or_critical_share)}</span></td>
+        <td class="cell-mono">${c.absent_days_per_head_annual}</td>
+        <td class="cell-mono">${fmtInt(Math.round(c.predicted_absent_days_90d))} days</td>
+        <td class="cell-mono"><strong>R ${fmtRandShort(c.cost_exposure_rand)}</strong></td>
+        <td class="cell-mono">${c.mean_fatigue}</td>
+      </tr>`).join('');
+  }
+
+  // 4b. Portfolio high-risk concentration (lifestyle lens — strongest signal)
+  const concDim = 'cohort_lifestyle';
+  const concWrap = $('[data-welo="cohort-concentration"]');
+  if (concWrap && cohorts[concDim]) {
+    const sorted = [...cohorts[concDim]].sort((a,b)=> b.high_or_critical_share - a.high_or_critical_share);
+    const max = Math.max(...sorted.map(c=>c.high_or_critical_share), 0.01);
+    concWrap.innerHTML = sorted.map(c => `
+      <div class="geo-row">
+        <div class="geo-name">${c.label}</div>
+        <div class="geo-bar-wrap"><div class="geo-bar" style="width:${(c.high_or_critical_share/max*100).toFixed(0)}%"></div></div>
+        <div class="geo-pct">${fmtPct(c.high_or_critical_share)}</div>
+      </div>`).join('');
+    setText('[data-welo="cohort-conc-sub"]', `% in high or critical band · by ${dimLabel(concDim).toLowerCase()}`);
+  }
+
+  // 4c. Cohorts screen — toggle + cards + comparison table
+  function renderCohortScreen(dimKey) {
+    const list = [...(cohorts[dimKey] || [])].sort((a,b)=> b.predicted_absent_days_90d - a.predicted_absent_days_90d);
+    setText('[data-welo="cohort-dim-blurb"]', dimBlurb(dimKey));
+    const cards = $('[data-welo="cohort-cards"]');
+    if (cards) {
+      cards.innerHTML = list.map(c => `
+        <div class="cohort-card" data-drill="${dimKey}|${c.key}">
+          <div class="cohort-card-top">
+            <div>
+              <div class="cohort-card-name">${c.label}</div>
+              <div class="cohort-card-count">${fmtInt(c.count)} covered lives</div>
+            </div>
+            <div class="cohort-card-hr">
+              <div class="cohort-card-hr-val" style="color:var(--${concPill(c.high_or_critical_share)})">${fmtPct(c.high_or_critical_share)}</div>
+              <div class="cohort-card-hr-lab">high / critical</div>
+            </div>
+          </div>
+          ${miniBar(c)}
+          <div class="cohort-card-stats">
+            <div><div class="cohort-card-stat-label">Days / head / yr</div><div class="cohort-card-stat-value">${c.absent_days_per_head_annual}</div></div>
+            <div><div class="cohort-card-stat-label">Mean fatigue</div><div class="cohort-card-stat-value">${c.mean_fatigue}</div></div>
+            <div><div class="cohort-card-stat-label">Annual exposure</div><div class="cohort-card-stat-value">R ${fmtRandShort(c.cost_exposure_rand)}</div></div>
+            <div><div class="cohort-card-stat-label">Addressable</div><div class="cohort-card-stat-value">R ${fmtRandShort(c.addressable_saving_rand)}</div></div>
+          </div>
+          <div class="cohort-card-cta">View ${fmtInt(c.high_or_critical_count)} high-risk individuals →</div>
+        </div>`).join('');
+    }
+    const dTable = $('[data-welo="cohort-detail-table"]');
+    if (dTable) {
+      dTable.innerHTML = list.map(c => `
+        <tr data-drill="${dimKey}|${c.key}">
+          <td><strong>${c.label}</strong></td>
+          <td class="cell-mono">${fmtInt(c.count)}</td>
+          <td><span class="risk-pill ${concPill(c.high_or_critical_share)}">${fmtInt(c.high_or_critical_count)} · ${fmtPct(c.high_or_critical_share)}</span></td>
+          <td class="cell-mono">${c.absent_days_per_head_annual}</td>
+          <td class="cell-mono">${fmtInt(Math.round(c.predicted_absent_days_90d))} d</td>
+          <td class="cell-mono">R ${fmtRandShort(c.cost_exposure_rand)}</td>
+          <td class="cell-mono">R ${fmtRandShort(c.addressable_saving_rand)}</td>
+          <td class="cell-mono">${c.mean_fatigue}</td>
+          <td><span class="cohort-card-cta">drill →</span></td>
+        </tr>`).join('');
+    }
+    $$('#dimToggle .dim-btn').forEach(b => b.classList.toggle('active', b.dataset.dim === dimKey));
+  }
+  $$('#dimToggle .dim-btn').forEach(btn =>
+    btn.addEventListener('click', () => renderCohortScreen(btn.dataset.dim)));
+  renderCohortScreen(portfolioDim);
+
+  // ===================================================================
+  // 5. Individuals — per-employee drill-down with profile drawer
+  // ===================================================================
+  const individuals = (feed.individuals || []).slice();
+  const RISK_ORDER = { Critical: 0, High: 1, Medium: 2, Low: 3 };
+  const empLabel = r => '#EMP-' + String(r.employee_id ?? r.row_id);
+  const topDriver = r => (r.top_reasons && r.top_reasons[0] && r.top_reasons[0].label)
+    || (r.drivers && r.drivers[0] && r.drivers[0].label) || '—';
+
+  const state = { risk: 'all', cohort: null, search: '', sortKey: 'days90', sortDir: -1, limit: 40 };
+  const sortVal = {
+    days90:  r => r.predicted_absent_days_90d,
+    annual:  r => r.predicted_absent_days_annual,
+    fatigue: r => r.fatigue_burnout_score,
+    risk:    r => -RISK_ORDER[r.risk_band],
+  };
+
+  function filtered() {
+    return individuals.filter(r => {
+      if (state.risk !== 'all' && r.risk_band !== state.risk) return false;
+      if (state.cohort && r.cohorts[state.cohort.dimKey] !== state.cohort.key) return false;
+      if (state.search && !String(r.employee_id).includes(state.search)) return false;
+      return true;
+    }).sort((a,b) => {
+      const f = sortVal[state.sortKey] || sortVal.days90;
+      const d = (f(b) - f(a));
+      return state.sortDir < 0 ? d : -d;
+    });
+  }
+
+  function renderIndividuals() {
+    const rows = filtered();
+    const shown = rows.slice(0, state.limit);
+    const tb = $('[data-welo="individuals-table"]');
+    if (tb) {
+      tb.innerHTML = shown.length ? shown.map(r => {
+        const pill = bandToPill[r.risk_band] || 'medium';
+        const fatigue = `<br><span class="fatigue-tag">fatigue ${Math.round(r.fatigue_burnout_score)}</span>`;
+        return `<tr data-emp="${r.employee_id}">
+          <td class="cell-id">${empLabel(r)}${fatigue}</td>
+          <td><span class="risk-pill ${pill}">${r.risk_band}</span></td>
+          <td class="cell-mono">${r.predicted_absent_days_90d.toFixed(1)} days</td>
+          <td class="cell-mono">${r.predicted_absent_days_annual.toFixed(1)}</td>
+          <td class="cell-mono">${Math.round(r.fatigue_burnout_score)}</td>
+          <td>${topDriver(r)}</td>
+          <td class="saving-cell">R ${savingOf(r.predicted_absent_days_90d).toLocaleString('en-ZA')}</td>
+          <td><span class="cohort-card-cta">view →</span></td>
+        </tr>`;
+      }).join('') : `<tr><td colspan="8" style="color:var(--ink-faint);padding:20px;">No individuals match this filter.</td></tr>`;
+    }
+    setText('[data-welo="individuals-count"]', `${fmtInt(Math.min(state.limit, rows.length))} of ${fmtInt(rows.length)}`);
+    const more = $('#indMoreBtn');
+    if (more) more.hidden = rows.length <= state.limit;
+  }
+
+  // filters
+  $$('#riskFilter .filter-chip').forEach(chip => chip.addEventListener('click', () => {
+    state.risk = chip.dataset.risk; state.limit = 40;
+    $$('#riskFilter .filter-chip').forEach(c => c.classList.toggle('active', c === chip));
+    renderIndividuals();
+  }));
+  const searchEl = $('#indSearch');
+  if (searchEl) searchEl.addEventListener('input', e => { state.search = e.target.value.trim(); state.limit = 40; renderIndividuals(); });
+  const moreBtn = $('#indMoreBtn');
+  if (moreBtn) moreBtn.addEventListener('click', () => { state.limit += 40; renderIndividuals(); });
+  $$('.ind-table th[data-sort]').forEach(th => th.addEventListener('click', () => {
+    const k = th.dataset.sort;
+    if (state.sortKey === k) state.sortDir *= -1; else { state.sortKey = k; state.sortDir = -1; }
+    $$('.ind-table th[data-sort]').forEach(t => t.classList.toggle('active-sort', t === th));
+    renderIndividuals();
+  }));
+  const cohortClear = $('#cohortFilterClear');
+  if (cohortClear) cohortClear.addEventListener('click', () => {
+    state.cohort = null; $('#cohortFilterWrap').hidden = true;
+    setText('[data-welo="individuals-context"]', 'high & critical first');
+    renderIndividuals();
+  });
+
+  // drill from any element carrying data-drill="dimKey|cohortKey"
+  function drillToCohort(dimKey, key) {
+    const dr = document.getElementById('profileDrawer'), sc = document.getElementById('drawerScrim');
+    if (dr) dr.hidden = true; if (sc) sc.hidden = true;
+    state.cohort = { dimKey, key };
+    state.risk = 'all'; state.search = ''; state.limit = 40;
+    if (searchEl) searchEl.value = '';
+    $$('#riskFilter .filter-chip').forEach(c => c.classList.toggle('active', c.dataset.risk === 'all'));
+    $('#cohortFilterWrap').hidden = false;
+    $('#cohortFilterLabel').textContent = `${dimLabel(dimKey)} · ${key}`;
+    setText('[data-welo="individuals-context"]', `${dimLabel(dimKey)} · ${key}`);
+    renderIndividuals();
+    switchScreen('individuals');
+  }
+  document.addEventListener('click', e => {
+    const el = e.target.closest('[data-drill]');
+    if (el) { const [d, k] = el.dataset.drill.split('|'); drillToCohort(d, k); }
+  });
+
+  // profile drawer
+  const drawer = $('#profileDrawer'), scrim = $('#drawerScrim');
+  function closeDrawer() { drawer.hidden = true; scrim.hidden = true; }
+  $('#drawerClose').addEventListener('click', closeDrawer);
+  scrim.addEventListener('click', closeDrawer);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
+
+  const ATTR_LABELS = {
+    age: 'Age', gender: 'Gender', tenure_years: 'Tenure (yrs)', bmi: 'BMI',
+    smoking_status: 'Smoking', alcohol_frequency: 'Alcohol',
+    physical_activity_days_per_week: 'Activity (d/wk)', workload_index_current: 'Workload index',
+    overtime_hours_14d: 'Overtime (14d h)', consecutive_shifts_worked: 'Consec. shifts',
+    sleep_hours_avg_7d: 'Sleep (h)', days_since_last_leave: 'Days since leave',
+    distance_from_work_km: 'Commute (km)', perceived_stress_score: 'PSS-10', number_of_dependents: 'Dependents',
+  };
+
+  function openProfile(emp) {
+    const r = individuals.find(x => String(x.employee_id) === String(emp));
+    if (!r) return;
+    $('#pdId').textContent = empLabel(r);
+    const pill = bandToPill[r.risk_band] || 'medium';
+    const probRows = ['Critical','High','Medium','Low'].map(b => {
+      const p = (r.prob && r.prob[b]) || 0;
+      return `<div class="pd-prob-row">
+        <span class="pd-prob-lab">${b}</span>
+        <span class="pd-prob-track"><span class="pd-prob-fill ${b.toLowerCase()}" style="width:${(p*100).toFixed(0)}%"></span></span>
+        <span class="pd-prob-pct">${(p*100).toFixed(0)}%</span></div>`;
+    }).join('');
+    const hasShap = r.top_reasons && r.top_reasons.length;
+    const drivers = hasShap
+      ? r.top_reasons.map(d => `<div class="pd-driver"><span class="pd-driver-sev high"></span><span class="pd-driver-label">${d.label}</span><span class="pd-driver-val">+${Number(d.shap_hours).toFixed(1)} h</span></div>`).join('')
+      : (r.drivers || []).map(d => `<div class="pd-driver"><span class="pd-driver-sev ${d.severity}"></span><span class="pd-driver-label">${d.label}</span><span class="pd-driver-val">${d.value}</span></div>`).join('')
+        || '<div style="color:var(--ink-faint);font-size:13px;">No elevated drivers — risk sits near cohort baseline.</div>';
+    const driverNote = hasShap
+      ? '<div class="pd-shap-note">SHAP attribution from the model — hours of predicted absence assigned to each feature.</div>'
+      : '<div class="pd-shap-note">Indicative drivers — model features sitting above the cohort norm, ordered by global SHAP importance.</div>';
+    const attrs = Object.entries(ATTR_LABELS).map(([k, lab]) => {
+      const v = r.attrs ? r.attrs[k] : undefined;
+      if (v == null) return '';
+      return `<div class="pd-attr"><div class="pd-attr-lab">${lab}</div><div class="pd-attr-val">${v}</div></div>`;
+    }).join('');
+    const cohortTags = Object.entries(r.cohorts || {}).map(([dk, val]) =>
+      `<span class="chip" data-drill="${dk}|${val}" style="cursor:pointer">${dimLabel(dk)}: ${val}</span>`).join('');
+
+    $('#pdBody').innerHTML = `
+      <div class="pd-hero">
+        <div class="pd-hero-num">
+          <div class="pd-hero-val" style="color:var(--${pill})">${r.predicted_absent_days_90d.toFixed(1)}<span style="font-size:15px;color:var(--ink-mute);font-weight:500;"> days / 90d</span></div>
+          <div class="pd-hero-lab">${r.predicted_absent_days_annual.toFixed(1)} days / yr · ${r.predicted_absent_hours.toFixed(0)} hours · R ${savingOf(r.predicted_absent_days_90d).toLocaleString('en-ZA')} addressable</div>
+        </div>
+        <span class="risk-pill ${pill}" style="font-size:13px;">${r.risk_band}</span>
+      </div>
+      <div class="pd-section-title">Risk band probabilities</div>
+      ${probRows}
+      <div class="pd-section-title">Fatigue &amp; burnout</div>
+      <div class="pd-hero" style="margin-bottom:6px;">
+        <div class="pd-hero-num">
+          <div class="pd-hero-val" style="font-size:28px;color:var(--red)">${r.fatigue_burnout_score.toFixed(1)}<span style="font-size:14px;color:var(--ink-mute);font-weight:500;"> / 100</span></div>
+          <div class="pd-hero-lab">composite fatigue score · band: ${r.fatigue_band}</div>
+        </div>
+      </div>
+      <div class="pd-section-title">${hasShap ? 'Model drivers (SHAP)' : 'Indicative drivers'}</div>
+      ${drivers}
+      ${driverNote}
+      <div class="pd-section-title">Profile</div>
+      <div class="pd-attr-grid">${attrs}</div>
+      <div class="pd-section-title">Cohort membership</div>
+      <div class="pd-cohort-tags">${cohortTags}</div>`;
+    drawer.hidden = false; scrim.hidden = false;
+  }
+  document.addEventListener('click', e => {
+    const tr = e.target.closest('[data-emp]');
+    if (tr) openProfile(tr.dataset.emp);
+  });
+
+  renderIndividuals();
+
+  // Console crumb for debugging — visible in dev tools when you load the page
+  console.info(
+    `%cWelo dashboard wired from model output`,
+    'color:#C0392B;font-weight:600;',
+    `\n  run: ${feed.run_name}`,
+    `\n  covered lives: ${h.covered_lives}`,
+    `\n  predicted absent days (90d): ${h.predicted_absent_days_90d}`,
+    `\n  fatigue high/critical share: ${fmtPct(h.fatigue_high_or_critical_share || 0, 1)}`,
+    `\n  regression CV R²: ${(feed.model_metrics?.regression?.cv_r2 ?? 'n/a')}`,
+    `\n  classification CV ROC-AUC: ${(feed.model_metrics?.classification?.cv_roc_auc_macro_ovr ?? 'n/a')}`,
+  );
+})();
 </script>
 
 </body>

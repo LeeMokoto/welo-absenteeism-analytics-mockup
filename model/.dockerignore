@@ -1,0 +1,34 @@
+# Keep the image lean. Only ship code, trained artifacts and the cached feed.
+.git
+.gitignore
+.DS_Store
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.venv
+venv
+env
+
+# Notebooks and EDA artefacts
+notebooks
+*.ipynb
+.ipynb_checkpoints
+
+# Source CSVs (training data, not needed at inference time)
+welo_export.csv
+welo_full_export.csv
+welo_full_export_2.csv
+
+# Predictions and reports, not needed at runtime
+data/outputs/predictions.csv
+data/outputs/dashboard_feed.js
+reports
+
+# Frontend
+welo-nextjs
+index.html
+
+# Local-dev only
+*.log
+.cache

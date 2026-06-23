@@ -1,0 +1,22 @@
+{
+  "regression": {
+    "n_train": 6000,
+    "cv_mae": 6.022,
+    "cv_rmse": 12.357,
+    "cv_r2": 0.396,
+    "target_mean": 8.424,
+    "target_std": 15.904
+  },
+  "classification": {
+    "n_train": 6000,
+    "class_distribution": {
+      "Critical": 231,
+      "High": 528,
+      "Low": 3505,
+      "Medium": 1736
+    },
+    "cv_balanced_accuracy": 0.445,
+    "cv_f1_macro": 0.468,
+    "cv_roc_auc_macro_ovr": 0.838
+  }
+}

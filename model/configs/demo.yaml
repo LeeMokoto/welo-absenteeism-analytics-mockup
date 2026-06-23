@@ -1,0 +1,33 @@
+run_name: welo_demo_v1
+random_seed: 7
+
+source:
+  adapter: uci
+  path: welo_export.csv
+
+augmentation:
+  enabled: true
+  adapter: synthetic_mining
+  n_rows: 5800
+  cohort: glencore_sa_mining
+
+target:
+  regression: absence_duration_hours
+  risk_band_thresholds:
+    low: 4
+    medium: 16
+    high: 40
+
+model:
+  regression:
+    name: gradient_boosting
+    cv_folds: 5
+  classification:
+    name: gradient_boosting
+    cv_folds: 5
+
+output:
+  models_dir: models
+  predictions_dir: data/outputs
+  dashboard_json: data/outputs/dashboard_feed.json
+  reports_dir: reports

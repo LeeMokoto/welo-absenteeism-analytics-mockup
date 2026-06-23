@@ -1,0 +1,59 @@
+"""Runtime configuration for the inference service.
+
+Every field can be overridden through an environment variable, so a
+Cloud Run service can be tuned per environment without touching the
+code or rebuilding the image.
+"""
+
+from __future__ import annotations
+
+import os
+from dataclasses import dataclass
+from pathlib import Path
+
+
+def _env(name: str, default: str) -> str:
+    return os.environ.get(name, default)
+
+
+def _env_list(name: str, default: str) -> list[str]:
+    raw = _env(name, default)
+    return [s.strip() for s in raw.split(",") if s.strip()]
+
+
+@dataclass(frozen=True)
+class InferenceConfig:
+    models_dir: Path = Path(_env("WELO_MODELS_DIR", "models"))
+    dashboard_feed_path: Path = Path(_env("WELO_FEED_PATH", "data/outputs/dashboard_feed.json"))
+    feature_thresholds_low: float = float(_env("WELO_BAND_LOW", "4"))
+    feature_thresholds_medium: float = float(_env("WELO_BAND_MEDIUM", "16"))
+    feature_thresholds_high: float = float(_env("WELO_BAND_HIGH", "40"))
+    api_key: str | None = _env("WELO_API_KEY", "") or None
+    cors_origins: list[str] = None
+    horizon_days: int = int(_env("WELO_HORIZON_DAYS", "90"))
+    hours_per_day: float = float(_env("WELO_HOURS_PER_DAY", "8"))
+
+    def __post_init__(self) -> None:
+        # CORS defaults to permissive for the demo. Lock this down in production
+        # by setting WELO_CORS_ORIGINS to the dashboard origin only.
+        object.__setattr__(
+            self, "cors_origins", _env_list("WELO_CORS_ORIGINS", "*")
+        )
+
+    @property
+    def risk_band_thresholds(self) -> dict[str, float]:
+        return {
+            "low": self.feature_thresholds_low,
+            "medium": self.feature_thresholds_medium,
+            "high": self.feature_thresholds_high,
+        }
+
+
+_singleton: InferenceConfig | None = None
+
+
+def get_config() -> InferenceConfig:
+    global _singleton
+    if _singleton is None:
+        _singleton = InferenceConfig()
+    return _singleton
