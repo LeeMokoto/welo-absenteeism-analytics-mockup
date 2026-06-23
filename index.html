@@ -1275,25 +1275,17 @@ table { border-collapse: collapse; width: 100%; }
 .ind-more-btn:hover { border-color: var(--ink-faint); }
 .fatigue-tag { font-family: var(--mono); font-size: 11px; color: var(--red); }
 
-/* profile drawer */
-.drawer-scrim { position: fixed; inset: 0; background: rgba(13,13,13,0.35); z-index: 40; }
-.profile-drawer {
-  position: fixed; top: 0; right: 0; height: 100vh; width: 480px; max-width: 94vw;
-  background: var(--cream); border-left: 1px solid var(--line); z-index: 41;
-  box-shadow: var(--shadow-lift); display: flex; flex-direction: column;
-  animation: drawerIn .22s ease;
-}
-@keyframes drawerIn { from { transform: translateX(30px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-.drawer-head { display: flex; justify-content: space-between; align-items: flex-start; padding: 22px 24px 16px; border-bottom: 1px solid var(--line); }
-.drawer-eyebrow { font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-mute); }
-.drawer-id { font-family: var(--mono); font-size: 22px; font-weight: 600; color: var(--ink); margin-top: 4px; }
-.drawer-close { font-size: 18px; color: var(--ink-mute); background: none; border: none; cursor: pointer; line-height: 1; padding: 4px; }
-.drawer-close:hover { color: var(--ink); }
-.drawer-body { padding: 20px 24px 40px; overflow-y: auto; }
-.pd-hero { display: flex; gap: 18px; align-items: center; margin-bottom: 20px; }
-.pd-hero-num { flex: 1; }
-.pd-hero-val { font-size: 34px; font-weight: 700; letter-spacing: -0.02em; line-height: 1; }
-.pd-hero-lab { font-size: 11px; color: var(--ink-mute); margin-top: 5px; }
+/* individual profile screen */
+.ind-action-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding: 4px 0 2px; }
+.ind-action-note { font-size: 12px; color: var(--ink-mute); flex: 1; min-width: 200px; }
+.ind-compare-row { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.ind-compare-lab { width: 130px; font-size: 12.5px; color: var(--ink-soft); flex-shrink: 0; }
+.ind-compare-track { flex: 1; position: relative; height: 22px; }
+.ind-compare-bar { position: absolute; top: 6px; height: 10px; border-radius: 5px; background: var(--line-soft); width: 100%; }
+.ind-compare-fill { position: absolute; top: 6px; height: 10px; border-radius: 5px; background: var(--red); }
+.ind-compare-cohort { position: absolute; top: 2px; width: 2px; height: 18px; background: var(--ink); }
+.ind-compare-vals { width: 128px; flex-shrink: 0; text-align: right; font-family: var(--mono); font-size: 11.5px; color: var(--ink-mute); }
+.ind-compare-vals strong { color: var(--ink); font-size: 13px; }
 .pd-section-title { font-size: 11px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--ink-mute); margin: 22px 0 10px; }
 .pd-prob-row { display: flex; align-items: center; gap: 10px; margin-bottom: 7px; }
 .pd-prob-lab { width: 64px; font-size: 12px; color: var(--ink-soft); }
@@ -1945,18 +1937,108 @@ table { border-collapse: collapse; width: 100%; }
 
 </section>
 
-<!-- Individual profile drawer -->
-<div class="drawer-scrim" id="drawerScrim" hidden></div>
-<aside class="profile-drawer" id="profileDrawer" hidden aria-hidden="true">
-  <div class="drawer-head">
-    <div>
-      <div class="drawer-eyebrow">Employee profile · model output</div>
-      <div class="drawer-id" id="pdId">#EMP-0000</div>
-    </div>
-    <button class="drawer-close" id="drawerClose">✕</button>
+<section class="screen" id="screen-individual">
+
+  <div class="crumb">
+    <a data-screen="portfolio">Portfolio</a>
+    <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="9 18 15 12 9 6"/></svg>
+    <a data-screen="cohorts">Cohorts</a>
+    <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="9 18 15 12 9 6"/></svg>
+    <a data-screen="individuals">Individuals</a>
+    <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="9 18 15 12 9 6"/></svg>
+    <span id="ind-crumb">#EMP-0000</span>
   </div>
-  <div class="drawer-body" id="pdBody"></div>
-</aside>
+
+  <div class="screen-header">
+    <div>
+      <div class="eyebrow">Individual · model output</div>
+      <h1 class="screen-title" id="ind-title">#EMP-0000</h1>
+      <div class="screen-sub" id="ind-sub">Per-employee prediction from the Welo absenteeism model.</div>
+    </div>
+    <div class="screen-context">
+      <span id="ind-riskpill"></span>
+    </div>
+  </div>
+
+  <div class="metrics-row" id="ind-metrics"></div>
+
+  <div class="two-col-60-40">
+    <div class="panel">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">Risk-band probabilities</div>
+          <div class="panel-sub">classifier confidence across the four bands</div>
+        </div>
+        <span class="chip amber">Model output</span>
+      </div>
+      <div id="ind-probs"></div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">Fatigue &amp; burnout</div>
+          <div class="panel-sub">composite score · top model lever</div>
+        </div>
+      </div>
+      <div class="fatigue-headline"><span id="ind-fatigue-score">0</span><span class="fatigue-headline-unit">/100</span></div>
+      <div class="fatigue-headline-caption" id="ind-fatigue-band">band</div>
+      <div class="fatigue-headline-divider"></div>
+      <div class="fatigue-note" id="ind-fatigue-note"></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-header">
+      <div>
+        <div class="panel-title" id="ind-drivers-title">Drivers</div>
+        <div class="panel-sub" id="ind-drivers-note"></div>
+      </div>
+    </div>
+    <div id="ind-drivers"></div>
+  </div>
+
+  <div class="two-col-50-50">
+    <div class="panel">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">Profile</div>
+          <div class="panel-sub">model input features for this employee</div>
+        </div>
+      </div>
+      <div class="pd-attr-grid" id="ind-attrs"></div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">This employee vs cohort</div>
+          <div class="panel-sub" id="ind-compare-sub">compared with their operational-load cohort</div>
+        </div>
+      </div>
+      <div id="ind-compare"></div>
+      <div class="pd-section-title">Cohort membership</div>
+      <div class="pd-cohort-tags" id="ind-cohorts"></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-header">
+      <div>
+        <div class="panel-title">Recommended action</div>
+        <div class="panel-sub" id="ind-action-sub">routing suggestion based on risk band and lead driver</div>
+      </div>
+      <span class="chip red" id="ind-action-chip">High priority</span>
+    </div>
+    <div class="ind-action-row">
+      <button class="cta-btn">Flag for outreach</button>
+      <button class="action-btn">Enrol in WeloCARE pathway</button>
+      <button class="action-btn">Add to intervention queue</button>
+      <span class="ind-action-note" id="ind-action-note"></span>
+    </div>
+  </div>
+
+</section>
 
 <section class="screen" id="screen-roi">
 
@@ -2453,7 +2535,7 @@ window.addEventListener('load', () => {
   renderCohortScreen(portfolioDim);
 
   // ===================================================================
-  // 5. Individuals — per-employee drill-down with profile drawer
+  // 5. Individuals — per-employee list, drilling into the individual screen
   // ===================================================================
   const individuals = (feed.individuals || []).slice();
   const RISK_ORDER = { Critical: 0, High: 1, Medium: 2, Low: 3 };
@@ -2532,8 +2614,6 @@ window.addEventListener('load', () => {
 
   // drill from any element carrying data-drill="dimKey|cohortKey"
   function drillToCohort(dimKey, key) {
-    const dr = document.getElementById('profileDrawer'), sc = document.getElementById('drawerScrim');
-    if (dr) dr.hidden = true; if (sc) sc.hidden = true;
     state.cohort = { dimKey, key };
     state.risk = 'all'; state.search = ''; state.limit = 40;
     if (searchEl) searchEl.value = '';
@@ -2549,13 +2629,9 @@ window.addEventListener('load', () => {
     if (el) { const [d, k] = el.dataset.drill.split('|'); drillToCohort(d, k); }
   });
 
-  // profile drawer
-  const drawer = $('#profileDrawer'), scrim = $('#drawerScrim');
-  function closeDrawer() { drawer.hidden = true; scrim.hidden = true; }
-  $('#drawerClose').addEventListener('click', closeDrawer);
-  scrim.addEventListener('click', closeDrawer);
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
-
+  // ===================================================================
+  // 6. Individual profile screen
+  // ===================================================================
   const ATTR_LABELS = {
     age: 'Age', gender: 'Gender', tenure_years: 'Tenure (yrs)', bmi: 'BMI',
     smoking_status: 'Smoking', alcohol_frequency: 'Alcohol',
@@ -2564,64 +2640,123 @@ window.addEventListener('load', () => {
     sleep_hours_avg_7d: 'Sleep (h)', days_since_last_leave: 'Days since leave',
     distance_from_work_km: 'Commute (km)', perceived_stress_score: 'PSS-10', number_of_dependents: 'Dependents',
   };
+  const cohortRowFor = (dimKey, key) => (cohorts[dimKey] || []).find(c => c.key === key);
 
-  function openProfile(emp) {
+  // a comparison bar: employee value vs cohort average on the same scale
+  function compareBar(label, val, cohortAvg, unit) {
+    const max = Math.max(val, cohortAvg) * 1.15 || 1;
+    return `<div class="ind-compare-row">
+      <div class="ind-compare-lab">${label}</div>
+      <div class="ind-compare-track">
+        <div class="ind-compare-bar"></div>
+        <div class="ind-compare-fill" style="width:${(val / max * 100).toFixed(0)}%"></div>
+        <div class="ind-compare-cohort" style="left:${(cohortAvg / max * 100).toFixed(0)}%" title="cohort avg"></div>
+      </div>
+      <div class="ind-compare-vals"><strong>${val}</strong>${unit} · coh ${cohortAvg}${unit}</div>
+    </div>`;
+  }
+
+  function showIndividual(emp) {
     const r = individuals.find(x => String(x.employee_id) === String(emp));
     if (!r) return;
-    $('#pdId').textContent = empLabel(r);
     const pill = bandToPill[r.risk_band] || 'medium';
-    const probRows = ['Critical','High','Medium','Low'].map(b => {
+    const label = empLabel(r);
+
+    $('#ind-crumb').textContent = label;
+    $('#ind-title').textContent = label;
+    $('#ind-riskpill').innerHTML = `<span class="risk-pill ${pill}" style="font-size:13px;">${r.risk_band} risk</span>`;
+    $('#ind-sub').textContent =
+      `${r.attrs.age} yrs · ${r.attrs.gender} · ${r.attrs.tenure_years}y tenure · ${r.cohorts.cohort_load} · ${r.cohorts.cohort_lifestyle}`;
+
+    // metric cards
+    $('#ind-metrics').innerHTML = `
+      <div class="metric-card highlight">
+        <div class="card-watermark">01</div>
+        <div class="metric-label">Predicted absent days · 90d</div>
+        <div class="metric-value" style="color:var(--${pill})">${r.predicted_absent_days_90d.toFixed(1)}</div>
+        <div class="metric-detail">${r.predicted_absent_hours.toFixed(0)} predicted hours</div>
+      </div>
+      <div class="metric-card">
+        <div class="card-watermark">02</div>
+        <div class="metric-label">Annualised absent days</div>
+        <div class="metric-value">${r.predicted_absent_days_annual.toFixed(1)}</div>
+        <div class="metric-detail">≈ R ${fmtInt(Math.round(r.predicted_absent_days_annual * 1100))} cost exposure</div>
+      </div>
+      <div class="metric-card">
+        <div class="card-watermark">03</div>
+        <div class="metric-label">Fatigue / burnout</div>
+        <div class="metric-value" style="color:var(--red)">${Math.round(r.fatigue_burnout_score)}</div>
+        <div class="metric-detail">band: ${r.fatigue_band}</div>
+      </div>
+      <div class="metric-card">
+        <div class="card-watermark">04</div>
+        <div class="metric-label">Addressable saving</div>
+        <div class="metric-value"><span class="stat-rand">R</span> ${fmtInt(savingOf(r.predicted_absent_days_90d))}</div>
+        <div class="metric-detail">90d · 20% benchmark reduction</div>
+      </div>`;
+
+    // probabilities
+    $('#ind-probs').innerHTML = ['Critical','High','Medium','Low'].map(b => {
       const p = (r.prob && r.prob[b]) || 0;
       return `<div class="pd-prob-row">
         <span class="pd-prob-lab">${b}</span>
         <span class="pd-prob-track"><span class="pd-prob-fill ${b.toLowerCase()}" style="width:${(p*100).toFixed(0)}%"></span></span>
         <span class="pd-prob-pct">${(p*100).toFixed(0)}%</span></div>`;
     }).join('');
+
+    // fatigue card
+    $('#ind-fatigue-score').textContent = r.fatigue_burnout_score.toFixed(1);
+    $('#ind-fatigue-band').textContent = `band: ${r.fatigue_band}`;
+    $('#ind-fatigue-note').innerHTML =
+      `Composite of sleep deficit, overtime, consecutive shifts, leave gap, workload and PSS-10. Predicted absence drops <strong>~14%</strong> per 10-point reduction.`;
+
+    // drivers
     const hasShap = r.top_reasons && r.top_reasons.length;
-    const drivers = hasShap
+    $('#ind-drivers-title').textContent = hasShap ? 'Model drivers (SHAP)' : 'Indicative drivers';
+    $('#ind-drivers-note').textContent = hasShap
+      ? 'SHAP attribution from the model — hours of predicted absence assigned to each feature.'
+      : 'Model features sitting above the cohort norm, ordered by global SHAP importance.';
+    $('#ind-drivers').innerHTML = hasShap
       ? r.top_reasons.map(d => `<div class="pd-driver"><span class="pd-driver-sev high"></span><span class="pd-driver-label">${d.label}</span><span class="pd-driver-val">+${Number(d.shap_hours).toFixed(1)} h</span></div>`).join('')
-      : (r.drivers || []).map(d => `<div class="pd-driver"><span class="pd-driver-sev ${d.severity}"></span><span class="pd-driver-label">${d.label}</span><span class="pd-driver-val">${d.value}</span></div>`).join('')
-        || '<div style="color:var(--ink-faint);font-size:13px;">No elevated drivers — risk sits near cohort baseline.</div>';
-    const driverNote = hasShap
-      ? '<div class="pd-shap-note">SHAP attribution from the model — hours of predicted absence assigned to each feature.</div>'
-      : '<div class="pd-shap-note">Indicative drivers — model features sitting above the cohort norm, ordered by global SHAP importance.</div>';
-    const attrs = Object.entries(ATTR_LABELS).map(([k, lab]) => {
+      : ((r.drivers || []).map(d => `<div class="pd-driver"><span class="pd-driver-sev ${d.severity}"></span><span class="pd-driver-label">${d.label}</span><span class="pd-driver-val">${d.value}</span></div>`).join('')
+         || '<div style="color:var(--ink-faint);font-size:13px;">No elevated drivers — risk sits near cohort baseline.</div>');
+
+    // profile attrs
+    $('#ind-attrs').innerHTML = Object.entries(ATTR_LABELS).map(([k, lab]) => {
       const v = r.attrs ? r.attrs[k] : undefined;
       if (v == null) return '';
       return `<div class="pd-attr"><div class="pd-attr-lab">${lab}</div><div class="pd-attr-val">${v}</div></div>`;
     }).join('');
-    const cohortTags = Object.entries(r.cohorts || {}).map(([dk, val]) =>
+
+    // vs cohort (operational load)
+    const coh = cohortRowFor('cohort_load', r.cohorts.cohort_load);
+    $('#ind-compare-sub').textContent = `compared with the ${r.cohorts.cohort_load} cohort average`;
+    if (coh) {
+      $('#ind-compare').innerHTML =
+        compareBar('Absent days / yr', +r.predicted_absent_days_annual.toFixed(1), coh.absent_days_per_head_annual, ' d') +
+        compareBar('Fatigue score', Math.round(r.fatigue_burnout_score), coh.mean_fatigue, '') +
+        `<div class="pd-shap-note">Red bar = this employee · black tick = ${r.cohorts.cohort_load} cohort average. High/critical share in this cohort: <strong>${fmtPct(coh.high_or_critical_share)}</strong>.</div>`;
+    }
+
+    // cohort membership chips
+    $('#ind-cohorts').innerHTML = Object.entries(r.cohorts || {}).map(([dk, val]) =>
       `<span class="chip" data-drill="${dk}|${val}" style="cursor:pointer">${dimLabel(dk)}: ${val}</span>`).join('');
 
-    $('#pdBody').innerHTML = `
-      <div class="pd-hero">
-        <div class="pd-hero-num">
-          <div class="pd-hero-val" style="color:var(--${pill})">${r.predicted_absent_days_90d.toFixed(1)}<span style="font-size:15px;color:var(--ink-mute);font-weight:500;"> days / 90d</span></div>
-          <div class="pd-hero-lab">${r.predicted_absent_days_annual.toFixed(1)} days / yr · ${r.predicted_absent_hours.toFixed(0)} hours · R ${savingOf(r.predicted_absent_days_90d).toLocaleString('en-ZA')} addressable</div>
-        </div>
-        <span class="risk-pill ${pill}" style="font-size:13px;">${r.risk_band}</span>
-      </div>
-      <div class="pd-section-title">Risk band probabilities</div>
-      ${probRows}
-      <div class="pd-section-title">Fatigue &amp; burnout</div>
-      <div class="pd-hero" style="margin-bottom:6px;">
-        <div class="pd-hero-num">
-          <div class="pd-hero-val" style="font-size:28px;color:var(--red)">${r.fatigue_burnout_score.toFixed(1)}<span style="font-size:14px;color:var(--ink-mute);font-weight:500;"> / 100</span></div>
-          <div class="pd-hero-lab">composite fatigue score · band: ${r.fatigue_band}</div>
-        </div>
-      </div>
-      <div class="pd-section-title">${hasShap ? 'Model drivers (SHAP)' : 'Indicative drivers'}</div>
-      ${drivers}
-      ${driverNote}
-      <div class="pd-section-title">Profile</div>
-      <div class="pd-attr-grid">${attrs}</div>
-      <div class="pd-section-title">Cohort membership</div>
-      <div class="pd-cohort-tags">${cohortTags}</div>`;
-    drawer.hidden = false; scrim.hidden = false;
+    // recommended action
+    const lead = (hasShap ? r.top_reasons[0]?.label : r.drivers?.[0]?.label) || 'general wellness';
+    const isHi = r.risk_band === 'Critical' || r.risk_band === 'High';
+    $('#ind-action-chip').textContent = isHi ? 'High priority' : 'Monitor';
+    $('#ind-action-chip').className = isHi ? 'chip red' : 'chip';
+    $('#ind-action-sub').textContent = 'routing suggestion based on risk band and lead driver';
+    $('#ind-action-note').innerHTML = isHi
+      ? `Lead driver: <strong>${lead}</strong>. Recommend outreach and a targeted WeloCARE pathway — projected to recover R ${fmtInt(savingOf(r.predicted_absent_days_90d))} over 90 days.`
+      : `Lead signal: <strong>${lead}</strong>. Below the intervention threshold — keep under routine monitoring.`;
+
+    switchScreen('individual');
   }
   document.addEventListener('click', e => {
     const tr = e.target.closest('[data-emp]');
-    if (tr) openProfile(tr.dataset.emp);
+    if (tr) showIndividual(tr.dataset.emp);
   });
 
   renderIndividuals();
