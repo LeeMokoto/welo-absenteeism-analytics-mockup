@@ -1856,7 +1856,7 @@ table { border-collapse: collapse; width: 100%; }
     <div class="panel-header">
       <div>
         <div class="panel-title">Cohort comparison</div>
-        <div class="panel-sub">predicted absence and high-risk concentration per cohort · sorted by exposure</div>
+        <div class="panel-sub">predicted absence and high-risk concentration per cohort · in band order</div>
       </div>
       <span class="chip amber">Model output</span>
     </div>
@@ -2404,7 +2404,8 @@ window.addEventListener('load', () => {
 
   // 4c. Cohorts screen — toggle + cards + comparison table
   function renderCohortScreen(dimKey) {
-    const list = [...(cohorts[dimKey] || [])].sort((a,b)=> b.predicted_absent_days_90d - a.predicted_absent_days_90d);
+    // Lead with the dimension's natural band order (feed is already ordered).
+    const list = (cohorts[dimKey] || []);
     setText('[data-welo="cohort-dim-blurb"]', dimBlurb(dimKey));
     const cards = $('[data-welo="cohort-cards"]');
     if (cards) {
