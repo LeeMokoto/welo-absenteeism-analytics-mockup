@@ -1,6 +1,6 @@
 """Enrich the model's dashboard feed with cohort aggregates and per-individual
 records, computed from the real model predictions joined to the deterministic
-synthetic cohort attributes (seed 7, n=5800 — validated to match predictions
+synthetic cohort attributes (seed 7, n=5800, validated to match predictions
 1:1 on actual absence hours).
 
 Adds three keys to the existing feed:
@@ -17,7 +17,7 @@ import os, sys, json
 import numpy as np
 import pandas as pd
 
-# Run from anywhere — paths resolve relative to this file (the model/ dir).
+# Run from anywhere; paths resolve relative to this file (the model/ dir).
 ROOT = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, ROOT)
 from welo_pipeline.adapters.synthetic import SyntheticMiningAdapter
@@ -61,19 +61,19 @@ df["cohort_lifestyle"] = np.where(
 DIMENSIONS = [
     {"key": "cohort_load",      "label": "Operational load",
      "order": ["High-intensity ops", "Standard ops", "Light duty"],
-     "blurb": "Composite of workload index, 14-day overtime and consecutive shifts worked — the operational levers Welo can act on with rostering."},
+     "blurb": "Composite of workload index, 14-day overtime and consecutive shifts worked, the operational levers Welo can act on with rostering."},
     {"key": "cohort_fatigue",   "label": "Fatigue / burnout band",
      "order": ["Critical", "High", "Moderate", "Low"],
-     "blurb": "Composite fatigue & burnout score band — the single strongest driver in the model."},
+     "blurb": "Composite fatigue & burnout score band, the single strongest driver in the model."},
     {"key": "cohort_age",       "label": "Age band",
      "order": ["Under 30", "30–39", "40–49", "50+"],
-     "blurb": "Age cohort — metabolic and chronic-disease risk rises with age."},
+     "blurb": "Age cohort. Metabolic and chronic-disease risk rises with age."},
     {"key": "cohort_tenure",    "label": "Tenure band",
      "order": ["New (<2y)", "Established (2–5y)", "Experienced (5–10y)", "Veteran (10y+)"],
-     "blurb": "Time in service — onboarding strain vs. long-service chronic load."},
+     "blurb": "Time in service: onboarding strain vs. long-service chronic load."},
     {"key": "cohort_lifestyle", "label": "Lifestyle risk",
      "order": ["Smoker + drinker", "Smoker", "Regular drinker", "Low lifestyle risk"],
-     "blurb": "Smoking and alcohol load — together the top SHAP driver of predicted absence."},
+     "blurb": "Smoking and alcohol load; together the top SHAP driver of predicted absence."},
 ]
 
 DRIVER_BY_DIM = {  # crude "top driver" attribution for the cohort card headline
