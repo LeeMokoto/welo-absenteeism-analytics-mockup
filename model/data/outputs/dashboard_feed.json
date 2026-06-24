@@ -61276,5 +61276,109 @@
     "count": 5800,
     "predicted_absent_days_90d": 17825.0,
     "high_or_critical_count": 715
+  },
+  "hr_ops": {
+    "assumptions": {
+      "work_days_per_year": 230.0,
+      "day_rate_rand": 1100.0,
+      "cover_premium_rand": 300.0,
+      "cover_share_by_cohort": {
+        "High-intensity ops": 0.9,
+        "Standard ops": 0.7,
+        "Light duty": 0.3
+      },
+      "spell_length_days": 4.0,
+      "leave_gap_days": 180
+    },
+    "headline": {
+      "covered_lives": 5800,
+      "absence_rate": 0.0534,
+      "cover_gap_days_90d": 12503.0,
+      "backfill_cost_rand_90d": 17504439.0,
+      "rtw_caseload": 715,
+      "freq_trigger_count": 1458
+    },
+    "cover": {
+      "predicted_absent_days_90d": 17825.0,
+      "cover_gap_days_90d": 12503.0,
+      "backfill_cost_rand_90d": 17504439.0,
+      "overtime_mean_14d": 19.1,
+      "overtime_high_share": 0.096,
+      "overtime_annual_hours": 2888081.0
+    },
+    "frequency": {
+      "mean_spells_per_year": 3.2,
+      "median_bradford": 26.0,
+      "trigger_count": 1458,
+      "trigger_share": 0.2514,
+      "bands": [
+        {
+          "band": "Formal",
+          "count": 674,
+          "share": 0.1162
+        },
+        {
+          "band": "Review",
+          "count": 389,
+          "share": 0.0671
+        },
+        {
+          "band": "Watch",
+          "count": 774,
+          "share": 0.1334
+        },
+        {
+          "band": "Low",
+          "count": 3963,
+          "share": 0.6833
+        }
+      ]
+    },
+    "return_to_work": {
+      "rtw_caseload": 715,
+      "rtw_share": 0.1233,
+      "long_leave_gap_count": 961,
+      "long_leave_gap_share": 0.1657,
+      "mean_days_since_leave": 110.0,
+      "repeat_absence_count": 667
+    },
+    "by_cohort": [
+      {
+        "key": "High-intensity ops",
+        "label": "High-intensity ops",
+        "count": 2030,
+        "cover_gap_days_90d": 8562.0,
+        "backfill_cost_rand_90d": 11986733.0,
+        "overtime_mean_14d": 28.8,
+        "rtw_caseload": 436,
+        "long_leave_gap": 322,
+        "freq_trigger": 843,
+        "mean_bradford": 3784.0
+      },
+      {
+        "key": "Standard ops",
+        "label": "Standard ops",
+        "count": 1247,
+        "cover_gap_days_90d": 2534.0,
+        "backfill_cost_rand_90d": 3547188.0,
+        "overtime_mean_14d": 17.3,
+        "rtw_caseload": 133,
+        "long_leave_gap": 203,
+        "freq_trigger": 292,
+        "mean_bradford": 1365.0
+      },
+      {
+        "key": "Light duty",
+        "label": "Light duty",
+        "count": 2523,
+        "cover_gap_days_90d": 1408.0,
+        "backfill_cost_rand_90d": 1970518.0,
+        "overtime_mean_14d": 12.2,
+        "rtw_caseload": 146,
+        "long_leave_gap": 436,
+        "freq_trigger": 323,
+        "mean_bradford": 421.0
+      }
+    ]
   }
 }

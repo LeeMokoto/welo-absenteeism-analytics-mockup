@@ -29,6 +29,11 @@ on rather than by geography.
   probabilities, fatigue score, the drivers behind the prediction (SHAP where
   available, otherwise the model features sitting above the cohort norm), the
   employee's profile, and their cohort memberships.
+- **HR & Ops** - the operational view for the HR team: predicted absence
+  rate, shift cover-gap days and overtime backfill cost, absence frequency
+  (Bradford-style), return-to-work caseload and leave hygiene, broken down by
+  operational cohort, plus an HR action playbook. Cost and spell assumptions
+  are benchmark-anchored and documented in the feed's `hr_ops.assumptions`.
 - **Outcomes & ROI** - projected addressable saving, seasonality and an
   intervention scenario.
 

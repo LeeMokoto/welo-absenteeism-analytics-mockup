@@ -193,6 +193,108 @@ for d in DIMENSIONS:
 print("\nindividuals shipped:", len(individuals),
       "(High/Crit:", len(hi), "+ sample:", len(rest), ")")
 
+# ---- HR & operational aggregates (for the HR & Ops screen) -----------------
+# Computed over the full mining cohort, not the shipped individual sample.
+# Operational levers (cover, overtime, frequency, return-to-work, leave) the HR
+# team owns day to day. Cost and spell assumptions are benchmark-anchored and
+# documented in hr_ops["assumptions"]; they stay illustrative until live HR data.
+WORK_DAYS_YR = 230.0          # scheduled work days per employee per year
+COVER_PREMIUM = 300.0         # R per cover-gap day (matches the shift panel)
+COVER_SHARE = {"High-intensity ops": 0.90, "Standard ops": 0.70, "Light duty": 0.30}
+SPELL_LEN = 4.0               # benchmark mean absence spell length (days)
+LEAVE_GAP_DAYS = 180          # no annual leave taken within this window
+
+hr = df.copy()
+hr["annual_days"] = hr["predicted_absent_days_monthly"] * 12
+hr["cover_share"] = hr["cohort_load"].map(COVER_SHARE).fillna(0.5)
+hr["cover_gap_90d"] = hr["predicted_absent_days_90d"] * hr["cover_share"]
+hr["spells_est"] = (hr["annual_days"] / SPELL_LEN).round().clip(lower=0).astype(int)
+hr.loc[(hr["annual_days"] > 0) & (hr["spells_est"] < 1), "spells_est"] = 1
+hr["bradford"] = hr["spells_est"] ** 2 * hr["annual_days"]
+
+def bf_band(b):
+    if b < 100: return "Low"
+    if b < 400: return "Watch"
+    if b < 1000: return "Review"
+    return "Formal"
+hr["bf_band"] = hr["bradford"].apply(bf_band)
+
+n_hr = len(hr)
+annual_days_total = float(hr["annual_days"].sum())
+cover_gap_90d = float(hr["cover_gap_90d"].sum())
+backfill_cost_90d = cover_gap_90d * (RAND_PER_DAY + COVER_PREMIUM)
+freq_trigger = int((hr["spells_est"] >= 4).sum())
+rtw_caseload = int(hr["predicted_risk_band"].isin(["Critical", "High"]).sum())
+long_leave_gap = int((hr["days_since_last_leave"] > LEAVE_GAP_DAYS).sum())
+repeat_absence = int(((hr["spells_est"] >= 4) & hr["predicted_risk_band"].isin(["Critical", "High"])).sum())
+bf_counts = hr["bf_band"].value_counts().reindex(["Formal", "Review", "Watch", "Low"]).fillna(0).astype(int)
+
+hr_by_cohort = []
+for label in ["High-intensity ops", "Standard ops", "Light duty"]:
+    sub = hr[hr["cohort_load"] == label]
+    if not len(sub):
+        continue
+    cg = float(sub["cover_gap_90d"].sum())
+    hr_by_cohort.append({
+        "key": label, "label": label, "count": int(len(sub)),
+        "cover_gap_days_90d": round(cg, 0),
+        "backfill_cost_rand_90d": round(cg * (RAND_PER_DAY + COVER_PREMIUM), 0),
+        "overtime_mean_14d": round(float(sub["overtime_hours_14d"].mean()), 1),
+        "rtw_caseload": int(sub["predicted_risk_band"].isin(["Critical", "High"]).sum()),
+        "long_leave_gap": int((sub["days_since_last_leave"] > LEAVE_GAP_DAYS).sum()),
+        "freq_trigger": int((sub["spells_est"] >= 4).sum()),
+        "mean_bradford": round(float(sub["bradford"].mean()), 0),
+    })
+
+feed["hr_ops"] = {
+    "assumptions": {
+        "work_days_per_year": WORK_DAYS_YR, "day_rate_rand": RAND_PER_DAY,
+        "cover_premium_rand": COVER_PREMIUM, "cover_share_by_cohort": COVER_SHARE,
+        "spell_length_days": SPELL_LEN, "leave_gap_days": LEAVE_GAP_DAYS,
+    },
+    "headline": {
+        "covered_lives": n_hr,
+        "absence_rate": round(annual_days_total / (n_hr * WORK_DAYS_YR), 4),
+        "cover_gap_days_90d": round(cover_gap_90d, 0),
+        "backfill_cost_rand_90d": round(backfill_cost_90d, 0),
+        "rtw_caseload": rtw_caseload,
+        "freq_trigger_count": freq_trigger,
+    },
+    "cover": {
+        "predicted_absent_days_90d": round(float(hr["predicted_absent_days_90d"].sum()), 0),
+        "cover_gap_days_90d": round(cover_gap_90d, 0),
+        "backfill_cost_rand_90d": round(backfill_cost_90d, 0),
+        "overtime_mean_14d": round(float(hr["overtime_hours_14d"].mean()), 1),
+        "overtime_high_share": round(float((hr["overtime_hours_14d"] > 40).mean()), 4),
+        "overtime_annual_hours": round(float(hr["overtime_hours_14d"].sum() / 14 * 365), 0),
+    },
+    "frequency": {
+        "mean_spells_per_year": round(float(hr["spells_est"].mean()), 1),
+        "median_bradford": round(float(hr["bradford"].median()), 0),
+        "trigger_count": freq_trigger,
+        "trigger_share": round(freq_trigger / n_hr, 4),
+        "bands": [
+            {"band": b, "count": int(bf_counts[b]), "share": round(float(bf_counts[b] / n_hr), 4)}
+            for b in ["Formal", "Review", "Watch", "Low"]
+        ],
+    },
+    "return_to_work": {
+        "rtw_caseload": rtw_caseload,
+        "rtw_share": round(rtw_caseload / n_hr, 4),
+        "long_leave_gap_count": long_leave_gap,
+        "long_leave_gap_share": round(long_leave_gap / n_hr, 4),
+        "mean_days_since_leave": round(float(hr["days_since_last_leave"].mean()), 0),
+        "repeat_absence_count": repeat_absence,
+    },
+    "by_cohort": hr_by_cohort,
+}
+
+print("\n== HR & Ops ==")
+print(f"  absence rate: {feed['hr_ops']['headline']['absence_rate']*100:.1f}%  "
+      f"cover-gap 90d: {cover_gap_90d:,.0f}d  backfill: R{backfill_cost_90d/1e6:.1f}M")
+print(f"  RTW caseload: {rtw_caseload}  freq-trigger: {freq_trigger}  long-leave-gap: {long_leave_gap}")
+print(f"  bradford bands: " + "  ".join(f"{b}={int(bf_counts[b])}" for b in ["Formal","Review","Watch","Low"]))
+
 # ---- write enriched feed ----------------------------------------------------
 feed["cohort_dimensions"] = [{"key": d["key"], "label": d["label"], "blurb": d["blurb"]} for d in DIMENSIONS]
 feed["cohorts"] = cohorts

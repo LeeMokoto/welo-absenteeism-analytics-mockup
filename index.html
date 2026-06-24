@@ -1312,6 +1312,14 @@ table { border-collapse: collapse; width: 100%; }
 .pd-attr-val { font-size: 14px; font-weight: 600; color: var(--ink); margin-top: 2px; }
 .pd-cohort-tags { display: flex; flex-wrap: wrap; gap: 6px; }
 .pd-shap-note { font-size: 11px; color: var(--ink-faint); margin-top: 8px; }
+
+/* HR & Ops stat grid */
+.hr-stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--radius-sm); overflow: hidden; }
+.hr-stat { background: var(--card); padding: 18px 18px 16px; }
+.hr-stat-value { font-size: 30px; font-weight: 700; letter-spacing: -0.02em; color: var(--ink); line-height: 1; }
+.hr-stat-label { font-size: 12.5px; font-weight: 500; color: var(--ink); margin-top: 8px; }
+.hr-stat-sub { font-size: 11px; color: var(--ink-mute); margin-top: 3px; }
+@media (max-width: 880px) { .hr-stat-grid { grid-template-columns: repeat(2, 1fr); } }
 </style>
 </head>
 <body>
@@ -1364,6 +1372,7 @@ table { border-collapse: collapse; width: 100%; }
     <button class="nav-tab active" data-screen="portfolio">Portfolio</button>
     <button class="nav-tab" data-screen="cohorts">Cohorts</button>
     <button class="nav-tab" data-screen="individuals">Individuals</button>
+    <button class="nav-tab" data-screen="hrops">HR &amp; Ops</button>
     <button class="nav-tab" data-screen="roi">Outcomes &amp; ROI</button>
   </nav>
   <div class="header-meta">
@@ -2081,6 +2090,268 @@ table { border-collapse: collapse; width: 100%; }
 
 </section>
 
+<section class="screen" id="screen-hrops">
+
+  <div class="crumb">
+    <a data-screen="portfolio">Portfolio</a>
+    <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="9 18 15 12 9 6"/></svg>
+    <span>HR &amp; Operations</span>
+  </div>
+
+  <div class="screen-header">
+    <div>
+      <div class="eyebrow">HR &amp; Operations</div>
+      <h1 class="screen-title">Built for the team that <span style="color: var(--red)">runs the roster</span>.</h1>
+      <div class="screen-sub">The operational view of predicted absence: cover gaps, overtime burden, absence frequency and return-to-work, framed by the levers the HR team manages day to day. Cost and spell assumptions are benchmark-anchored and stay illustrative until live HR data lands.</div>
+    </div>
+    <div class="screen-context">
+      <span data-welo="hrops-context">5,800 covered lives</span>
+      <span class="live-pill" data-welo="live-pill-3" hidden><span class="live-dot"></span>MODELLED</span>
+    </div>
+  </div>
+
+  <div class="metrics-row">
+    <div class="metric-card">
+      <div class="card-watermark">01</div>
+      <div class="metric-label">Predicted absence rate</div>
+      <div class="metric-value"><span data-welo="hr:absence_rate">5.3</span>%</div>
+      <div class="metric-detail">annualised · vs ~4% SA mining benchmark</div>
+    </div>
+    <div class="metric-card highlight">
+      <div class="card-watermark">02</div>
+      <div class="metric-label">Cover-gap days · next 90d</div>
+      <div class="metric-value" data-welo="hr:cover_gap_days">12,503</div>
+      <div class="metric-detail">shifts needing backfill</div>
+    </div>
+    <div class="metric-card">
+      <div class="card-watermark">03</div>
+      <div class="metric-label">Overtime backfill cost · 90d</div>
+      <div class="metric-value"><span class="stat-rand">R</span> <span data-welo="hr:backfill_cost">17.5M</span></div>
+      <div class="metric-detail">@ R1,400 per cover-day</div>
+    </div>
+    <div class="metric-card">
+      <div class="card-watermark">04</div>
+      <div class="metric-label">Return-to-work caseload</div>
+      <div class="metric-value" data-welo="hr:rtw_caseload">715</div>
+      <div class="metric-detail">high &amp; critical lives to manage</div>
+    </div>
+  </div>
+
+  <div class="two-col-60-40">
+    <div class="panel">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">Cover gap &amp; overtime burden by cohort</div>
+          <div class="panel-sub">predicted shift cover gaps and the overtime spend to backfill them</div>
+        </div>
+        <span class="chip amber">Benchmark-anchored</span>
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Operational cohort</th>
+            <th>Covered lives</th>
+            <th>Cover-gap days · 90d</th>
+            <th>Backfill cost · 90d</th>
+            <th>Mean overtime · 14d</th>
+          </tr>
+        </thead>
+        <tbody data-welo="hr-cover-table">
+          <tr><td colspan="5" style="color:var(--ink-faint);padding:20px;">Loading from model output…</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="panel">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">Current overtime load</div>
+          <div class="panel-sub">already-logged overtime, before absence backfill</div>
+        </div>
+      </div>
+      <div class="fatigue-headline"><span data-welo="hr:ot_mean">19</span><span class="fatigue-headline-unit">h</span></div>
+      <div class="fatigue-headline-caption">mean overtime per employee · 14 days</div>
+      <div class="fatigue-headline-divider"></div>
+      <div class="fatigue-stat-row">
+        <div class="fatigue-stat">
+          <div class="fatigue-stat-value" data-welo="hr:ot_high_share">10%</div>
+          <div class="fatigue-stat-label">over 40h / 14d</div>
+        </div>
+        <div class="fatigue-stat">
+          <div class="fatigue-stat-value" data-welo="hr:ot_annual">160k</div>
+          <div class="fatigue-stat-label">annual OT hours</div>
+        </div>
+      </div>
+      <div class="fatigue-note">
+        Absence-driven backfill stacks on top of this. Cohorts already running hot on overtime have the least slack to absorb cover gaps.
+      </div>
+    </div>
+  </div>
+
+  <div class="two-col-60-40">
+    <div class="panel">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">Absence frequency · Bradford-style</div>
+          <div class="panel-sub">frequency-weighted score (spells² × days) · short frequent spells score highest</div>
+        </div>
+        <span class="chip amber">Benchmark-anchored</span>
+      </div>
+      <div class="risk-bars" data-welo="hr-freq-bands">
+        <div class="risk-row" data-welo-hr-band="formal">
+          <div class="risk-label"><span class="risk-dot critical"></span>Formal · 1000+</div>
+          <div class="risk-track"><div class="risk-fill critical" style="width: 18%"></div></div>
+          <div class="risk-delta">12% · 674 lives</div>
+        </div>
+        <div class="risk-row" data-welo-hr-band="review">
+          <div class="risk-label"><span class="risk-dot high"></span>Review · 400-999</div>
+          <div class="risk-track"><div class="risk-fill high" style="width: 11%"></div></div>
+          <div class="risk-delta">7% · 389 lives</div>
+        </div>
+        <div class="risk-row" data-welo-hr-band="watch">
+          <div class="risk-label"><span class="risk-dot medium"></span>Watch · 100-399</div>
+          <div class="risk-track"><div class="risk-fill medium" style="width: 21%"></div></div>
+          <div class="risk-delta">13% · 774 lives</div>
+        </div>
+        <div class="risk-row" data-welo-hr-band="low">
+          <div class="risk-label"><span class="risk-dot low"></span>Low · under 100</div>
+          <div class="risk-track"><div class="risk-fill low" style="width: 100%"></div></div>
+          <div class="risk-delta">68% · 3,963 lives</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">Frequency triggers</div>
+          <div class="panel-sub">candidates for a return-to-work conversation</div>
+        </div>
+      </div>
+      <div class="fatigue-headline"><span data-welo="hr:freq_trigger">1,458</span></div>
+      <div class="fatigue-headline-caption">employees over the frequency trigger</div>
+      <div class="fatigue-headline-divider"></div>
+      <div class="fatigue-stat-row">
+        <div class="fatigue-stat">
+          <div class="fatigue-stat-value" data-welo="hr:mean_spells">3.2</div>
+          <div class="fatigue-stat-label">mean spells / yr</div>
+        </div>
+        <div class="fatigue-stat">
+          <div class="fatigue-stat-value" data-welo="hr:median_bradford">48</div>
+          <div class="fatigue-stat-label">median Bradford</div>
+        </div>
+      </div>
+      <div class="fatigue-note">
+        Estimated from predicted absence using a benchmark 4-day mean spell length. A frequency trigger fires at 4 or more spells in a rolling 12 months.
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-header">
+      <div>
+        <div class="panel-title">Return-to-work &amp; leave management</div>
+        <div class="panel-sub">active caseload and leave hygiene across the cohort</div>
+      </div>
+      <span class="chip">HR caseload</span>
+    </div>
+    <div class="hr-stat-grid">
+      <div class="hr-stat">
+        <div class="hr-stat-value" data-welo="hr:rtw_caseload_2">715</div>
+        <div class="hr-stat-label">Return-to-work caseload</div>
+        <div class="hr-stat-sub" data-welo="hr:rtw_share">12% of workforce</div>
+      </div>
+      <div class="hr-stat">
+        <div class="hr-stat-value" data-welo="hr:repeat_absence">393</div>
+        <div class="hr-stat-label">Repeat-absence flags</div>
+        <div class="hr-stat-sub">high-risk &amp; over frequency trigger</div>
+      </div>
+      <div class="hr-stat">
+        <div class="hr-stat-value" data-welo="hr:leave_gap">961</div>
+        <div class="hr-stat-label">No leave in 180+ days</div>
+        <div class="hr-stat-sub" data-welo="hr:leave_gap_share">17% of workforce</div>
+      </div>
+      <div class="hr-stat">
+        <div class="hr-stat-value" data-welo="hr:mean_leave_gap">110</div>
+        <div class="hr-stat-label">Mean days since leave</div>
+        <div class="hr-stat-sub">leave hygiene indicator</div>
+      </div>
+    </div>
+    <table class="data-table" style="margin-top: 18px;">
+      <thead>
+        <tr>
+          <th>Operational cohort</th>
+          <th>RTW caseload</th>
+          <th>Repeat-absence triggers</th>
+          <th>No leave in 180+ days</th>
+        </tr>
+      </thead>
+      <tbody data-welo="hr-rtw-table">
+        <tr><td colspan="4" style="color:var(--ink-faint);padding:20px;">Loading from model output…</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="panel">
+    <div class="panel-header">
+      <div>
+        <div class="panel-title">HR action playbook</div>
+        <div class="panel-sub">how each operational signal routes to an HR or rostering action</div>
+      </div>
+      <span class="chip amber">Playbook · illustrative</span>
+    </div>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Operational signal</th>
+          <th>What it means</th>
+          <th>HR / rostering action</th>
+          <th>Owner</th>
+          <th>Cadence</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>High cover-gap cohort</strong></td>
+          <td>Predicted absence exceeds available shift cover</td>
+          <td>Build a relief buffer into the roster; pre-book planned cover</td>
+          <td>Ops &amp; HR planning</td>
+          <td>Per shift cycle</td>
+        </tr>
+        <tr>
+          <td><strong>High overtime load</strong></td>
+          <td>Cohort already running hot before backfill</td>
+          <td>Cap overtime; rebalance workload across crews</td>
+          <td>Line managers</td>
+          <td>14-day</td>
+        </tr>
+        <tr>
+          <td><strong>Frequency trigger</strong></td>
+          <td>Four or more short spells in a rolling year</td>
+          <td>Return-to-work interview; wellbeing referral</td>
+          <td>HR business partner</td>
+          <td>On trigger</td>
+        </tr>
+        <tr>
+          <td><strong>No leave in 180+ days</strong></td>
+          <td>Leave hygiene gap, raised burnout risk</td>
+          <td>Schedule mandatory leave; check workload</td>
+          <td>Manager &amp; HR</td>
+          <td>Quarterly</td>
+        </tr>
+        <tr>
+          <td><strong>High or critical risk</strong></td>
+          <td>Model flags elevated predicted absence</td>
+          <td>Enrol in medical program; occupational-health review</td>
+          <td>Occupational health</td>
+          <td>On flag</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</section>
+
 <section class="screen" id="screen-roi">
 
   <div class="screen-header">
@@ -2441,7 +2712,7 @@ window.addEventListener('load', () => {
     `${fmtInt(h.covered_lives || 0)} covered lives · ${feed.run_name || 'model output'}`);
 
   // Show the LIVE chips
-  $$('[data-welo="live-pill"], [data-welo="live-pill-2"]').forEach(el => { el.hidden = false; });
+  $$('[data-welo="live-pill"], [data-welo="live-pill-2"], [data-welo="live-pill-3"]').forEach(el => { el.hidden = false; });
 
   // 2. Risk distribution: update each band's bar width and label
   const rd = feed.risk_distribution || [];
@@ -2801,6 +3072,73 @@ window.addEventListener('load', () => {
   });
 
   renderIndividuals();
+
+  // ===================================================================
+  // 7. HR & Operations screen
+  // ===================================================================
+  const hr = feed.hr_ops;
+  if (hr) {
+    const hh = hr.headline || {};
+    setText('[data-welo="hrops-context"]', `${fmtInt(hh.covered_lives || 0)} covered lives`);
+    setText('[data-welo="hr:absence_rate"]', (hh.absence_rate * 100).toFixed(1));
+    setText('[data-welo="hr:cover_gap_days"]', fmtInt(Math.round(hh.cover_gap_days_90d)));
+    setText('[data-welo="hr:backfill_cost"]', fmtRandShort(hh.backfill_cost_rand_90d));
+    setText('[data-welo="hr:rtw_caseload"]', fmtInt(hh.rtw_caseload));
+
+    const cov = hr.cover || {};
+    setText('[data-welo="hr:ot_mean"]', Math.round(cov.overtime_mean_14d));
+    setText('[data-welo="hr:ot_high_share"]', fmtPct(cov.overtime_high_share));
+    setText('[data-welo="hr:ot_annual"]', fmtRandShort(cov.overtime_annual_hours));
+
+    const fr = hr.frequency || {};
+    setText('[data-welo="hr:freq_trigger"]', fmtInt(fr.trigger_count));
+    setText('[data-welo="hr:mean_spells"]', fr.mean_spells_per_year);
+    setText('[data-welo="hr:median_bradford"]', fmtInt(Math.round(fr.median_bradford)));
+
+    const rtw = hr.return_to_work || {};
+    setText('[data-welo="hr:rtw_caseload_2"]', fmtInt(rtw.rtw_caseload));
+    setText('[data-welo="hr:rtw_share"]', `${fmtPct(rtw.rtw_share)} of workforce`);
+    setText('[data-welo="hr:repeat_absence"]', fmtInt(rtw.repeat_absence_count));
+    setText('[data-welo="hr:leave_gap"]', fmtInt(rtw.long_leave_gap_count));
+    setText('[data-welo="hr:leave_gap_share"]', `${fmtPct(rtw.long_leave_gap_share)} of workforce`);
+    setText('[data-welo="hr:mean_leave_gap"]', fmtInt(Math.round(rtw.mean_days_since_leave)));
+
+    // frequency band bars
+    const fb = fr.bands || [];
+    const maxFb = Math.max(...fb.map(d => d.share), 0.01);
+    fb.forEach(d => {
+      const row = $(`[data-welo-hr-band="${d.band.toLowerCase()}"]`);
+      if (!row) return;
+      const fill = $('.risk-fill', row), delta = $('.risk-delta', row);
+      if (fill) fill.style.width = (d.share / maxFb * 100).toFixed(1) + '%';
+      if (delta) delta.textContent = `${fmtPct(d.share)} · ${fmtInt(d.count)} lives`;
+    });
+
+    // cover gap & overtime by cohort
+    const covTable = $('[data-welo="hr-cover-table"]');
+    if (covTable && Array.isArray(hr.by_cohort)) {
+      covTable.innerHTML = hr.by_cohort.map(c => `
+        <tr>
+          <td><strong>${c.label}</strong></td>
+          <td class="cell-mono">${fmtInt(c.count)}</td>
+          <td class="cell-mono">${fmtInt(Math.round(c.cover_gap_days_90d))} days</td>
+          <td class="cell-mono"><strong>R ${fmtRandShort(c.backfill_cost_rand_90d)}</strong></td>
+          <td class="cell-mono">${c.overtime_mean_14d}h</td>
+        </tr>`).join('');
+    }
+
+    // return-to-work & leave by cohort
+    const rtwTable = $('[data-welo="hr-rtw-table"]');
+    if (rtwTable && Array.isArray(hr.by_cohort)) {
+      rtwTable.innerHTML = hr.by_cohort.map(c => `
+        <tr>
+          <td><strong>${c.label}</strong></td>
+          <td class="cell-mono">${fmtInt(c.rtw_caseload)}</td>
+          <td class="cell-mono">${fmtInt(c.freq_trigger)}</td>
+          <td class="cell-mono">${fmtInt(c.long_leave_gap)}</td>
+        </tr>`).join('');
+    }
+  }
 
   // Console crumb for debugging, visible in dev tools when you load the page
   console.info(
