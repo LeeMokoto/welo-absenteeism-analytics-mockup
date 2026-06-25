@@ -1404,7 +1404,7 @@ table { border-collapse: collapse; width: 100%; }
       <div class="card-watermark">01</div>
       <div class="metric-label">Covered lives</div>
       <div class="metric-value"><span data-welo="metric:covered_lives">6,000</span></div>
-      <div class="metric-detail">scored mining cohort</div>
+      <div class="metric-detail" data-ind="metric-covered-detail">scored mining cohort</div>
       <div class="metric-sub" style="color: var(--ink-mute)">
         full model scope
       </div>
@@ -1769,7 +1769,7 @@ table { border-collapse: collapse; width: 100%; }
     <div class="panel-header">
       <div>
         <div class="panel-title">Chronic disease hotspots · cohort × condition</div>
-        <div class="panel-sub">% screened positive by operational-load cohort · anchored to SA mining-cohort benchmarks until pilot screening lands</div>
+        <div class="panel-sub" data-ind="chronic-sub">% screened positive by operational-load cohort · anchored to SA mining-cohort benchmarks until pilot screening lands</div>
       </div>
       <span class="chip amber">Benchmark-anchored</span>
     </div>
@@ -1938,7 +1938,7 @@ table { border-collapse: collapse; width: 100%; }
     <div>
       <div class="eyebrow">Individual view</div>
       <h1 class="screen-title">Down to the <span style="color: var(--red)">individual</span>.</h1>
-      <div class="screen-sub">The model scores every covered life. High and critical employees are listed first. Click any row for the full prediction, drivers and profile. <span style="color:var(--ink-faint)">IDs are synthetic mining-cohort records, not real people.</span></div>
+      <div class="screen-sub">The model scores every covered life. High and critical employees are listed first. Click any row for the full prediction, drivers and profile. <span style="color:var(--ink-faint)" data-ind="individuals-disclaimer">IDs are synthetic mining-cohort records, not real people.</span></div>
     </div>
     <div class="screen-context">
       <span data-welo="individuals-context">high &amp; critical first</span>
@@ -2115,7 +2115,7 @@ table { border-collapse: collapse; width: 100%; }
       <div class="card-watermark">01</div>
       <div class="metric-label">Predicted absence rate</div>
       <div class="metric-value"><span data-welo="hr:absence_rate">5.3</span>%</div>
-      <div class="metric-detail">annualised · vs ~4% SA mining benchmark</div>
+      <div class="metric-detail" data-ind="hr-absence-detail">annualised · vs ~4% SA mining benchmark</div>
     </div>
     <div class="metric-card highlight">
       <div class="card-watermark">02</div>
@@ -2358,7 +2358,7 @@ table { border-collapse: collapse; width: 100%; }
     <div>
       <div class="eyebrow">Outcomes</div>
       <h1 class="screen-title">Numbers that move boards, <br><span style="color: var(--ink-faint)">not just HR decks.</span></h1>
-      <div class="screen-sub">Projected impact across the 6,000-life mining cohort · benchmark-anchored on model output.</div>
+      <div class="screen-sub" data-ind="roi-sub">Projected impact across the 6,000-life mining cohort · benchmark-anchored on model output.</div>
     </div>
     <div class="client-select">
       <span class="client-select-name">All cohorts</span>
@@ -2545,9 +2545,25 @@ table { border-collapse: collapse; width: 100%; }
 
 </section>
 
+<script src="config/industry.js" onerror="window.WELO_PROFILES=null;"></script>
 <script src="model/data/outputs/dashboard_feed.js" onerror="window.WELO_FEED=null;"></script>
 
 <script>
+// Industry framing: pick the profile from ?industry=<key> (default mining) and
+// apply its copy to the [data-ind] elements. Falls back to the mining wording
+// baked into the markup if the config is missing.
+(function welo_industry() {
+  const profiles = window.WELO_PROFILES;
+  if (!profiles) return;
+  const key = (new URLSearchParams(location.search).get('industry') || 'mining').toLowerCase();
+  const profile = profiles[key] || profiles.mining;
+  if (!profile) return;
+  if (profile.title) document.title = profile.title;
+  Object.entries(profile.copy || {}).forEach(([k, text]) => {
+    document.querySelectorAll('[data-ind="' + k + '"]').forEach(el => { el.textContent = text; });
+  });
+})();
+
 const tabs = document.querySelectorAll('.nav-tab');
 const screens = document.querySelectorAll('.screen');
 const crumbLinks = document.querySelectorAll('.crumb a[data-screen]');

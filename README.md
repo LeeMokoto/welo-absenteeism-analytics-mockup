@@ -9,6 +9,26 @@ Open [`index.html`](index.html) in a browser. It hydrates itself from
 `model/data/outputs/dashboard_feed.js`. If the feed is missing it still renders
 with the designed fallback numbers, so it never breaks for a screenshot.
 
+## Industry versions
+
+The same dashboard engine serves several industry framings, selected by a query
+param so there is only one file to maintain:
+
+| URL | Version |
+| --- | --- |
+| `index.html` | Mining (default) |
+| `index.html?industry=generic` | Cross-industry / generic |
+| `index.html?industry=manufacturing` | Manufacturing |
+| `index.html?industry=logistics` | Logistics |
+
+Only the framing changes: industry-variable copy (tagged with `data-ind` in
+`index.html`) is supplied per profile in [`config/industry.js`](config/industry.js),
+while the underlying model output is shared. The non-mining profiles present the
+same calibrated synthetic cohort as an illustrative cross-industry workforce and
+say so on screen; a sector-specific feed can be swapped in later without touching
+the dashboard. To add a vertical, copy the `generic` block in `config/industry.js`
+and tweak the title and copy.
+
 ## What the dashboard shows
 
 The dashboard is organised around **cohorts**, not sites. The model's signal is
