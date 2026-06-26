@@ -21,13 +21,26 @@ param so there is only one file to maintain:
 | `index.html?industry=manufacturing` | Manufacturing |
 | `index.html?industry=logistics` | Logistics |
 
+Each version also carries its own accent colour (mining red, generic teal,
+manufacturing steel-blue, logistics indigo) so the pages are visibly distinct.
+The recolour only touches the brand ramp; risk-band colours stay constant for
+consistent semantics.
+
 Only the framing changes: industry-variable copy (tagged with `data-ind` in
 `index.html`) is supplied per profile in [`config/industry.js`](config/industry.js),
 while the underlying model output is shared. The non-mining profiles present the
 same calibrated synthetic cohort as an illustrative cross-industry workforce and
 say so on screen; a sector-specific feed can be swapped in later without touching
 the dashboard. To add a vertical, copy the `generic` block in `config/industry.js`
-and tweak the title and copy.
+and tweak the title and copy (add a `[data-theme="..."]` block in `index.html` for
+its accent colour).
+
+### Switching versions
+
+Client links carry no visible switcher. To flip between versions yourself (for
+previews or live in a meeting), add `&preview=1` (or `?preview=1`) to the URL,
+e.g. `index.html?industry=generic&preview=1`. A small industry dropdown then
+appears in the header; it never shows on the plain client links.
 
 ## What the dashboard shows
 

@@ -1313,6 +1313,31 @@ table { border-collapse: collapse; width: 100%; }
 .pd-cohort-tags { display: flex; flex-wrap: wrap; gap: 6px; }
 .pd-shap-note { font-size: 11px; color: var(--ink-faint); margin-top: 8px; }
 
+/* Industry accent themes: re-skin the brand ramp only.
+   Risk-band colours (--critical/--high/--medium/--low) are deliberately
+   untouched so band semantics stay consistent across industries. */
+[data-theme="generic"]       { --red:#0E7C86; --red-bright:#13929D; --red-deep:#0A5B62; --red-soft:#E1F1F2; --red-faint:#F1F9F9; }
+[data-theme="manufacturing"] { --red:#2457A7; --red-bright:#2E6BC7; --red-deep:#1B4585; --red-soft:#E5ECF6; --red-faint:#F2F6FB; }
+[data-theme="logistics"]     { --red:#4338CA; --red-bright:#5B4FD6; --red-deep:#352AA0; --red-soft:#EAE8FB; --red-faint:#F4F3FD; }
+
+/* Trend-chart SVG uses hardcoded brand red; map it onto the themed accent
+   (identical to red under the mining theme, so this is safe everywhere). */
+.trend-chart polyline[stroke="#C0392B"] { stroke: var(--red); }
+.trend-chart circle[stroke="#C0392B"]   { stroke: var(--red); }
+.trend-chart circle[fill="#C0392B"]     { fill: var(--red); }
+.trend-chart text[fill="#C0392B"]       { fill: var(--red); }
+#trendFillPast stop, #trendFillFcst stop { stop-color: var(--red); }
+
+/* Industry switcher (preview only) */
+.industry-switcher { display: inline-flex; align-items: center; gap: 7px; }
+.industry-switcher-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--red); box-shadow: 0 0 0 3px var(--red-soft); }
+.industry-switcher select {
+  font-family: var(--sans); font-size: 12px; font-weight: 500; color: var(--ink);
+  background: var(--card); border: 1px solid var(--line); border-radius: 999px;
+  padding: 5px 12px; cursor: pointer;
+}
+.industry-switcher select:hover { border-color: var(--ink-faint); }
+
 /* HR & Ops stat grid */
 .hr-stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--radius-sm); overflow: hidden; }
 .hr-stat { background: var(--card); padding: 18px 18px 16px; }
@@ -1321,6 +1346,16 @@ table { border-collapse: collapse; width: 100%; }
 .hr-stat-sub { font-size: 11px; color: var(--ink-mute); margin-top: 3px; }
 @media (max-width: 880px) { .hr-stat-grid { grid-template-columns: repeat(2, 1fr); } }
 </style>
+<script>
+// Set the industry accent theme before first paint (no colour flash).
+(function () {
+  try {
+    var k = (new URLSearchParams(location.search).get('industry') || 'mining')
+      .toLowerCase().replace(/[^a-z]/g, '');
+    document.documentElement.dataset.theme = k || 'mining';
+  } catch (e) {}
+})();
+</script>
 </head>
 <body>
 
@@ -2555,13 +2590,46 @@ table { border-collapse: collapse; width: 100%; }
 (function welo_industry() {
   const profiles = window.WELO_PROFILES;
   if (!profiles) return;
-  const key = (new URLSearchParams(location.search).get('industry') || 'mining').toLowerCase();
-  const profile = profiles[key] || profiles.mining;
-  if (!profile) return;
+  const params = new URLSearchParams(location.search);
+  const key = (params.get('industry') || 'mining').toLowerCase();
+  const themeKey = profiles[key] ? key : 'mining';
+  const profile = profiles[themeKey];
+  document.documentElement.dataset.theme = themeKey;
   if (profile.title) document.title = profile.title;
   Object.entries(profile.copy || {}).forEach(([k, text]) => {
     document.querySelectorAll('[data-ind="' + k + '"]').forEach(el => { el.textContent = text; });
   });
+
+  // Preview-only switcher: add ?preview=1 to the URL to flip between versions.
+  // It is never injected on the plain client links, so clients never see it.
+  if (params.get('preview') === '1') {
+    const meta = document.querySelector('.header-meta');
+    if (meta && !document.getElementById('industrySwitcher')) {
+      const wrap = document.createElement('div');
+      wrap.className = 'industry-switcher';
+      const dot = document.createElement('span');
+      dot.className = 'industry-switcher-dot';
+      const sel = document.createElement('select');
+      sel.id = 'industrySwitcher';
+      sel.title = 'Preview industry version';
+      Object.keys(profiles).forEach(k => {
+        const o = document.createElement('option');
+        o.value = k;
+        o.textContent = k.charAt(0).toUpperCase() + k.slice(1);
+        if (k === themeKey) o.selected = true;
+        sel.appendChild(o);
+      });
+      sel.addEventListener('change', () => {
+        const p = new URLSearchParams(location.search);
+        p.set('industry', sel.value);
+        p.set('preview', '1');
+        location.search = p.toString();
+      });
+      wrap.appendChild(dot);
+      wrap.appendChild(sel);
+      meta.insertBefore(wrap, meta.firstChild);
+    }
+  }
 })();
 
 const tabs = document.querySelectorAll('.nav-tab');
