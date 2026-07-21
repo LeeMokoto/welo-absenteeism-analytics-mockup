@@ -153,8 +153,16 @@ python build_sector_feeds.py
 
 The sector calibrations in `sector_cohorts.py` are illustrative, anchored to
 plausible SA sector norms, and stay illustrative until real client data lands.
-Two panels remain shared illustrative benchmarks across sectors: the
-chronic-disease heatmap and the winter-respiratory seasonality calendar.
+
+The two illustrative benchmark panels are also sector-specific: the clinical
+heatmaps (driver concentration, chronic-disease hotspots) and the seasonality
+panels (52-week calendar, quarterly bars, addressable-saving-by-driver) are
+re-skinned per sector from the `benchmarks` block in
+[`config/industry.js`](config/industry.js) — e.g. manufacturing leads on
+musculoskeletal + metabolic with a post-festive production ramp, logistics on
+metabolic + sleep/fatigue with a festive peak-season spike. Mining and generic
+keep the static markup. These tables are illustrative benchmarks, not model
+output.
 
 Then reopen `index.html`.
 
