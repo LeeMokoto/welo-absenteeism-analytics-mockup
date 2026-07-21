@@ -13,6 +13,11 @@
 // only the framing changes. To add a vertical, copy the generic block and tweak
 // the title and copy.
 
+// Currency: the dashboard stores every amount in Rand and converts on the fly.
+// Update this rate as needed (Rand per 1 US dollar). Default currency is ZAR;
+// add ?currency=usd to a link, or use the ZAR/USD toggle in the header.
+window.WELO_FX = { zarPerUsd: 18.5 };
+
 window.WELO_PROFILES = {
   mining: {
     title: "Welo · Absenteeism Intelligence · Mining",

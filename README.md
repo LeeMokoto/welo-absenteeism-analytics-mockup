@@ -35,6 +35,13 @@ the dashboard. To add a vertical, copy the `generic` block in `config/industry.j
 and tweak the title and copy (add a `[data-theme="..."]` block in `index.html` for
 its accent colour).
 
+### Currency
+
+Amounts are stored in Rand and converted on the fly. A **ZAR / USD** toggle in
+the header switches every figure (headline, cohort, individual, HR, ROI) at once;
+`?currency=usd` sets it from a link. The exchange rate lives in
+[`config/industry.js`](config/industry.js) (`WELO_FX.zarPerUsd`); update it there.
+
 ### Switching versions
 
 Client links carry no visible switcher. To flip between versions yourself (for

@@ -1338,6 +1338,14 @@ table { border-collapse: collapse; width: 100%; }
 }
 .industry-switcher select:hover { border-color: var(--ink-faint); }
 
+/* Currency toggle (ZAR / USD) */
+.ccy-toggle { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; background: var(--card); }
+.ccy-toggle button {
+  font-family: var(--sans); font-size: 11.5px; font-weight: 600; letter-spacing: 0.02em;
+  color: var(--ink-mute); background: transparent; border: none; padding: 5px 12px; cursor: pointer;
+}
+.ccy-toggle button.active { color: #fff; background: var(--red); }
+
 /* HR & Ops stat grid */
 .hr-stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--radius-sm); overflow: hidden; }
 .hr-stat { background: var(--card); padding: 18px 18px 16px; }
@@ -1412,6 +1420,10 @@ table { border-collapse: collapse; width: 100%; }
   </nav>
   <div class="header-meta">
     <span>Modelled preview · pre-pilot</span>
+    <div class="ccy-toggle" id="ccyToggle">
+      <button data-ccy-btn="ZAR" class="active">ZAR</button>
+      <button data-ccy-btn="USD">USD</button>
+    </div>
     <div class="period-selector">
       <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
       Q2 2026
@@ -1458,8 +1470,8 @@ table { border-collapse: collapse; width: 100%; }
     <div class="metric-card">
       <div class="card-watermark">03</div>
       <div class="metric-label">Absence cost exposure</div>
-      <div class="metric-value"><span class="stat-rand">R</span> <span data-welo="metric:absence_cost_exposure_rand">84.1M</span></div>
-      <div class="metric-detail">annualised @ R1,100/day</div>
+      <div class="metric-value"><span class="stat-rand" data-cur-sym>R</span> <span data-welo="metric:absence_cost_exposure_rand" data-zar="84108200" data-form="mag">84.1M</span></div>
+      <div class="metric-detail">annualised @ <span data-zar="1100" data-form="full">R 1,100</span>/day</div>
       <div class="metric-sub" style="color: var(--ink-mute)">
         76,500 days · 13/employee
       </div>
@@ -1468,7 +1480,7 @@ table { border-collapse: collapse; width: 100%; }
     <div class="metric-card">
       <div class="card-watermark">04</div>
       <div class="metric-label">Projected addressable saving</div>
-      <div class="metric-value"><span class="stat-rand">R</span> <span data-welo="metric:projected_addressable_saving_rand">3.53M</span></div>
+      <div class="metric-value"><span class="stat-rand" data-cur-sym>R</span> <span data-welo="metric:projected_addressable_saving_rand" data-zar="3532544" data-form="mag">3.53M</span></div>
       <div class="metric-detail">~4.2% of exposure</div>
       <div class="metric-sub" style="color: var(--ink-mute)">
         modelled · benchmark-anchored
@@ -2161,8 +2173,8 @@ table { border-collapse: collapse; width: 100%; }
     <div class="metric-card">
       <div class="card-watermark">03</div>
       <div class="metric-label">Overtime backfill cost · 90d</div>
-      <div class="metric-value"><span class="stat-rand">R</span> <span data-welo="hr:backfill_cost">17.5M</span></div>
-      <div class="metric-detail">@ R1,400 per cover-day</div>
+      <div class="metric-value"><span class="stat-rand" data-cur-sym>R</span> <span data-welo="hr:backfill_cost" data-zar="17504200" data-form="mag">17.5M</span></div>
+      <div class="metric-detail">@ <span data-zar="1400" data-form="full">R 1,400</span> per cover-day</div>
     </div>
     <div class="metric-card">
       <div class="card-watermark">04</div>
@@ -2413,10 +2425,10 @@ table { border-collapse: collapse; width: 100%; }
       <div class="cohort-row">
         <div>
           <div class="cohort-label">Current annual absence cost</div>
-          <div class="cohort-label-detail">76,500 days × R1,100 day-rate</div>
+          <div class="cohort-label-detail">76,500 days × <span data-zar="1100" data-form="full">R 1,100</span> day-rate</div>
         </div>
         <div class="cohort-track">
-          <div class="cohort-fill baseline" style="width: 100%">R 84.1M</div>
+          <div class="cohort-fill baseline" style="width: 100%"><span data-zar="84108200" data-form="short">R 84.1M</span></div>
         </div>
         <div></div>
       </div>
@@ -2426,7 +2438,7 @@ table { border-collapse: collapse; width: 100%; }
           <div class="cohort-label-detail">high-risk band × illustrative 20% benchmark</div>
         </div>
         <div class="cohort-track">
-          <div class="cohort-fill welo" style="width: 8%">R 3.53M</div>
+          <div class="cohort-fill welo" style="width: 8%"><span data-zar="3532544" data-form="short">R 3.53M</span></div>
         </div>
         <div>
           <div class="cohort-delta">~4%</div>
@@ -2533,7 +2545,7 @@ table { border-collapse: collapse; width: 100%; }
         <div class="scenario-dual">
           <div class="scenario-dual-col">
             <div class="scenario-dual-label">Absence cost addressed</div>
-            <div class="scenario-dual-value"><span class="stat-rand-bright">R</span> <span id="scenSave">1.00M</span></div>
+            <div class="scenario-dual-value"><span class="stat-rand-bright" data-cur-sym>R</span> <span id="scenSave">1.00M</span></div>
             <div class="scenario-dual-sub">recovered absence cost, annual</div>
           </div>
           <div class="scenario-dual-col">
@@ -2552,28 +2564,28 @@ table { border-collapse: collapse; width: 100%; }
         <div class="panel-title">Addressable saving by driver</div>
         <div class="panel-sub">projected · illustrative benchmark applied per clinical category</div>
       </div>
-      <span class="chip amber">Projected · R 3.53M total</span>
+      <span class="chip amber">Projected · <span data-zar="3532544" data-form="short">R 3.53M</span> total</span>
     </div>
     <div class="roi-bars">
       <div class="roi-row">
         <div class="roi-name">Cardiovascular management</div>
         <div class="roi-track"><div class="roi-fill" style="width: 92%"></div></div>
-        <div class="roi-value">R 1.13M</div>
+        <div class="roi-value"><span data-zar="1130000" data-form="short">R 1.13M</span></div>
       </div>
       <div class="roi-row">
         <div class="roi-name">Metabolic / diabetes care</div>
         <div class="roi-track"><div class="roi-fill" style="width: 68%"></div></div>
-        <div class="roi-value">R 865k</div>
+        <div class="roi-value"><span data-zar="865000" data-form="short">R 865k</span></div>
       </div>
       <div class="roi-row">
         <div class="roi-name">Respiratory (winter-targeted)</div>
         <div class="roi-track"><div class="roi-fill" style="width: 48%"></div></div>
-        <div class="roi-value">R 599k</div>
+        <div class="roi-value"><span data-zar="599000" data-form="short">R 599k</span></div>
       </div>
       <div class="roi-row">
         <div class="roi-name">Mental health &amp; EAP</div>
         <div class="roi-track"><div class="roi-fill" style="width: 33%"></div></div>
-        <div class="roi-value">R 399k</div>
+        <div class="roi-value"><span data-zar="399000" data-form="short">R 399k</span></div>
       </div>
     </div>
   </div>
@@ -2632,6 +2644,55 @@ table { border-collapse: collapse; width: 100%; }
   }
 })();
 
+// =====================================================================
+// Currency layer: every amount is stored in Rand on a data-zar attribute
+// and converted on the fly. Toggle ZAR/USD in the header (or ?currency=usd).
+// =====================================================================
+const FX_ZAR_PER_USD = (window.WELO_FX && window.WELO_FX.zarPerUsd) || 18.5;
+const CURRENCIES = {
+  ZAR: { code: 'ZAR', symbol: 'R', perZar: 1 },
+  USD: { code: 'USD', symbol: '$', perZar: 1 / FX_ZAR_PER_USD },
+};
+let CUR = CURRENCIES.ZAR;
+(function () {
+  const c = (new URLSearchParams(location.search).get('currency') || 'zar').toUpperCase();
+  if (CURRENCIES[c]) CUR = CURRENCIES[c];
+})();
+function curMag(v) {
+  if (v >= 1e9) return (v / 1e9).toFixed(2) + 'B';
+  if (v >= 1e6) return (v / 1e6).toFixed(2) + 'M';
+  if (v >= 1e3) return Math.round(v / 1e3) + 'k';
+  return String(Math.round(v));
+}
+// form: 'short' (symbol + magnitude), 'full' (symbol + exact), 'mag' /
+// 'fullnum' (number only, when the symbol lives in a sibling [data-cur-sym]).
+function money(zar, form) {
+  const v = (Number(zar) || 0) * CUR.perZar;
+  if (form === 'mag') return curMag(v);
+  if (form === 'fullnum') return Math.round(v).toLocaleString('en-ZA');
+  if (form === 'full') return CUR.symbol + ' ' + Math.round(v).toLocaleString('en-ZA');
+  return CUR.symbol + ' ' + curMag(v);
+}
+// Placeholder span for use inside innerHTML templates.
+function mspan(zar, form) {
+  return '<span data-zar="' + zar + '" data-form="' + (form || 'short') + '"></span>';
+}
+function applyCurrency(root) {
+  const r = root || document;
+  r.querySelectorAll('[data-zar]').forEach(el => { el.textContent = money(el.dataset.zar, el.dataset.form); });
+  r.querySelectorAll('[data-cur-sym]').forEach(el => { el.textContent = CUR.symbol; });
+}
+function setCurrency(code) {
+  CUR = CURRENCIES[code] || CURRENCIES.ZAR;
+  applyCurrency(document);
+  document.querySelectorAll('[data-ccy-btn]').forEach(b => b.classList.toggle('active', b.dataset.ccyBtn === CUR.code));
+  try {
+    const u = new URL(location.href);
+    u.searchParams.set('currency', CUR.code.toLowerCase());
+    history.replaceState(null, '', u);
+  } catch (e) {}
+}
+
 const tabs = document.querySelectorAll('.nav-tab');
 const screens = document.querySelectorAll('.screen');
 const crumbLinks = document.querySelectorAll('.crumb a[data-screen]');
@@ -2678,14 +2739,18 @@ function fmtInt(v) {
   return v.toLocaleString();
 }
 
-slider.addEventListener('input', e => {
-  const n = parseInt(e.target.value);
+function updateScenario(n) {
   box.textContent = n.toLocaleString() + ' ppl';
   nLabel.textContent = n.toLocaleString();
-  saveOut.textContent = fmtRand(projectSavings(n));
+  const zar = projectSavings(n);
+  saveOut.dataset.zar = zar;          // so a currency toggle reconverts it
+  saveOut.dataset.form = 'mag';
+  saveOut.textContent = money(zar, 'mag');
   daysOut.textContent = fmtInt(projectDays(n));
   pctOut.textContent = Math.round(n / HIGH_RISK_BAND * 100);
-});
+}
+slider.addEventListener('input', e => updateScenario(parseInt(e.target.value)));
+updateScenario(parseInt(slider.value));
 
 // Calendar heatmap generator: 52 weeks × 7 days.
 // Pattern encodes Monday post-weekend clustering + SA winter respiratory peak (Jun-Aug, weeks ~22-35).
@@ -2786,10 +2851,15 @@ window.addEventListener('load', () => {
     const el = $(selector);
     if (el && value != null) el.textContent = value;
   };
+  // money metrics store the base Rand on data-zar; applyCurrency() formats them
+  const setZar = (selector, zar, form) => {
+    const el = $(selector);
+    if (el && zar != null) { el.dataset.zar = zar; el.dataset.form = form || 'short'; }
+  };
   setText('[data-welo="metric:covered_lives"]', fmtInt(h.covered_lives));
   setText('[data-welo="metric:predicted_absent_days_90d"]', fmtInt(Math.round(h.predicted_absent_days_90d)));
-  setText('[data-welo="metric:absence_cost_exposure_rand"]', fmtRandShort(h.absence_cost_exposure_rand));
-  setText('[data-welo="metric:projected_addressable_saving_rand"]', fmtRandShort(h.projected_addressable_saving_rand));
+  setZar('[data-welo="metric:absence_cost_exposure_rand"]', h.absence_cost_exposure_rand, 'mag');
+  setZar('[data-welo="metric:projected_addressable_saving_rand"]', h.projected_addressable_saving_rand, 'mag');
 
   // Screen context: live covered-lives count + run name
   setText('[data-welo="screen-context-text"]',
@@ -2860,7 +2930,7 @@ window.addEventListener('load', () => {
         <td><span class="risk-pill ${concPill(c.high_or_critical_share)}">${fmtPct(c.high_or_critical_share)}</span></td>
         <td class="cell-mono">${c.absent_days_per_head_annual}</td>
         <td class="cell-mono">${fmtInt(Math.round(c.predicted_absent_days_90d))} days</td>
-        <td class="cell-mono"><strong>R ${fmtRandShort(c.cost_exposure_rand)}</strong></td>
+        <td class="cell-mono"><strong>${mspan(c.cost_exposure_rand, 'short')}</strong></td>
         <td class="cell-mono">${c.mean_fatigue}</td>
       </tr>`).join('');
   }
@@ -2903,8 +2973,8 @@ window.addEventListener('load', () => {
           <div class="cohort-card-stats">
             <div><div class="cohort-card-stat-label">Days / head / yr</div><div class="cohort-card-stat-value">${c.absent_days_per_head_annual}</div></div>
             <div><div class="cohort-card-stat-label">Mean fatigue</div><div class="cohort-card-stat-value">${c.mean_fatigue}</div></div>
-            <div><div class="cohort-card-stat-label">Annual exposure</div><div class="cohort-card-stat-value">R ${fmtRandShort(c.cost_exposure_rand)}</div></div>
-            <div><div class="cohort-card-stat-label">Addressable</div><div class="cohort-card-stat-value">R ${fmtRandShort(c.addressable_saving_rand)}</div></div>
+            <div><div class="cohort-card-stat-label">Annual exposure</div><div class="cohort-card-stat-value">${mspan(c.cost_exposure_rand, 'short')}</div></div>
+            <div><div class="cohort-card-stat-label">Addressable</div><div class="cohort-card-stat-value">${mspan(c.addressable_saving_rand, 'short')}</div></div>
           </div>
           <div class="cohort-card-cta">View ${fmtInt(c.high_or_critical_count)} high-risk individuals →</div>
         </div>`).join('');
@@ -2918,13 +2988,14 @@ window.addEventListener('load', () => {
           <td><span class="risk-pill ${concPill(c.high_or_critical_share)}">${fmtInt(c.high_or_critical_count)} · ${fmtPct(c.high_or_critical_share)}</span></td>
           <td class="cell-mono">${c.absent_days_per_head_annual}</td>
           <td class="cell-mono">${fmtInt(Math.round(c.predicted_absent_days_90d))} d</td>
-          <td class="cell-mono">R ${fmtRandShort(c.cost_exposure_rand)}</td>
-          <td class="cell-mono">R ${fmtRandShort(c.addressable_saving_rand)}</td>
+          <td class="cell-mono">${mspan(c.cost_exposure_rand, 'short')}</td>
+          <td class="cell-mono">${mspan(c.addressable_saving_rand, 'short')}</td>
           <td class="cell-mono">${c.mean_fatigue}</td>
           <td><span class="cohort-card-cta">drill →</span></td>
         </tr>`).join('');
     }
     $$('#dimToggle .dim-btn').forEach(b => b.classList.toggle('active', b.dataset.dim === dimKey));
+    applyCurrency(document);
   }
   $$('#dimToggle .dim-btn').forEach(btn =>
     btn.addEventListener('click', () => renderCohortScreen(btn.dataset.dim)));
@@ -2975,7 +3046,7 @@ window.addEventListener('load', () => {
           <td class="cell-mono">${r.predicted_absent_days_annual.toFixed(1)}</td>
           <td class="cell-mono">${Math.round(r.fatigue_burnout_score)}</td>
           <td>${topDriver(r)}</td>
-          <td class="saving-cell">R ${savingOf(r.predicted_absent_days_90d).toLocaleString('en-ZA')}</td>
+          <td class="saving-cell">${mspan(savingOf(r.predicted_absent_days_90d), 'full')}</td>
           <td><span class="cohort-card-cta">view →</span></td>
         </tr>`;
       }).join('') : `<tr><td colspan="8" style="color:var(--ink-faint);padding:20px;">No individuals match this filter.</td></tr>`;
@@ -2983,6 +3054,7 @@ window.addEventListener('load', () => {
     setText('[data-welo="individuals-count"]', `${fmtInt(Math.min(state.limit, rows.length))} of ${fmtInt(rows.length)}`);
     const more = $('#indMoreBtn');
     if (more) more.hidden = rows.length <= state.limit;
+    if (tb) applyCurrency(tb);
   }
 
   // filters
@@ -3076,7 +3148,7 @@ window.addEventListener('load', () => {
         <div class="card-watermark">02</div>
         <div class="metric-label">Annualised absent days</div>
         <div class="metric-value">${r.predicted_absent_days_annual.toFixed(1)}</div>
-        <div class="metric-detail">≈ R ${fmtInt(Math.round(r.predicted_absent_days_annual * 1100))} cost exposure</div>
+        <div class="metric-detail">≈ ${mspan(Math.round(r.predicted_absent_days_annual * 1100), 'full')} cost exposure</div>
       </div>
       <div class="metric-card">
         <div class="card-watermark">03</div>
@@ -3087,7 +3159,7 @@ window.addEventListener('load', () => {
       <div class="metric-card">
         <div class="card-watermark">04</div>
         <div class="metric-label">Addressable saving</div>
-        <div class="metric-value"><span class="stat-rand">R</span> ${fmtInt(savingOf(r.predicted_absent_days_90d))}</div>
+        <div class="metric-value"><span class="stat-rand" data-cur-sym>R</span> ${mspan(savingOf(r.predicted_absent_days_90d), 'fullnum')}</div>
         <div class="metric-detail">90d · 20% benchmark reduction</div>
       </div>`;
 
@@ -3145,9 +3217,10 @@ window.addEventListener('load', () => {
     $('#ind-action-chip').className = isHi ? 'chip red' : 'chip';
     $('#ind-action-sub').textContent = 'routing suggestion based on risk band and lead driver';
     $('#ind-action-note').innerHTML = isHi
-      ? `Lead driver: <strong>${lead}</strong>. Recommend outreach and a targeted medical program, projected to recover R ${fmtInt(savingOf(r.predicted_absent_days_90d))} over 90 days.`
+      ? `Lead driver: <strong>${lead}</strong>. Recommend outreach and a targeted medical program, projected to recover ${mspan(savingOf(r.predicted_absent_days_90d), 'full')} over 90 days.`
       : `Lead signal: <strong>${lead}</strong>. Below the intervention threshold; keep under routine monitoring.`;
 
+    applyCurrency(document);
     switchScreen('individual');
   }
   document.addEventListener('click', e => {
@@ -3166,7 +3239,7 @@ window.addEventListener('load', () => {
     setText('[data-welo="hrops-context"]', `${fmtInt(hh.covered_lives || 0)} covered lives`);
     setText('[data-welo="hr:absence_rate"]', (hh.absence_rate * 100).toFixed(1));
     setText('[data-welo="hr:cover_gap_days"]', fmtInt(Math.round(hh.cover_gap_days_90d)));
-    setText('[data-welo="hr:backfill_cost"]', fmtRandShort(hh.backfill_cost_rand_90d));
+    setZar('[data-welo="hr:backfill_cost"]', hh.backfill_cost_rand_90d, 'mag');
     setText('[data-welo="hr:rtw_caseload"]', fmtInt(hh.rtw_caseload));
 
     const cov = hr.cover || {};
@@ -3206,7 +3279,7 @@ window.addEventListener('load', () => {
           <td><strong>${c.label}</strong></td>
           <td class="cell-mono">${fmtInt(c.count)}</td>
           <td class="cell-mono">${fmtInt(Math.round(c.cover_gap_days_90d))} days</td>
-          <td class="cell-mono"><strong>R ${fmtRandShort(c.backfill_cost_rand_90d)}</strong></td>
+          <td class="cell-mono"><strong>${mspan(c.backfill_cost_rand_90d, 'short')}</strong></td>
           <td class="cell-mono">${c.overtime_mean_14d}h</td>
         </tr>`).join('');
     }
@@ -3236,6 +3309,14 @@ window.addEventListener('load', () => {
     `\n  classification CV ROC-AUC: ${(feed.model_metrics?.classification?.cv_roc_auc_macro_ovr ?? 'n/a')}`,
   );
 })();
+
+// Currency toggle: wire the buttons and apply the initial currency once every
+// money element (static + feed-rendered) has its data-zar in place.
+document.querySelectorAll('[data-ccy-btn]').forEach(b =>
+  b.addEventListener('click', () => setCurrency(b.dataset.ccyBtn)));
+document.querySelectorAll('[data-ccy-btn]').forEach(b =>
+  b.classList.toggle('active', b.dataset.ccyBtn === CUR.code));
+applyCurrency(document);
 </script>
 
 </body>
