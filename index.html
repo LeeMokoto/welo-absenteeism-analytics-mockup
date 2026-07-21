@@ -2425,10 +2425,10 @@ table { border-collapse: collapse; width: 100%; }
       <div class="cohort-row">
         <div>
           <div class="cohort-label">Current annual absence cost</div>
-          <div class="cohort-label-detail">76,500 days × <span data-zar="1100" data-form="full">R 1,100</span> day-rate</div>
+          <div class="cohort-label-detail"><span data-welo="roi:annual-days">76,500</span> days × <span data-zar="1100" data-form="full">R 1,100</span> day-rate</div>
         </div>
         <div class="cohort-track">
-          <div class="cohort-fill baseline" style="width: 100%"><span data-zar="84108200" data-form="short">R 84.1M</span></div>
+          <div class="cohort-fill baseline" style="width: 100%"><span data-zar="84108200" data-form="short" data-welo="roi:baseline">R 84.1M</span></div>
         </div>
         <div></div>
       </div>
@@ -2438,7 +2438,7 @@ table { border-collapse: collapse; width: 100%; }
           <div class="cohort-label-detail">high-risk band × illustrative 20% benchmark</div>
         </div>
         <div class="cohort-track">
-          <div class="cohort-fill welo" style="width: 8%"><span data-zar="3532544" data-form="short">R 3.53M</span></div>
+          <div class="cohort-fill welo" style="width: 8%"><span data-zar="3532544" data-form="short" data-welo="roi:welo">R 3.53M</span></div>
         </div>
         <div>
           <div class="cohort-delta">~4%</div>
@@ -2504,25 +2504,25 @@ table { border-collapse: collapse; width: 100%; }
       </div>
       <div class="quarter-bars">
         <div class="quarter-col">
-          <div class="quarter-bar" data-value="19,000 d" style="height: 88%"></div>
+          <div class="quarter-bar" data-value="19,000 d" data-q-base="19000" style="height: 88%"></div>
           <div class="quarter-label">Q1 · summer</div>
         </div>
         <div class="quarter-col">
-          <div class="quarter-bar" data-value="16,800 d" style="height: 78%"></div>
+          <div class="quarter-bar" data-value="16,800 d" data-q-base="16800" style="height: 78%"></div>
           <div class="quarter-label">Q2 · autumn</div>
         </div>
         <div class="quarter-col">
-          <div class="quarter-bar" data-value="20,700 d" style="height: 95%"></div>
+          <div class="quarter-bar" data-value="20,700 d" data-q-base="20700" style="height: 95%"></div>
           <div class="quarter-label">Q3 · winter</div>
         </div>
         <div class="quarter-col">
-          <div class="quarter-bar" data-value="20,000 d" style="height: 91%"></div>
+          <div class="quarter-bar" data-value="20,000 d" data-q-base="20000" style="height: 91%"></div>
           <div class="quarter-label">Q4 · spring</div>
         </div>
       </div>
       <div class="quarter-total">
         <div class="quarter-total-label">Annual absent days</div>
-        <div class="quarter-total-value">76,500</div>
+        <div class="quarter-total-value" data-welo="roi:quarter-total">76,500</div>
       </div>
     </div>
 
@@ -2564,28 +2564,28 @@ table { border-collapse: collapse; width: 100%; }
         <div class="panel-title">Addressable saving by driver</div>
         <div class="panel-sub">projected · illustrative benchmark applied per clinical category</div>
       </div>
-      <span class="chip amber">Projected · <span data-zar="3532544" data-form="short">R 3.53M</span> total</span>
+      <span class="chip amber">Projected · <span data-zar="3532544" data-form="short" data-welo="roi:welo">R 3.53M</span> total</span>
     </div>
     <div class="roi-bars">
       <div class="roi-row">
         <div class="roi-name">Cardiovascular management</div>
         <div class="roi-track"><div class="roi-fill" style="width: 92%"></div></div>
-        <div class="roi-value"><span data-zar="1130000" data-form="short">R 1.13M</span></div>
+        <div class="roi-value"><span data-zar="1130000" data-form="short" data-roi-driver>R 1.13M</span></div>
       </div>
       <div class="roi-row">
         <div class="roi-name">Metabolic / diabetes care</div>
         <div class="roi-track"><div class="roi-fill" style="width: 68%"></div></div>
-        <div class="roi-value"><span data-zar="865000" data-form="short">R 865k</span></div>
+        <div class="roi-value"><span data-zar="865000" data-form="short" data-roi-driver>R 865k</span></div>
       </div>
       <div class="roi-row">
         <div class="roi-name">Respiratory (winter-targeted)</div>
         <div class="roi-track"><div class="roi-fill" style="width: 48%"></div></div>
-        <div class="roi-value"><span data-zar="599000" data-form="short">R 599k</span></div>
+        <div class="roi-value"><span data-zar="599000" data-form="short" data-roi-driver>R 599k</span></div>
       </div>
       <div class="roi-row">
         <div class="roi-name">Mental health &amp; EAP</div>
         <div class="roi-track"><div class="roi-fill" style="width: 33%"></div></div>
-        <div class="roi-value"><span data-zar="399000" data-form="short">R 399k</span></div>
+        <div class="roi-value"><span data-zar="399000" data-form="short" data-roi-driver>R 399k</span></div>
       </div>
     </div>
   </div>
@@ -2593,7 +2593,16 @@ table { border-collapse: collapse; width: 100%; }
 </section>
 
 <script src="config/industry.js" onerror="window.WELO_PROFILES=null;"></script>
-<script src="model/data/outputs/dashboard_feed.js" onerror="window.WELO_FEED=null;"></script>
+<script>
+// Load the feed for the selected industry. Manufacturing and logistics have
+// their own sector-calibrated cohort; mining and generic share the mining feed.
+(function () {
+  var k = (new URLSearchParams(location.search).get('industry') || 'mining').toLowerCase().replace(/[^a-z]/g, '');
+  var sector = { manufacturing: 1, logistics: 1 };
+  var file = sector[k] ? 'dashboard_feed.' + k + '.js' : 'dashboard_feed.js';
+  document.write('<scr' + 'ipt src="model/data/outputs/' + file + '" onerror="window.WELO_FEED=null;"><\/scr' + 'ipt>');
+})();
+</script>
 
 <script>
 // Industry framing: pick the profile from ?industry=<key> (default mining) and
@@ -2860,6 +2869,20 @@ window.addEventListener('load', () => {
   setText('[data-welo="metric:predicted_absent_days_90d"]', fmtInt(Math.round(h.predicted_absent_days_90d)));
   setZar('[data-welo="metric:absence_cost_exposure_rand"]', h.absence_cost_exposure_rand, 'mag');
   setZar('[data-welo="metric:projected_addressable_saving_rand"]', h.projected_addressable_saving_rand, 'mag');
+
+  // Outcomes & ROI screen: drive the headline money and scale the illustrative
+  // seasonality / driver splits to this cohort (mining ratios = 1, so unchanged).
+  const annualDays = h.predicted_absent_days_annual || 76462;
+  const saveRatio = (h.projected_addressable_saving_rand || 3532544) / 3532544;
+  const daysRatio = annualDays / 76462;
+  $$('[data-welo="roi:baseline"]').forEach(el => { el.dataset.zar = h.absence_cost_exposure_rand; });
+  $$('[data-welo="roi:welo"]').forEach(el => { el.dataset.zar = h.projected_addressable_saving_rand; });
+  setText('[data-welo="roi:annual-days"]', fmtInt(Math.round(annualDays)));
+  setText('[data-welo="roi:quarter-total"]', fmtInt(Math.round(annualDays)));
+  $$('[data-roi-driver]').forEach(el => { el.dataset.zar = Math.round(Number(el.dataset.zar) * saveRatio); });
+  $$('.quarter-bar[data-q-base]').forEach(el => {
+    el.dataset.value = fmtInt(Math.round(Number(el.dataset.qBase) * daysRatio)) + ' d';
+  });
 
   // Screen context: live covered-lives count + run name
   setText('[data-welo="screen-context-text"]',

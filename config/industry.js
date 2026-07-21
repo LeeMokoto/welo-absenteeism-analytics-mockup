@@ -42,10 +42,25 @@ window.WELO_PROFILES = {
   },
 };
 
-// Verticals that reuse the generic framing with their own title. Add or adjust
-// copy here as each sector's benchmarks land.
-["manufacturing", "logistics"].forEach(function (key) {
-  var p = JSON.parse(JSON.stringify(window.WELO_PROFILES.generic));
-  p.title = "Welo · Absenteeism Intelligence · " + key.charAt(0).toUpperCase() + key.slice(1);
-  window.WELO_PROFILES[key] = p;
-});
+// Sector versions have their own calibrated synthetic cohort (loaded from
+// dashboard_feed.<sector>.js) and their own benchmark framing.
+window.WELO_PROFILES.manufacturing = {
+  title: "Welo · Absenteeism Intelligence · Manufacturing",
+  copy: {
+    "metric-covered-detail": "scored manufacturing cohort",
+    "individuals-disclaimer": "IDs are synthetic manufacturing-cohort records, not real people.",
+    "chronic-sub": "% screened positive by operational-load cohort · anchored to industry workforce health benchmarks until pilot screening lands",
+    "hr-absence-detail": "annualised · vs ~4% SA manufacturing benchmark",
+    "roi-sub": "Projected impact across a 6,000-life manufacturing cohort · illustrative, benchmark-anchored on model output.",
+  },
+};
+window.WELO_PROFILES.logistics = {
+  title: "Welo · Absenteeism Intelligence · Logistics",
+  copy: {
+    "metric-covered-detail": "scored logistics cohort",
+    "individuals-disclaimer": "IDs are synthetic logistics-cohort records, not real people.",
+    "chronic-sub": "% screened positive by operational-load cohort · anchored to industry workforce health benchmarks until pilot screening lands",
+    "hr-absence-detail": "annualised · vs ~6% SA logistics benchmark",
+    "roi-sub": "Projected impact across a 6,000-life logistics cohort · illustrative, benchmark-anchored on model output.",
+  },
+};
