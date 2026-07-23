@@ -40,6 +40,12 @@ class InferenceConfig:
     )
     agent_model: str = _env("WELO_AGENT_MODEL", "claude-opus-4-8")
     agent_thinking: bool = _env("WELO_AGENT_THINKING", "1") not in ("0", "false", "False", "")
+    # Reliability knobs: keep a demo alive in front of a client. The Anthropic
+    # client retries transient errors and times out rather than hanging; the
+    # scenario endpoint is rate limited so one open URL cannot be hammered.
+    agent_timeout_s: float = float(_env("WELO_AGENT_TIMEOUT_S", "60"))
+    agent_max_retries: int = int(_env("WELO_AGENT_MAX_RETRIES", "2"))
+    rate_limit_per_min: int = int(_env("WELO_RATE_LIMIT_PER_MIN", "60"))
 
     def __post_init__(self) -> None:
         # CORS defaults to permissive for the demo. Lock this down in production

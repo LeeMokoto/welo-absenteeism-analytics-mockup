@@ -18,22 +18,38 @@
   var params = new URLSearchParams(location.search);
   var base = (params.get('api') || window.WELO_API_BASE || '').replace(/\/+$/, '');
 
-  var state = { base: base, available: false, model: null, agents: [], checked: false };
+  var state = { base: base, available: false, model: null, agents: [], scenario: false, checked: false };
 
   function url(path) { return base + path; }
   function safeParse(s) { try { return JSON.parse(s); } catch (e) { return {}; } }
 
-  // Probe the proxy once. Resolves to the state object either way.
+  // Probe the proxy once. Checks both the AI agents (need a key) and the
+  // deterministic what-if scoring (needs only the model loaded, no key).
+  // Resolves to the state object either way.
   function status() {
     if (!base) { state.checked = true; return Promise.resolve(state); }
-    return fetch(url('/agents'))
+    var agentsP = fetch(url('/agents'))
       .then(function (r) { return r.ok ? r.json() : null; })
       .then(function (j) {
         if (j) { state.available = !!j.available; state.model = j.model; state.agents = j.agents || []; }
-        state.checked = true;
-        return state;
       })
-      .catch(function () { state.checked = true; return state; });
+      .catch(function () {});
+    var scenP = fetch(url('/scenario/levers'))
+      .then(function (r) { state.scenario = r.ok; })
+      .catch(function () { state.scenario = false; });
+    return Promise.all([agentsP, scenP]).then(function () { state.checked = true; return state; });
+  }
+
+  // Run a deterministic what-if: POST adjustments (+ optional cohort) to the
+  // proxy, which re-scores the real cohort through the model. Resolves to the
+  // result object, or null when no live endpoint is configured / reachable.
+  function scenario(adjustments, dimension, cohort) {
+    if (!base) return Promise.resolve(null);
+    return fetch(url('/scenario'), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ adjustments: adjustments, dimension: dimension || null, cohort: cohort || null }),
+    }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; });
   }
 
   function runFallback(agent, question, data, handlers) {
@@ -100,7 +116,7 @@
     return function () { ctrl.abort(); };
   }
 
-  window.WeloAgents = { status: status, ask: ask, state: state, fallback: {} };
+  window.WeloAgents = { status: status, ask: ask, scenario: scenario, state: state, fallback: {} };
 
   // -- Offline fallbacks -------------------------------------------------------
   // Deterministic, data-driven summaries used when no live agent is configured.

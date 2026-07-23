@@ -120,6 +120,23 @@ class AgentsStatusResponse(BaseModel):
     reason: Optional[str] = None
 
 
+class ScenarioRequest(BaseModel):
+    """A what-if: pull one or more levers and re-score a cohort live.
+
+    ``adjustments`` maps a lever name (see GET /scenario/levers) to a value,
+    e.g. ``{"overtime_pct": -20, "sleep_delta": 0.5}``. ``dimension`` and
+    ``cohort`` optionally scope it to a single cohort, e.g. dimension
+    ``cohort_load`` and cohort ``High-intensity ops``; omit both to run the
+    whole scored workforce.
+    """
+
+    adjustments: Dict[str, float] = Field(
+        ..., min_length=1, description="Lever name to value, e.g. {'overtime_pct': -20}."
+    )
+    dimension: Optional[str] = Field(default=None, description="Cohort dimension to scope to.")
+    cohort: Optional[str] = Field(default=None, description="Cohort label within that dimension.")
+
+
 class HealthResponse(BaseModel):
     status: str
     version: str

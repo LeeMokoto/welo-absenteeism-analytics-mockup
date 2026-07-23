@@ -44,6 +44,39 @@ is configured and an "Offline demo" chip otherwise; the offline path is a
 built-in, data-driven summary computed from the same grounding, so the
 shareable static build still shows real figures.
 
+## Live what-if scoring (the model, operated)
+
+Beyond talking about the numbers, the service can **re-score a real cohort
+through the trained model** when you pull an operational lever. This is
+deterministic (no LLM, no key), so it works the moment the service is deployed.
+
+- `GET /scenario/levers` - the levers you can pull and their bounds (cut
+  overtime, add sleep, add an active day, fewer consecutive shifts, cap the
+  leave gap, ease workload).
+- `POST /scenario` - body `{adjustments, dimension?, cohort?}`, e.g.
+  `{"adjustments": {"overtime_pct": -20}, "dimension": "cohort_load", "cohort": "High-intensity ops"}`.
+  Returns baseline vs scenario aggregates plus the delta: absent days avoided
+  (90d), Rand saved (annual), and how many people move out of high or critical.
+
+It takes the individual records the model already scored, applies the change to
+their inputs, and runs both baseline and scenario back through the SAME model, so
+the before / after delta is apples to apples. The levers are bounded, results are
+cached, and the endpoint is rate limited. The dashboard surfaces this as the
+**Live what-if** panel on the Outcomes and ROI screen; the agents can call the
+same engine as a tool (`scenario.run_scenario`).
+
+## Reliability (built for a live demo)
+
+- The Anthropic client is constructed with a timeout and automatic retries
+  (`WELO_AGENT_TIMEOUT_S`, `WELO_AGENT_MAX_RETRIES`), so a transient blip does
+  not hang or kill a call in front of a client.
+- `available` requires a **resolvable API key**. The current SDK no longer
+  raises at construction when the key is missing, so without this check the
+  dashboard would show "Live" and then fail on the first call; instead it stays
+  on the offline fallback until a key is actually present.
+- What-if results are cached (same levers, same cohort, same answer) and
+  `/scenario` is rate limited per client (`WELO_RATE_LIMIT_PER_MIN`).
+
 ## Configuration (environment variables)
 
 | Variable | Default | Purpose |
@@ -52,6 +85,9 @@ shareable static build still shows real figures.
 | `WELO_ANTHROPIC_API_KEY` | (none) | Optional namespaced override, takes precedence over `ANTHROPIC_API_KEY`. |
 | `WELO_AGENT_MODEL` | `claude-opus-4-8` | Model the agents call. Swap to `claude-sonnet-5` or `claude-haiku-4-5` to trade quality for cost. |
 | `WELO_AGENT_THINKING` | `1` | Adaptive thinking on. Set `0` for slightly snappier, lighter turns. |
+| `WELO_AGENT_TIMEOUT_S` | `60` | Per-call timeout for the Anthropic client. |
+| `WELO_AGENT_MAX_RETRIES` | `2` | Automatic retries on transient API errors. |
+| `WELO_RATE_LIMIT_PER_MIN` | `60` | Per-client cap on `/scenario`. Set `0` to disable. |
 
 If no key is configured the service starts normally, `/agents` reports
 `available: false`, and the dashboard falls back to its built-in summaries. The

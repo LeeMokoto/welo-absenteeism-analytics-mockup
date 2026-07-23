@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import json
 import logging
+import time
 from contextlib import asynccontextmanager
 from typing import Any, Dict
 
@@ -22,12 +23,14 @@ from fastapi.responses import JSONResponse, StreamingResponse
 from . import __version__
 from .agents import AgentService, AgentUnavailable
 from .config import InferenceConfig, get_config
+from . import scenario as scenario_engine
 from .schemas import (
     AgentRequest,
     AgentResponse,
     AgentsStatusResponse,
     HealthResponse,
     MetadataResponse,
+    ScenarioRequest,
     ScoreRequest,
     ScoreResponse,
 )
@@ -66,9 +69,13 @@ async def lifespan(app: FastAPI):
         model=config.agent_model,
         api_key=config.anthropic_api_key,
         thinking=config.agent_thinking,
+        timeout_s=config.agent_timeout_s,
+        max_retries=config.agent_max_retries,
     )
     app.state.config = config
     app.state.service = service
+    app.state.scenario_cache = {}       # deterministic what-ifs cache cleanly
+    app.state.rate_buckets = {}         # per-client token buckets
     app.state.agents = agents
     log.info(
         "startup complete: ready=%s version=%s agents=%s (%s)",
@@ -258,3 +265,72 @@ def agent_stream(request: Request, agent: str, payload: AgentRequest) -> Streami
         media_type="text/event-stream",
         headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
     )
+
+
+# --- What-if scenarios (live model scoring) -----------------------------------
+# The dashboard (and the agents) can pull levers and re-score a real cohort
+# through the trained model. This is deterministic: no LLM, no key required, so
+# it works the moment the service is deployed. Results are cached (same levers,
+# same cohort, same answer) and the endpoint is rate limited.
+
+
+def _rate_limit(request: Request) -> None:
+    """Simple per-client token bucket so one open URL cannot be hammered."""
+    cfg: InferenceConfig = request.app.state.config
+    limit = cfg.rate_limit_per_min
+    if limit <= 0:
+        return
+    buckets: Dict[str, Any] = request.app.state.rate_buckets
+    key = request.client.host if request.client else "unknown"
+    now = time.monotonic()
+    tokens, last = buckets.get(key, (float(limit), now))
+    tokens = min(float(limit), tokens + (now - last) * (limit / 60.0))  # refill
+    if tokens < 1.0:
+        raise HTTPException(status_code=429, detail="Rate limit exceeded. Try again shortly.")
+    buckets[key] = (tokens - 1.0, now)
+
+
+@app.get("/scenario/levers", tags=["scenario"])
+def scenario_levers() -> Dict[str, Any]:
+    """The levers a what-if scenario may pull, with their bounds."""
+    return {"levers": scenario_engine.levers_spec()}
+
+
+@app.post(
+    "/scenario",
+    tags=["scenario"],
+    dependencies=[Depends(require_api_key), Depends(_rate_limit)],
+)
+def run_scenario(request: Request, payload: ScenarioRequest) -> Dict[str, Any]:
+    """Re-score a cohort before and after the adjustments, live on the model."""
+    svc: InferenceService = request.app.state.service
+    if not svc.ready:
+        raise HTTPException(status_code=503, detail="Model not loaded.")
+    individuals = (svc.dashboard_feed or {}).get("individuals") or []
+    if not individuals:
+        raise HTTPException(
+            status_code=404,
+            detail="No scored individuals in the feed to run a scenario on.",
+        )
+
+    cache: Dict[str, Any] = request.app.state.scenario_cache
+    ckey = json.dumps(
+        {"a": payload.adjustments, "d": payload.dimension, "c": payload.cohort},
+        sort_keys=True,
+    )
+    if ckey in cache:
+        return {**cache[ckey], "cached": True}
+
+    def score_fn(emps):
+        return svc.score(emps, include_reasons=False)
+
+    try:
+        result = scenario_engine.run_scenario(
+            score_fn, individuals, payload.adjustments, payload.dimension, payload.cohort
+        )
+    except scenario_engine.ScenarioError as exc:
+        raise HTTPException(status_code=422, detail=str(exc))
+
+    if len(cache) < 512:  # bound the cache; a demo will never approach this
+        cache[ckey] = result
+    return {**result, "cached": False}

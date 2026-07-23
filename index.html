@@ -2650,6 +2650,58 @@ table { border-collapse: collapse; width: 100%; }
     </div>
   </div>
 
+  <div class="panel" id="whatif-panel">
+    <div class="panel-header">
+      <div>
+        <div class="panel-title">
+          <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="vertical-align:-2px"><path d="M3 3v18h18"/><path d="m7 14 4-4 3 3 5-6"/></svg>
+          Live what-if · model re-score
+        </div>
+        <div class="panel-sub">Pull an operational lever and the trained model re-scores the cohort live: this is the model computing the outcome, not an illustrative slider. Needs a live Welo endpoint (the same one that powers the AI agents).</div>
+      </div>
+      <span class="chip" id="whatif-status">Offline demo</span>
+    </div>
+
+    <div class="whatif-controls" style="display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end;margin-top:4px;">
+      <label style="display:flex;flex-direction:column;gap:5px;font-size:12px;color:var(--ink-faint);">Cohort
+        <select id="whatif-cohort" style="min-width:220px;padding:9px 12px;border:1px solid var(--line);border-radius:9px;background:var(--surface-2,rgba(0,0,0,0.02));font-size:13px;color:var(--ink);font-family:inherit;">
+          <option value="">Whole workforce</option>
+        </select>
+      </label>
+      <label style="display:flex;flex-direction:column;gap:5px;font-size:12px;color:var(--ink-faint);">Lever
+        <select id="whatif-lever" style="min-width:200px;padding:9px 12px;border:1px solid var(--line);border-radius:9px;background:var(--surface-2,rgba(0,0,0,0.02));font-size:13px;color:var(--ink);font-family:inherit;">
+          <option value="overtime_pct|-20">Cut overtime 20%</option>
+          <option value="overtime_pct|-40">Cut overtime 40%</option>
+          <option value="sleep_delta|0.5">Add 0.5h sleep / night</option>
+          <option value="activity_delta|1">Add 1 active day / week</option>
+          <option value="consecutive_shifts_delta|-2">Two fewer consecutive shifts</option>
+          <option value="leave_gap_cap|120">Cap leave gap at 120 days</option>
+          <option value="workload_pct|-10">Ease workload 10%</option>
+        </select>
+      </label>
+      <button class="cta-btn" id="whatif-run">Re-score on the model</button>
+    </div>
+    <div class="ind-action-row"><span class="ind-action-note" id="whatif-note">Connect a live endpoint (append ?api=... to the URL) to run this against the model. The figures on this screen stay illustrative until then.</span></div>
+
+    <div id="whatif-out" class="scenario-dual" style="display:none;margin-top:16px;">
+      <div class="scenario-dual-col">
+        <div class="scenario-dual-label">Absent days avoided · 90d</div>
+        <div class="scenario-dual-value"><span id="whatif-days">0</span></div>
+        <div class="scenario-dual-sub"><span id="whatif-pct">0</span>% of cohort exposure</div>
+      </div>
+      <div class="scenario-dual-col">
+        <div class="scenario-dual-label">Cost avoided · annual</div>
+        <div class="scenario-dual-value"><span class="stat-rand-bright" data-cur-sym>R</span> <span id="whatif-cost">0</span></div>
+        <div class="scenario-dual-sub"><span id="whatif-lives">0</span> lives re-scored</div>
+      </div>
+      <div class="scenario-dual-col">
+        <div class="scenario-dual-label">Moved out of high / critical</div>
+        <div class="scenario-dual-value"><span id="whatif-hicrit">0</span></div>
+        <div class="scenario-dual-sub">fewer elevated-risk employees</div>
+      </div>
+    </div>
+  </div>
+
 </section>
 
 <script src="config/industry.js" onerror="window.WELO_PROFILES=null;"></script>
@@ -3585,6 +3637,65 @@ window.addEventListener('load', () => {
     { run: 'hrops-ai-run', out: 'hrops-ai-out', status: 'hrops-ai-status' },
     () => feed.hr_ops || {},
     () => 'From these HR operational aggregates, where do the cover gap and overtime cost land hardest, what rostering or relief-pool change reduces them, and what should the team watch next? Quantify the days and Rand at stake.');
+
+  // --- Live what-if panel (Outcomes & ROI) ----------------------------------
+  // Pulls a lever and asks the proxy to re-score the real cohort through the
+  // model. Deterministic, no key needed, but it does need a live endpoint, so
+  // the panel enables itself only when /scenario is reachable.
+  (function wireWhatIf() {
+    const runBtn = $('#whatif-run');
+    if (!runBtn || !window.WeloAgents) return;
+    const chip = $('#whatif-status'), note = $('#whatif-note'), out = $('#whatif-out');
+    const cohortSel = $('#whatif-cohort'), leverSel = $('#whatif-lever');
+    runBtn.disabled = true;
+
+    // Cohort options from the operational-load and lifestyle lenses. The label
+    // is what the individual records carry, so it matches server-side.
+    ['cohort_load', 'cohort_lifestyle'].forEach(dim => {
+      const list = cohorts[dim];
+      if (!Array.isArray(list) || !cohortSel) return;
+      const og = document.createElement('optgroup');
+      og.label = dimLabel(dim);
+      list.forEach(c => {
+        const o = document.createElement('option');
+        o.value = dim + '|' + c.label; o.textContent = c.label;
+        og.appendChild(o);
+      });
+      cohortSel.appendChild(og);
+    });
+
+    let live = false;
+    WeloAgents.status().then(s => {
+      if (s.scenario) {
+        live = true;
+        chip.textContent = 'Live · ' + (s.model || 'model');
+        chip.className = 'chip green';
+        note.textContent = 'Scenarios re-score the real cohort through the trained model, so these are exact model outputs, not an illustrative slider.';
+        runBtn.disabled = false;
+      }
+    });
+
+    runBtn.addEventListener('click', () => {
+      if (!live) return;
+      const parts = leverSel.value.split('|');
+      const adj = {}; adj[parts[0]] = parseFloat(parts[1]);
+      let dim = null, coh = null;
+      if (cohortSel.value) { const p = cohortSel.value.split('|'); dim = p[0]; coh = p.slice(1).join('|'); }
+      runBtn.disabled = true; runBtn.textContent = 'Re-scoring...';
+      WeloAgents.scenario(adj, dim, coh).then(r => {
+        runBtn.disabled = false; runBtn.textContent = 'Re-score on the model';
+        if (!r || !r.delta) { note.textContent = 'Could not reach the live endpoint. Check the ?api= URL.'; return; }
+        out.style.display = 'flex';
+        setText('#whatif-days', fmtInt(r.delta.predicted_absent_days_90d));
+        setText('#whatif-pct', r.delta.days_saved_pct);
+        setText('#whatif-hicrit', fmtInt(r.delta.high_or_critical_count));
+        setText('#whatif-lives', fmtInt(r.cohort.covered_lives));
+        const costEl = $('#whatif-cost');
+        if (costEl) { costEl.dataset.zar = Math.round(r.delta.cost_saved_rand_annual); costEl.dataset.form = 'mag'; }
+        applyCurrency(out);
+      });
+    });
+  })();
 
   // Console crumb for debugging, visible in dev tools when you load the page
   console.info(

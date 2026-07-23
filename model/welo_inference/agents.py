@@ -113,6 +113,8 @@ class AgentService:
         model: str = "claude-opus-4-8",
         api_key: Optional[str] = None,
         thinking: bool = True,
+        timeout_s: float = 60.0,
+        max_retries: int = 2,
     ) -> None:
         self.model = model
         self.thinking = thinking
@@ -125,12 +127,26 @@ class AgentService:
             )
             return
         try:
-            # Passing api_key=None lets the SDK resolve ANTHROPIC_API_KEY itself.
+            # timeout + max_retries keep a demo from hanging or dying on a
+            # transient error. Passing api_key=None lets the SDK resolve
+            # ANTHROPIC_API_KEY from the environment itself.
+            opts = {"timeout": timeout_s, "max_retries": max_retries}
             self._client = (
-                anthropic.Anthropic(api_key=api_key) if api_key
-                else anthropic.Anthropic()
+                anthropic.Anthropic(api_key=api_key, **opts) if api_key
+                else anthropic.Anthropic(**opts)
             )
-        except Exception as exc:  # no key in the environment, typically
+            # The SDK no longer raises at construction when no key is present; it
+            # defers to call time. If we did not check here, the service would
+            # report available=true with no key, the dashboard would show "Live",
+            # and the first real call would fail in front of a client. So require
+            # a resolvable key up front and stay on the offline fallback otherwise.
+            if not getattr(self._client, "api_key", None):
+                self._reason_unavailable = (
+                    "No Anthropic API key configured "
+                    "(set ANTHROPIC_API_KEY or WELO_ANTHROPIC_API_KEY)."
+                )
+                self._client = None
+        except Exception as exc:  # pragma: no cover - unexpected SDK error
             self._reason_unavailable = str(exc)
             self._client = None
 
