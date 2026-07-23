@@ -1907,6 +1907,30 @@ table { border-collapse: collapse; width: 100%; }
     </table>
   </div>
 
+  <div class="panel" id="portfolio-ai-panel">
+    <div class="panel-header">
+      <div>
+        <div class="panel-title">
+          <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="vertical-align:-2px"><path d="M12 2a5 5 0 0 1 5 5v1a5 5 0 0 1-1 3 5 5 0 0 1 1 3v1a5 5 0 0 1-10 0v-1a5 5 0 0 1 1-3 5 5 0 0 1-1-3V7a5 5 0 0 1 5-5Z"/><path d="M9 9h.01M15 9h.01"/></svg>
+          AI Portfolio Analyst
+        </div>
+        <div class="panel-sub">Ask an open question of the model output: where absence and cost concentrate, which cohorts carry the risk, what to target first. Grounded on the headline, risk distribution and cohort summary, powered by the Anthropic API when a Welo agent endpoint is configured.</div>
+      </div>
+      <span class="chip" id="portfolio-ai-status">Offline demo</span>
+    </div>
+    <div class="ind-action-row" style="flex-wrap:wrap;gap:8px;">
+      <input id="portfolio-ai-q" type="text" placeholder="e.g. Which cohort should we target first, and why?" style="flex:1;min-width:260px;padding:10px 14px;border:1px solid var(--line);border-radius:10px;background:var(--surface-2,rgba(0,0,0,0.02));font-size:13.5px;color:var(--ink);font-family:inherit;" />
+      <button class="cta-btn" id="portfolio-ai-run">Ask the analyst</button>
+    </div>
+    <div class="ind-action-row" style="flex-wrap:wrap;gap:6px;margin-top:2px;" id="portfolio-ai-suggest">
+      <span class="chip" data-ai-q="Which cohort should we target first for the highest return, and why?" style="cursor:pointer;">Where to start</span>
+      <span class="chip" data-ai-q="Where do absence days and cost concentrate across the workforce?" style="cursor:pointer;">Where cost concentrates</span>
+      <span class="chip" data-ai-q="Summarise this workforce for a board slide in five lines." style="cursor:pointer;">Board summary</span>
+    </div>
+    <div class="ind-action-row"><span class="ind-action-note" id="portfolio-ai-note">Uses the model output on this screen as grounding. Falls back to a built-in summary when no endpoint is set.</span></div>
+    <div id="portfolio-ai-out" style="display:none;white-space:pre-wrap;margin-top:14px;padding:16px 18px;border:1px solid var(--line);border-radius:10px;background:var(--surface-2,rgba(0,0,0,0.02));font-size:13.5px;line-height:1.55;color:var(--ink)"></div>
+  </div>
+
 </section>
 
 <section class="screen" id="screen-cohorts">
@@ -2413,6 +2437,24 @@ table { border-collapse: collapse; width: 100%; }
         </tr>
       </tbody>
     </table>
+  </div>
+
+  <div class="panel" id="hrops-ai-panel">
+    <div class="panel-header">
+      <div>
+        <div class="panel-title">
+          <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="vertical-align:-2px"><path d="M12 2a5 5 0 0 1 5 5v1a5 5 0 0 1-1 3 5 5 0 0 1 1 3v1a5 5 0 0 1-10 0v-1a5 5 0 0 1 1-3 5 5 0 0 1-1-3V7a5 5 0 0 1 5-5Z"/><path d="M9 9h.01M15 9h.01"/></svg>
+          AI Cover Coordinator
+        </div>
+        <div class="panel-sub">Turns the cover-gap, overtime and return-to-work figures on this screen into concrete rostering actions: where the gap lands hardest, what relief-pool or roster change reduces it, and what to watch next. Grounded on the HR-ops aggregates, powered by the Anthropic API when a Welo agent endpoint is configured.</div>
+      </div>
+      <span class="chip" id="hrops-ai-status">Offline demo</span>
+    </div>
+    <div class="ind-action-row">
+      <button class="cta-btn" id="hrops-ai-run">Draft cover and roster plan</button>
+      <span class="ind-action-note" id="hrops-ai-note">Uses the HR and Ops model output on this screen as grounding. Falls back to a built-in summary when no endpoint is set.</span>
+    </div>
+    <div id="hrops-ai-out" style="display:none;white-space:pre-wrap;margin-top:14px;padding:16px 18px;border:1px solid var(--line);border-radius:10px;background:var(--surface-2,rgba(0,0,0,0.02));font-size:13.5px;line-height:1.55;color:var(--ink)"></div>
   </div>
 
 </section>
@@ -3461,6 +3503,88 @@ window.addEventListener('load', () => {
         </tr>`).join('');
     }
   }
+
+  // --- AI Analyst (portfolio) & Cover Coordinator (HR & Ops) ----------------
+  // Same Anthropic-powered proxy as the Case Assistant, grounded on the model
+  // output already on each screen. Both fall back to a built-in summary when no
+  // endpoint is configured (see config/agents.js).
+  function wireAgentPanel(agent, ids, buildGrounding, buildQuestion) {
+    const btn = $('#' + ids.run);
+    if (!btn || !window.WeloAgents) return;
+    const out = $('#' + ids.out), chip = $('#' + ids.status);
+    const label = btn.textContent;
+    let abort = null;
+    WeloAgents.status().then(s => {
+      if (s.available) { chip.textContent = 'Live · ' + (s.model || 'AI'); chip.className = 'chip green'; }
+    });
+    const run = () => {
+      if (abort) { abort(); abort = null; }
+      out.style.display = 'block';
+      out.textContent = '';
+      btn.disabled = true;
+      btn.textContent = 'Working...';
+      abort = WeloAgents.ask(agent, buildQuestion(), buildGrounding(), {
+        onToken: t => { out.textContent += t; },
+        onDone: (full, meta) => {
+          btn.disabled = false; btn.textContent = label;
+          if (meta && meta.fallback) { chip.textContent = 'Offline demo'; chip.className = 'chip'; }
+        },
+        onError: () => {
+          btn.disabled = false; btn.textContent = label;
+          out.textContent += '\n\n[could not reach the agent endpoint]';
+        },
+      });
+    };
+    btn.addEventListener('click', run);
+    return run;
+  }
+
+  // Compact, grounded portfolio snapshot for the Analyst.
+  function analystGrounding() {
+    const cohortSummary = {};
+    (dims || []).forEach(d => {
+      const list = cohorts[d.key];
+      if (!Array.isArray(list)) return;
+      cohortSummary[dimLabel(d.key)] = list.map(c => ({
+        cohort: c.label,
+        covered_lives: c.count,
+        high_or_critical_share: c.high_or_critical_share,
+        absent_days_per_head_annual: c.absent_days_per_head_annual,
+        predicted_absent_days_90d: Math.round(c.predicted_absent_days_90d || 0),
+        cost_exposure_rand: Math.round(c.cost_exposure_rand || 0),
+        mean_fatigue: c.mean_fatigue,
+      }));
+    });
+    return {
+      covered_lives: h.covered_lives,
+      predicted_absent_days_90d: h.predicted_absent_days_90d,
+      cost_exposure_rand_90d: h.absence_cost_exposure_rand,
+      addressable_saving_rand: h.projected_addressable_saving_rand,
+      fatigue_high_or_critical_share: h.fatigue_high_or_critical_share,
+      risk_distribution: (feed.risk_distribution || []).map(b => ({ band: b.band, share: b.share, count: b.count })),
+      cohorts_by_lens: cohortSummary,
+    };
+  }
+
+  const runAnalyst = wireAgentPanel('analyst',
+    { run: 'portfolio-ai-run', out: 'portfolio-ai-out', status: 'portfolio-ai-status' },
+    analystGrounding,
+    () => {
+      const q = ($('#portfolio-ai-q') && $('#portfolio-ai-q').value || '').trim();
+      return q || 'Where does absence and cost concentrate across this workforce, and which cohort should we target first?';
+    });
+  // suggestion chips + enter-to-ask for the analyst box
+  const aq = $('#portfolio-ai-q');
+  if (aq && runAnalyst) {
+    aq.addEventListener('keydown', e => { if (e.key === 'Enter') runAnalyst(); });
+    (document.querySelectorAll('#portfolio-ai-suggest [data-ai-q]') || []).forEach(chip =>
+      chip.addEventListener('click', () => { aq.value = chip.dataset.aiQ; runAnalyst(); }));
+  }
+
+  wireAgentPanel('coordinator',
+    { run: 'hrops-ai-run', out: 'hrops-ai-out', status: 'hrops-ai-status' },
+    () => feed.hr_ops || {},
+    () => 'From these HR operational aggregates, where do the cover gap and overtime cost land hardest, what rostering or relief-pool change reduces them, and what should the team watch next? Quantify the days and Rand at stake.');
 
   // Console crumb for debugging, visible in dev tools when you load the page
   console.info(

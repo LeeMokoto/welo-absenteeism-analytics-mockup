@@ -36,6 +36,14 @@ data, treat records as synthetic screening signals (not a diagnosis of a real
 person), talk cohorts and interventions rather than surveillance, quantify in
 Rand, stay brief, and no em or en dashes.
 
+All three are wired into the dashboard: the **Analyst** as an ask-anything box
+(with suggested prompts) at the foot of the Portfolio screen, the **Case
+Assistant** on the Individual profile screen, and the **Cover Coordinator** at
+the foot of the HR and Ops screen. Each panel shows a "Live" chip when a proxy
+is configured and an "Offline demo" chip otherwise; the offline path is a
+built-in, data-driven summary computed from the same grounding, so the
+shareable static build still shows real figures.
+
 ## Configuration (environment variables)
 
 | Variable | Default | Purpose |

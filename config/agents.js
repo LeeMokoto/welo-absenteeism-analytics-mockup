@@ -136,20 +136,68 @@
     return lines.join('\n');
   };
 
+  function rand(n) {
+    if (n == null) return 'n/a';
+    n = Math.round(n);
+    if (n >= 1e6) return 'R ' + (n / 1e6).toFixed(1) + 'm';
+    if (n >= 1e3) return 'R ' + Math.round(n / 1e3) + 'k';
+    return 'R ' + n;
+  }
+  function pct(x) { return x == null ? 'n/a' : Math.round(x * 100) + '%'; }
+
   F.analyst = function (q, d) {
     d = d || {};
-    return 'Portfolio summary (built-in, no live AI configured)\n\n' +
-      'Configure a Welo agent endpoint (?api=...) to ask open questions of the ' +
-      'model output. Offline, the dashboard shows the pre-computed figures on ' +
-      'each screen.';
+    var lines = ['Portfolio read (built-in summary, no live AI configured)', ''];
+    lines.push((d.covered_lives != null ? d.covered_lives.toLocaleString() : 'The') +
+      ' covered lives, ' + (d.predicted_absent_days_90d != null ? Math.round(d.predicted_absent_days_90d).toLocaleString() : 'n/a') +
+      ' predicted absent days over 90 days, ' + rand(d.cost_exposure_rand_90d) + ' cost exposure. ' +
+      pct(d.fatigue_high_or_critical_share) + ' sit in the high or critical fatigue band.');
+    // find the single cohort with the highest high/critical concentration
+    var best = null, bestLens = null;
+    Object.keys(d.cohorts_by_lens || {}).forEach(function (lens) {
+      (d.cohorts_by_lens[lens] || []).forEach(function (c) {
+        if (!best || (c.high_or_critical_share || 0) > (best.high_or_critical_share || 0)) { best = c; bestLens = lens; }
+      });
+    });
+    if (best) {
+      lines.push('');
+      lines.push('Where to start: the "' + best.cohort + '" cohort (' + bestLens + ' lens) carries the ' +
+        'highest concentration at ' + pct(best.high_or_critical_share) + ' high or critical, ' +
+        best.absent_days_per_head_annual + ' days per head per year, ' + rand(best.cost_exposure_rand) + ' exposure. ' +
+        'Target it first for the highest return.');
+    }
+    lines.push('');
+    lines.push('Addressable saving across the workforce: ' + rand(d.addressable_saving_rand) + '.');
+    lines.push('');
+    lines.push('Configure a Welo agent endpoint (?api=...) to ask open questions of this data.');
+    return lines.join('\n');
   };
 
   F.coordinator = function (q, d) {
     d = d || {};
-    return 'Cover and roster summary (built-in, no live AI configured)\n\n' +
-      'Configure a Welo agent endpoint (?api=...) for staffing recommendations ' +
-      'over the HR-ops aggregates. Offline, the HR and Ops screen shows the ' +
-      'cover-gap and overtime figures directly.';
+    var hh = d.headline || {}, cov = d.cover || {}, fr = d.frequency || {}, rtw = d.return_to_work || {};
+    var lines = ['Cover and roster read (built-in summary, no live AI configured)', ''];
+    var rate = hh.absence_rate != null ? (hh.absence_rate * 100).toFixed(1) + '%' : 'n/a';
+    lines.push('Predicted absence rate ' + rate + '. Next 90 days: ' +
+      (hh.cover_gap_days_90d != null ? Math.round(hh.cover_gap_days_90d).toLocaleString() : 'n/a') +
+      ' cover-gap days needing backfill, ' + rand(hh.backfill_cost_rand_90d) + ' backfill cost, ' +
+      (hh.rtw_caseload != null ? hh.rtw_caseload.toLocaleString() : 'n/a') + ' in the return-to-work caseload.');
+    // heaviest cover-gap cohort
+    var cohorts = d.by_cohort || [];
+    var hot = cohorts.slice().sort(function (a, b) { return (b.cover_gap_days_90d || 0) - (a.cover_gap_days_90d || 0); })[0];
+    if (hot) {
+      lines.push('');
+      lines.push('Gap lands hardest on "' + hot.label + '": ' + Math.round(hot.cover_gap_days_90d || 0).toLocaleString() +
+        ' cover-gap days, ' + rand(hot.backfill_cost_rand_90d) + ' backfill, ' + (hot.overtime_mean_14d || 'n/a') +
+        'h mean overtime per 14 days. Build a relief buffer here first and cap overtime before it compounds.');
+    }
+    if (fr.trigger_count != null) {
+      lines.push('');
+      lines.push(fr.trigger_count.toLocaleString() + ' people hit the frequency trigger (4+ spells / year): route to return-to-work interviews.');
+    }
+    lines.push('');
+    lines.push('Configure a Welo agent endpoint (?api=...) for live rostering recommendations.');
+    return lines.join('\n');
   };
 
   F._default = function (q, d) {
