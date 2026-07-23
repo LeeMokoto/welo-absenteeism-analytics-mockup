@@ -32,6 +32,14 @@ class InferenceConfig:
     cors_origins: list[str] = None
     horizon_days: int = int(_env("WELO_HORIZON_DAYS", "90"))
     hours_per_day: float = float(_env("WELO_HOURS_PER_DAY", "8"))
+    # Agent layer (Anthropic Messages API). The key is read server-side only.
+    # ANTHROPIC_API_KEY is the SDK's own env var; WELO_ANTHROPIC_API_KEY is an
+    # explicit override if you prefer to namespace it with the other WELO_ vars.
+    anthropic_api_key: str | None = (
+        _env("WELO_ANTHROPIC_API_KEY", "") or _env("ANTHROPIC_API_KEY", "") or None
+    )
+    agent_model: str = _env("WELO_AGENT_MODEL", "claude-opus-4-8")
+    agent_thinking: bool = _env("WELO_AGENT_THINKING", "1") not in ("0", "false", "False", "")
 
     def __post_init__(self) -> None:
         # CORS defaults to permissive for the demo. Lock this down in production

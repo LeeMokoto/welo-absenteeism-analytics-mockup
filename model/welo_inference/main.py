@@ -10,17 +10,22 @@ http://localhost:8080/docs.
 
 from __future__ import annotations
 
+import json
 import logging
 from contextlib import asynccontextmanager
 from typing import Any, Dict
 
 from fastapi import Depends, FastAPI, Header, HTTPException, Request, status
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, StreamingResponse
 
 from . import __version__
+from .agents import AgentService, AgentUnavailable
 from .config import InferenceConfig, get_config
 from .schemas import (
+    AgentRequest,
+    AgentResponse,
+    AgentsStatusResponse,
     HealthResponse,
     MetadataResponse,
     ScoreRequest,
@@ -57,9 +62,21 @@ async def lifespan(app: FastAPI):
         service.load()
     except Exception as exc:
         log.exception("model load failed: %s", exc)
+    agents = AgentService(
+        model=config.agent_model,
+        api_key=config.anthropic_api_key,
+        thinking=config.agent_thinking,
+    )
     app.state.config = config
     app.state.service = service
-    log.info("startup complete: ready=%s version=%s", service.ready, service.model_version)
+    app.state.agents = agents
+    log.info(
+        "startup complete: ready=%s version=%s agents=%s (%s)",
+        service.ready,
+        service.model_version,
+        agents.available,
+        agents.model if agents.available else agents.reason_unavailable,
+    )
     yield
 
 
@@ -165,3 +182,79 @@ def score_explain(request: Request, payload: ScoreRequest) -> ScoreResponse:
     """Convenience endpoint that always returns SHAP top reasons per employee."""
     payload.include_reasons = True
     return score(request, payload)
+
+
+# --- Agents (Anthropic Messages API) ------------------------------------------
+# These endpoints call the Anthropic API server-side. The API key lives only in
+# this process (ANTHROPIC_API_KEY / WELO_ANTHROPIC_API_KEY), never in the
+# browser. When no key is configured the status endpoint reports
+# available=false and the dashboard falls back to its built-in summaries.
+
+
+@app.get("/agents", response_model=AgentsStatusResponse, tags=["agents"])
+def agents_status(request: Request) -> AgentsStatusResponse:
+    """Whether the AI agents are configured. The dashboard polls this to decide
+    between live agents and its offline fallback."""
+    svc: AgentService = request.app.state.agents
+    return AgentsStatusResponse(
+        available=svc.available,
+        model=svc.model if svc.available else None,
+        agents=svc.agents,
+        reason=None if svc.available else svc.reason_unavailable,
+    )
+
+
+@app.post(
+    "/agents/{agent}",
+    response_model=AgentResponse,
+    tags=["agents"],
+    dependencies=[Depends(require_api_key)],
+)
+def agent_run(request: Request, agent: str, payload: AgentRequest) -> AgentResponse:
+    """Non-streaming agent call. Returns the full answer plus token usage."""
+    svc: AgentService = request.app.state.agents
+    if agent not in svc.agents:
+        raise HTTPException(status_code=404, detail=f"Unknown agent '{agent}'.")
+    try:
+        result = svc.run(agent, payload.question, payload.data)
+    except AgentUnavailable as exc:
+        raise HTTPException(status_code=503, detail=str(exc))
+    return AgentResponse(**result)
+
+
+@app.post(
+    "/agents/{agent}/stream",
+    tags=["agents"],
+    dependencies=[Depends(require_api_key)],
+)
+def agent_stream(request: Request, agent: str, payload: AgentRequest) -> StreamingResponse:
+    """Stream the agent's answer as Server-Sent Events.
+
+    Each token arrives as a ``data:`` line; the stream ends with
+    ``event: done``. This keeps the dashboard panel filling in live, which is
+    the point of the demo.
+    """
+    svc: AgentService = request.app.state.agents
+    if agent not in svc.agents:
+        raise HTTPException(status_code=404, detail=f"Unknown agent '{agent}'.")
+    if not svc.available:
+        raise HTTPException(status_code=503, detail=svc.reason_unavailable or "Agents not configured.")
+
+    def event_source():
+        try:
+            for chunk in svc.stream(agent, payload.question, payload.data):
+                yield f"data: {json.dumps({'text': chunk})}\n\n"
+        except AgentUnavailable as exc:
+            yield f"event: error\ndata: {json.dumps({'error': str(exc)})}\n\n"
+            return
+        except Exception as exc:  # surface API errors to the client cleanly
+            log.exception("agent stream failed: %s", exc)
+            yield f"event: error\ndata: {json.dumps({'error': 'agent request failed'})}\n\n"
+            return
+        yield "event: done\ndata: {}\n\n"
+
+    return StreamingResponse(
+        event_source(),
+        media_type="text/event-stream",
+        headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
+    )

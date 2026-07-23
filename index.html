@@ -2135,6 +2135,24 @@ table { border-collapse: collapse; width: 100%; }
     </div>
   </div>
 
+  <div class="panel" id="ind-ai-panel">
+    <div class="panel-header">
+      <div>
+        <div class="panel-title">
+          <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="vertical-align:-2px"><path d="M12 2a5 5 0 0 1 5 5v1a5 5 0 0 1-1 3 5 5 0 0 1 1 3v1a5 5 0 0 1-10 0v-1a5 5 0 0 1 1-3 5 5 0 0 1-1-3V7a5 5 0 0 1 5-5Z"/><path d="M9 9h.01M15 9h.01"/></svg>
+          AI Case Assistant
+        </div>
+        <div class="panel-sub">Drafts a support and return-to-work plan from this employee's model drivers. Grounded on the prediction above, powered by the Anthropic API when a Welo agent endpoint is configured.</div>
+      </div>
+      <span class="chip" id="ind-ai-status">Offline demo</span>
+    </div>
+    <div class="ind-action-row">
+      <button class="cta-btn" id="ind-ai-run">Draft support plan</button>
+      <span class="ind-action-note" id="ind-ai-note">Uses the model output on this screen as grounding. Falls back to a built-in summary when no endpoint is set.</span>
+    </div>
+    <div id="ind-ai-out" style="display:none;white-space:pre-wrap;margin-top:14px;padding:16px 18px;border:1px solid var(--line);border-radius:10px;background:var(--surface-2,rgba(0,0,0,0.02));font-size:13.5px;line-height:1.55;color:var(--ink)"></div>
+  </div>
+
 </section>
 
 <section class="screen" id="screen-hrops">
@@ -2593,6 +2611,7 @@ table { border-collapse: collapse; width: 100%; }
 </section>
 
 <script src="config/industry.js" onerror="window.WELO_PROFILES=null;"></script>
+<script src="config/agents.js" onerror="window.WeloAgents=null;"></script>
 <script>
 // Load the feed for the selected industry. Manufacturing and logistics have
 // their own sector-calibrated cohort; mining and generic share the mining feed.
@@ -3214,6 +3233,8 @@ window.addEventListener('load', () => {
   function showIndividual(emp) {
     const r = individuals.find(x => String(x.employee_id) === String(emp));
     if (!r) return;
+    window.__WELO_IND = r;
+    resetCaseAssistant();
     const pill = bandToPill[r.risk_band] || 'medium';
     const label = empLabel(r);
 
@@ -3314,6 +3335,63 @@ window.addEventListener('load', () => {
     const tr = e.target.closest('[data-emp]');
     if (tr) showIndividual(tr.dataset.emp);
   });
+
+  // --- AI Case Assistant (individual screen) --------------------------------
+  // Streams a support plan from the Anthropic-powered agent proxy, grounded on
+  // the individual record on screen. Falls back to a built-in summary when no
+  // proxy is configured (see config/agents.js). Clears itself per employee.
+  let __caseAbort = null;
+  function resetCaseAssistant() {
+    if (__caseAbort) { __caseAbort(); __caseAbort = null; }
+    const out = $('#ind-ai-out');
+    if (out) { out.style.display = 'none'; out.textContent = ''; }
+    const btn = $('#ind-ai-run');
+    if (btn) { btn.disabled = false; btn.textContent = 'Draft support plan'; }
+  }
+  (function wireCaseAssistant() {
+    const btn = $('#ind-ai-run');
+    if (!btn || !window.WeloAgents) return;
+    const out = $('#ind-ai-out');
+    const chip = $('#ind-ai-status');
+    WeloAgents.status().then(s => {
+      if (s.available) { chip.textContent = 'Live · ' + (s.model || 'AI'); chip.className = 'chip green'; }
+    });
+    btn.addEventListener('click', () => {
+      const r = window.__WELO_IND;
+      if (!r) return;
+      if (__caseAbort) { __caseAbort(); __caseAbort = null; }
+      out.style.display = 'block';
+      out.textContent = '';
+      btn.disabled = true;
+      btn.textContent = 'Drafting...';
+      const drivers = (r.top_reasons && r.top_reasons.length)
+        ? r.top_reasons.map(d => ({ label: d.label, shap_hours: d.shap_hours }))
+        : (r.drivers || []).map(d => ({ label: d.label, value: d.value, severity: d.severity }));
+      const grounding = {
+        employee: empLabel(r),
+        risk_band: r.risk_band,
+        predicted_absent_days_90d: r.predicted_absent_days_90d,
+        predicted_absent_days_annual: r.predicted_absent_days_annual,
+        fatigue_burnout_score: r.fatigue_burnout_score,
+        fatigue_band: r.fatigue_band,
+        drivers: drivers,
+        cohorts: r.cohorts,
+        profile: r.attrs,
+      };
+      const q = 'Draft a short support and return-to-work style plan for this employee from the drivers and fatigue signal. Give 3 or 4 concrete actions, each tied to a driver.';
+      __caseAbort = WeloAgents.ask('case', q, grounding, {
+        onToken: t => { out.textContent += t; },
+        onDone: (full, meta) => {
+          btn.disabled = false; btn.textContent = 'Draft support plan';
+          if (meta && meta.fallback) { chip.textContent = 'Offline demo'; chip.className = 'chip'; }
+        },
+        onError: () => {
+          btn.disabled = false; btn.textContent = 'Draft support plan';
+          out.textContent += '\n\n[could not reach the agent endpoint]';
+        },
+      });
+    });
+  })();
 
   renderIndividuals();
 

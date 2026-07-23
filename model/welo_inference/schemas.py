@@ -81,6 +81,45 @@ class ScoreResponse(BaseModel):
     predictions: List[EmployeeScore]
 
 
+class AgentRequest(BaseModel):
+    """Ask one of the dashboard agents a grounded question.
+
+    ``data`` is the slice of model output the agent should reason over, for
+    example the portfolio headline for the analyst, one individual record for
+    the case assistant, or the HR-ops aggregates for the coordinator. It is
+    sent verbatim to the model as grounding, so keep it to the relevant slice
+    rather than the whole feed.
+    """
+
+    question: str = Field(..., min_length=1, description="What to ask the agent.")
+    data: Dict[str, Any] = Field(
+        default_factory=dict,
+        description="Model output the agent should ground its answer in.",
+    )
+    stream: bool = Field(
+        default=False, description="If true, use the /agents/{agent}/stream endpoint instead."
+    )
+
+
+class AgentUsage(BaseModel):
+    input_tokens: int
+    output_tokens: int
+
+
+class AgentResponse(BaseModel):
+    agent: str
+    model: str
+    text: str
+    usage: AgentUsage
+
+
+class AgentsStatusResponse(BaseModel):
+    available: bool
+    model: Optional[str] = None
+    agents: List[str] = Field(default_factory=list)
+    reason: Optional[str] = None
+
+
 class HealthResponse(BaseModel):
     status: str
     version: str

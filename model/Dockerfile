@@ -27,7 +27,8 @@ RUN pip install --no-cache-dir \
       "scikit-learn>=1.5" \
       "shap>=0.46" \
       "joblib>=1.4" \
-      "pyyaml>=6.0"
+      "pyyaml>=6.0" \
+      "anthropic>=0.40"
 
 COPY welo_pipeline ./welo_pipeline
 COPY welo_inference ./welo_inference

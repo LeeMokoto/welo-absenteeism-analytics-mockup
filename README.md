@@ -101,6 +101,25 @@ Three reasons, open to challenge:
 When real site/department fields arrive they become just another cohort lens;
 the Cohorts screen already supports multiple dimensions.
 
+## AI agents (Anthropic API)
+
+The dashboard can host three genuinely AI-powered agents that reason over the
+model output: an **Analyst** (portfolio questions), a **Case Assistant** (drafts
+a support and return-to-work plan for an individual), and a **Cover
+Coordinator** (turns cover-gap and overtime into rostering actions). They are
+powered by the Anthropic Messages API.
+
+The API key must stay server-side, so the agents run inside the existing
+`welo_inference` FastAPI service (`ANTHROPIC_API_KEY`), and the dashboard calls
+that proxy over HTTP through [`config/agents.js`](config/agents.js). Point a
+link at a deployed proxy with `index.html?api=https://<service-url>`. With no
+proxy configured the dashboard falls back to built-in, non-AI summaries, so the
+shareable static build never breaks.
+
+The Case Assistant is wired into the Individual profile screen as the reference
+integration. Full architecture, environment variables, endpoints and cost are
+in [`model/welo_inference/AGENTS.md`](model/welo_inference/AGENTS.md).
+
 ## The model (`model/`)
 
 `model/` is the full absenteeism stack: a config-driven training pipeline
@@ -173,7 +192,7 @@ Then reopen `index.html`.
 ├── index.html                 the dashboard (wired to the model feed)
 ├── model/                     the absenteeism model stack
 │   ├── welo_pipeline/         training pipeline
-│   ├── welo_inference/        FastAPI inference service
+│   ├── welo_inference/        FastAPI inference service (+ agents.py, AGENTS.md)
 │   ├── models/                trained joblib artifacts
 │   ├── data/outputs/          predictions + enriched dashboard feed
 │   ├── reports/               validation + metrics
