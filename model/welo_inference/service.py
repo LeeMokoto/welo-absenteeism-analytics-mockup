@@ -16,8 +16,8 @@ import numpy as np
 import pandas as pd
 import shap
 
-from welo_pipeline.features import build_features
 from welo_pipeline.explain import _humanise
+from welo_pipeline.features import build_features
 
 from .config import InferenceConfig
 

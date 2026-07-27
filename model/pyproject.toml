@@ -1,0 +1,56 @@
+# Packaging + tooling for the Welo inference / agent service.
+#
+# Scope: this makes the *serving* side (welo_inference) an installable, testable,
+# lintable package, with welo_pipeline included because the service imports its
+# feature engineering. Training remains offline; runtime deps below are what the
+# service needs at request time.
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "welo-inference"
+version = "0.1.0"
+description = "Welo absenteeism inference service, what-if scoring, and Anthropic-powered agents."
+requires-python = ">=3.11"
+dependencies = [
+  "fastapi>=0.115",
+  "uvicorn[standard]>=0.30",
+  "pydantic>=2.7",
+  "anthropic>=0.40",
+  "numpy>=1.26",
+  "pandas>=2.2",
+  "scikit-learn>=1.5",
+  "shap>=0.46",
+  "joblib>=1.4",
+  "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8",
+  "pytest-cov>=5",
+  "ruff>=0.6",
+  "httpx>=0.27",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["welo_inference*", "welo_pipeline*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q --strict-markers"
+markers = [
+  "integration: exercises the real trained model artifacts (needs sklearn/shap + models/).",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+# Pragmatic default set: pyflakes + pycodestyle + import order + bugbear.
+select = ["E", "F", "I", "B"]
+ignore = ["E501"]  # line length is handled by the formatter, not enforced hard

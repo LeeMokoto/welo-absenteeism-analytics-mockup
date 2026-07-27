@@ -168,7 +168,7 @@ class AgentService:
         try:
             return _AGENT_SYSTEM[agent]
         except KeyError:
-            raise AgentUnavailable(f"Unknown agent '{agent}'.")
+            raise AgentUnavailable(f"Unknown agent '{agent}'.") from None
 
     def _user_content(self, question: str, data: Dict[str, Any]) -> str:
         """Grounded user turn: the model data first, then the question."""

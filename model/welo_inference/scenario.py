@@ -97,7 +97,7 @@ def apply_adjustments(attrs: Dict[str, Any], adjustments: Dict[str, float]) -> D
         try:
             value = float(raw)
         except (TypeError, ValueError):
-            raise ScenarioError(f"Lever '{name}' needs a number, got {raw!r}.")
+            raise ScenarioError(f"Lever '{name}' needs a number, got {raw!r}.") from None
         if not (spec["min"] <= value <= spec["max"]):
             raise ScenarioError(
                 f"Lever '{name}' must be within [{spec['min']}, {spec['max']}], got {value}."

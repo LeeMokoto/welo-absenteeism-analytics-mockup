@@ -21,9 +21,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, StreamingResponse
 
 from . import __version__
+from . import scenario as scenario_engine
 from .agents import AgentService, AgentUnavailable
 from .config import InferenceConfig, get_config
-from . import scenario as scenario_engine
 from .schemas import (
     AgentRequest,
     AgentResponse,
@@ -225,7 +225,7 @@ def agent_run(request: Request, agent: str, payload: AgentRequest) -> AgentRespo
     try:
         result = svc.run(agent, payload.question, payload.data)
     except AgentUnavailable as exc:
-        raise HTTPException(status_code=503, detail=str(exc))
+        raise HTTPException(status_code=503, detail=str(exc)) from exc
     return AgentResponse(**result)
 
 
@@ -329,7 +329,7 @@ def run_scenario(request: Request, payload: ScenarioRequest) -> Dict[str, Any]:
             score_fn, individuals, payload.adjustments, payload.dimension, payload.cohort
         )
     except scenario_engine.ScenarioError as exc:
-        raise HTTPException(status_code=422, detail=str(exc))
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
 
     if len(cache) < 512:  # bound the cache; a demo will never approach this
         cache[ckey] = result
