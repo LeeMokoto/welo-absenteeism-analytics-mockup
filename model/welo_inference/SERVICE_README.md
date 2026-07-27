@@ -52,6 +52,7 @@ lose on restart.
 | GET | `/agents` | none | Whether the AI agents are configured |
 | POST | `/agents/{agent}` | optional key | Non-streaming agent answer |
 | POST | `/agents/{agent}/stream` | optional key | Streamed (SSE) agent answer |
+| GET | `/metrics` | optional key | Token, cost and latency counters (see Observability) |
 
 Interactive OpenAPI docs are served at `/docs`.
 
@@ -68,6 +69,8 @@ Interactive OpenAPI docs are served at `/docs`.
 | `WELO_AGENT_TIMEOUT_S` | `60` | Per-call Anthropic timeout |
 | `WELO_AGENT_MAX_RETRIES` | `2` | Anthropic transient-error retries |
 | `WELO_RATE_LIMIT_PER_MIN` | `60` | Per-client cap on `/scenario` (0 disables) |
+| `WELO_LOG_FORMAT` | `json` | `json` (Cloud Logging native) or `text` (local dev) |
+| `WELO_LOG_LEVEL` | `INFO` | Root log level |
 | `WELO_HORIZON_DAYS` | `90` | Prediction horizon |
 
 ## Local development
@@ -112,6 +115,26 @@ It writes `reports/agent_eval.json` (the `model_metrics.json` analog) and exits
 non-zero if the pass rate is below `--threshold` (default 1.0), so CI can block a
 regression. The checks are unit-tested offline (no key) in
 [`tests/test_evals.py`](../tests/test_evals.py).
+
+## Observability
+
+Vendor-neutral by design: structured logs plus in-memory metrics, no external
+dependency.
+
+- **Structured JSON logs** (`WELO_LOG_FORMAT=json`, the default): one JSON object
+  per line with `severity`, `message`, a `request_id`, and structured
+  `event` records (`http_request`, `agent_call`) carrying method/path/status,
+  latency and token counts. Cloud Logging parses these natively; `text` format is
+  available for local dev.
+- **Request id**: every request gets an `X-Request-ID` (honoured if the caller
+  sends one) that is echoed on the response and stamped on every log line for
+  that request.
+- **Metrics** at `GET /metrics` (protected by the optional key): per-agent call
+  counts, input/output tokens, estimated USD cost and latency percentiles;
+  per-route HTTP counts, errors and latency; scenario calls and cache hits; and a
+  total estimated agent spend. In-memory and reset on restart, so point Cloud
+  Monitoring or an OTel collector at it for retention. Cost is estimated from a
+  per-model price table and is for attribution, not billing.
 
 ## Deployment
 

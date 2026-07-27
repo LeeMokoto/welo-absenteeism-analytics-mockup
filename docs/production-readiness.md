@@ -64,11 +64,17 @@ Each phase ships independently and leaves the service releasable.
   unit-tested offline with good and bad stub responders (`tests/test_evals.py`)
   that prove each check fires. No key needed to test the harness itself.
 
-### Phase 3 - Observability & cost
+### Phase 3 - Observability & cost  (DONE)
 
-- Structured JSON logs with a request id on every line.
-- Token, cost and latency captured per agent call; a lightweight metrics
-  surface. Cost attribution per agent and per tenant.
+- `welo_inference/observability.py`: JSON log formatter (Cloud Logging native),
+  a request-id contextvar stamped on every log line and echoed as `X-Request-ID`,
+  a per-model cost estimator, and a thread-safe in-memory `MetricsRegistry`.
+- Middleware assigns the request id, structure-logs each request and records
+  HTTP metrics. Agent and scenario endpoints record token counts, estimated USD
+  cost, latency and cache hits.
+- `GET /metrics` (key-protected) exposes per-agent tokens/cost/latency, per-route
+  HTTP stats and scenario counters; vendor-neutral so Cloud Monitoring or an OTel
+  collector can consume it. Unit-tested in `tests/test_observability.py`.
 
 ### Phase 4 - Security & data governance  (highest-stakes)
 
@@ -90,6 +96,6 @@ Each phase ships independently and leaves the service releasable.
 | --- | --- |
 | 1 Foundations | Done |
 | 2 Agent evaluation | Done |
-| 3 Observability & cost | Not started |
+| 3 Observability & cost | Done |
 | 4 Security & governance | Not started |
 | 5 CI/CD | Not started |

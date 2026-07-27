@@ -24,6 +24,13 @@ from . import __version__
 from . import scenario as scenario_engine
 from .agents import AgentService, AgentUnavailable
 from .config import InferenceConfig, get_config
+from .observability import (
+    MetricsRegistry,
+    configure_logging,
+    new_request_id,
+    reset_request_id,
+    set_request_id,
+)
 from .schemas import (
     AgentRequest,
     AgentResponse,
@@ -36,10 +43,8 @@ from .schemas import (
 )
 from .service import InferenceService
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s %(levelname)s %(name)s %(message)s",
-)
+_cfg = get_config()
+configure_logging(level=_cfg.log_level, fmt=_cfg.log_format)
 log = logging.getLogger("welo.inference.main")
 
 
@@ -77,6 +82,7 @@ async def lifespan(app: FastAPI):
     app.state.scenario_cache = {}       # deterministic what-ifs cache cleanly
     app.state.rate_buckets = {}         # per-client token buckets
     app.state.agents = agents
+    app.state.metrics = MetricsRegistry()
     log.info(
         "startup complete: ready=%s version=%s agents=%s (%s)",
         service.ready,
@@ -105,6 +111,34 @@ app.add_middleware(
     allow_headers=["*"],
     allow_credentials=False,
 )
+
+
+@app.middleware("http")
+async def observe(request: Request, call_next):
+    """Assign a request id, structure-log each request, record HTTP metrics."""
+    rid = request.headers.get("X-Request-ID") or new_request_id()
+    token = set_request_id(rid)
+    start = time.perf_counter()
+    status_code = 500
+    try:
+        response = await call_next(request)
+        status_code = response.status_code
+        response.headers["X-Request-ID"] = rid
+        return response
+    finally:
+        ms = (time.perf_counter() - start) * 1000.0
+        route = request.scope.get("route")
+        path = getattr(route, "path", request.url.path)
+        metrics: MetricsRegistry | None = getattr(request.app.state, "metrics", None)
+        # Do not count the observability / health endpoints themselves.
+        if metrics is not None and path not in ("/metrics", "/healthz", "/readyz"):
+            metrics.record_http(request.method, path, status_code, ms)
+        log.info(
+            "http_request",
+            extra={"event": "http_request", "method": request.method,
+                   "path": path, "status": status_code, "latency_ms": round(ms, 1)},
+        )
+        reset_request_id(token)
 
 
 @app.get("/", include_in_schema=False)
@@ -220,12 +254,21 @@ def agents_status(request: Request) -> AgentsStatusResponse:
 def agent_run(request: Request, agent: str, payload: AgentRequest) -> AgentResponse:
     """Non-streaming agent call. Returns the full answer plus token usage."""
     svc: AgentService = request.app.state.agents
+    metrics: MetricsRegistry = request.app.state.metrics
     if agent not in svc.agents:
         raise HTTPException(status_code=404, detail=f"Unknown agent '{agent}'.")
+    start = time.perf_counter()
     try:
         result = svc.run(agent, payload.question, payload.data)
     except AgentUnavailable as exc:
+        metrics.record_agent(agent, svc.model, 0, 0, (time.perf_counter() - start) * 1000, error=True)
         raise HTTPException(status_code=503, detail=str(exc)) from exc
+    ms = (time.perf_counter() - start) * 1000.0
+    u = result["usage"]
+    metrics.record_agent(agent, result["model"], u["input_tokens"], u["output_tokens"], ms)
+    log.info("agent_call", extra={"event": "agent_call", "agent": agent, "model": result["model"],
+                                  "input_tokens": u["input_tokens"], "output_tokens": u["output_tokens"],
+                                  "latency_ms": round(ms, 1), "streamed": False})
     return AgentResponse(**result)
 
 
@@ -242,22 +285,33 @@ def agent_stream(request: Request, agent: str, payload: AgentRequest) -> Streami
     the point of the demo.
     """
     svc: AgentService = request.app.state.agents
+    metrics: MetricsRegistry = request.app.state.metrics
     if agent not in svc.agents:
         raise HTTPException(status_code=404, detail=f"Unknown agent '{agent}'.")
     if not svc.available:
         raise HTTPException(status_code=503, detail=svc.reason_unavailable or "Agents not configured.")
 
     def event_source():
+        start = time.perf_counter()
+        usage: Dict[str, int] = {}
         try:
-            for chunk in svc.stream(agent, payload.question, payload.data):
+            for chunk in svc.stream(agent, payload.question, payload.data, on_usage=usage.update):
                 yield f"data: {json.dumps({'text': chunk})}\n\n"
         except AgentUnavailable as exc:
+            metrics.record_agent(agent, svc.model, 0, 0, (time.perf_counter() - start) * 1000, error=True)
             yield f"event: error\ndata: {json.dumps({'error': str(exc)})}\n\n"
             return
         except Exception as exc:  # surface API errors to the client cleanly
+            metrics.record_agent(agent, svc.model, 0, 0, (time.perf_counter() - start) * 1000, error=True)
             log.exception("agent stream failed: %s", exc)
             yield f"event: error\ndata: {json.dumps({'error': 'agent request failed'})}\n\n"
             return
+        ms = (time.perf_counter() - start) * 1000.0
+        it, ot = usage.get("input_tokens", 0), usage.get("output_tokens", 0)
+        metrics.record_agent(agent, svc.model, it, ot, ms)
+        log.info("agent_call", extra={"event": "agent_call", "agent": agent, "model": svc.model,
+                                      "input_tokens": it, "output_tokens": ot,
+                                      "latency_ms": round(ms, 1), "streamed": True})
         yield "event: done\ndata: {}\n\n"
 
     return StreamingResponse(
@@ -304,6 +358,8 @@ def scenario_levers() -> Dict[str, Any]:
 def run_scenario(request: Request, payload: ScenarioRequest) -> Dict[str, Any]:
     """Re-score a cohort before and after the adjustments, live on the model."""
     svc: InferenceService = request.app.state.service
+    metrics: MetricsRegistry = request.app.state.metrics
+    start = time.perf_counter()
     if not svc.ready:
         raise HTTPException(status_code=503, detail="Model not loaded.")
     individuals = (svc.dashboard_feed or {}).get("individuals") or []
@@ -319,6 +375,7 @@ def run_scenario(request: Request, payload: ScenarioRequest) -> Dict[str, Any]:
         sort_keys=True,
     )
     if ckey in cache:
+        metrics.record_scenario((time.perf_counter() - start) * 1000, cached=True)
         return {**cache[ckey], "cached": True}
 
     def score_fn(emps):
@@ -329,8 +386,21 @@ def run_scenario(request: Request, payload: ScenarioRequest) -> Dict[str, Any]:
             score_fn, individuals, payload.adjustments, payload.dimension, payload.cohort
         )
     except scenario_engine.ScenarioError as exc:
+        metrics.record_scenario((time.perf_counter() - start) * 1000, cached=False, error=True)
         raise HTTPException(status_code=422, detail=str(exc)) from exc
 
     if len(cache) < 512:  # bound the cache; a demo will never approach this
         cache[ckey] = result
+    metrics.record_scenario((time.perf_counter() - start) * 1000, cached=False)
     return {**result, "cached": False}
+
+
+@app.get("/metrics", tags=["observability"], dependencies=[Depends(require_api_key)])
+def metrics_endpoint(request: Request) -> Dict[str, Any]:
+    """Token, cost and latency counters per agent, plus HTTP and scenario stats.
+
+    In-memory and reset on restart; protected by the optional ``X-API-Key``.
+    Point Cloud Monitoring or an OTel collector at this, or read it directly.
+    """
+    metrics: MetricsRegistry = request.app.state.metrics
+    return metrics.snapshot()

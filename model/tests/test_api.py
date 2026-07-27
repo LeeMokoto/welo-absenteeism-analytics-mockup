@@ -91,3 +91,21 @@ def test_scenario_unknown_cohort_is_422(client):
         "cohort": "Nonexistent cohort",
     })
     assert r.status_code == 422
+
+
+def test_request_id_header_present(client):
+    r = client.get("/healthz")
+    assert r.headers.get("X-Request-ID")
+
+
+def test_request_id_is_echoed_when_supplied(client):
+    r = client.get("/healthz", headers={"X-Request-ID": "test-rid-123"})
+    assert r.headers.get("X-Request-ID") == "test-rid-123"
+
+
+def test_metrics_endpoint_counts_scenario_and_http(client):
+    client.post("/scenario", json={"adjustments": {"overtime_pct": -15}})
+    body = client.get("/metrics").json()
+    assert set(body) >= {"http", "agents", "scenario", "totals"}
+    assert body["scenario"]["calls"] >= 1
+    assert any(k.startswith("POST /scenario") for k in body["http"])

@@ -46,6 +46,10 @@ class InferenceConfig:
     agent_timeout_s: float = float(_env("WELO_AGENT_TIMEOUT_S", "60"))
     agent_max_retries: int = int(_env("WELO_AGENT_MAX_RETRIES", "2"))
     rate_limit_per_min: int = int(_env("WELO_RATE_LIMIT_PER_MIN", "60"))
+    # Observability: JSON logs (Cloud Logging native) by default; "text" for
+    # human-friendly local dev.
+    log_format: str = _env("WELO_LOG_FORMAT", "json")
+    log_level: str = _env("WELO_LOG_LEVEL", "INFO")
 
     def __post_init__(self) -> None:
         # CORS defaults to permissive for the demo. Lock this down in production

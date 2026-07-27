@@ -20,7 +20,7 @@ from __future__ import annotations
 
 import json
 import logging
-from typing import Any, Dict, Iterator, List, Optional
+from typing import Any, Callable, Dict, Iterator, List, Optional
 
 log = logging.getLogger("welo.inference.agents")
 
@@ -227,9 +227,20 @@ class AgentService:
             },
         }
 
-    def stream(self, agent: str, question: str, data: Dict[str, Any]) -> Iterator[str]:
-        """Yield text chunks as they arrive (for Server-Sent Events)."""
+    def stream(self, agent: str, question: str, data: Dict[str, Any],
+               on_usage: Optional[Callable[[Dict[str, int]], None]] = None) -> Iterator[str]:
+        """Yield text chunks as they arrive (for Server-Sent Events).
+
+        ``on_usage`` (optional) is called once with the final token usage after
+        the stream completes, so the caller can record cost / metrics.
+        """
         self._guard()
         with self._client.messages.stream(**self._kwargs(agent, question, data)) as stream:
             for text in stream.text_stream:
                 yield text
+            if on_usage is not None:
+                final = stream.get_final_message()
+                on_usage({
+                    "input_tokens": final.usage.input_tokens,
+                    "output_tokens": final.usage.output_tokens,
+                })

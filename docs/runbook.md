@@ -10,6 +10,9 @@ production-readiness phase; this is the Phase 1 baseline.
   startup probe (already wired in Terraform).
 - `GET /agents` - `available` true only when a real Anthropic key is present.
 - `GET /metadata` - model version and metrics currently served.
+- `GET /metrics` - per-agent tokens/cost/latency, per-route HTTP stats, scenario
+  counters (key-protected). Logs are structured JSON with a `request_id` on every
+  line; filter Cloud Logging by `request_id` to trace one request end to end.
 
 ## Deploy and roll back
 
@@ -30,7 +33,7 @@ Build and deploy are in [`../infra/README.md`](../infra/README.md).
 | Agent latency high / timeouts | Long generations or upstream slowness | `WELO_AGENT_TIMEOUT_S`, or set a cheaper `WELO_AGENT_MODEL` |
 | `/scenario` returns 429 | Rate limit hit | Expected protection; raise `WELO_RATE_LIMIT_PER_MIN` if legitimate |
 | `/scenario` 503 "Model not loaded" | Artifacts missing in the image | Check the image bakes `models/` and the feed; check startup logs |
-| Cost spike | Heavy agent usage | The Anthropic spend cap is the backstop; review per-agent usage (Phase 3 adds attribution) |
+| Cost spike | Heavy agent usage | The Anthropic spend cap is the backstop; review per-agent cost and call counts at `GET /metrics` |
 
 ## Key rotation
 
