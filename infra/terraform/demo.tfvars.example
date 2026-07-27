@@ -1,0 +1,31 @@
+# Copy to demo.tfvars and edit. One file per environment: keep a separate
+# client.tfvars for the client's project when you migrate.
+#
+#   terraform apply -var-file=demo.tfvars
+
+project_id = "my-demo-project"
+region     = "europe-west1"
+
+# Build the image first with infra/scripts/build_and_push.sh, then paste its ref:
+image = "europe-west1-docker.pkg.dev/my-demo-project/welo/welo-inference:latest"
+
+# --- Dashboard static hosting (optional) ---
+host_dashboard   = true
+dashboard_bucket = "welo-dashboard-demo-CHANGE-ME-unique" # globally unique
+dashboard_public = true
+
+# --- Agents ---
+# First deploy: leave false (the what-if panel still works). Add the key to the
+# secret, then set true and re-apply to switch the AI agents on.
+enable_agents = false
+agent_model   = "claude-opus-4-8"
+
+# --- Security ---
+allow_unauthenticated = true
+cors_origins          = ["*"] # lock to the dashboard origin for a real deploy
+
+# --- Key handling ---
+# Recommended: leave false and add the key via gcloud (see outputs.add_key_command)
+# so it never lands in Terraform state.
+create_secret_version = false
+# anthropic_api_key   = "sk-ant-..."   # only if create_secret_version = true

@@ -1,0 +1,10 @@
+# Never commit state (may contain secrets) or real tfvars.
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+crash.log
+
+# Real variable files; only the *.example is tracked.
+*.tfvars
+!*.tfvars.example
