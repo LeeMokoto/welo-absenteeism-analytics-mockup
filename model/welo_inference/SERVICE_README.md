@@ -95,6 +95,24 @@ The unit tests need no model or network. The integration tests load the trained
 artifacts from `models/` and score through them; they self-skip if the artifacts
 are absent. See [`tests/`](../tests).
 
+## Agent evaluations
+
+The agents are non-deterministic, so quality is measured with a property-based
+eval harness (`welo_inference/evals/`) rather than exact-output tests. Golden
+cases per agent are checked for: grounded figures (no fabricated large numbers),
+Rand-only amounts, no dashes, no disciplinary use, and refusal of misuse.
+
+```bash
+cd model
+export ANTHROPIC_API_KEY=sk-ant-...        # evals run against the live agents
+python -m welo_inference.evals --out reports/agent_eval.json
+```
+
+It writes `reports/agent_eval.json` (the `model_metrics.json` analog) and exits
+non-zero if the pass rate is below `--threshold` (default 1.0), so CI can block a
+regression. The checks are unit-tested offline (no key) in
+[`tests/test_evals.py`](../tests/test_evals.py).
+
 ## Deployment
 
 Containerised via [`../Dockerfile`](../Dockerfile), provisioned with Terraform in

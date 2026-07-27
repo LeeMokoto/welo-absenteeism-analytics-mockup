@@ -50,12 +50,19 @@ Each phase ships independently and leaves the service releasable.
 - Service documentation: `welo_inference/SERVICE_README.md`, this roadmap, and
   the runbook.
 
-### Phase 2 - Agent evaluation harness
+### Phase 2 - Agent evaluation harness  (DONE)
 
-- Golden cases per agent with automated checks: grounded in the supplied data,
-  no invented figures, amounts in Rand, no dashes, refuses disciplinary use.
-- Emits `reports/agent_eval.json` (the `model_metrics.json` analog); a threshold
-  gate fails CI on regressions.
+- `welo_inference/evals/`: golden cases per agent (`cases.py`) with deterministic
+  property checks (`checks.py`): grounded in the supplied data (no fabricated
+  large figures), amounts in Rand, no dashes, no disciplinary use, and an
+  adversarial pair that must refuse to turn the scores into dismissals.
+- `runner.py` aggregates a report; `python -m welo_inference.evals` runs it live
+  against the Anthropic-backed agents, writes `reports/agent_eval.json` (the
+  `model_metrics.json` analog), and exits non-zero if the pass rate is below the
+  threshold, so Phase 5's CI can block a regression.
+- The checks are decoupled from the live model via a `run_fn`, so the harness is
+  unit-tested offline with good and bad stub responders (`tests/test_evals.py`)
+  that prove each check fires. No key needed to test the harness itself.
 
 ### Phase 3 - Observability & cost
 
@@ -82,7 +89,7 @@ Each phase ships independently and leaves the service releasable.
 | Phase | State |
 | --- | --- |
 | 1 Foundations | Done |
-| 2 Agent evaluation | Not started |
+| 2 Agent evaluation | Done |
 | 3 Observability & cost | Not started |
 | 4 Security & governance | Not started |
 | 5 CI/CD | Not started |
