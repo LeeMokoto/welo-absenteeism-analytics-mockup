@@ -76,14 +76,23 @@ Each phase ships independently and leaves the service releasable.
   HTTP stats and scenario counters; vendor-neutral so Cloud Monitoring or an OTel
   collector can consume it. Unit-tested in `tests/test_observability.py`.
 
-### Phase 4 - Security & data governance  (highest-stakes)
+### Phase 4 - Security & data governance  (DONE)
 
-- PII redaction before any data leaves the process; a de-identification boundary
-  so raw health records are not sent where derived features suffice.
-- Prompt-injection handling for free-text that arrives with real client data.
-- Auth as above (IAP for internal; keyed + capped for public).
-- Data-flow document: what is collected, what leaves to Anthropic, retention,
-  DPA, POPIA lawful-basis and special-information safeguards.
+- `welo_inference/governance.py`: the boundary every agent request passes through
+  (`AgentService.prepare`). Drops direct identifiers by field name, pseudonymises
+  id fields with a keyed HMAC, redacts email / SA ID / phone inside free text, and
+  neutralises prompt-injection. Returns an audit report of counts only, never
+  personal values.
+- `welo_inference/auth.py`: a pure authorisation decision supporting a shared key
+  and Cloud IAP (`WELO_REQUIRE_AUTH`, `WELO_TRUST_IAP`), wired into the request
+  dependency.
+- Audit trail: each agent call logs governance counts with the request id, and
+  `/metrics` exposes governance aggregates.
+- `docs/data-governance.md`: the POPIA data-flow, special-information handling,
+  cross-border-transfer / DPA posture, access control and a go-live checklist for
+  Welo's information officer.
+- Tests: `tests/test_governance.py`, `tests/test_auth.py`, and an
+  `AgentService.prepare` test proving nothing raw reaches the request.
 
 ### Phase 5 - CI/CD
 
@@ -97,5 +106,5 @@ Each phase ships independently and leaves the service releasable.
 | 1 Foundations | Done |
 | 2 Agent evaluation | Done |
 | 3 Observability & cost | Done |
-| 4 Security & governance | Not started |
+| 4 Security & governance | Done |
 | 5 CI/CD | Not started |

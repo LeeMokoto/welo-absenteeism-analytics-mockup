@@ -88,6 +88,9 @@ same engine as a tool (`scenario.run_scenario`).
 | `WELO_AGENT_TIMEOUT_S` | `60` | Per-call timeout for the Anthropic client. |
 | `WELO_AGENT_MAX_RETRIES` | `2` | Automatic retries on transient API errors. |
 | `WELO_RATE_LIMIT_PER_MIN` | `60` | Per-client cap on `/scenario`. Set `0` to disable. |
+| `WELO_REQUIRE_AUTH` | `0` | Require a credential (key or IAP) on protected routes. |
+| `WELO_TRUST_IAP` | `0` | Accept a Cloud IAP assertion header as the credential. |
+| `WELO_PSEUDONYM_SALT` | (dev salt) | Secret salt for id pseudonymisation; set in production. |
 
 If no key is configured the service starts normally, `/agents` reports
 `available: false`, and the dashboard falls back to its built-in summaries. The

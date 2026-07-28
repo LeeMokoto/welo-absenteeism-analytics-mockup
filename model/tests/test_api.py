@@ -106,6 +106,6 @@ def test_request_id_is_echoed_when_supplied(client):
 def test_metrics_endpoint_counts_scenario_and_http(client):
     client.post("/scenario", json={"adjustments": {"overtime_pct": -15}})
     body = client.get("/metrics").json()
-    assert set(body) >= {"http", "agents", "scenario", "totals"}
+    assert set(body) >= {"http", "agents", "scenario", "governance", "totals"}
     assert body["scenario"]["calls"] >= 1
     assert any(k.startswith("POST /scenario") for k in body["http"])

@@ -147,6 +147,8 @@ class MetricsRegistry:
         self._http: Dict[str, Dict[str, Any]] = {}
         self._agents: Dict[str, Dict[str, Any]] = {}
         self._scenario = {"calls": 0, "cache_hits": 0, "errors": 0, "lat": _Lat()}
+        self._gov = {"calls": 0, "redactions": 0, "injection_flags": 0,
+                     "dropped_fields": 0, "pseudonymized": 0}
 
     def record_http(self, method: str, path: str, status: int, ms: float) -> None:
         key = f"{method} {path}"
@@ -178,6 +180,15 @@ class MetricsRegistry:
                 e["est_cost_usd"] = round(e["est_cost_usd"] + cost, 6)
             e["lat"].add(ms)
 
+    def record_governance(self, report: Dict[str, Any]) -> None:
+        with self._lock:
+            g = self._gov
+            g["calls"] += 1
+            g["redactions"] += int(report.get("redactions", 0))
+            g["injection_flags"] += int(report.get("injection_flags", 0))
+            g["dropped_fields"] += len(report.get("dropped_fields", []))
+            g["pseudonymized"] += len(report.get("pseudonymized", []))
+
     def record_scenario(self, ms: float, cached: bool, error: bool = False) -> None:
         with self._lock:
             s = self._scenario
@@ -208,9 +219,11 @@ class MetricsRegistry:
                 "errors": self._scenario["errors"],
                 "latency": self._scenario["lat"].snapshot(),
             }
+            governance = dict(self._gov)
         return {
             "http": http,
             "agents": agents,
             "scenario": scenario,
+            "governance": governance,
             "totals": {"agent_est_cost_usd": round(total_cost, 6)},
         }

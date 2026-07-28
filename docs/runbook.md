@@ -47,11 +47,21 @@ printf 'sk-ant-NEWKEY' | gcloud secrets versions add anthropic-api-key --data-fi
 Never put the key in the image, the repo, or the browser. Revoke the old key in
 the Anthropic console after rotating.
 
+## Data governance (real personal data)
+
+Every agent request passes through `governance.sanitize` (see
+[`data-governance.md`](data-governance.md)): identifiers dropped, ids
+pseudonymised, free-text PII redacted, prompt-injection neutralised. Before
+go-live with real data, complete the checklist in that document, in particular:
+set `WELO_PSEUDONYM_SALT` to a managed secret, set `WELO_REQUIRE_AUTH=1` with IAP
+(or key), lock `WELO_CORS_ORIGINS`, and confirm the Anthropic DPA. Watch the
+`governance` counters at `GET /metrics`; a sudden rise in `injection_flags` is
+worth investigating.
+
 ## Guardrails to keep in mind
 
 - The agents are grounded on supplied data only and are told the records are
-  synthetic; this becomes a hard governance boundary once real data flows
-  (Phase 4).
+  synthetic; the governance boundary enforces minimisation once real data flows.
 - CORS should be locked to the dashboard origin in any non-demo deployment
   (`WELO_CORS_ORIGINS`).
 - Public Cloud Run + spend cap is acceptable for the demo; internal Welo

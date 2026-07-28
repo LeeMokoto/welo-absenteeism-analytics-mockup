@@ -20,7 +20,9 @@ from __future__ import annotations
 
 import json
 import logging
-from typing import Any, Callable, Dict, Iterator, List, Optional
+from typing import Any, Callable, Dict, Iterator, List, Optional, Tuple
+
+from . import governance
 
 log = logging.getLogger("welo.inference.agents")
 
@@ -209,10 +211,21 @@ class AgentService:
                 self._reason_unavailable or "Agent service not configured."
             )
 
+    def prepare(self, agent: str, question: str,
+                data: Dict[str, Any]) -> Tuple[Dict[str, Any], Dict[str, Any]]:
+        """Governance boundary: sanitise the question and grounding, then build
+        the request. Returns (request_kwargs, governance_report). Nothing leaves
+        this method towards Anthropic without passing through governance.sanitize.
+        """
+        clean_q, clean_data, report = governance.sanitize(question, data)
+        return self._kwargs(agent, clean_q, clean_data), report
+
     def run(self, agent: str, question: str, data: Dict[str, Any]) -> Dict[str, Any]:
-        """Non-streaming call. Returns the full text plus token usage."""
+        """Non-streaming call. Returns the full text, token usage and a
+        governance report (counts only, no personal data)."""
         self._guard()
-        with self._client.messages.stream(**self._kwargs(agent, question, data)) as stream:
+        kwargs, report = self.prepare(agent, question, data)
+        with self._client.messages.stream(**kwargs) as stream:
             for _ in stream.text_stream:  # drain; streaming avoids timeouts
                 pass
             final = stream.get_final_message()
@@ -225,17 +238,23 @@ class AgentService:
                 "input_tokens": final.usage.input_tokens,
                 "output_tokens": final.usage.output_tokens,
             },
+            "governance": report,
         }
 
     def stream(self, agent: str, question: str, data: Dict[str, Any],
-               on_usage: Optional[Callable[[Dict[str, int]], None]] = None) -> Iterator[str]:
+               on_usage: Optional[Callable[[Dict[str, int]], None]] = None,
+               on_report: Optional[Callable[[Dict[str, Any]], None]] = None) -> Iterator[str]:
         """Yield text chunks as they arrive (for Server-Sent Events).
 
-        ``on_usage`` (optional) is called once with the final token usage after
-        the stream completes, so the caller can record cost / metrics.
+        ``on_usage`` is called once with the final token usage; ``on_report`` is
+        called once, before streaming, with the governance report. Both are
+        optional and let the caller record cost, metrics and the audit trail.
         """
         self._guard()
-        with self._client.messages.stream(**self._kwargs(agent, question, data)) as stream:
+        kwargs, report = self.prepare(agent, question, data)
+        if on_report is not None:
+            on_report(report)
+        with self._client.messages.stream(**kwargs) as stream:
             for text in stream.text_stream:
                 yield text
             if on_usage is not None:

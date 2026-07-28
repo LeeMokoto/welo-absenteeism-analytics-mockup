@@ -50,6 +50,10 @@ class InferenceConfig:
     # human-friendly local dev.
     log_format: str = _env("WELO_LOG_FORMAT", "json")
     log_level: str = _env("WELO_LOG_LEVEL", "INFO")
+    # Auth / governance. require_auth forces a credential; trust_iap accepts a
+    # Cloud IAP assertion header as that credential (verified upstream by IAP).
+    require_auth: bool = _env("WELO_REQUIRE_AUTH", "0") not in ("0", "false", "False", "")
+    trust_iap: bool = _env("WELO_TRUST_IAP", "0") not in ("0", "false", "False", "")
 
     def __post_init__(self) -> None:
         # CORS defaults to permissive for the demo. Lock this down in production

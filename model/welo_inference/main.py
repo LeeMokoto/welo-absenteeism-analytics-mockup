@@ -23,6 +23,7 @@ from fastapi.responses import JSONResponse, StreamingResponse
 from . import __version__
 from . import scenario as scenario_engine
 from .agents import AgentService, AgentUnavailable
+from .auth import IAP_HEADERS, authorized
 from .config import InferenceConfig, get_config
 from .observability import (
     MetricsRegistry,
@@ -52,13 +53,15 @@ def require_api_key(
     request: Request,
     x_api_key: str | None = Header(default=None, alias="X-API-Key"),
 ) -> None:
+    """Authorise via shared key or Cloud IAP, per config. Open when neither an
+    API key nor require_auth is set (the demo default)."""
     config: InferenceConfig = request.app.state.config
-    if not config.api_key:
-        return
-    if not x_api_key or x_api_key != config.api_key:
+    iap_present = any(request.headers.get(h) for h in IAP_HEADERS)
+    if not authorized(config.api_key, config.require_auth, config.trust_iap,
+                      x_api_key, iap_present):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Missing or invalid X-API-Key.",
+            detail="Missing or invalid credentials.",
         )
 
 
@@ -265,10 +268,15 @@ def agent_run(request: Request, agent: str, payload: AgentRequest) -> AgentRespo
         raise HTTPException(status_code=503, detail=str(exc)) from exc
     ms = (time.perf_counter() - start) * 1000.0
     u = result["usage"]
+    report = result.pop("governance", {})  # audit only, not returned to the client
     metrics.record_agent(agent, result["model"], u["input_tokens"], u["output_tokens"], ms)
+    metrics.record_governance(report)
     log.info("agent_call", extra={"event": "agent_call", "agent": agent, "model": result["model"],
                                   "input_tokens": u["input_tokens"], "output_tokens": u["output_tokens"],
-                                  "latency_ms": round(ms, 1), "streamed": False})
+                                  "latency_ms": round(ms, 1), "streamed": False,
+                                  "gov_redactions": report.get("redactions", 0),
+                                  "gov_dropped_fields": len(report.get("dropped_fields", [])),
+                                  "gov_injection_flags": report.get("injection_flags", 0)})
     return AgentResponse(**result)
 
 
@@ -294,8 +302,10 @@ def agent_stream(request: Request, agent: str, payload: AgentRequest) -> Streami
     def event_source():
         start = time.perf_counter()
         usage: Dict[str, int] = {}
+        report: Dict[str, Any] = {}
         try:
-            for chunk in svc.stream(agent, payload.question, payload.data, on_usage=usage.update):
+            for chunk in svc.stream(agent, payload.question, payload.data,
+                                    on_usage=usage.update, on_report=report.update):
                 yield f"data: {json.dumps({'text': chunk})}\n\n"
         except AgentUnavailable as exc:
             metrics.record_agent(agent, svc.model, 0, 0, (time.perf_counter() - start) * 1000, error=True)
@@ -309,9 +319,13 @@ def agent_stream(request: Request, agent: str, payload: AgentRequest) -> Streami
         ms = (time.perf_counter() - start) * 1000.0
         it, ot = usage.get("input_tokens", 0), usage.get("output_tokens", 0)
         metrics.record_agent(agent, svc.model, it, ot, ms)
+        metrics.record_governance(report)
         log.info("agent_call", extra={"event": "agent_call", "agent": agent, "model": svc.model,
                                       "input_tokens": it, "output_tokens": ot,
-                                      "latency_ms": round(ms, 1), "streamed": True})
+                                      "latency_ms": round(ms, 1), "streamed": True,
+                                      "gov_redactions": report.get("redactions", 0),
+                                      "gov_dropped_fields": len(report.get("dropped_fields", [])),
+                                      "gov_injection_flags": report.get("injection_flags", 0)})
         yield "event: done\ndata: {}\n\n"
 
     return StreamingResponse(

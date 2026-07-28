@@ -71,6 +71,9 @@ Interactive OpenAPI docs are served at `/docs`.
 | `WELO_RATE_LIMIT_PER_MIN` | `60` | Per-client cap on `/scenario` (0 disables) |
 | `WELO_LOG_FORMAT` | `json` | `json` (Cloud Logging native) or `text` (local dev) |
 | `WELO_LOG_LEVEL` | `INFO` | Root log level |
+| `WELO_REQUIRE_AUTH` | `0` | Require a credential (key or IAP) on protected routes |
+| `WELO_TRUST_IAP` | `0` | Accept a Cloud IAP assertion header as the credential |
+| `WELO_PSEUDONYM_SALT` | (dev salt) | Secret salt for id pseudonymisation; set in prod |
 | `WELO_HORIZON_DAYS` | `90` | Prediction horizon |
 
 ## Local development
@@ -131,10 +134,23 @@ dependency.
   that request.
 - **Metrics** at `GET /metrics` (protected by the optional key): per-agent call
   counts, input/output tokens, estimated USD cost and latency percentiles;
-  per-route HTTP counts, errors and latency; scenario calls and cache hits; and a
-  total estimated agent spend. In-memory and reset on restart, so point Cloud
-  Monitoring or an OTel collector at it for retention. Cost is estimated from a
-  per-model price table and is for attribution, not billing.
+  per-route HTTP counts, errors and latency; scenario calls and cache hits;
+  governance counters; and a total estimated agent spend. In-memory and reset on
+  restart, so point Cloud Monitoring or an OTel collector at it for retention.
+  Cost is estimated from a per-model price table and is for attribution, not
+  billing.
+
+## Data governance (real personal data)
+
+Before any question or grounding is sent to Anthropic it passes through
+`governance.sanitize`: direct identifiers (name, email, phone, ID number, ...)
+are dropped, id fields are pseudonymised with a keyed hash, identifiers hiding in
+free text are redacted, and prompt-injection attempts are neutralised. Each call
+emits an audit record (counts only, no personal values) to the logs and
+`/metrics`. Auth is a shared key or Cloud IAP. Health data is POPIA special
+personal information; the full data-flow, cross-border-transfer and DPA posture,
+and the go-live checklist are in
+[`../../docs/data-governance.md`](../../docs/data-governance.md).
 
 ## Deployment
 
