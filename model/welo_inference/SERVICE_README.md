@@ -101,6 +101,11 @@ The unit tests need no model or network. The integration tests load the trained
 artifacts from `models/` and score through them; they self-skip if the artifacts
 are absent. See [`tests/`](../tests).
 
+CI (`.github/workflows/ci.yml`) runs `ruff`, `pytest` and the agent eval gate on
+every push and PR, and validates the Docker build. The eval gate runs live only
+when an `ANTHROPIC_API_KEY` repository secret is set, and skips cleanly
+otherwise.
+
 ## Agent evaluations
 
 The agents are non-deterministic, so quality is measured with a property-based

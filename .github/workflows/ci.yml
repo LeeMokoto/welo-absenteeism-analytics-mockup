@@ -1,0 +1,66 @@
+name: CI
+
+# Lint, test, gate the agents on their evals, and validate the container build.
+# The agent evals run live only when an ANTHROPIC_API_KEY secret is present; on
+# forks or when it is unset they skip cleanly rather than fail.
+
+on:
+  push:
+    branches: [main, "claude/**"]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  lint-test-eval:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install service (with dev extras)
+        run: pip install -e "./model[dev]"
+
+      - name: Lint (ruff)
+        working-directory: model
+        run: python -m ruff check welo_inference tests
+
+      - name: Tests (unit + integration)
+        working-directory: model
+        run: python -m pytest
+
+      - name: Agent evals (live, only if a key secret is configured)
+        working-directory: model
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          if [ -z "$ANTHROPIC_API_KEY" ]; then
+            echo "No ANTHROPIC_API_KEY secret set; skipping live agent evals."
+            exit 0
+          fi
+          python -m welo_inference.evals --out reports/agent_eval.json
+
+      - name: Upload agent eval report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent-eval-report
+          path: model/reports/agent_eval.json
+          if-no-files-found: ignore
+
+  docker-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build the inference image (validate the Dockerfile)
+        run: docker build -t welo-inference:ci model
