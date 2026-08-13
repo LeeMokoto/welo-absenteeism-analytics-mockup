@@ -15,8 +15,20 @@ dashboard_bucket = "welo-dashboard-demo-CHANGE-ME-unique" # globally unique
 dashboard_public = true
 
 # --- Agents ---
-# First deploy: leave false (the what-if panel still works). Add the key to the
-# secret, then set true and re-apply to switch the AI agents on.
+# Where the agents call Claude:
+#   "anthropic" (default): first-party Anthropic API with a key from Secret
+#     Manager. Right for the public demo.
+#   "vertex": Claude on Google Vertex AI, authenticated as the runtime service
+#     account (no key, data stays in the chosen Google region). Preferred for
+#     Welo's own project. Terraform then grants the SA roles/aiplatform.user and
+#     sets WELO_VERTEX_PROJECT / WELO_VERTEX_REGION for you; ignore the key
+#     handling section below.
+llm_provider = "anthropic"
+# vertex_region = "us-east5"   # only when llm_provider = "vertex"
+
+# First deploy: leave false (the what-if panel still works). On the anthropic
+# path, add the key to the secret, then set true and re-apply to switch the
+# agents on. On the vertex path, set true once the SA has Vertex access.
 enable_agents = false
 agent_model   = "claude-opus-4-8"
 

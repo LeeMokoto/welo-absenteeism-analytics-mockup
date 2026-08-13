@@ -17,8 +17,14 @@ So the shape is fixed:
 Browser (dashboard)  ->  welo_inference (holds ANTHROPIC_API_KEY)  ->  Anthropic API
 ```
 
-The browser calls this service; this service holds the key and calls Anthropic.
-The dashboard never sees the key.
+The browser calls this service; this service holds the credential and calls
+Claude. The dashboard never sees it.
+
+The service can reach Claude two ways, set by `WELO_LLM_PROVIDER`: `anthropic`
+(the first-party API with a key, used for the demo) or `vertex` (Claude on
+Google Vertex AI, authenticated as the runtime service account with no key,
+recommended for Welo's real deployment so data stays in a chosen Google region).
+The rest of this document (grounding, guardrails, evals) is identical on both.
 
 ## The three agents
 
@@ -81,9 +87,12 @@ same engine as a tool (`scenario.run_scenario`).
 
 | Variable | Default | Purpose |
 | --- | --- | --- |
-| `ANTHROPIC_API_KEY` | (none) | The API key. Set this at deploy time (Cloud Run secret / env). Never bake it into the image. |
+| `WELO_LLM_PROVIDER` | `anthropic` | `anthropic` (first-party API, key) or `vertex` (Claude on Vertex AI, GCP service-account auth, no key). |
+| `ANTHROPIC_API_KEY` | (none) | The API key for the `anthropic` provider. Set at deploy time (Cloud Run secret / env). Never bake it into the image. |
 | `WELO_ANTHROPIC_API_KEY` | (none) | Optional namespaced override, takes precedence over `ANTHROPIC_API_KEY`. |
-| `WELO_AGENT_MODEL` | `claude-opus-4-8` | Model the agents call. Swap to `claude-sonnet-5` or `claude-haiku-4-5` to trade quality for cost. |
+| `WELO_VERTEX_PROJECT` | (none) | GCP project for the `vertex` provider (required in that mode). |
+| `WELO_VERTEX_REGION` | `us-east5` | Vertex AI region serving the Claude models. |
+| `WELO_AGENT_MODEL` | `claude-opus-4-8` | Model the agents call (same id on either provider). Swap to `claude-sonnet-5` or `claude-haiku-4-5` to trade quality for cost. |
 | `WELO_AGENT_THINKING` | `1` | Adaptive thinking on. Set `0` for slightly snappier, lighter turns. |
 | `WELO_AGENT_TIMEOUT_S` | `60` | Per-call timeout for the Anthropic client. |
 | `WELO_AGENT_MAX_RETRIES` | `2` | Automatic retries on transient API errors. |

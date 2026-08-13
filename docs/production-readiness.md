@@ -23,8 +23,14 @@ Confirmed with the team, these shape the build:
 - **Data governance (elevated to first-class).** Real health data will be sent
   for scoring. Health data is "special personal information" under POPIA, so we
   add PII redaction, a clear processing boundary, a documented data-flow and
-  Anthropic retention / DPA posture, and prefer sending **derived / de-identified
+  retention / DPA posture, and prefer sending **derived / de-identified
   features rather than raw records** wherever the model allows it.
+- **LLM provider (configurable).** The agent layer switches between the
+  first-party Anthropic API (the public demo) and **Claude on Google Vertex AI**
+  (recommended for Welo's own deployment) via `WELO_LLM_PROVIDER`. Vertex keeps
+  the request inside Welo's Google project and region, authenticates with IAM
+  (no long-lived key), and sits under the Google Cloud DPA. See
+  `docs/data-governance.md`.
 
 ## What "production-ready" means here (vs the ML pipeline)
 

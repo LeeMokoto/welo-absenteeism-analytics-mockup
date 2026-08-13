@@ -1,8 +1,9 @@
 # Welo infrastructure (Terraform)
 
 Infrastructure for the Welo demo: the inference service (agent proxy + model)
-on Cloud Run, the Anthropic key in Secret Manager, an Artifact Registry repo for
-the image, and an optional GCS bucket for the static dashboard.
+on Cloud Run, the Anthropic key in Secret Manager (or Vertex AI access via the
+runtime service account), an Artifact Registry repo for the image, and an
+optional GCS bucket for the static dashboard.
 
 It is deliberately **stateless and parameterised**. Build it in your own project
 for the demo now, and migrate to the client's project later by pointing
@@ -13,11 +14,12 @@ Terraform at a new state and a new `*.tfvars`. Nothing hardcodes a project.
 | Resource | Purpose |
 | --- | --- |
 | Cloud Run service (`welo-inference`) | The only compute. Runs the model + agent proxy. 1 vCPU / 1 GiB, scale to zero. |
-| Secret Manager secret | Holds `ANTHROPIC_API_KEY`, injected into the service at runtime. |
+| Secret Manager secret | Holds `ANTHROPIC_API_KEY`, injected at runtime. Anthropic provider only. |
+| Vertex AI IAM grant | `roles/aiplatform.user` on the runtime SA. Vertex provider only. |
 | Artifact Registry repo | Stores the container image. |
-| Runtime service account | Least-privilege identity; may read only the one secret. |
+| Runtime service account | Least-privilege identity; reads only the one secret, or calls Vertex. |
 | GCS bucket (optional) | Serves the static dashboard. |
-| API enablement | Run, Cloud Build, Artifact Registry, Secret Manager. |
+| API enablement | Run, Cloud Build, Artifact Registry, Secret Manager (+ Vertex AI when `llm_provider = vertex`). |
 
 No database, no persistent disk, no GPU. Cache and rate-limit state live in
 memory by design.
@@ -56,10 +58,34 @@ terraform apply -var-file=demo.tfvars
 `?api=<service_url>` and the **Live what-if** panel works immediately, no key
 required.
 
-## Switch the AI agents on
+## LLM provider: Anthropic API or Vertex AI
 
-The agents (Analyst, Case Assistant, Cover Coordinator) need the Anthropic key.
-Add it to the secret, then flip the toggle:
+The agents call Claude one of two ways, set by `llm_provider`:
+
+- **`anthropic`** (default): the first-party Anthropic API with a key in Secret
+  Manager. Simplest for the public demo. Terraform creates the secret and grants
+  the runtime SA read access to it.
+- **`vertex`**: Claude on Google Vertex AI, authenticated as the runtime service
+  account (Application Default Credentials, no API key). Terraform enables the
+  Vertex API and grants the SA `roles/aiplatform.user`; it creates no key secret.
+  The data stays inside the chosen Google region, and there is no long-lived
+  secret to rotate, which is why it is preferred for Welo's own project. See
+  `docs/data-governance.md` for the POPIA posture.
+
+To deploy on Vertex, set in your `*.tfvars`:
+
+```hcl
+llm_provider  = "vertex"
+vertex_region = "us-east5"   # a region that serves the Claude models
+enable_agents = true         # no key needed; the SA authenticates to Vertex
+```
+
+The same image runs either way; only config changes.
+
+## Switch the AI agents on (Anthropic provider)
+
+On the Anthropic path the agents need the API key. Add it to the secret, then
+flip the toggle:
 
 ```bash
 # add the key value (never in git / state)
@@ -70,8 +96,9 @@ printf 'sk-ant-YOURKEY' | gcloud secrets versions add anthropic-api-key \
 terraform apply -var-file=demo.tfvars -var="enable_agents=true"
 ```
 
-Until the key exists and `enable_agents = true`, the service reports the agents
-as offline and the dashboard shows its built-in summaries, so it never breaks.
+Until the key exists and `enable_agents = true` (Anthropic), or the SA has Vertex
+access and `enable_agents = true` (Vertex), the service reports the agents as
+offline and the dashboard shows its built-in summaries, so it never breaks.
 
 ## Migrating to the client's environment
 
@@ -85,8 +112,12 @@ The whole point of the parameterisation. When the client is ready:
    `cors_origins` to the client's dashboard origin.
 3. **Build into their project** with `build_and_push.sh THEIR_PROJECT_ID`, then
    `terraform apply -var-file=client.tfvars`.
-4. **Their key.** The client adds their own Anthropic key to their secret; you
-   never move keys between environments.
+4. **Their credentials.** On the Anthropic path the client adds their own key to
+   their secret; you never move keys between environments. On the Vertex path
+   there is no key: set `llm_provider = "vertex"` and Terraform grants the
+   client project's runtime SA `roles/aiplatform.user`, so Claude runs inside
+   their Google project with their IAM. This is the recommended posture for the
+   environment that touches real employee health data.
 
 Because the model artifacts and feed are baked into the image, the client
 deployment is the same image scoring the same model, only the project and the

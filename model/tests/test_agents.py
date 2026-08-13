@@ -78,6 +78,40 @@ def test_missing_sdk_reports_unavailable(monkeypatch):
     assert "sdk" in (svc.reason_unavailable or "").lower()
 
 
+def test_default_provider_is_anthropic():
+    svc = AgentService(api_key="sk-ant-test-key")
+    assert svc.provider == "anthropic"
+    assert svc.available is True
+
+
+def test_vertex_provider_available_with_project_no_key():
+    # Vertex uses GCP ADC, not an API key: availability keys on the project id.
+    svc = AgentService(provider="vertex", vertex_project="welo-prod", api_key=None)
+    assert svc.provider == "vertex"
+    assert svc.available is True
+    assert svc.reason_unavailable is None
+    assert type(svc._client).__name__ == "AnthropicVertex"
+
+
+def test_vertex_provider_unavailable_without_project():
+    svc = AgentService(provider="vertex", vertex_project=None)
+    assert svc.available is False
+    assert "project" in (svc.reason_unavailable or "").lower()
+
+
+def test_unknown_provider_unavailable():
+    svc = AgentService(provider="bedrock", api_key="sk-ant-test-key")
+    assert svc.available is False
+    assert "provider" in (svc.reason_unavailable or "").lower()
+
+
+def test_vertex_provider_needs_no_api_key_env(monkeypatch):
+    # Even with no Anthropic key anywhere, Vertex is available on config alone.
+    monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
+    svc = AgentService(provider="vertex", vertex_project="welo-prod")
+    assert svc.available is True
+
+
 def test_prepare_applies_governance_before_sending():
     # The governance boundary must run in prepare(): nothing raw reaches kwargs.
     svc = AgentService(api_key="sk-ant-test-key")

@@ -1,18 +1,26 @@
 locals {
-  # Agent env is only attached when enabled AND a secret version exists, so the
-  # first deploy (no key) never fails on a missing secret version.
-  agent_env_enabled = var.enable_agents
+  use_anthropic = var.llm_provider == "anthropic"
+  use_vertex    = var.llm_provider == "vertex"
+
+  # The Anthropic API-key secret is only wired in for the anthropic provider
+  # with agents enabled. Vertex authenticates as the runtime service account, so
+  # it needs no secret.
+  anthropic_key_env = local.use_anthropic && var.enable_agents
+
+  # Only create the Secret Manager secret on the anthropic path; the vertex path
+  # has no key to hold.
+  create_key_secret = local.use_anthropic
 }
 
 # --- Enable the APIs this stack uses ----------------------------------------
 
 resource "google_project_service" "services" {
-  for_each = toset([
+  for_each = toset(concat([
     "run.googleapis.com",
     "cloudbuild.googleapis.com",
     "artifactregistry.googleapis.com",
     "secretmanager.googleapis.com",
-  ])
+  ], local.use_vertex ? ["aiplatform.googleapis.com"] : []))
   service            = each.value
   disable_on_destroy = false
 }
@@ -35,12 +43,14 @@ resource "google_service_account" "run" {
   display_name = "Welo inference Cloud Run runtime"
 }
 
-# --- Secret for the Anthropic API key ---------------------------------------
-# The container (secret) is always created so the key has a home. The value is
-# added out of band with gcloud by default; set create_secret_version = true to
-# let Terraform write it (value then lives in state).
+# --- Secret for the Anthropic API key (anthropic provider only) -------------
+# Created only when llm_provider = anthropic; the vertex path has no key. The
+# container (secret) holds the key; the value is added out of band with gcloud
+# by default (set create_secret_version = true to let Terraform write it, in
+# which case the value lands in state).
 
 resource "google_secret_manager_secret" "anthropic" {
+  count     = local.create_key_secret ? 1 : 0
   secret_id = var.secret_id
 
   replication {
@@ -51,16 +61,31 @@ resource "google_secret_manager_secret" "anthropic" {
 }
 
 resource "google_secret_manager_secret_version" "anthropic" {
-  count       = var.create_secret_version && var.anthropic_api_key != "" ? 1 : 0
-  secret      = google_secret_manager_secret.anthropic.id
+  count       = local.create_key_secret && var.create_secret_version && var.anthropic_api_key != "" ? 1 : 0
+  secret      = google_secret_manager_secret.anthropic[0].id
   secret_data = var.anthropic_api_key
 }
 
 # The runtime SA may read the secret. Bound at the secret level, not project.
 resource "google_secret_manager_secret_iam_member" "run_access" {
-  secret_id = google_secret_manager_secret.anthropic.secret_id
+  count     = local.create_key_secret ? 1 : 0
+  secret_id = google_secret_manager_secret.anthropic[0].secret_id
   role      = "roles/secretmanager.secretAccessor"
   member    = "serviceAccount:${google_service_account.run.email}"
+}
+
+# --- Vertex AI access (vertex provider only) --------------------------------
+# The runtime service account calls the Claude models on Vertex directly; no key
+# or secret is involved. roles/aiplatform.user is the least-privilege role for
+# invoking models. Bound at the project level, which Vertex requires.
+
+resource "google_project_iam_member" "vertex_user" {
+  count   = local.use_vertex ? 1 : 0
+  project = var.project_id
+  role    = "roles/aiplatform.user"
+  member  = "serviceAccount:${google_service_account.run.email}"
+
+  depends_on = [google_project_service.services]
 }
 
 # --- Cloud Run service ------------------------------------------------------
@@ -106,15 +131,37 @@ resource "google_cloud_run_v2_service" "welo" {
         name  = "WELO_RATE_LIMIT_PER_MIN"
         value = tostring(var.rate_limit_per_min)
       }
+      env {
+        name  = "WELO_LLM_PROVIDER"
+        value = var.llm_provider
+      }
 
-      # The API key is injected from Secret Manager only when agents are enabled.
+      # Vertex path: point the service at the project and region. Auth is the
+      # runtime service account (no key).
       dynamic "env" {
-        for_each = local.agent_env_enabled ? [1] : []
+        for_each = local.use_vertex ? [1] : []
+        content {
+          name  = "WELO_VERTEX_PROJECT"
+          value = var.project_id
+        }
+      }
+      dynamic "env" {
+        for_each = local.use_vertex ? [1] : []
+        content {
+          name  = "WELO_VERTEX_REGION"
+          value = var.vertex_region
+        }
+      }
+
+      # Anthropic path: the API key is injected from Secret Manager only when
+      # agents are enabled.
+      dynamic "env" {
+        for_each = local.anthropic_key_env ? [1] : []
         content {
           name = "ANTHROPIC_API_KEY"
           value_source {
             secret_key_ref {
-              secret  = google_secret_manager_secret.anthropic.secret_id
+              secret  = google_secret_manager_secret.anthropic[0].secret_id
               version = "latest"
             }
           }
@@ -146,6 +193,7 @@ resource "google_cloud_run_v2_service" "welo" {
   depends_on = [
     google_project_service.services,
     google_secret_manager_secret_iam_member.run_access,
+    google_project_iam_member.vertex_user,
   ]
 }
 

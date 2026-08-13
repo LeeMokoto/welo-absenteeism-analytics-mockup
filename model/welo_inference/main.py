@@ -79,6 +79,9 @@ async def lifespan(app: FastAPI):
         thinking=config.agent_thinking,
         timeout_s=config.agent_timeout_s,
         max_retries=config.agent_max_retries,
+        provider=config.llm_provider,
+        vertex_project=config.vertex_project,
+        vertex_region=config.vertex_region,
     )
     app.state.config = config
     app.state.service = service

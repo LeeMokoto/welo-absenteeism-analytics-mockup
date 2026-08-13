@@ -117,9 +117,13 @@ class AgentService:
         thinking: bool = True,
         timeout_s: float = 60.0,
         max_retries: int = 2,
+        provider: str = "anthropic",
+        vertex_project: Optional[str] = None,
+        vertex_region: str = "us-east5",
     ) -> None:
         self.model = model
         self.thinking = thinking
+        self.provider = (provider or "anthropic").strip().lower()
         self._client = None
         self._reason_unavailable: Optional[str] = None
 
@@ -128,29 +132,64 @@ class AgentService:
                 f"anthropic SDK not installed ({_ANTHROPIC_IMPORT_ERROR})"
             )
             return
+
+        opts = {"timeout": timeout_s, "max_retries": max_retries}
         try:
-            # timeout + max_retries keep a demo from hanging or dying on a
-            # transient error. Passing api_key=None lets the SDK resolve
-            # ANTHROPIC_API_KEY from the environment itself.
-            opts = {"timeout": timeout_s, "max_retries": max_retries}
-            self._client = (
-                anthropic.Anthropic(api_key=api_key, **opts) if api_key
-                else anthropic.Anthropic(**opts)
-            )
-            # The SDK no longer raises at construction when no key is present; it
-            # defers to call time. If we did not check here, the service would
-            # report available=true with no key, the dashboard would show "Live",
-            # and the first real call would fail in front of a client. So require
-            # a resolvable key up front and stay on the offline fallback otherwise.
-            if not getattr(self._client, "api_key", None):
+            if self.provider == "vertex":
+                self._init_vertex(vertex_project, vertex_region, opts)
+            elif self.provider == "anthropic":
+                self._init_anthropic(api_key, opts)
+            else:
                 self._reason_unavailable = (
-                    "No Anthropic API key configured "
-                    "(set ANTHROPIC_API_KEY or WELO_ANTHROPIC_API_KEY)."
+                    f"Unknown LLM provider '{self.provider}' "
+                    "(set WELO_LLM_PROVIDER to 'anthropic' or 'vertex')."
                 )
-                self._client = None
         except Exception as exc:  # pragma: no cover - unexpected SDK error
             self._reason_unavailable = str(exc)
             self._client = None
+
+    def _init_anthropic(self, api_key: Optional[str], opts: Dict[str, Any]) -> None:
+        # timeout + max_retries keep a demo from hanging or dying on a transient
+        # error. Passing api_key=None lets the SDK resolve ANTHROPIC_API_KEY from
+        # the environment itself.
+        self._client = (
+            anthropic.Anthropic(api_key=api_key, **opts) if api_key
+            else anthropic.Anthropic(**opts)
+        )
+        # The SDK no longer raises at construction when no key is present; it
+        # defers to call time. If we did not check here, the service would
+        # report available=true with no key, the dashboard would show "Live",
+        # and the first real call would fail in front of a client. So require a
+        # resolvable key up front and stay on the offline fallback otherwise.
+        if not getattr(self._client, "api_key", None):
+            self._reason_unavailable = (
+                "No Anthropic API key configured "
+                "(set ANTHROPIC_API_KEY or WELO_ANTHROPIC_API_KEY)."
+            )
+            self._client = None
+
+    def _init_vertex(self, vertex_project: Optional[str], vertex_region: str,
+                     opts: Dict[str, Any]) -> None:
+        # Claude on Vertex AI: no API key. Auth is GCP Application Default
+        # Credentials (the Cloud Run runtime service account), resolved lazily at
+        # call time, so the credential never lives in an env var or the image.
+        # Availability keys on config, not a key: a project id is required, the
+        # region has a default. The bare model ids (claude-opus-4-8, ...) are the
+        # same on Vertex.
+        VertexClient = getattr(anthropic, "AnthropicVertex", None)
+        if VertexClient is None:
+            self._reason_unavailable = (
+                "anthropic SDK lacks Vertex support; install anthropic[vertex]."
+            )
+            return
+        if not vertex_project:
+            self._reason_unavailable = (
+                "No Vertex project configured (set WELO_VERTEX_PROJECT)."
+            )
+            return
+        self._client = VertexClient(
+            project_id=vertex_project, region=vertex_region, **opts
+        )
 
     @property
     def available(self) -> bool:

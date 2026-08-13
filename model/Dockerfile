@@ -28,7 +28,7 @@ RUN pip install --no-cache-dir \
       "shap>=0.46" \
       "joblib>=1.4" \
       "pyyaml>=6.0" \
-      "anthropic>=0.40"
+      "anthropic[vertex]>=0.40"
 
 COPY welo_pipeline ./welo_pipeline
 COPY welo_inference ./welo_inference

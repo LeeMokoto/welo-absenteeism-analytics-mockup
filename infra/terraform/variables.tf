@@ -61,14 +61,41 @@ variable "allow_unauthenticated" {
   default     = true
 }
 
-# --- Agents (Anthropic) ------------------------------------------------------
+# --- Agents (LLM provider) ---------------------------------------------------
+
+variable "llm_provider" {
+  type        = string
+  description = <<-EOT
+    Where the agents call Claude. "anthropic" (default) uses the first-party
+    Anthropic API with an API key from Secret Manager: right for the public
+    demo. "vertex" uses Claude on Google Vertex AI with the runtime service
+    account (GCP IAM, no API key): the preferred path for Welo's own project,
+    keeping data in a chosen Google region and removing a long-lived secret.
+  EOT
+  default     = "anthropic"
+  validation {
+    condition     = contains(["anthropic", "vertex"], var.llm_provider)
+    error_message = "llm_provider must be \"anthropic\" or \"vertex\"."
+  }
+}
+
+variable "vertex_region" {
+  type        = string
+  description = <<-EOT
+    Vertex AI region that serves the Claude models when llm_provider = vertex,
+    e.g. us-east5 or europe-west1. Choose one that meets data-residency needs.
+  EOT
+  default     = "us-east5"
+}
 
 variable "enable_agents" {
   type        = bool
   description = <<-EOT
-    Wire the ANTHROPIC_API_KEY secret into the service. Leave false for the
-    first deploy (the what-if panel works without a key); add the key to the
-    secret, then flip this to true to switch the AI agents on.
+    Turn the AI agents on. For the anthropic provider this wires the
+    ANTHROPIC_API_KEY secret into the service, so leave it false for the first
+    deploy (the what-if panel works without a key), add the key to the secret,
+    then flip it to true. For the vertex provider no secret is needed; set it
+    true once the runtime service account has Vertex access.
   EOT
   default     = false
 }

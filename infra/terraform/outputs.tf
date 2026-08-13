@@ -19,8 +19,13 @@ output "runtime_service_account" {
 }
 
 output "secret_id" {
-  description = "Secret Manager secret that holds the Anthropic API key."
-  value       = google_secret_manager_secret.anthropic.secret_id
+  description = "Secret Manager secret that holds the Anthropic API key (anthropic provider only)."
+  value       = local.create_key_secret ? google_secret_manager_secret.anthropic[0].secret_id : "n/a (llm_provider = vertex, no key secret)"
+}
+
+output "llm_provider" {
+  description = "Where the agents call Claude."
+  value       = var.llm_provider == "vertex" ? "vertex (project ${var.project_id}, region ${var.vertex_region}, service account auth)" : "anthropic (API key from Secret Manager)"
 }
 
 output "dashboard_bucket_url" {
@@ -29,6 +34,6 @@ output "dashboard_bucket_url" {
 }
 
 output "add_key_command" {
-  description = "How to load the Anthropic key into the secret (out of band)."
-  value       = "printf 'sk-ant-...' | gcloud secrets versions add ${google_secret_manager_secret.anthropic.secret_id} --data-file=- --project=${var.project_id}"
+  description = "How to load the Anthropic key into the secret (anthropic provider, out of band)."
+  value       = local.create_key_secret ? "printf 'sk-ant-...' | gcloud secrets versions add ${google_secret_manager_secret.anthropic[0].secret_id} --data-file=- --project=${var.project_id}" : "n/a (llm_provider = vertex; no key, the runtime service account authenticates to Vertex)"
 }

@@ -38,6 +38,16 @@ class InferenceConfig:
     anthropic_api_key: str | None = (
         _env("WELO_ANTHROPIC_API_KEY", "") or _env("ANTHROPIC_API_KEY", "") or None
     )
+    # LLM provider for the agent layer. "anthropic" (default) uses the first
+    # party Anthropic API with an API key: right for the public demo. "vertex"
+    # uses Claude on Google Vertex AI with GCP IAM / Application Default
+    # Credentials (no API key), which is the preferred path for Welo's own
+    # deployment: keeps data in a chosen Google region and removes a long-lived
+    # secret. vertex_project is required in that mode; vertex_region defaults to
+    # a region that serves the Claude models.
+    llm_provider: str = _env("WELO_LLM_PROVIDER", "anthropic").strip().lower()
+    vertex_project: str | None = _env("WELO_VERTEX_PROJECT", "") or None
+    vertex_region: str = _env("WELO_VERTEX_REGION", "us-east5")
     agent_model: str = _env("WELO_AGENT_MODEL", "claude-opus-4-8")
     agent_thinking: bool = _env("WELO_AGENT_THINKING", "1") not in ("0", "false", "False", "")
     # Reliability knobs: keep a demo alive in front of a client. The Anthropic

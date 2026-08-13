@@ -51,18 +51,54 @@ The agents are additionally instructed to reason only from the supplied data and
 never to recommend disciplinary use (see `AGENTS.md`), and this is enforced by
 the evaluation harness (`welo_inference/evals`).
 
+## LLM provider: Anthropic API vs Vertex AI
+
+The agent layer can call Claude through one of two providers, selected with
+`WELO_LLM_PROVIDER` (see `welo_inference/config.py`). This choice materially
+affects the data-flow, the responsible processor and the cross-border-transfer
+analysis, so it is a governance decision, not just a deployment detail.
+
+| | `anthropic` (default) | `vertex` |
+| --- | --- | --- |
+| Endpoint | Anthropic API | Claude on Google Vertex AI |
+| Auth | API key (Secret Manager) | GCP IAM / service account (no key) |
+| Processor | Anthropic | Google (Vertex), running Claude |
+| Data location | Anthropic infrastructure | The Google region you pin (`WELO_VERTEX_REGION`) |
+| Contract | Anthropic DPA | Google Cloud DPA / CDPA |
+| Best for | Public demo | Welo's real deployment |
+
+The **demo runs on `anthropic`**. For the **real deployment we recommend
+`vertex`**: the request stays inside Welo's own Google project and a chosen
+region, authentication is Google IAM (no long-lived key to leak or rotate), and
+the processor relationship is covered by the Google Cloud DPA Welo already holds
+for the rest of its Google estate. The governance boundary
+(`governance.sanitize`) runs identically on both paths, so minimisation and
+de-identification are unchanged.
+
 ## Cross-border transfer, retention and the DPA
 
-Anthropic's API is operated outside South Africa, so agent use is a
-**cross-border transfer** under POPIA section 72. Before go-live with real data,
-Welo must:
+Where the agent request goes depends on the provider above.
+
+**Anthropic provider.** Anthropic's API is operated outside South Africa, so
+agent use is a **cross-border transfer** under POPIA section 72. Before go-live
+with real data on this path, Welo must:
 
 - Execute Anthropic's **Data Processing Addendum** and confirm the
   **zero-retention / no-training** posture for the API (Anthropic does not train
   on API traffic; a DPA and, where offered, zero-retention should be in place).
 - Record the transfer ground (adequate protection via the DPA, or data-subject
   consent).
-- Complete a short **DPIA** for the special-information processing.
+
+**Vertex provider.** The request is processed by **Google** in the region set by
+`WELO_VERTEX_REGION`. Pinning a region (for example an EU region, or Google's
+data-residency commitments) can keep the processing within a chosen jurisdiction
+and narrows or removes the section 72 transfer question depending on the region
+chosen. The applicable contract is Welo's **Google Cloud DPA**, and Anthropic's
+terms for Claude-on-Vertex confirm the same no-training posture on prompts and
+outputs. Record the region and the transfer basis in the POPIA documentation.
+
+**Either path**, Welo must complete a short **DPIA** for the special-information
+processing.
 
 The service holds no personal data at rest: model artifacts and the dashboard
 feed are baked into the image; the cache and metrics are in-memory and reset on
@@ -100,7 +136,11 @@ creating a second copy of the personal data.
 
 ## Responsibilities before go-live (checklist for Welo)
 
-- [ ] Anthropic DPA signed; zero-retention / no-train posture confirmed.
+- [ ] LLM provider chosen and recorded (`WELO_LLM_PROVIDER`). Vertex is
+      recommended for the real-data environment; if Anthropic, the Anthropic DPA
+      is signed and the zero-retention / no-train posture confirmed. If Vertex,
+      the Google Cloud DPA covers it and `WELO_VERTEX_REGION` is pinned to an
+      approved region.
 - [ ] DPIA completed for the special-information processing.
 - [ ] `WELO_PSEUDONYM_SALT` set to a managed secret.
 - [ ] `WELO_REQUIRE_AUTH=1` and IAP (or key) enforced; ingress restricted.
