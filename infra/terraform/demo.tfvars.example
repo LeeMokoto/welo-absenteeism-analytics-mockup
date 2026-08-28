@@ -9,15 +9,15 @@ region     = "europe-west1"
 # Build the image first with infra/scripts/build_and_push.sh, then paste its ref:
 image = "europe-west1-docker.pkg.dev/my-demo-project/welo/welo-inference:latest"
 
-# --- Sick Leave dashboard (Next.js on Cloud Run) ---
-# A second Cloud Run service. Build with build_and_push_sick_leave.sh and paste
-# the ref. Set deploy_sick_leave = false to skip it entirely.
-deploy_sick_leave = true
-sick_leave_image  = "europe-west1-docker.pkg.dev/my-demo-project/welo/welo-sick-leave:latest"
-# First deploy: leave agents off (the dashboard renders with panels disabled).
-# Add the key to the same secret, then set true and re-apply.
-sick_leave_enable_agents = false
-sick_leave_agent_model   = "claude-sonnet-5"
+# --- Sick Leave dashboard (Next.js) ---
+# The sick-leave dashboard is hosted on Vercel, so it is NOT deployed here.
+# Set this true only to run it on Cloud Run as well (for example to keep it
+# inside the client's project); you must then build its image with
+# build_and_push_sick_leave.sh and set sick_leave_image.
+deploy_sick_leave = false
+# sick_leave_image         = "europe-west1-docker.pkg.dev/my-demo-project/welo/welo-sick-leave:latest"
+# sick_leave_enable_agents = false
+# sick_leave_agent_model   = "claude-sonnet-5"
 
 # --- Dashboard static hosting (optional) ---
 host_dashboard   = true

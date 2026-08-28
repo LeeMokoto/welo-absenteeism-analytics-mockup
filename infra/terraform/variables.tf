@@ -65,8 +65,13 @@ variable "allow_unauthenticated" {
 
 variable "deploy_sick_leave" {
   type        = bool
-  description = "Deploy the Next.js Sick Leave Intelligence dashboard as a second Cloud Run service."
-  default     = true
+  description = <<-EOT
+    Deploy the Next.js Sick Leave Intelligence dashboard as a second Cloud Run
+    service. Defaults to false because that dashboard is currently hosted on
+    Vercel; set it true (and supply sick_leave_image) only if you want to run it
+    on Cloud Run instead, for example to keep it inside the client's project.
+  EOT
+  default     = false
 }
 
 variable "sick_leave_service_name" {

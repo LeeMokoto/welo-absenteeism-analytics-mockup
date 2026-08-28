@@ -45,25 +45,29 @@ terraform apply -var-file=demo.tfvars \
   -target=google_project_service.services \
   -target=google_artifact_registry_repository.welo
 
-# 2. Build and push BOTH images; paste each printed ref into demo.tfvars
-#    (image = ... for the inference service, sick_leave_image = ... for the app)
+# 2. Build and push the inference image; paste the printed ref into demo.tfvars
+#    as image = "..."
 ../scripts/build_and_push.sh YOUR_PROJECT_ID europe-west1
-../scripts/build_and_push_sick_leave.sh YOUR_PROJECT_ID europe-west1
 
-# 3. Apply the rest (both Cloud Run services, secret, bucket)
+# 3. Apply the rest (Cloud Run, secret, bucket)
 terraform apply -var-file=demo.tfvars
 
-# 4. (optional) upload the static absenteeism dashboard
+# 4. Put the Anthropic key in the secret, then switch the agents on
+printf 'sk-ant-YOURKEY' | gcloud secrets versions add anthropic-api-key \
+  --data-file=- --project=YOUR_PROJECT_ID
+terraform apply -var-file=demo.tfvars -var="enable_agents=true"
+
+# 5. (optional) upload the static absenteeism dashboard to the bucket
 ../scripts/upload_dashboard.sh YOUR_DASHBOARD_BUCKET
 ```
 
-`terraform output sick_leave_url` prints the sick-leave dashboard URL. It renders
-immediately with the three agent panels disabled; enable them the same way as
-the inference service (below).
+`terraform output service_url` prints the Cloud Run URL. Open the absenteeism
+dashboard with `?api=<service_url>` and the **Live what-if** panel works
+immediately with no key; the three agent panels come alive once step 4 is done.
 
-`terraform output service_url` prints the Cloud Run URL. Open the dashboard with
-`?api=<service_url>` and the **Live what-if** panel works immediately, no key
-required.
+This deploys the inference service only. The sick-leave dashboard is hosted on
+Vercel, so `deploy_sick_leave` defaults to false; see the section below to run it
+on Cloud Run as well.
 
 ## LLM provider: Anthropic API or Vertex AI
 
