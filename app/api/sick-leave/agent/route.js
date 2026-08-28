@@ -20,17 +20,38 @@ const MODEL = process.env.SICK_LEAVE_AGENT_MODEL || "claude-sonnet-5";
 const MAX_TOKENS = 1200;
 
 // Config check for debugging a deployment: reports whether a key is present and
-// which model is configured. It never returns the key or any part of it, and it
-// makes no upstream call, so it costs nothing and is safe to hit from a browser.
-export async function GET() {
+// which model is configured. It never returns the key or any part of it.
+//
+// Add ?models=1 to also list the model ids this account can actually use, and
+// say whether the configured one is among them. That calls the Models API,
+// which consumes no tokens, and is the quickest way to diagnose a request that
+// is being rejected for the model rather than the credentials.
+export async function GET(request) {
   const key = process.env.ANTHROPIC_API_KEY || "";
-  return json({
+  const out = {
     keyConfigured: Boolean(key),
     keyLooksValid: /^sk-ant-/.test(key),
     model: MODEL,
     modelFromEnv: Boolean(process.env.SICK_LEAVE_AGENT_MODEL),
     agents: AGENT_IDS,
-  });
+  };
+
+  const wantModels = new URL(request.url).searchParams.get("models");
+  if (wantModels && key) {
+    try {
+      const list = await new Anthropic({ apiKey: key }).models.list({ limit: 50 });
+      const ids = (list?.data || []).map((m) => m.id);
+      out.availableModels = ids;
+      out.configuredModelAvailable = ids.includes(MODEL);
+    } catch (err) {
+      out.modelsLookupError = redact(
+        err?.error?.error?.message || err?.message || String(err)
+      );
+      out.modelsLookupStatus = Number(err?.status) || null;
+    }
+  }
+
+  return json(out);
 }
 
 export async function POST(request) {
