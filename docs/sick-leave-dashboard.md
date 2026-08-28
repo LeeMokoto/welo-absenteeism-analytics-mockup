@@ -129,8 +129,28 @@ uses the first-party Anthropic key. Vertex parity for this route is a
 self-contained follow-up (the `@anthropic-ai/vertex-sdk` client plus a provider
 switch, mirroring `model/welo_inference/agents.py`).
 
-## Coexistence
+## Coexistence and the routes
 
-This Next app owns only `/sick-leave` and its API route. The original
-absenteeism dashboard (root `index.html`) and the Python inference service under
-`model/` are unchanged and deploy independently.
+The deployment serves both dashboards:
+
+| Route | What it is |
+| --- | --- |
+| `/` | Branded hub linking both products |
+| `/absenteeism` | The original static dashboard (redirects to `/absenteeism/index.html`) |
+| `/sick-leave` | This Next.js app |
+| `/api/sick-leave/agent` | The agent proxy (server side, holds the key) |
+
+The original `index.html` is not edited or duplicated in git. A prebuild step
+(`scripts/stage-static-dashboard.mjs`, wired to npm's `prebuild`) copies it plus
+the assets it actually loads (`config/*.js` and the three `dashboard_feed.*.js`
+files) into `public/absenteeism/`, mirroring the same relative layout so the HTML
+works unmodified. `public/absenteeism/` is generated and git-ignored.
+
+`/absenteeism` is a **redirect**, not a rewrite, and that is deliberate:
+`index.html` loads its config and feed by relative path, so serving it at a URL
+without a trailing segment would resolve `config/industry.js` to
+`/config/industry.js` and 404. A trailing-slash rewrite is not an option either,
+because Next normalises `/absenteeism/` back to `/absenteeism` and would loop.
+
+The Python inference service under `model/` is unchanged and deploys
+independently; the absenteeism dashboard reaches it with `?api=<service_url>`.

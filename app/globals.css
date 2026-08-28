@@ -152,6 +152,15 @@ a {
   }
 }
 
+/* Landing hub product cards */
+.product-card {
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.product-card:hover {
+  border-color: var(--brick);
+  background: var(--cream);
+}
+
 /* Case view: selector column beside the record. Stacks on mobile. */
 .case-grid {
   display: grid;
