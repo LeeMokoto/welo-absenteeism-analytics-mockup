@@ -38,9 +38,9 @@ export default function EntitlementBurn({ burn, cohortSize }) {
             ["Next 6 months", proj.in6Months],
             ["Next 12 months", proj.in12Months],
           ].map(([label, v]) => (
-            <div key={label} style={{ background: "var(--cream)", border: "1px solid var(--line)", borderRadius: 6, padding: "10px 12px" }}>
+            <div key={label} style={{ background: "var(--cream-2)", borderRadius: 8, padding: "12px 14px" }}>
               <div className="caption">{label}</div>
-              <div style={{ fontFamily: "var(--font-serif)", fontSize: 22, marginTop: 4 }}>{num(v)}</div>
+              <div style={{ fontSize: 24, fontWeight: 600, letterSpacing: "-0.03em", marginTop: 4, fontFeatureSettings: "'tnum'" }}>{num(v)}</div>
               <div className="caption">employees</div>
             </div>
           ))}

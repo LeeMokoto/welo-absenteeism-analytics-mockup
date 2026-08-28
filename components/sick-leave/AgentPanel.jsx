@@ -41,7 +41,7 @@ export default function AgentPanel({ agent, roleTag, description, chips, getCont
 
   return (
     <div className="card">
-      <div className="mono" style={{ color: "var(--brick-deep)" }}>{roleTag}</div>
+      <div className="eyebrow">{roleTag}</div>
       <p className="card-note" style={{ marginTop: 8 }}>{description}</p>
 
       {!available ? (

@@ -1,6 +1,6 @@
 import { pct } from "@/lib/sick-leave/format";
 
-// Site by function grid. Cell value is sick leave rate, colour scale on brick.
+// Site by function grid. Cell value is sick leave rate, colour scale on the brand red.
 // Cells under five employees show n<5.
 export default function ConcentrationMatrix({ concentration, functions }) {
   const rates = [];
@@ -10,8 +10,8 @@ export default function ConcentrationMatrix({ concentration, functions }) {
 
   const shade = (rate) => {
     const t = max === min ? 0.5 : (rate - min) / (max - min);
-    // brick with variable alpha
-    return `rgba(187, 61, 46, ${(0.12 + t * 0.72).toFixed(3)})`;
+    // The brand red (#C0392B) at variable alpha.
+    return `rgba(192, 57, 43, ${(0.1 + t * 0.72).toFixed(3)})`;
   };
 
   return (

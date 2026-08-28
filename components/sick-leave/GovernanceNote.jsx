@@ -2,9 +2,7 @@
 export default function GovernanceNote() {
   return (
     <footer className="govnote">
-      <div className="mono" style={{ color: "var(--brown)", marginBottom: 8 }}>
-        Governance
-      </div>
+      <div className="mono" style={{ marginBottom: 8 }}>Governance</div>
       <p style={{ margin: "0 0 8px" }}>
         Data residency remains in South Africa. Welo operates as operator, with the employer
         as responsible party. Health data is processed at ICD-10 chapter level outside the

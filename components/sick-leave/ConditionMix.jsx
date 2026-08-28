@@ -12,7 +12,7 @@ export default function ConditionMix({ mix }) {
     <div className="card">
       <div className="card-title">Condition mix by ICD-10 chapter</div>
       <p className="card-note">
-        Share of days (brick) against share of spells (brown). Chapter level only. Special
+        Share of days (red) against share of spells (grey). Chapter level only. Special
         personal information is never resolved below chapter here.
       </p>
 

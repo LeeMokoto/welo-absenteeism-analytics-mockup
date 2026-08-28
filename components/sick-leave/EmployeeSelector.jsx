@@ -53,8 +53,8 @@ export default function EmployeeSelector({ index, meta, selectedId, onSelect }) 
             aria-pressed={selectedId === r.employeeId}
             style={{
               borderRadius: 6,
-              borderColor: selectedId === r.employeeId ? "var(--brick)" : "var(--line)",
-              background: selectedId === r.employeeId ? "var(--cream)" : "#fff",
+              borderColor: selectedId === r.employeeId ? "var(--red)" : "var(--line)",
+              background: selectedId === r.employeeId ? "var(--red-faint)" : "var(--card)",
               display: "grid",
               gap: 2,
             }}

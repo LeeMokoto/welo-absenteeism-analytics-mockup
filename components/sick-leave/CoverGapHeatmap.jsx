@@ -4,7 +4,8 @@ export default function CoverGapHeatmap({ heatmap }) {
   const allVals = [];
   for (const row of heatmap) for (const v of row.days) allVals.push(v);
   const max = Math.max(...allVals, 1);
-  const shade = (v) => (v === 0 ? "var(--cream)" : `rgba(187, 61, 46, ${(0.15 + (v / max) * 0.75).toFixed(3)})`);
+  // The brand red (#C0392B) at variable alpha; empty cells stay neutral.
+  const shade = (v) => (v === 0 ? "var(--cream-2)" : `rgba(192, 57, 43, ${(0.13 + (v / max) * 0.75).toFixed(3)})`);
 
   const dayCount = heatmap[0]?.days.length || 28;
 

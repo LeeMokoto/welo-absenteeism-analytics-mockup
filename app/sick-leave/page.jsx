@@ -1,4 +1,3 @@
-import SampleBanner from "@/components/sick-leave/SampleBanner";
 import GovernanceNote from "@/components/sick-leave/GovernanceNote";
 import SickLeaveApp from "./SickLeaveApp";
 import { meta } from "@/lib/sick-leave/sampleData";
@@ -14,23 +13,22 @@ export default function SickLeavePage() {
   const agentsAvailable = Boolean(process.env.ANTHROPIC_API_KEY);
 
   return (
-    <>
-      <SampleBanner />
-      <main className="page">
-        <header style={{ paddingTop: 26 }}>
-          <div className="mono" style={{ color: "var(--brown)" }}>WELO HEALTH · SICK LEAVE INTELLIGENCE</div>
-          <h1 style={{ fontSize: 28, marginTop: 8 }}>Sick Leave Intelligence</h1>
-          <p style={{ marginTop: 8, maxWidth: 720, color: "var(--ink-soft)" }}>
-            Statutory sick leave, oriented at care pathways and workforce planning. Synthetic sample
-            data for a mining division of {num(meta.cohortSize)} employees across{" "}
-            {meta.siteCount} sites. Not used for HR review or disciplinary purposes.
-          </p>
-        </header>
+    <main className="page">
+      <header style={{ paddingTop: 40 }}>
+        <div className="eyebrow">Welo Health, sick leave intelligence</div>
+        <h1 style={{ fontSize: 30, marginTop: 10, letterSpacing: "-0.03em" }}>
+          Sick Leave Intelligence
+        </h1>
+        <p style={{ marginTop: 10, maxWidth: 720, color: "var(--ink-mute)", fontSize: 14.5 }}>
+          Statutory sick leave, oriented at care pathways and workforce planning. A mining division
+          of {num(meta.cohortSize)} employees across {meta.siteCount} sites. Not used for HR review
+          or disciplinary purposes.
+        </p>
+      </header>
 
-        <SickLeaveApp agentsAvailable={agentsAvailable} />
+      <SickLeaveApp agentsAvailable={agentsAvailable} />
 
-        <GovernanceNote />
-      </main>
-    </>
+      <GovernanceNote />
+    </main>
   );
 }
