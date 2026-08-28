@@ -17,7 +17,7 @@ sick_leave_image  = "europe-west1-docker.pkg.dev/my-demo-project/welo/welo-sick-
 # First deploy: leave agents off (the dashboard renders with panels disabled).
 # Add the key to the same secret, then set true and re-apply.
 sick_leave_enable_agents = false
-sick_leave_agent_model   = "claude-sonnet-4-6"
+sick_leave_agent_model   = "claude-sonnet-5"
 
 # --- Dashboard static hosting (optional) ---
 host_dashboard   = true

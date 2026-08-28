@@ -239,7 +239,7 @@ resource "google_storage_bucket_iam_member" "dashboard_public" {
 # Wired the same way as the inference service: its own least-privilege runtime
 # service account, and the Anthropic key injected from the same Secret Manager
 # secret when its agents are enabled. Uses the first-party Anthropic key path
-# (model claude-sonnet-4-6 by default). Deployed from the root Dockerfile.
+# (model claude-sonnet-5 by default). Deployed from the root Dockerfile.
 
 resource "google_service_account" "sick_leave_run" {
   count        = var.deploy_sick_leave ? 1 : 0

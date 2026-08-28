@@ -16,7 +16,7 @@ import { AGENT_IDS } from "@/lib/sick-leave/agentMeta";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-const MODEL = process.env.SICK_LEAVE_AGENT_MODEL || "claude-sonnet-4-6";
+const MODEL = process.env.SICK_LEAVE_AGENT_MODEL || "claude-sonnet-5";
 const MAX_TOKENS = 1200;
 
 export async function POST(request) {
