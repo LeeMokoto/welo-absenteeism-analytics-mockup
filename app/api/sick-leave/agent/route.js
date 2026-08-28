@@ -117,8 +117,19 @@ function explain(status, err) {
       return "The Anthropic API key is not permitted to make this request. Check the key's permissions.";
     case 404:
       return `The model "${MODEL}" is not available to this account. Set SICK_LEAVE_AGENT_MODEL to a model the account can use, then redeploy.`;
-    case 400:
-      return `The request was rejected as invalid, which usually means the model id "${MODEL}" is wrong. ${redact(err?.error?.error?.message || "")}`.trim();
+    case 400: {
+      // The key authenticated (that would be 401), so the request itself was
+      // rejected. The two common causes are an exhausted credit balance and a
+      // model id the account cannot use; both come back as 400 here.
+      const detail = redact(err?.error?.error?.message || "");
+      if (/credit balance|too low|billing/i.test(detail)) {
+        return "The Anthropic account has insufficient credit. Top up or raise the spend cap in the Anthropic console, then try again.";
+      }
+      if (/model/i.test(detail)) {
+        return `The model "${MODEL}" was rejected. Set SICK_LEAVE_AGENT_MODEL to a model this account can use, then redeploy. Upstream said: ${detail}`;
+      }
+      return `The request was rejected as invalid. Upstream said: ${detail || "no detail returned"}`;
+    }
     case 429:
       return "Rate limited by the Anthropic API, or the account is out of credit. Wait a moment, or check the billing and spend cap.";
     case 500:
