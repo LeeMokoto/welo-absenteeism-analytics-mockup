@@ -1,0 +1,20 @@
+# Keep the build context small and reproducible. The generated sample data in
+# lib/sick-leave/ is checked in and IS needed for the build, so it is not ignored.
+node_modules
+.next
+.git
+.github
+.gitignore
+
+# Unrelated to the Next app build.
+model
+infra
+docs
+README.md
+
+# Local env / editor noise
+.env
+.env.*
+.DS_Store
+.vscode
+.idea

@@ -2,14 +2,18 @@ locals {
   use_anthropic = var.llm_provider == "anthropic"
   use_vertex    = var.llm_provider == "vertex"
 
-  # The Anthropic API-key secret is only wired in for the anthropic provider
-  # with agents enabled. Vertex authenticates as the runtime service account, so
-  # it needs no secret.
+  # The Anthropic API-key secret is only wired into the inference service for the
+  # anthropic provider with agents enabled. Vertex authenticates as the runtime
+  # service account, so it needs no secret.
   anthropic_key_env = local.use_anthropic && var.enable_agents
 
-  # Only create the Secret Manager secret on the anthropic path; the vertex path
-  # has no key to hold.
-  create_key_secret = local.use_anthropic
+  # The Next.js sick-leave dashboard uses the first-party Anthropic key path, so
+  # it wants the same secret whenever its agents are enabled.
+  sick_leave_key_env = var.deploy_sick_leave && var.sick_leave_enable_agents
+
+  # Create the Secret Manager secret when either service needs the Anthropic key
+  # (the inference service on the anthropic provider, or the sick-leave app).
+  create_key_secret = local.use_anthropic || local.sick_leave_key_env
 }
 
 # --- Enable the APIs this stack uses ----------------------------------------
@@ -229,4 +233,120 @@ resource "google_storage_bucket_iam_member" "dashboard_public" {
   bucket = google_storage_bucket.dashboard[0].name
   role   = "roles/storage.objectViewer"
   member = "allUsers"
+}
+
+# --- Sick Leave Intelligence dashboard (Next.js on Cloud Run) ---------------
+# Wired the same way as the inference service: its own least-privilege runtime
+# service account, and the Anthropic key injected from the same Secret Manager
+# secret when its agents are enabled. Uses the first-party Anthropic key path
+# (model claude-sonnet-4-6 by default). Deployed from the root Dockerfile.
+
+resource "google_service_account" "sick_leave_run" {
+  count        = var.deploy_sick_leave ? 1 : 0
+  account_id   = "${var.sick_leave_service_name}-sa"
+  display_name = "Welo sick-leave dashboard Cloud Run runtime"
+}
+
+# The sick-leave runtime SA may read the shared Anthropic key secret when its
+# agents are enabled. Bound at the secret level, not the project.
+resource "google_secret_manager_secret_iam_member" "sick_leave_access" {
+  count     = local.sick_leave_key_env && local.create_key_secret ? 1 : 0
+  secret_id = google_secret_manager_secret.anthropic[0].secret_id
+  role      = "roles/secretmanager.secretAccessor"
+  member    = "serviceAccount:${google_service_account.sick_leave_run[0].email}"
+}
+
+resource "google_cloud_run_v2_service" "sick_leave" {
+  count               = var.deploy_sick_leave ? 1 : 0
+  name                = var.sick_leave_service_name
+  location            = var.region
+  ingress             = "INGRESS_TRAFFIC_ALL"
+  deletion_protection = false
+
+  lifecycle {
+    precondition {
+      condition     = var.sick_leave_image != ""
+      error_message = "sick_leave_image must be set when deploy_sick_leave = true. Build it with infra/scripts/build_and_push_sick_leave.sh."
+    }
+  }
+
+  template {
+    service_account = google_service_account.sick_leave_run[0].email
+
+    scaling {
+      min_instance_count = var.min_instances
+      max_instance_count = var.max_instances
+    }
+
+    containers {
+      image = var.sick_leave_image
+
+      ports {
+        container_port = 8080
+      }
+
+      resources {
+        limits = {
+          cpu    = var.cpu
+          memory = var.sick_leave_memory
+        }
+        cpu_idle = true
+      }
+
+      env {
+        name  = "SICK_LEAVE_AGENT_MODEL"
+        value = var.sick_leave_agent_model
+      }
+
+      # The Anthropic API key is injected from Secret Manager only when the
+      # sick-leave agents are enabled. Without it the dashboard still renders and
+      # the three agent panels show a clear disabled state.
+      dynamic "env" {
+        for_each = local.sick_leave_key_env ? [1] : []
+        content {
+          name = "ANTHROPIC_API_KEY"
+          value_source {
+            secret_key_ref {
+              secret  = google_secret_manager_secret.anthropic[0].secret_id
+              version = "latest"
+            }
+          }
+        }
+      }
+
+      # The Next server answers 200 at "/" once it is up.
+      startup_probe {
+        http_get {
+          path = "/"
+          port = 8080
+        }
+        initial_delay_seconds = 3
+        period_seconds        = 5
+        timeout_seconds       = 3
+        failure_threshold     = 12
+      }
+
+      liveness_probe {
+        http_get {
+          path = "/"
+          port = 8080
+        }
+        period_seconds = 30
+      }
+    }
+  }
+
+  depends_on = [
+    google_project_service.services,
+    google_secret_manager_secret_iam_member.sick_leave_access,
+  ]
+}
+
+# Public invoke for the demo. Same org-policy caveat as the inference service.
+resource "google_cloud_run_v2_service_iam_member" "sick_leave_public" {
+  count    = var.deploy_sick_leave && var.allow_unauthenticated ? 1 : 0
+  name     = google_cloud_run_v2_service.sick_leave[0].name
+  location = google_cloud_run_v2_service.sick_leave[0].location
+  role     = "roles/run.invoker"
+  member   = "allUsers"
 }

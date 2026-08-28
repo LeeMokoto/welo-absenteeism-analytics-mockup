@@ -3,6 +3,11 @@ output "service_url" {
   value       = google_cloud_run_v2_service.welo.uri
 }
 
+output "sick_leave_url" {
+  description = "Cloud Run URL of the Next.js sick-leave dashboard."
+  value       = var.deploy_sick_leave ? "${google_cloud_run_v2_service.sick_leave[0].uri}/sick-leave" : "not deployed (deploy_sick_leave = false)"
+}
+
 output "dashboard_link" {
   description = "Open the dashboard wired to the live service."
   value       = "${google_cloud_run_v2_service.welo.uri} -> add ?api=<this-url> to the dashboard URL"

@@ -61,6 +61,54 @@ variable "allow_unauthenticated" {
   default     = true
 }
 
+# --- Sick Leave dashboard (Next.js on Cloud Run) ----------------------------
+
+variable "deploy_sick_leave" {
+  type        = bool
+  description = "Deploy the Next.js Sick Leave Intelligence dashboard as a second Cloud Run service."
+  default     = true
+}
+
+variable "sick_leave_service_name" {
+  type        = string
+  description = "Cloud Run service name for the sick-leave dashboard."
+  default     = "welo-sick-leave"
+}
+
+variable "sick_leave_image" {
+  type        = string
+  description = <<-EOT
+    Full image ref for the sick-leave dashboard, e.g.
+    europe-west1-docker.pkg.dev/PROJECT/welo/welo-sick-leave:latest.
+    Build and push it with infra/scripts/build_and_push_sick_leave.sh. Required
+    when deploy_sick_leave = true.
+  EOT
+  default     = ""
+}
+
+variable "sick_leave_memory" {
+  type        = string
+  description = "Container memory for the sick-leave service. The Next server is light."
+  default     = "512Mi"
+}
+
+variable "sick_leave_enable_agents" {
+  type        = bool
+  description = <<-EOT
+    Inject the Anthropic key into the sick-leave service so its three agents work.
+    Leave false for the first deploy (the dashboard renders with the panels
+    disabled); add the key to the secret, then set true and re-apply. This uses
+    the first-party Anthropic key path.
+  EOT
+  default     = false
+}
+
+variable "sick_leave_agent_model" {
+  type        = string
+  description = "Model the sick-leave agents call."
+  default     = "claude-sonnet-4-6"
+}
+
 # --- Agents (LLM provider) ---------------------------------------------------
 
 variable "llm_provider" {

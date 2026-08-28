@@ -13,11 +13,12 @@ Terraform at a new state and a new `*.tfvars`. Nothing hardcodes a project.
 
 | Resource | Purpose |
 | --- | --- |
-| Cloud Run service (`welo-inference`) | The only compute. Runs the model + agent proxy. 1 vCPU / 1 GiB, scale to zero. |
-| Secret Manager secret | Holds `ANTHROPIC_API_KEY`, injected at runtime. Anthropic provider only. |
+| Cloud Run service (`welo-inference`) | The model + agent proxy. 1 vCPU / 1 GiB, scale to zero. |
+| Cloud Run service (`welo-sick-leave`) | The Next.js Sick Leave dashboard. 1 vCPU / 512 MiB, scale to zero. Optional (`deploy_sick_leave`). |
+| Secret Manager secret | Holds `ANTHROPIC_API_KEY`, injected at runtime into either service. Shared. |
 | Vertex AI IAM grant | `roles/aiplatform.user` on the runtime SA. Vertex provider only. |
 | Artifact Registry repo | Stores the container image. |
-| Runtime service account | Least-privilege identity; reads only the one secret, or calls Vertex. |
+| Runtime service accounts | One per service, least-privilege; each reads only the shared secret when its agents are on. |
 | GCS bucket (optional) | Serves the static dashboard. |
 | API enablement | Run, Cloud Build, Artifact Registry, Secret Manager (+ Vertex AI when `llm_provider = vertex`). |
 
@@ -44,15 +45,21 @@ terraform apply -var-file=demo.tfvars \
   -target=google_project_service.services \
   -target=google_artifact_registry_repository.welo
 
-# 2. Build and push the image; paste the printed ref into demo.tfvars (image = ...)
+# 2. Build and push BOTH images; paste each printed ref into demo.tfvars
+#    (image = ... for the inference service, sick_leave_image = ... for the app)
 ../scripts/build_and_push.sh YOUR_PROJECT_ID europe-west1
+../scripts/build_and_push_sick_leave.sh YOUR_PROJECT_ID europe-west1
 
-# 3. Apply the rest (Cloud Run, secret, bucket)
+# 3. Apply the rest (both Cloud Run services, secret, bucket)
 terraform apply -var-file=demo.tfvars
 
-# 4. (optional) upload the static dashboard
+# 4. (optional) upload the static absenteeism dashboard
 ../scripts/upload_dashboard.sh YOUR_DASHBOARD_BUCKET
 ```
+
+`terraform output sick_leave_url` prints the sick-leave dashboard URL. It renders
+immediately with the three agent panels disabled; enable them the same way as
+the inference service (below).
 
 `terraform output service_url` prints the Cloud Run URL. Open the dashboard with
 `?api=<service_url>` and the **Live what-if** panel works immediately, no key
@@ -99,6 +106,23 @@ terraform apply -var-file=demo.tfvars -var="enable_agents=true"
 Until the key exists and `enable_agents = true` (Anthropic), or the SA has Vertex
 access and `enable_agents = true` (Vertex), the service reports the agents as
 offline and the dashboard shows its built-in summaries, so it never breaks.
+
+### The sick-leave dashboard's agents
+
+The Next.js sick-leave service uses the first-party Anthropic key path and reads
+the **same** Secret Manager secret. Add the key once (above), then enable its
+three agents with their own toggle:
+
+```bash
+terraform apply -var-file=demo.tfvars -var="sick_leave_enable_agents=true"
+```
+
+Its runtime service account is granted read access to the shared secret only
+when this toggle is on. Until then the dashboard renders normally with the three
+agent panels showing a clear disabled state. The sick-leave app does not yet
+support the Vertex path, so run it with the anthropic key even if the inference
+service is on Vertex; setting `sick_leave_enable_agents = true` makes Terraform
+create the shared key secret in that case.
 
 ## Migrating to the client's environment
 

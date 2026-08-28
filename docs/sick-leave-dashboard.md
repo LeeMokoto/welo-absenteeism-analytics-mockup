@@ -102,6 +102,33 @@ prompts; run these before shipping:
   disciplinary write-up, colleague comparison) and offers the support plan.
 - All three agents refuse to invent a figure absent from the supplied context.
 
+## Deploy (Cloud Run, the same as the absenteeism service)
+
+The app ships as a container (`Dockerfile` at the repo root, Next.js standalone
+output) and deploys on Cloud Run through the same Terraform stack as the
+inference service, reading the Anthropic key from the same Secret Manager secret.
+
+```bash
+# build + push the image (Cloud Build), paste the ref into your *.tfvars
+infra/scripts/build_and_push_sick_leave.sh YOUR_PROJECT_ID europe-west1
+
+cd infra/terraform
+terraform apply -var-file=demo.tfvars           # brings up both services
+terraform output sick_leave_url                 # the dashboard URL
+
+# turn the agents on once the key is in the shared secret
+terraform apply -var-file=demo.tfvars -var="sick_leave_enable_agents=true"
+```
+
+The key is injected as `ANTHROPIC_API_KEY` at runtime and never baked into the
+image. With agents off, the dashboard renders with the three panels disabled.
+Full deploy and migration notes are in [`../infra/README.md`](../infra/README.md).
+
+The app does not yet support the Vertex path that the inference service has; it
+uses the first-party Anthropic key. Vertex parity for this route is a
+self-contained follow-up (the `@anthropic-ai/vertex-sdk` client plus a provider
+switch, mirroring `model/welo_inference/agents.py`).
+
 ## Coexistence
 
 This Next app owns only `/sick-leave` and its API route. The original
