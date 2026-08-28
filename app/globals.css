@@ -1,0 +1,454 @@
+/*
+  Welo live brand. Identical palette to the absenteeism dashboard.
+  Do not invent a new palette here.
+*/
+
+:root {
+  --paper: #FAF6EF;
+  --ink: #1A1714;
+  --ink-soft: #3D3833;
+  --brick: #BB3D2E;
+  --brick-deep: #9A3124;
+  --brown: #6E4A3A;
+  --line: rgba(26, 23, 20, 0.12);
+  --cream: #F4EFE5;
+
+  --font-serif: Cambria, Georgia, "Times New Roman", serif;
+  --font-sans: Calibri, "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-mono: Consolas, "SF Mono", "SFMono-Regular", Menlo, monospace;
+
+  --radius-card: 8px;
+  --maxw: 1180px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-serif);
+  color: var(--ink);
+  font-weight: 600;
+  margin: 0;
+}
+
+a {
+  color: var(--brick-deep);
+}
+
+/* Monospace labels / captions / units / role tags */
+.mono {
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 11px;
+}
+
+.caption {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--ink-soft);
+}
+
+.indicative {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--brown);
+}
+
+/* Layout */
+.page {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 0 20px 64px;
+}
+
+.section {
+  margin-top: 34px;
+}
+
+/* Section header with the 2px brick rule */
+.section-header {
+  border-bottom: 2px solid var(--brick);
+  padding-bottom: 8px;
+  margin-bottom: 18px;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+}
+.section-header h2 {
+  font-size: 21px;
+}
+.section-header .section-sub {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* Cards */
+.card {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  padding: 18px;
+}
+.card.cream {
+  background: var(--cream);
+}
+.card-title {
+  font-family: var(--font-serif);
+  font-size: 16px;
+  margin-bottom: 4px;
+}
+.card-note {
+  font-size: 13px;
+  color: var(--ink-soft);
+  margin-bottom: 14px;
+}
+
+.grid {
+  display: grid;
+  gap: 16px;
+}
+.grid-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+.grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+.grid-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+@media (max-width: 860px) {
+  .grid-2,
+  .grid-3,
+  .grid-4 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Case view: selector column beside the record. Stacks on mobile. */
+.case-grid {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 16px;
+}
+@media (max-width: 860px) {
+  .case-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Metric tiles */
+.metric {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  padding: 16px 18px;
+}
+.metric .metric-label {
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 11px;
+  color: var(--ink-soft);
+}
+.metric .metric-value {
+  font-family: var(--font-serif);
+  font-size: 30px;
+  line-height: 1.1;
+  margin-top: 8px;
+  color: var(--ink);
+}
+.metric .metric-unit {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--brown);
+  margin-top: 6px;
+}
+.metric .metric-hover {
+  font-size: 12px;
+  color: var(--ink-soft);
+  margin-top: 8px;
+  border-top: 1px dotted var(--line);
+  padding-top: 8px;
+}
+
+/* Tables: sharp corners, no radius */
+table.data {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+table.data th,
+table.data td {
+  text-align: right;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+}
+table.data th:first-child,
+table.data td:first-child {
+  text-align: left;
+}
+table.data thead th {
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 10.5px;
+  color: var(--ink-soft);
+  cursor: pointer;
+  user-select: none;
+}
+table.data thead th .sort-caret {
+  color: var(--brick);
+  margin-left: 4px;
+}
+table.data tbody tr:hover {
+  background: var(--cream);
+}
+.nlt5 {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--brown);
+}
+
+/* Bars */
+.bar-track {
+  background: var(--cream);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  height: 16px;
+  position: relative;
+  overflow: hidden;
+}
+.bar-fill {
+  height: 100%;
+  background: var(--brick);
+}
+.bar-fill.soft {
+  background: var(--brown);
+}
+
+/* Banners */
+.banner {
+  border-radius: var(--radius-card);
+  padding: 12px 16px;
+  font-size: 13px;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+.banner.sample {
+  background: var(--brick);
+  color: #fff;
+  border: 1px solid var(--brick-deep);
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  border-radius: 0;
+  justify-content: center;
+  text-align: center;
+}
+.banner.sample .mono {
+  color: #fff;
+}
+.banner.gate {
+  background: var(--cream);
+  border: 1px solid var(--brown);
+  color: var(--ink);
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid var(--line);
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+.tab {
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 11.5px;
+  padding: 11px 16px;
+  border: none;
+  background: none;
+  color: var(--ink-soft);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+}
+.tab[aria-selected="true"] {
+  color: var(--brick-deep);
+  border-bottom-color: var(--brick);
+}
+
+/* Chips */
+.chip {
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  padding: 7px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--ink);
+  cursor: pointer;
+  text-align: left;
+}
+.chip:hover {
+  border-color: var(--brick);
+  background: var(--cream);
+}
+
+/* Badges / tiers */
+.tier {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 3px;
+  border: 1px solid var(--line);
+}
+.tier.Low {
+  color: var(--brown);
+}
+.tier.Moderate {
+  color: var(--brick-deep);
+  border-color: var(--brick);
+}
+.tier.Elevated {
+  color: #fff;
+  background: var(--brick);
+  border-color: var(--brick-deep);
+}
+.modelled-tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--brown);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  padding: 1px 6px;
+}
+
+/* Inputs / buttons */
+.input,
+textarea.input {
+  width: 100%;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #fff;
+  color: var(--ink);
+  resize: vertical;
+}
+.btn {
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 11px;
+  padding: 10px 16px;
+  border: 1px solid var(--brick-deep);
+  border-radius: 6px;
+  background: var(--brick);
+  color: #fff;
+  cursor: pointer;
+}
+.btn:disabled {
+  background: var(--cream);
+  color: var(--ink-soft);
+  border-color: var(--line);
+  cursor: not-allowed;
+}
+.btn.ghost {
+  background: #fff;
+  color: var(--ink);
+  border-color: var(--line);
+}
+
+/* Agent panel */
+.agent-response {
+  background: var(--cream);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 14px 16px;
+  font-size: 14px;
+  min-height: 40px;
+  white-space: normal;
+}
+.agent-response p {
+  margin: 0 0 10px;
+}
+.agent-response ul,
+.agent-response ol {
+  margin: 0 0 10px;
+  padding-left: 20px;
+}
+.agent-hitl {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  color: var(--brown);
+  margin-top: 10px;
+}
+.agent-disabled {
+  background: var(--cream);
+  border: 1px dashed var(--brown);
+  color: var(--ink-soft);
+  border-radius: 6px;
+  padding: 14px 16px;
+  font-size: 13px;
+}
+
+/* Focus visibility (quality floor) */
+:focus-visible {
+  outline: 2px solid var(--brick-deep);
+  outline-offset: 2px;
+}
+
+/* Governance footer note */
+.govnote {
+  margin-top: 40px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  font-size: 12px;
+  color: var(--ink-soft);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
