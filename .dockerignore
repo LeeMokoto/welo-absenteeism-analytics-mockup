@@ -6,8 +6,15 @@ node_modules
 .github
 .gitignore
 
-# Unrelated to the Next app build.
-model
+# Unrelated to the Next app build. model/ is NOT excluded wholesale: the
+# absenteeism agent route imports model/welo_inference/agent_prompts.json, the
+# shared source of truth for the agent prompts. Only the heavy artifacts under
+# it are dropped.
+model/models
+model/data
+model/tests
+model/reports
+model/welo_pipeline
 infra
 docs
 README.md

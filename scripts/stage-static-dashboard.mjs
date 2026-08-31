@@ -15,7 +15,7 @@
   directory is generated and git-ignored.
 */
 
-import { copyFileSync, mkdirSync, rmSync, existsSync } from "node:fs";
+import { copyFileSync, mkdirSync, rmSync, existsSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -49,6 +49,36 @@ for (const [from, to] of FILES) {
   mkdirSync(dirname(dst), { recursive: true });
   copyFileSync(src, dst);
   copied++;
+}
+
+// Point the staged copy at this deployment's own agent routes, so the AI panels
+// work with no ?api= parameter. config/agents.js reads
+// `params.get('api') || window.WELO_API_BASE`, so an explicit ?api=<url> still
+// wins: that is how you switch to the full Python service on Cloud Run, which
+// additionally serves the what-if scoring this deployment cannot.
+//
+// Applied to the generated copy only; the source index.html stays untouched and
+// keeps working standalone from a bucket.
+const SAME_ORIGIN_BASE = "/api/absenteeism";
+const indexPath = join(DEST, "index.html");
+if (existsSync(indexPath)) {
+  const html = readFileSync(indexPath, "utf8");
+  const marker = '<script src="config/agents.js"';
+  if (!html.includes(marker)) {
+    console.warn(
+      "stage-static-dashboard: could not find the agents.js tag; the staged dashboard will need ?api=<url> to reach the agents."
+    );
+  } else {
+    writeFileSync(
+      indexPath,
+      html.replace(
+        marker,
+        `<script>window.WELO_API_BASE = window.WELO_API_BASE || ${JSON.stringify(SAME_ORIGIN_BASE)};</script>\n` +
+          marker
+      )
+    );
+    console.log(`stage-static-dashboard: pointed the staged copy at ${SAME_ORIGIN_BASE}.`);
+  }
 }
 
 if (missing.length) {

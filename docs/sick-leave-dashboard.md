@@ -138,7 +138,31 @@ The deployment serves both dashboards:
 | `/` | Branded hub linking both products |
 | `/absenteeism` | The original static dashboard (redirects to `/absenteeism/index.html`) |
 | `/sick-leave` | This Next.js app |
-| `/api/sick-leave/agent` | The agent proxy (server side, holds the key) |
+| `/api/sick-leave/agent` | Sick-leave agent proxy (server side, holds the key) |
+| `/api/absenteeism/agents` | Absenteeism agent availability probe |
+| `/api/absenteeism/agents/{agent}/stream` | Absenteeism agents, streamed as SSE |
+
+### Absenteeism agents on the same key
+
+Both dashboards' agents run from this one deployment on the single
+`ANTHROPIC_API_KEY` environment variable. That is possible for the absenteeism
+agents because the browser sends the grounding itself (the model output already
+on screen), so they need no trained model, only the key.
+
+The staging step points the staged dashboard at `/api/absenteeism` via
+`window.WELO_API_BASE`, so the AI panels work with no `?api=` parameter. An
+explicit `?api=<url>` still takes precedence, which is how you switch to the
+full Python service on Cloud Run.
+
+**What this does not cover: the live what-if scoring.** `/scenario` re-scores the
+real cohort through the trained sklearn model, which cannot run here, so
+`/api/absenteeism/scenario/levers` returns 404 and the dashboard correctly shows
+the what-if panel as unavailable. That capability needs the Python service
+deployed (see [`../infra/README.md`](../infra/README.md)).
+
+The system prompts are **not** duplicated: both the Python service and the route
+here read `model/welo_inference/agent_prompts.json`, so the guardrails cannot
+drift between deployments.
 
 The original `index.html` is not edited or duplicated in git. A prebuild step
 (`scripts/stage-static-dashboard.mjs`, wired to npm's `prebuild`) copies it plus

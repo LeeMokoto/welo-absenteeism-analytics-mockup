@@ -20,6 +20,7 @@ from __future__ import annotations
 
 import json
 import logging
+from pathlib import Path
 from typing import Any, Callable, Dict, Iterator, List, Optional, Tuple
 
 from . import governance
@@ -44,59 +45,22 @@ class AgentUnavailable(RuntimeError):
     """
 
 
+# System prompts live in agent_prompts.json, next to this module, because the
+# same agents are also served by the Next.js route on Vercel
+# (app/api/absenteeism/...). Both read this one file, so the guardrails cannot
+# drift between the two deployments: that matters because the guardrails are the
+# compliance position, not just wording. Edit the JSON, never a copy.
+_PROMPTS_PATH = Path(__file__).with_name("agent_prompts.json")
+with _PROMPTS_PATH.open(encoding="utf-8") as _fh:
+    _PROMPTS = json.load(_fh)
+
 # Shared guardrails prepended to every agent's system prompt.
-_GUARDRAILS = (
-    "You are an assistant inside Welo, an absenteeism-intelligence product for "
-    "large South African employers. You are shown data produced by Welo's "
-    "trained absenteeism and fatigue model for a workforce cohort.\n"
-    "\nGround rules, always:\n"
-    "- Reason only from the DATA provided in the user turn. If a number is not "
-    "in the data, say you do not have it rather than inventing one.\n"
-    "- The people in this data are synthetic model records, not real "
-    "individuals. Do not present output as a clinical diagnosis or as medical "
-    "advice about a real person. Frame clinical points as screening signals and "
-    "programme prompts for a qualified occupational-health team to action.\n"
-    "- Respect that this is workforce-health data: talk about cohorts and "
-    "interventions, not surveillance of individuals. Never suggest disciplinary "
-    "use of the risk scores.\n"
-    "- Amounts are in South African Rand unless told otherwise. Be concrete and "
-    "quantified; cite the actual figures from the data.\n"
-    "- Be brief and structured. An HR operations lead is reading this between "
-    "meetings, not a data scientist.\n"
-    "- Do not use em dashes or en dashes; use commas, colons or hyphens."
-)
+_GUARDRAILS: str = _PROMPTS["guardrails"]
 
 # One system prompt per agent. Kept stable (no timestamps / random content) so
 # the prefix caches cleanly across calls.
 _AGENT_SYSTEM: Dict[str, str] = {
-    "analyst": (
-        _GUARDRAILS
-        + "\n\nYour role: Portfolio Analyst. You help leadership read the "
-        "whole covered workforce: where absence and cost concentrate, which "
-        "cohorts carry the risk, and what the highest-leverage move is. When "
-        "asked an open question, lead with the answer, then the two or three "
-        "figures that justify it, then a recommended next step."
-    ),
-    "case": (
-        _GUARDRAILS
-        + "\n\nYour role: Case Assistant. You are shown one employee record with "
-        "the model's prediction, fatigue score, the drivers behind it and the "
-        "cohorts they belong to. Draft a short, practical support and "
-        "return-to-work style plan: the two or three drivers most worth acting "
-        "on, a suggested outreach or occupational-health step for each, and any "
-        "medical-programme referral the existing employee medical aid could "
-        "cover. Keep it supportive and non-punitive."
-    ),
-    "coordinator": (
-        _GUARDRAILS
-        + "\n\nYour role: Cover and Roster Coordinator. You are shown HR "
-        "operational aggregates: predicted absence rate, shift cover-gap days, "
-        "overtime backfill cost, absence frequency and return-to-work caseload, "
-        "broken down by operational cohort. Translate this into concrete "
-        "staffing and rostering actions: where the cover gap and overtime cost "
-        "land hardest, what rostering or relief-pool change reduces it, and what "
-        "to watch next. Quantify the days and Rand at stake."
-    ),
+    name: _GUARDRAILS + "\n\n" + role for name, role in _PROMPTS["roles"].items()
 }
 
 _MAX_TOKENS = 1500

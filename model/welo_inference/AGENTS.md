@@ -83,6 +83,15 @@ same engine as a tool (`scenario.run_scenario`).
 - What-if results are cached (same levers, same cohort, same answer) and
   `/scenario` is rate limited per client (`WELO_RATE_LIMIT_PER_MIN`).
 
+## Where the prompts live
+
+The guardrails and the three role prompts are in
+[`agent_prompts.json`](agent_prompts.json), next to `agents.py`. That file is the
+single source of truth: this service reads it, and so does the Next.js route that
+serves the same agents from Vercel (`app/api/absenteeism/`). The guardrails are
+the compliance position, so a second hand-copied set would be a governance risk.
+Edit the JSON, never a copy.
+
 ## Configuration (environment variables)
 
 | Variable | Default | Purpose |

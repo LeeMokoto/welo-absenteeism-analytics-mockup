@@ -45,6 +45,12 @@ vertex = [
 where = ["."]
 include = ["welo_inference*", "welo_pipeline*"]
 
+# agent_prompts.json is the shared source of truth for the agent system prompts
+# (also read by the Next.js route), so it must ship with the package, not just
+# exist in the source tree.
+[tool.setuptools.package-data]
+welo_inference = ["*.json"]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-q --strict-markers"
