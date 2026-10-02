@@ -127,12 +127,36 @@ creating a second copy of the personal data.
 
 ## Data-subject rights and retention
 
-- Because the service keeps no personal data at rest, access / deletion requests
-  are served from the client's source systems, not here.
-- Pseudonymised ids are one-way (keyed hash); rotating `WELO_PSEUDONYM_SALT`
-  breaks linkability.
-- Model retraining and the source feed are governed by the model pipeline, not
-  this service.
+**This service holds no personal data at rest.** Model artifacts and the
+dashboard feed are baked into the image; the cache and metrics are in memory and
+reset on restart. So for this service alone, access and deletion requests are
+served from the client's source systems.
+
+**Under the platform architecture** (a Google Cloud project per tenant,
+pseudonymised records in that tenant's BigQuery), there is data at rest and the
+request mechanism is explicit:
+
+1. The employer, as responsible party, receives the data-subject request.
+2. The employer supplies the employee identifier. Welo never holds the mapping
+   from identifier to pseudonym, so it cannot act on a request without them.
+3. The ingest service hashes that identifier with the tenant's key to locate the
+   matching records.
+4. Welo then provides or deletes those records.
+
+`WELO_PSEUDONYM_SALT` is that per-tenant key. Because each tenant is its own
+deployment, the salt is already per-tenant by construction, and it should be held
+in the tenant's Secret Manager. One employee therefore hashes differently in
+different tenants and cannot be linked across them.
+
+One operational consequence to hold in mind: **rotating the salt breaks
+subject-request lookup for everything ingested before the rotation**, because the
+identifier can no longer be re-hashed to the stored pseudonym. Rotation
+therefore breaks linkability (the point) and the ability to service a request
+against older records (the cost). Treat it as a deliberate, documented event
+tied to the retention period, not routine hygiene.
+
+Model retraining and the source feed are governed by the model pipeline, not this
+service.
 
 ## Responsibilities before go-live (checklist for Welo)
 
