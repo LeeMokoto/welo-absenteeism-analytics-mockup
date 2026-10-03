@@ -9,8 +9,10 @@ crash.log
 !*.tfvars.example
 
 # Real backend configs name a real state bucket; only the *.example is tracked.
-*.hcl
-!*.hcl.example
+# Narrow on purpose: a bare *.hcl would also swallow tests/*.tftest.hcl and the
+# provider lock, which must both be committed.
+backend*.hcl
+!backend*.hcl.example
 
 # The dependency lock file IS committed, deliberately. It pins the exact
 # provider versions and hashes, so every operator and any CI run plans against

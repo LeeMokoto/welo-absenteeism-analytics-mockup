@@ -1,0 +1,27 @@
+# Code owners.
+#
+# Every path has an owner, so no change to infrastructure, governance or the
+# agent guardrails can merge without someone who is accountable for it looking
+# at it. Combined with branch protection (see docs/devsecops.md), this is what
+# makes the review a gate rather than a courtesy.
+
+*                               @LeeMokoto
+
+# Infrastructure provisions the projects that will hold employee health data.
+/infra/                         @LeeMokoto
+/.github/                       @LeeMokoto
+
+# Governance and security posture. A change here changes what we tell a client
+# is true.
+/docs/data-governance.md        @LeeMokoto
+/docs/devsecops.md              @LeeMokoto
+/SECURITY.md                    @LeeMokoto
+
+# The agent system prompts are the guardrails. This file is read by both the
+# Python service and the Next.js route, so an edit changes agent behaviour
+# everywhere at once.
+/model/welo_inference/agent_prompts.json  @LeeMokoto
+
+# The suppression floor and the tenant manifest schema.
+/lib/platform/manifest.js       @LeeMokoto
+/model/feed_enrich.py           @LeeMokoto

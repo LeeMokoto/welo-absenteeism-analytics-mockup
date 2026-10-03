@@ -44,6 +44,11 @@ client is adding a map entry rather than forking the configuration.
 No database, no persistent disk, no GPU. Cache and rate-limit state live in
 memory by design.
 
+The pipeline that gets a change into these projects, and the supply chain it
+depends on, are in `docs/devsecops.md`. The controls below are asserted by
+`terraform test` in `infra/terraform/tests/`, which runs on every pull request
+with no credentials.
+
 ### Controls asserted in the configuration, not left to convention
 
 - **Buckets refuse public access unconditionally.** `public_access_prevention

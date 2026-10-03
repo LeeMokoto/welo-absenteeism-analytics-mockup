@@ -59,6 +59,10 @@ locals {
 # of an upload in progress is recoverable rather than silently destructive.
 
 resource "google_storage_bucket" "raw" {
+  # checkov:skip=CKV_GCP_62: Access logging for this bucket is configured
+  # project-wide through google_project_iam_audit_config in the root module, which
+  # records every read and write of its objects in Cloud Audit Logs and covers
+  # buckets added later. Per-bucket logging would be a second, partial copy.
   name     = "${var.bucket_prefix}-${var.tenant_key}-raw"
   location = var.region
   project  = var.project_id
@@ -116,6 +120,10 @@ resource "google_storage_bucket" "raw" {
 # Nothing here should carry an employer identifier.
 
 resource "google_storage_bucket" "derived" {
+  # checkov:skip=CKV_GCP_62: Access logging for this bucket is configured
+  # project-wide through google_project_iam_audit_config in the root module, which
+  # records every read and write of its objects in Cloud Audit Logs and covers
+  # buckets added later. Per-bucket logging would be a second, partial copy.
   name     = "${var.bucket_prefix}-${var.tenant_key}-derived"
   location = var.region
   project  = var.project_id

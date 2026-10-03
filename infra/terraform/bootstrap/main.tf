@@ -48,6 +48,10 @@ resource "google_project_service" "storage" {
 }
 
 resource "google_storage_bucket" "state" {
+  # checkov:skip=CKV_GCP_62: Access to Terraform state is recorded by Cloud Audit
+  # Logs data access logging, which the main configuration enables for
+  # storage.googleapis.com across the project. Writing per-bucket access logs
+  # would need a second bucket that this bootstrap exists to avoid needing.
   name     = var.state_bucket
   location = var.region
   project  = var.project_id

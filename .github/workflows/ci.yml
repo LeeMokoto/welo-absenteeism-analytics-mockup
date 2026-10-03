@@ -1,8 +1,22 @@
 name: CI
 
-# Lint, test, gate the agents on their evals, and validate the container build.
-# The agent evals run live only when an ANTHROPIC_API_KEY secret is present; on
-# forks or when it is unset they skip cleanly rather than fail.
+# Lint, test, scan, and gate the agents on their evals.
+#
+# Three principles shape this file.
+#
+# Actions are pinned to a commit, not a tag. A tag is mutable: whoever controls
+# an action's repository can move v4 to new code, which then runs with this
+# workflow's token and can read anything the job can. The comment after each SHA
+# records the human-readable version so Dependabot can bump both together.
+#
+# Permissions are declared per job, not once at the top. Every job starts from
+# contents: read and asks for more only where it genuinely needs it, so a
+# compromised step in one job cannot write to the repository from another.
+#
+# The security jobs fail the build. A secret-scanning or infrastructure finding
+# is not advisory: it blocks the merge. Container CVEs are the exception and are
+# reported rather than blocking, because a base-image CVE with no available fix
+# would otherwise stop all work until upstream moves.
 
 on:
   push:
@@ -18,12 +32,36 @@ permissions:
   contents: read
 
 jobs:
-  lint-test-eval:
+  # --- Secrets ---------------------------------------------------------------
+  # First, and blocking. The repository will hold a client's infrastructure
+  # configuration; a key committed by accident has to be caught before it is
+  # merged, not after it is in the history.
+  secret-scan:
+    name: Secret scan
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          # gitleaks needs history to scan commits, not just the tree.
+          fetch-depth: 0
 
-      - uses: actions/setup-python@v5
+      - name: gitleaks
+        uses: gitleaks/gitleaks-action@83373cf2f8c4db6e24b41c1a9b086bb9619e9cd3 # v2.3.7
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # --- Python service --------------------------------------------------------
+  python:
+    name: Python lint, tests, audit
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38 # v5.4.0
         with:
           python-version: "3.11"
           cache: pip
@@ -39,6 +77,269 @@ jobs:
         working-directory: model
         run: python -m pytest
 
+      # The runtime lock is what the container installs. It is audited rather
+      # than the dev environment, because the lock is what reaches a client.
+      - name: Audit runtime dependencies (pip-audit)
+        working-directory: model
+        run: |
+          pip install pip-audit
+          pip-audit --requirement requirements-runtime.txt --strict
+
+      # A lock that no longer matches its input is a lock nobody is maintaining.
+      - name: Runtime lock is in sync with its input
+        working-directory: model
+        run: |
+          pip install pip-tools
+          cp requirements-runtime.txt /tmp/lock.before
+          pip-compile --quiet --generate-hashes --output-file=requirements-runtime.txt requirements-runtime.in
+          if ! diff -q /tmp/lock.before requirements-runtime.txt; then
+            echo "::error::requirements-runtime.txt is out of date. Run pip-compile --generate-hashes requirements-runtime.in and commit the result."
+            diff /tmp/lock.before requirements-runtime.txt || true
+            exit 1
+          fi
+
+  # --- The platform application ---------------------------------------------
+  # The Next.js app was not built in CI before, so a broken screen only showed
+  # up on Vercel. It builds here now, against the production build rather than
+  # dev, because dev mode masks failures the real server does not.
+  web:
+    name: Platform build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - uses: actions/setup-node@1d0ff469b7ec7b3cb9d8673fde0c81c44821de2a # v4.2.0
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install (from the lockfile, no resolution)
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Audit dependencies
+        run: npm audit --audit-level=high
+
+      # The screens are server-rendered; a 500 or a blank render is only visible
+      # if something asks for them. This is the check that caught a disabled
+      # module returning 200 with a 404 page.
+      - name: Smoke the built server
+        run: |
+          cp -r .next/static .next/standalone/.next/static
+          PORT=3000 node .next/standalone/server.js &
+          for i in $(seq 1 40); do
+            curl -sf -o /dev/null http://127.0.0.1:3000/ && break
+            sleep 1
+          done
+          fail=0
+          for path in / /absence /absence/cohorts /absence/outcomes /absence/operations \
+                      /sick-leave /sick-leave/case /sick-leave/ops /admin; do
+            code=$(curl -s -o /tmp/page.html -w '%{http_code}' "http://127.0.0.1:3000$path")
+            echo "$path -> $code"
+            [ "$code" = "200" ] || { echo "::error::$path returned $code"; fail=1; }
+            # A rendered NaN or undefined means a figure did not resolve.
+            if grep -qE '>(NaN|undefined)<' /tmp/page.html; then
+              echo "::error::$path rendered NaN or undefined"
+              fail=1
+            fi
+          done
+
+          # A module a tenant does not run must not be reachable, and must say
+          # so with a status code rather than serving a 404 page under a 200.
+          # The control centre is off by default, so it is the case to check.
+          code=$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:3000/control-centre)
+          echo "/control-centre (module disabled) -> $code"
+          [ "$code" = "404" ] || { echo "::error::a disabled module returned $code, expected 404"; fail=1; }
+
+          # No screen may leak an employee identifier. The module data is built
+          # from aggregates only, so an identifier appearing in rendered output
+          # means a per-person section reached a cohort screen.
+          for path in /absence /absence/cohorts /absence/outcomes /absence/operations; do
+            body=$(curl -s "http://127.0.0.1:3000$path")
+            if printf '%s' "$body" | grep -qE 'employee_id|EMP[0-9]{3,}'; then
+              echo "::error::$path rendered what looks like an employee identifier"
+              fail=1
+            fi
+          done
+
+          exit $fail
+
+  # --- Infrastructure --------------------------------------------------------
+  terraform:
+    name: Terraform validate, test, scan
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3.1.2
+        with:
+          terraform_version: "1.9.8"
+          terraform_wrapper: false
+
+      - name: Format
+        working-directory: infra/terraform
+        run: terraform fmt -recursive -check -diff
+
+      # -backend=false: validating and testing needs no state and no GCP
+      # credentials, which is what lets this run on a pull request from a fork.
+      - name: Init and validate
+        working-directory: infra/terraform
+        run: |
+          terraform init -backend=false -input=false
+          terraform validate
+
+      - name: Init and validate (bootstrap)
+        working-directory: infra/terraform/bootstrap
+        run: |
+          terraform init -backend=false -input=false
+          terraform validate
+
+      # The controls in infra/terraform/tests assert what README and
+      # docs/devsecops.md claim: buckets that cannot be made public, a
+      # small-cell floor that cannot be lowered, tenant data a destroy cannot
+      # take, and an application identity that cannot reach the raw upload.
+      # These run with a placeholder token and reach no API.
+      - name: Control tests
+        working-directory: infra/terraform
+        run: terraform test
+
+      # The lock file pins the provider for everyone, but only for the platforms
+      # it records hashes for. An operator on a Mac hitting a lock built only on
+      # Linux gets a hash failure, and the tempting fix is to delete the lock.
+      # Four platforms are recorded; this checks they are still there.
+      #   terraform providers lock -platform=linux_amd64 -platform=darwin_arm64 \
+      #     -platform=darwin_amd64 -platform=windows_amd64
+      - name: Provider lock covers every platform we operate from
+        working-directory: infra/terraform
+        run: |
+          test -f .terraform.lock.hcl || { echo "::error::no provider lock file"; exit 1; }
+          count=$(grep -c '"h1:' .terraform.lock.hcl || true)
+          echo "lock records $count platform hashes"
+          [ "$count" -ge 4 ] || {
+            echo "::error::provider lock covers $count platforms, expected at least 4. Re-run terraform providers lock with every -platform flag."
+            exit 1
+          }
+
+  iac-scan:
+    name: Infrastructure security scan
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      # Checkov over the Terraform, the Dockerfiles and this workflow itself.
+      # Findings block: this configuration provisions the project that will hold
+      # employee health data, so a misconfiguration is not something to merge
+      # and revisit.
+      #
+      # There is deliberately no skip_check list here. Every exemption lives as
+      # a `checkov:skip=ID: reason` comment on the exact resource it applies to,
+      # so a reviewer sees the justification next to the thing being exempted
+      # and an exemption cannot silently widen to resources it was never
+      # considered for. There are nine, all in infra/terraform.
+      - name: Checkov
+        uses: bridgecrewio/checkov-action@16c078443ac4b4b1f694817dff28944de3d2a1ca # v12.3025.0
+        with:
+          directory: .
+          framework: terraform,dockerfile,github_actions
+          skip_path: node_modules,.next,public
+          output_format: cli,sarif
+          output_file_path: console,checkov.sarif
+          soft_fail: false
+
+      - name: Upload Checkov findings
+        if: always()
+        uses: github/codeql-action/upload-sarif@9e8d0789d4a0fa9ceb6b1738f7e269594bdd67f0 # v3.28.9
+        with:
+          sarif_file: checkov.sarif
+          category: checkov
+
+  # --- Containers ------------------------------------------------------------
+  containers:
+    name: Container build, scan, SBOM
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: welo-inference
+            context: model
+          - name: welo-platform
+            context: .
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Build
+        run: docker build -t ${{ matrix.name }}:ci ${{ matrix.context }}
+
+      # Both images must run as a non-root user. Asserted rather than assumed:
+      # a Dockerfile edit that drops the USER line fails here.
+      - name: Image does not run as root
+        run: |
+          uid=$(docker run --rm --entrypoint sh ${{ matrix.name }}:ci -c 'id -u' 2>/dev/null \
+                || docker run --rm ${{ matrix.name }}:ci id -u)
+          echo "${{ matrix.name }} runs as uid $uid"
+          [ "$uid" != "0" ] || { echo "::error::${{ matrix.name }} runs as root"; exit 1; }
+
+      # Reported, not blocking. A base-image CVE with no fix available would
+      # otherwise stop all work until upstream moves; the findings still land in
+      # the security tab where someone owns them.
+      - name: Vulnerability scan (Trivy)
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          image-ref: ${{ matrix.name }}:ci
+          format: sarif
+          output: trivy-${{ matrix.name }}.sarif
+          severity: CRITICAL,HIGH
+          ignore-unfixed: true
+
+      - name: Upload vulnerability findings
+        if: always()
+        uses: github/codeql-action/upload-sarif@9e8d0789d4a0fa9ceb6b1738f7e269594bdd67f0 # v3.28.9
+        with:
+          sarif_file: trivy-${{ matrix.name }}.sarif
+          category: trivy-${{ matrix.name }}
+
+      # An SBOM is what makes "is this image affected by the next advisory"
+      # answerable without rebuilding and guessing.
+      - name: SBOM
+        uses: anchore/sbom-action@f325610c9f50a54015d37c8d16cb3b0e2c8f4de0 # v0.18.0
+        with:
+          image: ${{ matrix.name }}:ci
+          format: spdx-json
+          artifact-name: sbom-${{ matrix.name }}.spdx.json
+
+  # --- Agent behaviour -------------------------------------------------------
+  # The evals are the only check that the guardrails hold in the agents'
+  # actual output, so they are a gate, not a report. They run live only where a
+  # key is available; on a fork they skip rather than fail.
+  agent-evals:
+    name: Agent evals
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38 # v5.4.0
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install service (with dev extras)
+        run: pip install -e "./model[dev]"
+
       - name: Agent evals (live, only if a key secret is configured)
         working-directory: model
         env:
@@ -52,15 +353,24 @@ jobs:
 
       - name: Upload agent eval report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
         with:
           name: agent-eval-report
           path: model/reports/agent_eval.json
           if-no-files-found: ignore
 
-  docker-build:
+  # The single check to require for a merge, so adding a job above does not mean
+  # editing branch protection.
+  ci:
+    name: CI
+    if: always()
+    needs: [secret-scan, python, web, terraform, iac-scan, containers, agent-evals]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Build the inference image (validate the Dockerfile)
-        run: docker build -t welo-inference:ci model
+      - name: Every required job succeeded
+        run: |
+          results='${{ join(needs.*.result, " ") }}'
+          echo "results: $results"
+          for r in $results; do
+            [ "$r" = "success" ] || { echo "::error::a required job did not succeed"; exit 1; }
+          done

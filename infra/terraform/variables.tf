@@ -288,3 +288,63 @@ variable "dashboard_public" {
   description = "Make the dashboard bucket world-readable. An org policy may block this."
   default     = true
 }
+
+# --- CI identity (Workload Identity Federation) ------------------------------
+
+variable "ci_github_repository" {
+  type        = string
+  description = <<-EOT
+    The one GitHub repository allowed to assume the CI identity, as
+    "owner/repo". Empty (the default) provisions no CI identity at all.
+
+    This is the security boundary of the whole keyless-CI arrangement. The
+    provider's attribute condition pins the token exchange to this repository;
+    without it, any GitHub Actions workflow anywhere can present a valid GitHub
+    OIDC token and assume the identity. There is deliberately no wildcard form.
+  EOT
+  default     = ""
+  validation {
+    condition     = var.ci_github_repository == "" || can(regex("^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$", var.ci_github_repository))
+    error_message = "ci_github_repository must be exactly one repository as owner/repo, with no wildcard."
+  }
+}
+
+variable "ci_pool_id" {
+  type        = string
+  description = "Workload identity pool id prefix."
+  default     = "github"
+}
+
+variable "ci_pool_suffix" {
+  type        = string
+  description = <<-EOT
+    Suffix making the pool id unique. A deleted workload identity pool is only
+    soft-deleted for 30 days and its id cannot be reused in that window, so
+    recreating the pool means bumping this rather than waiting a month.
+  EOT
+  default     = "v1"
+}
+
+variable "ci_state_bucket" {
+  type        = string
+  description = <<-EOT
+    Terraform state bucket the CI identity may read, so a pull request can plan.
+    This is the only object-level access CI is given anywhere. Empty grants none.
+  EOT
+  default     = ""
+}
+
+variable "enable_data_access_logs" {
+  type        = bool
+  description = <<-EOT
+    Turn on Cloud Audit Logs data access logging for Cloud Storage and Secret
+    Manager, so every read of a tenant's objects and every read of a
+    pseudonymisation key is recorded.
+
+    On by default. It is the control that answers "who looked at this", and for
+    employee health data that question has to be answerable. Data access logs
+    are billable at volume, so a very high-traffic deployment may want to narrow
+    the services rather than turn this off.
+  EOT
+  default     = true
+}

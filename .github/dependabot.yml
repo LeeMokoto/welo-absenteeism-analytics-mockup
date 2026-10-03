@@ -1,0 +1,55 @@
+# Dependency updates.
+#
+# Four ecosystems, because a vulnerability in any of them reaches the same
+# deployment: the Python service, the Next.js platform, the GitHub Actions that
+# build both, and the Docker base images.
+#
+# Actions are included deliberately. The workflow pins every action to a commit
+# SHA, which is what stops a mutable tag being moved under us, but a pinned SHA
+# never receives a security fix on its own. Dependabot understands the
+# "SHA # version" form and bumps both together, which is what makes pinning
+# sustainable rather than a slow drift into unpatched actions.
+
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly
+    labels: [dependencies, security]
+    commit-message:
+      prefix: "ci"
+
+  - package-ecosystem: npm
+    directory: "/"
+    schedule:
+      interval: weekly
+    labels: [dependencies]
+    commit-message:
+      prefix: "deps"
+    groups:
+      # Next and React move together; separate pull requests for them produce
+      # combinations nobody tested.
+      next:
+        patterns: ["next", "react", "react-dom", "eslint-config-next"]
+
+  # The runtime lock is compiled from requirements-runtime.in, so Dependabot
+  # raises the input and CI checks the lock was recompiled. The lock itself is
+  # not edited by hand.
+  - package-ecosystem: pip
+    directory: "/model"
+    schedule:
+      interval: weekly
+    labels: [dependencies]
+    commit-message:
+      prefix: "deps"
+
+  - package-ecosystem: docker
+    directories:
+      - "/"
+      - "/model"
+    schedule:
+      interval: weekly
+    labels: [dependencies, security]
+    commit-message:
+      prefix: "deps"

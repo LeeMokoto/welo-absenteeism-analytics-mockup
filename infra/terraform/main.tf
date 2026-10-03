@@ -39,6 +39,14 @@ resource "google_project_service" "services" {
 # --- Artifact Registry (holds the container image) --------------------------
 
 resource "google_artifact_registry_repository" "welo" {
+  # checkov:skip=CKV_GCP_84: Customer-managed encryption on the registry would
+  # add key management without protecting personal data. The images hold
+  # application code and model artifacts trained on synthetic data only; no
+  # employee record is ever baked into an image, and the keys that do protect
+  # personal data (each tenant's pseudonymisation key, and the CMEK option on
+  # the tenant buckets) are handled where that data actually lives. A client who
+  # requires CMEK everywhere can set kms_key_name on their tenant and we revisit
+  # this with them.
   location      = var.region
   repository_id = "welo"
   description   = "Welo inference container images"
@@ -221,6 +229,24 @@ resource "google_cloud_run_v2_service_iam_member" "public" {
 # --- Dashboard static hosting (optional) ------------------------------------
 
 resource "google_storage_bucket" "dashboard" {
+  # This bucket is a public static website by design, and it is the one bucket
+  # in this configuration that is. It serves the standalone absenteeism
+  # dashboard built from synthetic data: no employee record, no identifier and
+  # no client data has ever been in it. Each skip below is a decision about this
+  # resource, scoped to it, rather than a project-wide exemption.
+  #
+  # checkov:skip=CKV_GCP_114: Public access prevention cannot be enforced on a
+  # bucket whose purpose is to be publicly readable. Set dashboard_public =
+  # false, or host_dashboard = false, where a client's org policy forbids it.
+  # checkov:skip=CKV_GCP_28: Same reason. The allUsers binding is the feature.
+  # checkov:skip=CKV_GCP_78: Versioning protects against a bad overwrite of
+  # data. The contents are regenerated from the repository by
+  # infra/scripts/upload_dashboard.sh, so the repository is the version history
+  # and object versions would only accumulate copies of a build artifact.
+  # checkov:skip=CKV_GCP_62: Access logging is configured project-wide through
+  # google_project_iam_audit_config (see the data access logging section), which
+  # covers this bucket and every bucket added later. Per-bucket logging would be
+  # a second, partial copy of the same record.
   count                       = var.host_dashboard ? 1 : 0
   name                        = var.dashboard_bucket
   location                    = var.region
@@ -236,6 +262,11 @@ resource "google_storage_bucket" "dashboard" {
 }
 
 resource "google_storage_bucket_iam_member" "dashboard_public" {
+  # checkov:skip=CKV_GCP_28: Public read is this binding's entire purpose. It
+  # applies only to the static synthetic dashboard bucket, which has never held
+  # an employee record or a client file, and it is removed by setting
+  # dashboard_public = false. No tenant bucket has, or can be given, a binding
+  # like this: both enforce public access prevention unconditionally.
   count  = var.host_dashboard && var.dashboard_public ? 1 : 0
   bucket = google_storage_bucket.dashboard[0].name
   role   = "roles/storage.objectViewer"
@@ -409,4 +440,39 @@ module "tenant" {
   labels = each.value.labels
 
   depends_on = [google_project_service.services]
+}
+
+# --- Data access logging ----------------------------------------------------
+# Who read what, and when.
+#
+# Cloud Storage can write per-bucket access logs, which is the mechanism most
+# scanners look for, but it is the legacy one: it covers only the buckets
+# someone remembered to configure, lands as CSV in another bucket, and says
+# nothing about Secret Manager. Project-level data access logging covers every
+# bucket in the project including ones added later, covers secret payload reads,
+# and lands in Cloud Logging where it can be alerted on and exported.
+#
+# Secret Manager DATA_READ is the valuable one for this platform: it records
+# every read of a tenant's pseudonymisation key, which is the key that makes
+# employee records re-identifiable to the employer.
+#
+# This is admin-level configuration on the project, so it is also the setting a
+# client's own security team will want to see rather than take on trust.
+
+resource "google_project_iam_audit_config" "data_access" {
+  for_each = var.enable_data_access_logs ? toset([
+    "storage.googleapis.com",
+    "secretmanager.googleapis.com",
+  ]) : toset([])
+
+  project = var.project_id
+  service = each.value
+
+  audit_log_config {
+    log_type = "DATA_READ"
+  }
+
+  audit_log_config {
+    log_type = "DATA_WRITE"
+  }
 }

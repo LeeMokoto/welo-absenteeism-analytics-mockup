@@ -37,4 +37,10 @@ COPY --from=build --chown=nextjs:nodejs /app/.next/static ./.next/static
 USER nextjs
 EXPOSE 8080
 
+# As with the inference image: Cloud Run uses the probes configured in
+# infra/terraform, and this covers every other way the image gets run. Node is
+# already here, so nothing is added to the image to support it.
+HEALTHCHECK --interval=30s --timeout=5s --start-period=15s --retries=3 \
+  CMD ["node", "-e", "require('http').get({host:'127.0.0.1',port:process.env.PORT||8080,path:'/'},r=>process.exit(r.statusCode<400?0:1)).on('error',()=>process.exit(1))"]
+
 CMD ["node", "server.js"]
