@@ -18,7 +18,7 @@ export default function ConditionMix({ mix }) {
 
       <div style={{ display: "grid", gap: 10 }}>
         {mix.map((m) => (
-          <div key={m.chapter} style={{ display: "grid", gridTemplateColumns: "220px 1fr", gap: 12, alignItems: "center" }}>
+          <div key={m.chapter} className="condition-row">
             <span className="caption" style={{ whiteSpace: "normal" }}>{m.chapter}</span>
             {m.suppressed ? (
               <span className="nlt5">n&lt;5, suppressed</span>
@@ -37,7 +37,7 @@ export default function ConditionMix({ mix }) {
 
 function BarRow({ value, max, soft, label }) {
   return (
-    <div style={{ display: "grid", gridTemplateColumns: "1fr 110px", gap: 8, alignItems: "center" }}>
+    <div className="condition-bar-row">
       <div className="bar-track" style={{ height: 12 }}>
         <div className={"bar-fill" + (soft ? " soft" : "")} style={{ width: `${(value / max) * 100}%` }} />
       </div>

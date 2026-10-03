@@ -186,35 +186,43 @@ button {
   gap: 16px;
 }
 .grid-2 {
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 .grid-3 {
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 .grid-4 {
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 @media (max-width: 900px) {
+  /* Data tables keep nowrap cells, so below this width they become their own
+     horizontal scroll region rather than widening the page. */
+  table.data {
+    display: block;
+    overflow-x: auto;
+    max-width: 100%;
+  }
+
   .page {
     padding: 0 18px 56px;
   }
   .grid-2,
   .grid-3,
   .grid-4 {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 
 /* Case view: selector column beside the record. Stacks on mobile. */
 .case-grid {
   display: grid;
-  grid-template-columns: 320px 1fr;
+  grid-template-columns: 320px minmax(0, 1fr);
   gap: 16px;
 }
 @media (max-width: 900px) {
   .case-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 
@@ -498,6 +506,208 @@ select.input {
   font-size: 13px;
 }
 
+/* ---------------------------------------------------------------------------
+   Platform shell: a constant frame around every module. The frame carries
+   identity (which tenant, which environment) so a person is never unsure where
+   they are, and navigation derived from the tenant manifest.
+   --------------------------------------------------------------------------- */
+
+.shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.shell-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  height: 60px;
+  padding: 0 24px;
+  background: var(--card);
+  border-bottom: 1px solid var(--line);
+  position: sticky;
+  top: 0;
+  z-index: 30;
+}
+.shell-brand {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  min-width: 0;
+}
+.shell-mark {
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--red);
+  text-decoration: none;
+}
+.shell-product {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.shell-tenant {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.shell-tenant-name {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.shell-env {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: 999px;
+}
+.shell-env.is-synthetic {
+  color: var(--medium);
+  background: var(--medium-soft);
+}
+.shell-env.is-live {
+  color: var(--low);
+  background: var(--low-soft);
+}
+.shell-synthetic {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.shell-body {
+  display: grid;
+  grid-template-columns: 236px minmax(0, 1fr);
+  flex: 1;
+  min-height: 0;
+}
+
+.shell-nav {
+  border-right: 1px solid var(--line);
+  padding: 20px 12px 24px;
+  background: var(--cream);
+  min-width: 0;
+}
+.nav-group {
+  margin-bottom: 20px;
+}
+.nav-section {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  padding: 0 10px 7px;
+}
+.nav-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 7px 10px;
+  border-radius: var(--radius-sm);
+  font-size: 13.5px;
+  color: var(--ink-soft);
+  text-decoration: none;
+  letter-spacing: -0.005em;
+  transition: background 0.12s ease, color 0.12s ease;
+}
+.nav-item:hover {
+  background: var(--cream-2);
+  color: var(--ink);
+}
+.nav-item.active {
+  background: var(--card);
+  color: var(--ink);
+  font-weight: 600;
+  box-shadow: var(--shadow);
+}
+.nav-badge {
+  font-family: var(--mono);
+  font-size: 8.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--brown, var(--ink-faint));
+  background: var(--cream-2);
+  border-radius: 999px;
+  padding: 2px 6px;
+}
+.nav-foot {
+  font-family: var(--mono);
+  font-size: 10px;
+  line-height: 1.6;
+  color: var(--ink-faint);
+  padding: 14px 10px 0;
+  border-top: 1px solid var(--line);
+  margin-top: 8px;
+}
+
+.shell-content {
+  min-width: 0;
+  padding: 0;
+}
+/* Modules keep using .page for their inner width; inside the shell it no longer
+   needs to centre on the whole viewport. */
+.shell-content .page {
+  max-width: 1120px;
+  margin: 0;
+  padding: 0 32px 72px;
+}
+
+@media (max-width: 900px) {
+  .shell-body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .shell-nav {
+    border-right: none;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 12px;
+  }
+  .nav-group {
+    margin-bottom: 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+  .nav-section {
+    padding: 0 6px 0 0;
+    white-space: nowrap;
+  }
+  .nav-item {
+    white-space: nowrap;
+  }
+  .nav-foot {
+    display: none;
+  }
+  .shell-header {
+    padding: 0 16px;
+  }
+  .shell-product {
+    display: none;
+  }
+  .shell-content .page {
+    padding: 0 16px 56px;
+  }
+}
+
 /* Synthetic-data label. Present on every screen of a synthetic tenant, so it
    is a quiet strip rather than a banner. */
 .synthetic-strip {
@@ -510,6 +720,21 @@ select.input {
   text-transform: uppercase;
   text-align: center;
   padding: 7px 16px;
+}
+
+/* Condition mix rows: a label column beside the bars, stacking when the label
+   column would no longer leave the bars usable width. */
+.condition-row {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+}
+.condition-bar-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 110px;
+  gap: 8px;
+  align-items: center;
 }
 
 /* Landing hub product cards */
@@ -541,5 +766,17 @@ select.input {
   * {
     transition: none !important;
     animation: none !important;
+  }
+}
+
+/* Narrow-screen overrides that must come after the rules they override.
+   Media queries add no specificity, so a later base rule would otherwise win. */
+@media (max-width: 900px) {
+  .condition-row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 6px;
+  }
+  .condition-bar-row {
+    grid-template-columns: minmax(0, 1fr) 92px;
   }
 }
