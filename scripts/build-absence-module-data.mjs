@@ -31,6 +31,7 @@ const KEEP = [
   "cohort_dimensions",
   "cohorts",
   "covered_cohort",
+  "hr_ops",
   "model_metrics",
   "data_provenance",
 ];

@@ -19,7 +19,7 @@ export const absenceModule = {
     { href: "/absence", label: "Portfolio and cohorts" },
     { href: "/absence/cohorts", label: "Cohorts" },
     { href: "/absenteeism/index.html#outcomes", label: "Outcomes and ROI", external: true },
-    { href: "/absenteeism/index.html#hrops", label: "HR and operations", external: true },
+    { href: "/absence/operations", label: "HR and operations" },
   ],
   agents: ["analyst", "case", "coordinator"],
   guardrails: [
