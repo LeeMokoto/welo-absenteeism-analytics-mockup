@@ -1,5 +1,5 @@
-import OpsScreen from "@/components/sick-leave/OpsScreen";
-import { aggregates, meta } from "@/lib/sick-leave/sampleData";
+import OpsScreen from "@/modules/sick-leave/screens/OpsScreen";
+import { aggregates, meta } from "@/modules/sick-leave/data/sampleData";
 
 export const dynamic = "force-dynamic";
 

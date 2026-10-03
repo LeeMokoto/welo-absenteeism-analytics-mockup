@@ -29,3 +29,7 @@ dist/
 # scripts/stage-static-dashboard.mjs before each build; source of truth is the
 # repo root index.html + config/ + model/data/outputs/).
 public/absenteeism/
+
+# Generated absence module screen data (built from the pipeline feed by
+# scripts/build-absence-module-data.mjs before each build).
+modules/absence/data/portfolio.js

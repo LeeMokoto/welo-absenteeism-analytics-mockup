@@ -1,7 +1,7 @@
-import GovernanceNote from "@/components/sick-leave/GovernanceNote";
+import GovernanceNote from "@/modules/sick-leave/components/GovernanceNote";
 import ModuleTabs from "@/components/platform/ModuleTabs";
-import { meta } from "@/lib/sick-leave/sampleData";
-import { num } from "@/lib/sick-leave/format";
+import { meta } from "@/modules/sick-leave/data/sampleData";
+import { num } from "@/modules/sick-leave/format";
 
 // Module layout: the header and screen tabs shared by every sick-leave screen.
 // The tabs are links to real routes, mirroring the sidebar, so a screen can be

@@ -1,15 +1,15 @@
 "use client";
 
-import SectionHeader from "./SectionHeader";
-import Metric from "./Metric";
-import EntitlementBurn from "./EntitlementBurn";
-import ConditionMix from "./ConditionMix";
-import ConcentrationMatrix from "./ConcentrationMatrix";
-import CohortTable from "./CohortTable";
-import AgentPanel from "./AgentPanel";
-import { AGENTS } from "@/lib/sick-leave/agentMeta";
-import { buildAnalystContext } from "@/lib/sick-leave/context";
-import { pct, num, randCompact, rand } from "@/lib/sick-leave/format";
+import SectionHeader from "../components/SectionHeader";
+import Metric from "../components/Metric";
+import EntitlementBurn from "../components/EntitlementBurn";
+import ConditionMix from "../components/ConditionMix";
+import ConcentrationMatrix from "../components/ConcentrationMatrix";
+import CohortTable from "../components/CohortTable";
+import AgentPanel from "../components/AgentPanel";
+import { AGENTS } from "@/modules/sick-leave/agentMeta";
+import { buildAnalystContext } from "@/modules/sick-leave/context";
+import { pct, num, randCompact, rand } from "@/modules/sick-leave/format";
 
 export default function PortfolioScreen({ aggregates, meta, agentsAvailable }) {
   const h = aggregates.headline;

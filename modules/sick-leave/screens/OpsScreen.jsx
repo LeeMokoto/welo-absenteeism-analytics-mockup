@@ -1,12 +1,12 @@
 "use client";
 
-import SectionHeader from "./SectionHeader";
-import Metric from "./Metric";
-import CoverGapHeatmap from "./CoverGapHeatmap";
-import AgentPanel from "./AgentPanel";
-import { AGENTS } from "@/lib/sick-leave/agentMeta";
-import { buildCoordinatorContext } from "@/lib/sick-leave/context";
-import { pct, num, randCompact, cell } from "@/lib/sick-leave/format";
+import SectionHeader from "../components/SectionHeader";
+import Metric from "../components/Metric";
+import CoverGapHeatmap from "../components/CoverGapHeatmap";
+import AgentPanel from "../components/AgentPanel";
+import { AGENTS } from "@/modules/sick-leave/agentMeta";
+import { buildCoordinatorContext } from "@/modules/sick-leave/context";
+import { pct, num, randCompact, cell } from "@/modules/sick-leave/format";
 
 export default function OpsScreen({ aggregates, meta, agentsAvailable }) {
   const ops = aggregates.operations;

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { getManifest } from "@/lib/platform/manifest";
-import { aggregates as sickLeave, meta as sickLeaveMeta } from "@/lib/sick-leave/sampleData";
-import { num, pct, randCompact } from "@/lib/sick-leave/format";
+import { aggregates as sickLeave, meta as sickLeaveMeta } from "@/modules/sick-leave/data/sampleData";
+import { num, pct, randCompact } from "@/modules/sick-leave/format";
 
 export const metadata = {
   title: "Overview | Welo Workforce Health Platform",

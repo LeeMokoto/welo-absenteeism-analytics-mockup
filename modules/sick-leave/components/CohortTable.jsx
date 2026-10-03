@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { pct, num, days, rand, cell } from "@/lib/sick-leave/format";
+import { pct, num, days, rand, cell } from "@/modules/sick-leave/format";
 
 const COLS = [
   { key: "site", label: "Site", align: "left", type: "text" },

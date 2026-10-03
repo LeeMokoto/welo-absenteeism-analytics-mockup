@@ -10,8 +10,8 @@
 */
 
 import Anthropic from "@anthropic-ai/sdk";
-import { SYSTEM_PROMPTS } from "@/lib/sick-leave/agentPrompts";
-import { AGENT_IDS } from "@/lib/sick-leave/agentMeta";
+import { SYSTEM_PROMPTS } from "@/modules/sick-leave/agentPrompts";
+import { AGENT_IDS } from "@/modules/sick-leave/agentMeta";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";

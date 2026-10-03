@@ -1,17 +1,17 @@
 "use client";
 
 import { useMemo, useState, useCallback } from "react";
-import SectionHeader from "./SectionHeader";
-import AccessGate from "./AccessGate";
-import AuditTrail from "./AuditTrail";
-import EmployeeSelector from "./EmployeeSelector";
-import CaseRecord from "./CaseRecord";
-import AgentPanel from "./AgentPanel";
-import { AGENTS } from "@/lib/sick-leave/agentMeta";
-import { buildCaseContext } from "@/lib/sick-leave/context";
-import { employeeIndex, meta } from "@/lib/sick-leave/sampleData";
-import { employees } from "@/lib/sick-leave/sampleData.employees";
-import { eventsByEmployee } from "@/lib/sick-leave/sampleData.events";
+import SectionHeader from "../components/SectionHeader";
+import AccessGate from "../components/AccessGate";
+import AuditTrail from "../components/AuditTrail";
+import EmployeeSelector from "../components/EmployeeSelector";
+import CaseRecord from "../components/CaseRecord";
+import AgentPanel from "../components/AgentPanel";
+import { AGENTS } from "@/modules/sick-leave/agentMeta";
+import { buildCaseContext } from "@/modules/sick-leave/context";
+import { employeeIndex, meta } from "@/modules/sick-leave/data/sampleData";
+import { employees } from "@/modules/sick-leave/data/sampleData.employees";
+import { eventsByEmployee } from "@/modules/sick-leave/data/sampleData.events";
 
 const ALLOWED_ROLES = ["Occupational Health"];
 

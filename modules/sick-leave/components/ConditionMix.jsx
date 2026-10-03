@@ -1,4 +1,4 @@
-import { pct } from "@/lib/sick-leave/format";
+import { pct } from "@/modules/sick-leave/format";
 
 // Horizontal bars by ICD-10 chapter: share of days versus share of spells.
 // The interesting cut, since musculoskeletal and mental health drive long

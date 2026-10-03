@@ -11,20 +11,20 @@
     features are trivial to add and are exactly the ones that end up in a CCMA
     hearing, so they are out by design.
   - ICD-10 is stored at CHAPTER level only, never a specific code.
-  - Every Rand input is indicative and lives in lib/sick-leave/costModel.js.
+  - Every Rand input is indicative and lives in modules/sick-leave/costModel.js.
 
-  Output is written to lib/sick-leave/sampleData.js (employees + aggregates) and
-  lib/sick-leave/sampleData.events.js (per-employee spell history for the
+  Output is written to modules/sick-leave/data/sampleData.js (employees + aggregates) and
+  modules/sick-leave/data/sampleData.events.js (per-employee spell history for the
   clinical case view). Both are checked in. Nothing is fetched at runtime.
 */
 
 import { writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
-import { COST_MODEL, coverDayCostRand } from "../lib/sick-leave/costModel.js";
+import { COST_MODEL, coverDayCostRand } from "../modules/sick-leave/costModel.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const OUT_DIR = join(__dirname, "..", "lib", "sick-leave");
+const OUT_DIR = join(__dirname, "..", "modules", "sick-leave", "data");
 
 // ---- Deterministic RNG (mulberry32) ----------------------------------------
 function mulberry32(seed) {

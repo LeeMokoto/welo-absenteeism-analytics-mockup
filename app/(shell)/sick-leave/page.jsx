@@ -1,5 +1,5 @@
-import PortfolioScreen from "@/components/sick-leave/PortfolioScreen";
-import { aggregates, meta } from "@/lib/sick-leave/sampleData";
+import PortfolioScreen from "@/modules/sick-leave/screens/PortfolioScreen";
+import { aggregates, meta } from "@/modules/sick-leave/data/sampleData";
 
 export const dynamic = "force-dynamic";
 

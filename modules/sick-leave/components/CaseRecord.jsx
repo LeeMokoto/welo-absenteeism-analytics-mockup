@@ -1,6 +1,6 @@
 "use client";
 
-import { num, days } from "@/lib/sick-leave/format";
+import { num, days } from "@/modules/sick-leave/format";
 
 const DRIVER_PATHWAY = {
   "Chronic condition management": "Medical aid chronic programme",

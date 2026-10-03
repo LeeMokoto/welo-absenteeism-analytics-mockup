@@ -1,4 +1,4 @@
-import { pct } from "@/lib/sick-leave/format";
+import { pct } from "@/modules/sick-leave/format";
 
 // Site by function grid. Cell value is sick leave rate, colour scale on the brand red.
 // Cells under five employees show n<5.

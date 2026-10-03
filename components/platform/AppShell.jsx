@@ -17,8 +17,11 @@ import { usePathname } from "next/navigation";
 */
 
 function NavLink({ item, active }) {
+  // A screen still served by the standalone build leaves the shell, so it is a
+  // plain anchor and says so. The flag disappears as each screen is ported.
+  const Tag = item.external ? "a" : Link;
   return (
-    <Link
+    <Tag
       href={item.href}
       className={"nav-item" + (active ? " active" : "")}
       aria-current={active ? "page" : undefined}
@@ -29,7 +32,12 @@ function NavLink({ item, active }) {
           clinical
         </span>
       ) : null}
-    </Link>
+      {item.external ? (
+        <span className="nav-badge" title="Opens the standalone build, not yet ported">
+          ext
+        </span>
+      ) : null}
+    </Tag>
   );
 }
 

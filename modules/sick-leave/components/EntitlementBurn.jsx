@@ -1,4 +1,4 @@
-import { num } from "@/lib/sick-leave/format";
+import { num } from "@/modules/sick-leave/format";
 
 export default function EntitlementBurn({ burn, cohortSize }) {
   const bands = burn.bands;
