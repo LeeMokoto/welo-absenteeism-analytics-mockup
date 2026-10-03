@@ -18,6 +18,19 @@ COVER_SHARE = {"High-intensity ops": 0.90, "Standard ops": 0.70, "Light duty": 0
 SPELL_LEN = 4.0
 LEAVE_GAP_DAYS = 180
 
+# Small-cell suppression. A cohort with fewer than this many people carries no
+# figures into the feed at all: the label is kept so the view can render n<5,
+# but every measure is withheld. Suppressing here rather than in the browser
+# means a sub-threshold aggregate never leaves the server, which is the same
+# position the platform's authorised cohort views take in BigQuery.
+SUPPRESSION_THRESHOLD = 5
+
+
+def suppressed_row(label, n):
+    """A cohort entry stripped of every measure. Callers render this as n<5."""
+    return {"key": label, "label": label, "count": None,
+            "suppressed": True, "suppressed_below": SUPPRESSION_THRESHOLD}
+
 DIMENSIONS = [
     {"key": "cohort_load",      "label": "Operational load",
      "order": ["High-intensity ops", "Standard ops", "Light duty"],
@@ -89,6 +102,9 @@ def compute_cohorts(df):
                 continue
             sub = df.loc[g.groups[label]]
             n = len(sub)
+            if n < SUPPRESSION_THRESHOLD:
+                rows.append(suppressed_row(label, n))
+                continue
             days90 = float(sub["predicted_absent_days_90d"].sum())
             days_annual = float(sub["predicted_absent_days_monthly"].sum() * 12)
             hi = int(sub["predicted_risk_band"].isin(["Critical", "High"]).sum())
@@ -193,6 +209,9 @@ def compute_hr_ops(df):
         sub = hr[hr["cohort_load"] == label]
         if not len(sub):
             continue
+        if len(sub) < SUPPRESSION_THRESHOLD:
+            by_cohort.append(suppressed_row(label, len(sub)))
+            continue
         cg = float(sub["cover_gap_90d"].sum())
         by_cohort.append({
             "key": label, "label": label, "count": int(len(sub)),
@@ -247,12 +266,21 @@ def compute_hr_ops(df):
     }
 
 
-def enrich(feed, df, sample_n=400, seed=7):
-    """Add cohort_dimensions/cohorts/individuals/covered_cohort/hr_ops to feed."""
+def enrich(feed, df, sample_n=400, seed=7, synthetic=True):
+    """Add cohort_dimensions/cohorts/individuals/covered_cohort/hr_ops to feed.
+
+    ``synthetic`` marks the tenant whose data this is. It defaults to True
+    because every cohort this repository builds is synthetic; a client tenant's
+    feed builder passes False. The dashboard reads it to decide whether to show
+    the synthetic-data label, so the label follows the data rather than the
+    build, and cannot be forgotten when the demo is redeployed.
+    """
     add_cohort_columns(df)
     shap_by_row = {r["row_id"]: r.get("top_reasons", []) for r in feed.get("intervention_queue", [])}
     cohorts = compute_cohorts(df)
     individuals, n_hi, n_rest = compute_individuals(df, shap_by_row, sample_n=sample_n, seed=seed)
+    feed["synthetic"] = bool(synthetic)
+    feed["suppression_threshold"] = SUPPRESSION_THRESHOLD
     feed["cohort_dimensions"] = [{"key": d["key"], "label": d["label"], "blurb": d["blurb"]} for d in DIMENSIONS]
     feed["cohorts"] = cohorts
     feed["individuals"] = individuals

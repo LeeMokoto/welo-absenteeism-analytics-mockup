@@ -1,4 +1,5 @@
 import GovernanceNote from "@/components/sick-leave/GovernanceNote";
+import SyntheticBanner, { tenantIsSynthetic } from "@/components/SyntheticBanner";
 import SickLeaveApp from "./SickLeaveApp";
 import { meta } from "@/lib/sick-leave/sampleData";
 import { num } from "@/lib/sick-leave/format";
@@ -13,7 +14,9 @@ export default function SickLeavePage() {
   const agentsAvailable = Boolean(process.env.ANTHROPIC_API_KEY);
 
   return (
-    <main className="page">
+    <>
+      <SyntheticBanner synthetic={tenantIsSynthetic()} />
+      <main className="page">
       <header style={{ paddingTop: 40 }}>
         <div className="eyebrow">Welo Health, sick leave intelligence</div>
         <h1 style={{ fontSize: 30, marginTop: 10, letterSpacing: "-0.03em" }}>
@@ -30,5 +33,6 @@ export default function SickLeavePage() {
 
       <GovernanceNote />
     </main>
+    </>
   );
 }

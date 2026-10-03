@@ -1,3 +1,5 @@
+import SyntheticBanner, { tenantIsSynthetic } from "@/components/SyntheticBanner";
+
 // The hub for the two Welo dashboards. Both are served from this deployment:
 // the sick-leave app is a Next route, and the original absenteeism dashboard is
 // staged into public/absenteeism before the build.
@@ -36,7 +38,9 @@ const PRODUCTS = [
 
 export default function Home() {
   return (
-    <main className="page">
+    <>
+      <SyntheticBanner synthetic={tenantIsSynthetic()} />
+      <main className="page">
       <header style={{ paddingTop: 72, maxWidth: 720 }}>
         <div className="eyebrow">Welo Health</div>
         <h1 style={{ fontSize: 44, marginTop: 12, lineHeight: 1.08, letterSpacing: "-0.035em" }}>
@@ -107,5 +111,6 @@ export default function Home() {
         </p>
       </footer>
     </main>
+    </>
   );
 }

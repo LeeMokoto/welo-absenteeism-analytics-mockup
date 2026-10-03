@@ -498,6 +498,20 @@ select.input {
   font-size: 13px;
 }
 
+/* Synthetic-data label. Present on every screen of a synthetic tenant, so it
+   is a quiet strip rather than a banner. */
+.synthetic-strip {
+  background: var(--cream-2);
+  border-bottom: 1px solid var(--line);
+  color: var(--ink-mute);
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 7px 16px;
+}
+
 /* Landing hub product cards */
 .product-card {
   transition: box-shadow 0.15s ease, border-color 0.15s ease, transform 0.15s ease;

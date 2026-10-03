@@ -364,6 +364,8 @@ window.WELO_FEED = {
       "rows": 6000
     }
   ],
+  "synthetic": true,
+  "suppression_threshold": 5,
   "cohort_dimensions": [
     {
       "key": "cohort_load",

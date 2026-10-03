@@ -423,6 +423,12 @@ table { border-collapse: collapse; width: 100%; }
 .data-table tbody tr { transition: background 0.15s; cursor: pointer; }
 .data-table tbody tr:hover { background: var(--cream); }
 .cell-mono { font-family: var(--mono); font-size: 12.5px; color: var(--ink-soft); font-feature-settings: 'tnum'; }
+.nlt5 { font-family: var(--mono); font-size: 12px; color: var(--ink-faint); }
+.synthetic-strip {
+  background: var(--cream-2); border-bottom: 1px solid var(--line); color: var(--ink-mute);
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase;
+  text-align: center; padding: 7px 16px;
+}
 .cell-id   { font-family: var(--mono); font-size: 12px; color: var(--ink-mute); font-feature-settings: 'tnum'; }
 
 /* shift panel */
@@ -1367,6 +1373,11 @@ table { border-collapse: collapse; width: 100%; }
 </head>
 <body>
 
+<!-- Synthetic-data label. Rendered only when the feed marks this tenant's data
+     synthetic, so the label follows the data and cannot be forgotten when the
+     demo is redeployed. A client tenant's feed sets synthetic to false. -->
+<div id="syntheticStrip" class="synthetic-strip" hidden>Synthetic sample data. No client data is present.</div>
+
 <!-- Icon sprite: line icons referenced via <use href="#ic-..."> -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
   <defs>
@@ -1628,8 +1639,8 @@ table { border-collapse: collapse; width: 100%; }
 
       <div class="staffing-legend">
         <div class="staffing-legend-item"><span class="staffing-legend-dot severe"></span>severe · cover &lt; 80%</div>
-        <div class="staffing-legend-item"><span class="staffing-legend-dot moderate"></span>moderate · 80–90%</div>
-        <div class="staffing-legend-item"><span class="staffing-legend-dot light"></span>light · 90–95%</div>
+        <div class="staffing-legend-item"><span class="staffing-legend-dot moderate"></span>moderate · 80-90%</div>
+        <div class="staffing-legend-item"><span class="staffing-legend-dot light"></span>light · 90-95%</div>
       </div>
     </div>
   </div>
@@ -1700,12 +1711,12 @@ table { border-collapse: collapse; width: 100%; }
           <div class="risk-delta">18% · 177 lives</div>
         </div>
         <div class="risk-row" data-welo-fatigue-band="high">
-          <div class="risk-label"><span class="risk-dot high"></span>High · 50–69</div>
+          <div class="risk-label"><span class="risk-dot high"></span>High · 50-69</div>
           <div class="risk-track"><div class="risk-fill high" style="width: 80%"></div></div>
           <div class="risk-delta">39% · 393 lives</div>
         </div>
         <div class="risk-row" data-welo-fatigue-band="moderate">
-          <div class="risk-label"><span class="risk-dot medium"></span>Moderate · 30–49</div>
+          <div class="risk-label"><span class="risk-dot medium"></span>Moderate · 30-49</div>
           <div class="risk-track"><div class="risk-fill medium" style="width: 62%"></div></div>
           <div class="risk-delta">30% · 303 lives</div>
         </div>
@@ -2515,7 +2526,7 @@ table { border-collapse: collapse; width: 100%; }
         <div class="panel-sub" id="sub-calendar">52-week calendar projection · day-of-week clustering layered on the winter respiratory peak</div>
       </div>
       <div class="panel-actions">
-        <span class="chip red" id="chip-calendar">Winter peak Jun–Aug</span>
+        <span class="chip red" id="chip-calendar">Winter peak Jun-Aug</span>
         <span class="chip amber">Modelled · 52 wks</span>
       </div>
     </div>
@@ -2549,7 +2560,7 @@ table { border-collapse: collapse; width: 100%; }
         <div class="heat-legend-swatch heat-5"></div>
       </div>
       <span style="color: var(--ink-faint);">more</span>
-      <span class="heat-legend-note" id="note-calendar">Winter respiratory band Jun–Aug · post-weekend Monday spine runs year-round · light shoulders Q1 &amp; late Q4</span>
+      <span class="heat-legend-note" id="note-calendar">Winter respiratory band Jun-Aug · post-weekend Monday spine runs year-round · light shoulders Q1 &amp; late Q4</span>
     </div>
   </div>
 
@@ -3022,6 +3033,12 @@ window.addEventListener('load', () => {
   const $$ = (sel, root) => Array.from((root || document).querySelectorAll(sel));
   const $  = (sel, root) => (root || document).querySelector(sel);
 
+  // Show the synthetic-data label when the feed says this tenant's data is
+  // synthetic. Absent flag means an older feed, so default to showing it:
+  // better a wrong label on real data than none on synthetic data.
+  const strip = $('#syntheticStrip');
+  if (strip) strip.hidden = (feed.synthetic === false);
+
   const fmtInt = v => Number(v).toLocaleString('en-ZA');
   const fmtPct = (v, digits = 0) => (v * 100).toFixed(digits) + '%';
   const fmtRandShort = v => {
@@ -3111,6 +3128,11 @@ window.addEventListener('load', () => {
   const savingOf = days90 => Math.round((days90 || 0) * 1100 * 0.20);
   const concPill = s => s >= 0.20 ? 'critical' : s >= 0.12 ? 'high' : s >= 0.07 ? 'medium' : 'low';
 
+  // Small-cell suppression. The feed withholds every measure for a cohort under
+  // the threshold and marks it suppressed; views render n<5 and never a figure.
+  const isSupp = c => !!(c && c.suppressed);
+  const nlt5 = '<span class="nlt5">n&lt;5</span>';
+
   const miniBar = c => {
     const t = c.count || 1;
     return `<div class="cohort-mini-bar">` +
@@ -3123,7 +3145,12 @@ window.addEventListener('load', () => {
   const portfolioDim = 'cohort_load';
   const pTable = $('[data-welo="portfolio-cohort-table"]');
   if (pTable && cohorts[portfolioDim]) {
-    pTable.innerHTML = cohorts[portfolioDim].map(c => `
+    pTable.innerHTML = cohorts[portfolioDim].map(c => isSupp(c) ? `
+      <tr>
+        <td><strong>${c.label}</strong></td>
+        <td class="cell-mono">${nlt5}</td>
+        <td colspan="5" class="cell-mono">Suppressed, fewer than ${c.suppressed_below} covered lives</td>
+      </tr>` : `
       <tr data-drill="${portfolioDim}|${c.key}">
         <td><strong>${c.label}</strong></td>
         <td class="cell-mono">${fmtInt(c.count)}</td>
@@ -3139,9 +3166,17 @@ window.addEventListener('load', () => {
   const concDim = 'cohort_lifestyle';
   const concWrap = $('[data-welo="cohort-concentration"]');
   if (concWrap && cohorts[concDim]) {
-    const sorted = [...cohorts[concDim]].sort((a,b)=> b.high_or_critical_share - a.high_or_critical_share);
-    const max = Math.max(...sorted.map(c=>c.high_or_critical_share), 0.01);
-    concWrap.innerHTML = sorted.map(c => `
+    const shown = [...cohorts[concDim]];
+    const ranked = shown.filter(c => !isSupp(c))
+      .sort((a, b) => b.high_or_critical_share - a.high_or_critical_share);
+    const sorted = ranked.concat(shown.filter(isSupp));
+    const max = Math.max(...ranked.map(c => c.high_or_critical_share), 0.01);
+    concWrap.innerHTML = sorted.map(c => isSupp(c) ? `
+      <div class="geo-row">
+        <div class="geo-name">${c.label}</div>
+        <div class="geo-bar-wrap"></div>
+        <div class="geo-pct">${nlt5}</div>
+      </div>` : `
       <div class="geo-row">
         <div class="geo-name">${c.label}</div>
         <div class="geo-bar-wrap"><div class="geo-bar" style="width:${(c.high_or_critical_share/max*100).toFixed(0)}%"></div></div>
@@ -3157,7 +3192,18 @@ window.addEventListener('load', () => {
     setText('[data-welo="cohort-dim-blurb"]', dimBlurb(dimKey));
     const cards = $('[data-welo="cohort-cards"]');
     if (cards) {
-      cards.innerHTML = list.map(c => `
+      cards.innerHTML = list.map(c => isSupp(c) ? `
+        <div class="cohort-card">
+          <div class="cohort-card-top">
+            <div>
+              <div class="cohort-card-name">${c.label}</div>
+              <div class="cohort-card-count">${nlt5} covered lives</div>
+            </div>
+          </div>
+          <div class="cohort-card-stat-label" style="margin-top:12px">
+            Suppressed: fewer than ${c.suppressed_below} covered lives, so no figures are reported.
+          </div>
+        </div>` : `
         <div class="cohort-card" data-drill="${dimKey}|${c.key}">
           <div class="cohort-card-top">
             <div>
@@ -3181,7 +3227,12 @@ window.addEventListener('load', () => {
     }
     const dTable = $('[data-welo="cohort-detail-table"]');
     if (dTable) {
-      dTable.innerHTML = list.map(c => `
+      dTable.innerHTML = list.map(c => isSupp(c) ? `
+        <tr>
+          <td><strong>${c.label}</strong></td>
+          <td class="cell-mono">${nlt5}</td>
+          <td colspan="7" class="cell-mono">Suppressed, fewer than ${c.suppressed_below} covered lives</td>
+        </tr>` : `
         <tr data-drill="${dimKey}|${c.key}">
           <td><strong>${c.label}</strong></td>
           <td class="cell-mono">${fmtInt(c.count)}</td>
@@ -3597,7 +3648,11 @@ window.addEventListener('load', () => {
     (dims || []).forEach(d => {
       const list = cohorts[d.key];
       if (!Array.isArray(list)) return;
-      cohortSummary[dimLabel(d.key)] = list.map(c => ({
+      cohortSummary[dimLabel(d.key)] = list.map(c => isSupp(c) ? {
+        cohort: c.label,
+        suppressed: true,
+        note: `Fewer than ${c.suppressed_below} covered lives, so no figures are available for this cohort.`,
+      } : {
         cohort: c.label,
         covered_lives: c.count,
         high_or_critical_share: c.high_or_critical_share,
@@ -3605,7 +3660,7 @@ window.addEventListener('load', () => {
         predicted_absent_days_90d: Math.round(c.predicted_absent_days_90d || 0),
         cost_exposure_rand: Math.round(c.cost_exposure_rand || 0),
         mean_fatigue: c.mean_fatigue,
-      }));
+      });
     });
     return {
       covered_lives: h.covered_lives,

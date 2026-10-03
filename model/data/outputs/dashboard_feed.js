@@ -61382,5 +61382,7 @@ window.WELO_FEED = {
         "mean_bradford": 421.0
       }
     ]
-  }
+  },
+  "synthetic": true,
+  "suppression_threshold": 5
 };
