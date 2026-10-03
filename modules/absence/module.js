@@ -17,7 +17,7 @@ export const absenceModule = {
   home: "/absence",
   screens: [
     { href: "/absence", label: "Portfolio and cohorts" },
-    { href: "/absenteeism/index.html#cohorts", label: "Cohorts", external: true },
+    { href: "/absence/cohorts", label: "Cohorts" },
     { href: "/absenteeism/index.html#outcomes", label: "Outcomes and ROI", external: true },
     { href: "/absenteeism/index.html#hrops", label: "HR and operations", external: true },
   ],
@@ -25,6 +25,7 @@ export const absenceModule = {
   guardrails: [
     "Cohorts under the tenant threshold carry no figures and render as n<5.",
     "Risk scores are labelled modelled, never live.",
+    "No cohort screen serves individual-level scores: the ported screens read module data that carries no individual records.",
     "Agents reason only over the figures on screen and never recommend disciplinary use.",
   ],
 };
