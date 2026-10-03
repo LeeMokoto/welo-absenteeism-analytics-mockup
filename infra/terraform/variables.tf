@@ -188,6 +188,79 @@ variable "anthropic_api_key" {
   default     = ""
 }
 
+# --- Tenants -----------------------------------------------------------------
+# The platform's unit of isolation. Each entry becomes one instantiation of
+# modules/tenant: its own buckets, its own pseudonymisation key, its own service
+# accounts, and optionally its own application instance. Adding a tenant is
+# adding a map entry, which is the whole point of the architecture: one
+# codebase, many deployments, no fork.
+
+variable "bucket_prefix" {
+  type        = string
+  description = <<-EOT
+    Prefix for every tenant bucket name. A tenant's buckets are
+    <prefix>-<tenant>-raw and <prefix>-<tenant>-derived.
+
+    Deliberately has no default. Bucket names are global across all of GCS, so a
+    guessable default would either collide with someone else's bucket or, worse,
+    quietly be the name a future operator also guesses. Choose something that
+    identifies this deployment, e.g. "welo-za" or the client's own prefix.
+  EOT
+  validation {
+    condition     = can(regex("^[a-z][a-z0-9-]{1,28}[a-z0-9]$", var.bucket_prefix))
+    error_message = "bucket_prefix must be 3-30 chars, lowercase letters, digits and hyphens, starting with a letter."
+  }
+}
+
+variable "tenants" {
+  type = map(object({
+    display_name          = string
+    environment           = optional(string, "demo")
+    synthetic             = optional(bool, true)
+    suppression_threshold = optional(number, 5)
+    modules = optional(object({
+      absence        = bool
+      sick_leave     = bool
+      control_centre = bool
+      }), {
+      absence        = true
+      sick_leave     = true
+      control_centre = false
+    })
+    region                 = optional(string, "")
+    raw_retention_days     = optional(number, 30)
+    derived_retention_days = optional(number, 730)
+    kms_key_name           = optional(string, "")
+    force_destroy_buckets  = optional(bool, false)
+    deploy_ingest          = optional(bool, false)
+    ingest_image           = optional(string, "")
+    deploy_platform        = optional(bool, false)
+    platform_image         = optional(string, "")
+    allow_unauthenticated  = optional(bool, false)
+    enable_agents          = optional(bool, false)
+    labels                 = optional(map(string), {})
+  }))
+  description = <<-EOT
+    Tenants to provision, keyed by tenant id (lowercase, hyphens). The id is
+    permanent: changing it replaces every resource belonging to that tenant.
+
+    Per tenant, `region` empty inherits var.region, `enable_agents` wires the
+    shared Anthropic key secret into that tenant's application, and
+    `deploy_platform` decides whether the application runs on Cloud Run here or
+    stays on Vercel (in which case the tenant's environment still comes out of
+    this module, as the tenant_platform_env output).
+
+    Default is a single demo tenant, which is what the current deployment is.
+  EOT
+  default = {
+    demo = {
+      display_name = "Demo tenant"
+      environment  = "demo"
+      synthetic    = true
+    }
+  }
+}
+
 # --- CORS --------------------------------------------------------------------
 
 variable "cors_origins" {

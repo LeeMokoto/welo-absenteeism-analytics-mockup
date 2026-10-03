@@ -1,29 +1,129 @@
 # Welo infrastructure (Terraform)
 
-Infrastructure for the Welo demo: the inference service (agent proxy + model)
-on Cloud Run, the Anthropic key in Secret Manager (or Vertex AI access via the
-runtime service account), an Artifact Registry repo for the image, and an
-optional GCS bucket for the static dashboard.
+Infrastructure for the Welo platform. Two layers:
 
-It is deliberately **stateless and parameterised**. Build it in your own project
-for the demo now, and migrate to the client's project later by pointing
-Terraform at a new state and a new `*.tfvars`. Nothing hardcodes a project.
+- **Shared**: the inference service (agent proxy + model) on Cloud Run, the
+  Anthropic key in Secret Manager (or Vertex AI access via the runtime service
+  account), an Artifact Registry repo, and an optional GCS bucket for the
+  static dashboard.
+- **Per tenant**: one instantiation of `modules/tenant` for each entry in
+  `var.tenants`. A tenant gets its own landing and derived buckets, its own
+  pseudonymisation key, its own two service accounts, and optionally its own
+  ingest job and application instance.
+
+Everything is **parameterised**. Nothing hardcodes a project, and adding a
+client is adding a map entry rather than forking the configuration.
 
 ## What it provisions
+
+### Shared
 
 | Resource | Purpose |
 | --- | --- |
 | Cloud Run service (`welo-inference`) | The model + agent proxy. 1 vCPU / 1 GiB, scale to zero. |
 | Cloud Run service (`welo-sick-leave`) | The Next.js Sick Leave dashboard. 1 vCPU / 512 MiB, scale to zero. Optional (`deploy_sick_leave`). |
-| Secret Manager secret | Holds `ANTHROPIC_API_KEY`, injected at runtime into either service. Shared. |
+| Secret Manager secret | Holds `ANTHROPIC_API_KEY`, injected at runtime. Shared across services and tenants. |
 | Vertex AI IAM grant | `roles/aiplatform.user` on the runtime SA. Vertex provider only. |
-| Artifact Registry repo | Stores the container image. |
-| Runtime service accounts | One per service, least-privilege; each reads only the shared secret when its agents are on. |
+| Artifact Registry repo | Stores the container images. |
+| Runtime service accounts | One per service, least-privilege. |
 | GCS bucket (optional) | Serves the static dashboard. |
-| API enablement | Run, Cloud Build, Artifact Registry, Secret Manager (+ Vertex AI when `llm_provider = vertex`). |
+| API enablement | Run, Cloud Build, Artifact Registry, Secret Manager, Storage, IAM Credentials (+ Vertex AI when `llm_provider = vertex`). |
+
+### Per tenant (`modules/tenant`)
+
+| Resource | Purpose |
+| --- | --- |
+| Landing bucket (`<prefix>-<tenant>-raw`) | Where the employer uploads its canonical-schema extract through a signed URL. Short retention: a transfer point, not a store. |
+| Derived bucket (`<prefix>-<tenant>-derived`) | Pseudonymised artifacts only: the feed, model outputs, aggregates. |
+| Pseudonymisation key | A Secret Manager secret per tenant, holding the HMAC key ingest uses to hash employee identifiers. Terraform never sees its value. |
+| Ingest service account | Runs ingest, and is the identity that signs upload URLs. Reads the landing bucket, writes the derived bucket, reads the tenant key. |
+| Platform service account | Runs the application. Reads the derived bucket **only**: the identifiable upload is not reachable from the surface a user logs in to. |
+| Cloud Run job (`<tenant>-ingest`) | Ingest and processing. Optional (`deploy_ingest`). |
+| Cloud Run service (`<tenant>-platform`) | The Next.js platform for this tenant. Optional (`deploy_platform`); otherwise the tenant runs on Vercel. |
 
 No database, no persistent disk, no GPU. Cache and rate-limit state live in
 memory by design.
+
+### Controls asserted in the configuration, not left to convention
+
+- **Buckets refuse public access unconditionally.** `public_access_prevention
+  = "enforced"` on both tenant buckets, with no variable to loosen it. A bucket
+  holding employee records has no setting under which being world-readable is
+  correct.
+- **The suppression floor is enforced here as well as in the application.**
+  `suppression_threshold` validates `>= 5`; `lib/platform/manifest.js` clamps to
+  the same floor. The control does not depend on one side getting it right.
+- **`terraform destroy` cannot take a tenant's data with it.**
+  `force_destroy_buckets` defaults false, so a destroy against a tenant holding
+  objects fails rather than deleting them.
+- **The pseudonymisation key never enters state.** Terraform creates the secret
+  container; the value is added out of band. See
+  `terraform output tenant_setup_commands`.
+- **Raw uploads expire.** The landing bucket deletes objects after
+  `raw_retention_days` (30 by default) and superseded versions after 7 days,
+  because that is the only copy carrying the employer's own identifiers.
+
+## Tenants
+
+A tenant is the platform's unit of isolation. Declare them in your `*.tfvars`:
+
+```hcl
+bucket_prefix = "welo-za"      # global across GCS; no default on purpose
+
+tenants = {
+  demo = {
+    display_name = "Demo tenant"
+    environment  = "demo"
+    synthetic    = true
+  }
+
+  glencore = {
+    display_name          = "Glencore South Africa"
+    environment           = "production"
+    synthetic             = false
+    suppression_threshold = 10            # may be raised, never lowered
+    region                = "africa-south1"
+    modules = { absence = true, sick_leave = false, control_centre = false }
+    deploy_ingest         = true
+    ingest_image          = "...-docker.pkg.dev/P/welo/welo-ingest:latest"
+  }
+}
+```
+
+The map key is the tenant id and it is **permanent**: changing it replaces every
+resource belonging to that tenant.
+
+### Where a tenant's application runs
+
+`deploy_platform` decides, and the tenant's environment is the same either way:
+
+- **`false` (Vercel).** Terraform provisions the backend and computes the
+  tenant's environment. `terraform output tenant_platform_env` gives you exactly
+  what to set in the Vercel project. The Anthropic key is set directly in Vercel
+  and does not pass through Terraform.
+- **`true` (Cloud Run).** Terraform runs the application in the tenant's project
+  with the same environment, and injects the Anthropic key from Secret Manager
+  when `enable_agents` is on. This is the answer for a client who requires the
+  whole stack inside their own project.
+
+Both paths read `local.manifest_env` in `modules/tenant`, so what defines a
+tenant has one definition regardless of who hosts it.
+
+### Adding a tenant
+
+```bash
+# 1. Add the map entry, then plan to see only that tenant's resources appear
+terraform plan -var-file=demo.tfvars
+
+terraform apply -var-file=demo.tfvars
+
+# 2. Generate and load its pseudonymisation key (never in state, never in git)
+terraform output tenant_setup_commands    # prints the exact command per tenant
+
+# 3. Hand the employer a signed upload URL, signed as the tenant's ingest SA,
+#    then run a pass
+terraform output -json tenants
+```
 
 ## Prerequisites
 
@@ -33,14 +133,46 @@ memory by design.
   `secretmanager.admin`, `iam.serviceAccountAdmin`, `storage.admin`,
   `cloudbuild.builds.editor`, `serviceusage.serviceUsageAdmin`.
 
+## State
+
+State lives in GCS, not on an operator's laptop. For a configuration that
+provisions client tenants this is not a preference: state records bucket names,
+service account identities and secret ids, and a tenant must not be recoverable
+only from whoever last ran apply.
+
+`backend.tf` declares the backend with no arguments, because backend
+configuration cannot use variables. The bucket and prefix come from a file at
+init time, one per environment. The state bucket has to exist first, which is
+what `bootstrap/` is for:
+
+```bash
+cd infra/terraform/bootstrap
+terraform init
+terraform apply -var project_id=YOUR_PROJECT -var state_bucket=welo-tfstate-UNIQUE
+
+cd ..
+cp backend.demo.hcl.example backend.demo.hcl     # set bucket to the name above
+terraform init -backend-config=backend.demo.hcl
+```
+
+`bootstrap/` keeps its own state locally, deliberately: the only thing it
+manages is a bucket whose name you already know, so losing that state costs an
+import rather than a tenant. Its bucket has versioning on and no
+`force_destroy`, so a destroy cannot wipe every other deployment's state.
+
+Use one prefix per environment (`welo-platform/demo`, `welo-platform/client`) so
+two deployments never share state.
+
+To validate or format without a backend at all: `terraform init -backend=false`.
+
 ## Deploy (demo)
 
 ```bash
 cd infra/terraform
-cp demo.tfvars.example demo.tfvars      # then edit project_id, region, bucket
+cp demo.tfvars.example demo.tfvars      # then edit project_id, bucket_prefix, region
 
 # 1. Create the registry (and enable APIs) so we have somewhere to push the image
-terraform init
+terraform init -backend-config=backend.demo.hcl
 terraform apply -var-file=demo.tfvars \
   -target=google_project_service.services \
   -target=google_artifact_registry_repository.welo
@@ -132,12 +264,15 @@ create the shared key secret in that case.
 
 The whole point of the parameterisation. When the client is ready:
 
-1. **New state.** Either `terraform workspace new client`, or set a GCS backend
-   with a client-specific `prefix` (see `backend.tf`). Never share state between
-   the demo and the client deployment.
+1. **New state.** `cp backend.demo.hcl client.hcl`, change the `prefix` (and the
+   bucket if the client's project owns its own), then
+   `terraform init -backend-config=client.hcl -reconfigure`. Never share state
+   between the demo and the client deployment.
 2. **New vars.** `cp demo.tfvars client.tfvars`, change `project_id`, `region`
-   (`africa-south1` keeps it in-country), `dashboard_bucket`, and lock
-   `cors_origins` to the client's dashboard origin.
+   (`africa-south1` keeps it in-country), `bucket_prefix`, `dashboard_bucket`,
+   and lock `cors_origins` to the client's dashboard origin. Declare their
+   tenant in `tenants` with `synthetic = false` and
+   `allow_unauthenticated = false`.
 3. **Build into their project** with `build_and_push.sh THEIR_PROJECT_ID`, then
    `terraform apply -var-file=client.tfvars`.
 4. **Their credentials.** On the Anthropic path the client adds their own key to
@@ -171,3 +306,26 @@ terraform destroy -var-file=demo.tfvars
 
 The secret's key version is retained unless you also remove it; delete the
 secret manually if you want it gone.
+
+A destroy will **fail** on any tenant bucket that still holds objects, because
+`force_destroy_buckets` defaults to false. That is the intended behaviour: a
+teardown must not be able to take employee records with it. To tear down a
+tenant on purpose, empty its buckets first, or set `force_destroy_buckets = true`
+for that tenant and accept what that means.
+
+## Not yet provisioned
+
+Stated plainly so the gap is not mistaken for coverage:
+
+- **No ingest container exists yet.** `deploy_ingest` defaults to false and the
+  job has a precondition on `ingest_image`, so the buckets, keys and identities
+  come up without it and the signed-URL upload target works before the processor
+  does. Build the image, then turn the flag on.
+- **No automatic trigger.** Ingest runs when you execute the job. An Eventarc
+  trigger on bucket finalize, or a Cloud Scheduler cadence, is the next step.
+- **No identity provider.** `allow_unauthenticated` is still the only access
+  control on a tenant's application. SSO belongs here and is not wired yet.
+- **No per-tenant project.** Every tenant currently lands in one `project_id`,
+  isolated by bucket, key and service account rather than by project boundary.
+  Moving a tenant to its own project means a separate state prefix and a
+  separate `*.tfvars`, which the configuration already supports.

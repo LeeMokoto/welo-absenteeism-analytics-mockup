@@ -1,10 +1,19 @@
-# Never commit state (may contain secrets) or real tfvars.
+# Never commit state (it can contain secrets) or real variable files.
 *.tfstate
 *.tfstate.*
 .terraform/
-.terraform.lock.hcl
 crash.log
 
 # Real variable files; only the *.example is tracked.
 *.tfvars
 !*.tfvars.example
+
+# Real backend configs name a real state bucket; only the *.example is tracked.
+*.hcl
+!*.hcl.example
+
+# The dependency lock file IS committed, deliberately. It pins the exact
+# provider versions and hashes, so every operator and any CI run plans against
+# the same provider as the last apply. Without it, two people can get different
+# plans from the same configuration.
+!.terraform.lock.hcl

@@ -6,6 +6,46 @@
 project_id = "my-demo-project"
 region     = "europe-west1"
 
+# Prefix for every tenant bucket. Bucket names are global across all of GCS, so
+# there is no default: choose something that identifies this deployment.
+bucket_prefix = "welo-CHANGE-ME"
+
+# --- Tenants ---
+# The platform's unit of isolation. Each entry gets its own landing and derived
+# buckets, its own pseudonymisation key, its own service accounts, and
+# optionally its own ingest job and application instance. Adding a client is
+# adding an entry here. The key is permanent: changing it replaces everything
+# belonging to that tenant.
+#
+# deploy_platform = false leaves the application on Vercel; the tenant's
+# environment still comes out of this config, as `terraform output
+# tenant_platform_env`.
+tenants = {
+  demo = {
+    display_name = "Demo tenant"
+    environment  = "demo"
+    synthetic    = true
+    # enable_agents   = true    # wire the shared Anthropic key into this tenant
+    # deploy_ingest   = true    # needs ingest_image
+    # deploy_platform = true    # needs platform_image; otherwise Vercel
+  }
+
+  # A real client, for shape. suppression_threshold may be raised but never
+  # lowered below five, and synthetic = false removes the demo marking.
+  # glencore = {
+  #   display_name          = "Glencore South Africa"
+  #   environment           = "production"
+  #   synthetic             = false
+  #   suppression_threshold = 10
+  #   region                = "africa-south1"
+  #   modules               = { absence = true, sick_leave = false, control_centre = false }
+  #   allow_unauthenticated = false
+  #   deploy_ingest         = true
+  #   ingest_image          = "europe-west1-docker.pkg.dev/my-demo-project/welo/welo-ingest:latest"
+  #   labels                = { cost-centre = "mining-sa" }
+  # }
+}
+
 # Build the image first with infra/scripts/build_and_push.sh, then paste its ref:
 image = "europe-west1-docker.pkg.dev/my-demo-project/welo/welo-inference:latest"
 

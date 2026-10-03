@@ -1,0 +1,9 @@
+# Copy to backend.demo.hcl and fill in. One file per environment; the file
+# itself is gitignored because it names a real bucket.
+#
+#   terraform init -backend-config=backend.demo.hcl
+#
+# The bucket must already exist. Create it with ./bootstrap.
+
+bucket = "welo-tfstate-CHANGE-ME-unique"
+prefix = "welo-platform/demo"

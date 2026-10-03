@@ -11,9 +11,14 @@ locals {
   # it wants the same secret whenever its agents are enabled.
   sick_leave_key_env = var.deploy_sick_leave && var.sick_leave_enable_agents
 
-  # Create the Secret Manager secret when either service needs the Anthropic key
-  # (the inference service on the anthropic provider, or the sick-leave app).
-  create_key_secret = local.use_anthropic || local.sick_leave_key_env
+  # Any tenant whose application should call the agents needs the shared
+  # Anthropic key secret too.
+  tenant_agents = anytrue([for t in var.tenants : t.enable_agents])
+
+  # Create the Secret Manager secret when anything needs the Anthropic key: the
+  # inference service on the anthropic provider, the sick-leave app, or a tenant
+  # application.
+  create_key_secret = local.use_anthropic || local.sick_leave_key_env || local.tenant_agents
 }
 
 # --- Enable the APIs this stack uses ----------------------------------------
@@ -24,6 +29,8 @@ resource "google_project_service" "services" {
     "cloudbuild.googleapis.com",
     "artifactregistry.googleapis.com",
     "secretmanager.googleapis.com",
+    "storage.googleapis.com",
+    "iamcredentials.googleapis.com", # signBlob, for signed upload URLs
   ], local.use_vertex ? ["aiplatform.googleapis.com"] : []))
   service            = each.value
   disable_on_destroy = false
@@ -349,4 +356,57 @@ resource "google_cloud_run_v2_service_iam_member" "sick_leave_public" {
   location = google_cloud_run_v2_service.sick_leave[0].location
   role     = "roles/run.invoker"
   member   = "allUsers"
+}
+
+# --- Tenants ----------------------------------------------------------------
+# One instantiation of modules/tenant per entry in var.tenants. This is the
+# platform's isolation boundary: a tenant's data, its pseudonymisation key and
+# its application identity exist only inside its own instantiation, so the
+# blast radius of a mistake in one tenant stops at that tenant.
+#
+# Adding a client is adding a map entry. Nothing here is specific to any of
+# them, which is what makes "one codebase, many deployments" true in the
+# infrastructure as well as in the application.
+
+module "tenant" {
+  source   = "./modules/tenant"
+  for_each = var.tenants
+
+  tenant_key    = each.key
+  project_id    = var.project_id
+  region        = each.value.region != "" ? each.value.region : var.region
+  bucket_prefix = var.bucket_prefix
+
+  display_name          = each.value.display_name
+  environment           = each.value.environment
+  synthetic             = each.value.synthetic
+  suppression_threshold = each.value.suppression_threshold
+  modules               = each.value.modules
+
+  raw_retention_days     = each.value.raw_retention_days
+  derived_retention_days = each.value.derived_retention_days
+  kms_key_name           = each.value.kms_key_name
+  force_destroy_buckets  = each.value.force_destroy_buckets
+
+  deploy_ingest = each.value.deploy_ingest
+  ingest_image  = each.value.ingest_image
+
+  deploy_platform       = each.value.deploy_platform
+  platform_image        = each.value.platform_image
+  allow_unauthenticated = each.value.allow_unauthenticated
+
+  # Agents are per tenant, but the key secret is shared. A tenant with
+  # enable_agents = false gets an empty id, which turns the agents off for that
+  # tenant without touching anyone else.
+  anthropic_secret_id = (
+    each.value.enable_agents && local.create_key_secret
+    ? google_secret_manager_secret.anthropic[0].secret_id
+    : ""
+  )
+  agent_model            = var.agent_model
+  sick_leave_agent_model = var.sick_leave_agent_model
+
+  labels = each.value.labels
+
+  depends_on = [google_project_service.services]
 }
