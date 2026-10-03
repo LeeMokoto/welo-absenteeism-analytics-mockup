@@ -6,20 +6,20 @@
 # layer carries only what the server needs. Listens on $PORT (Cloud Run injects
 # it; defaults to 8080 locally).
 
-FROM node:22-slim AS deps
+FROM node:26-slim AS deps
 WORKDIR /app
 ENV NPM_CONFIG_UPDATE_NOTIFIER=false
 COPY package.json package-lock.json ./
 RUN npm ci
 
-FROM node:22-slim AS build
+FROM node:26-slim AS build
 WORKDIR /app
 ENV NEXT_TELEMETRY_DISABLED=1
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN npm run build
 
-FROM node:22-slim AS runner
+FROM node:26-slim AS runner
 WORKDIR /app
 ENV NODE_ENV=production \
     NEXT_TELEMETRY_DISABLED=1 \
