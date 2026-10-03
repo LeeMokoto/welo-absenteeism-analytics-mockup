@@ -14,13 +14,14 @@ region a tenant actually runs in.
 
 ## The one-line answer
 
-Running the platform at all costs about **USD 1,250 a year** in fixed cost, and
+Running the platform at all costs about **USD 720 a year** in fixed cost, and
 each additional tenant adds about **USD 350 a year**. The current demo
-deployment, with nothing kept warm, is about **USD 340 a year** all in.
+deployment, with nothing kept warm, is about **USD 340 a year** all in. A single
+production tenant with every optional line switched on is about **USD 2,630**.
 
-More of that is GitHub and Vercel seats than Google Cloud. It is small enough
-that it should never drive an architectural decision. The decisions that matter
-are about effort and reuse.
+The two largest lines in that figure are a GitHub licence and Vercel seats, not
+Google Cloud. All of it is small enough that it should never drive an
+architectural decision. The decisions that matter are about effort and reuse.
 
 ## Model inference
 
@@ -217,9 +218,14 @@ tooling; "variable" is what each new tenant adds.
 
 Two figures to carry around:
 
-**Fixed cost of running the platform at all: about USD 1,250 a year**, or about
-USD 2,330 with the Code Security licence. Shared cloud, the eval gate and
-GitHub seats. This is incurred whether there is one tenant or ten.
+**Fixed cost of running the platform at all: about USD 720 a year.** Shared
+cloud (470), the eval gate (108) and three GitHub Team seats (144). Incurred
+whether there is one tenant or ten.
+
+Two optional lines sit on top of it and both are larger than the cloud bill:
+the Code Security licence adds **USD 1,080 a year** for three committers,
+taking fixed cost to about USD 1,800, and Vercel Pro adds **USD 240 per member
+per year**.
 
 **Marginal cost of the next tenant: about USD 350 a year** on Vercel, or about
 USD 600 on Cloud Run, plus a Vercel seat if one is needed. That is the number
