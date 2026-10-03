@@ -1,11 +1,13 @@
 /*
   Module definition: absence analytics.
 
-  Ported from the original standalone dashboard. The portfolio screen runs in
-  the shell; the remaining screens are still served by the standalone build and
-  are marked `external` so the shell renders them as a departure rather than
-  pretending they are in the frame. As each is ported, its entry loses the flag
-  and nothing else changes.
+  Ported from the original standalone dashboard. Every screen now runs in the
+  shell against module data, so none is marked `external`. The standalone build
+  stays reachable at /absenteeism for comparison during the cutover.
+
+  The what-if lever panel did not come across with any of these screens: it
+  operates the model forwards rather than reporting on it, and it lands in the
+  workforce planning destination once the scenario endpoint is deployed.
 */
 
 export const absenceModule = {
@@ -18,7 +20,7 @@ export const absenceModule = {
   screens: [
     { href: "/absence", label: "Portfolio and cohorts" },
     { href: "/absence/cohorts", label: "Cohorts" },
-    { href: "/absenteeism/index.html#outcomes", label: "Outcomes and ROI", external: true },
+    { href: "/absence/outcomes", label: "Outcomes and ROI" },
     { href: "/absence/operations", label: "HR and operations" },
   ],
   agents: ["analyst", "case", "coordinator"],
@@ -27,6 +29,7 @@ export const absenceModule = {
     "Risk scores are labelled modelled, never live.",
     "No cohort screen serves individual-level scores: the ported screens read module data that carries no individual records.",
     "Agents reason only over the figures on screen and never recommend disciplinary use.",
+    "Projected savings are labelled projected: no figure is reported as achieved until it is measured against a baseline.",
   ],
 };
 
