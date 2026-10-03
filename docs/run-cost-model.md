@@ -14,10 +14,13 @@ region a tenant actually runs in.
 
 ## The one-line answer
 
-Infrastructure and model inference run about **USD 1,100 per tenant per year**
-for a production tenant, or about **USD 150** for a scale-to-zero demo tenant.
-This is small enough that it should never drive an architectural decision. The
-decisions that matter are about effort and reuse.
+Running the platform at all costs about **USD 1,250 a year** in fixed cost, and
+each additional tenant adds about **USD 350 a year**. The current demo
+deployment, with nothing kept warm, is about **USD 340 a year** all in.
+
+More of that is GitHub and Vercel seats than Google Cloud. It is small enough
+that it should never drive an architectural decision. The decisions that matter
+are about effort and reuse.
 
 ## Model inference
 
@@ -95,19 +98,44 @@ compare.
 Fourteen resources per tenant (`infra/terraform/modules/tenant`), plus a share of
 the project-level services.
 
-| Line | Sizing | Per month |
-| --- | --- | --- |
-| Inference service | 1 vCPU / 1 GiB, kept warm | USD 15 to 40 |
-| Platform service | 1 vCPU / 512 MiB, kept warm, if on Cloud Run | USD 12 to 30 |
-| Ingest job | 2 vCPU / 2 GiB, minutes per run | under USD 1 |
-| Landing and derived buckets | tens of MB | under USD 1 |
-| Artifact Registry | inference image about 1.2 GB, platform about 200 MB | USD 0.50 to 2 |
-| Secret Manager | 3 secrets plus access operations | about USD 0.20 |
-| Cloud Logging, data access audit | within the 50 GiB project free tier at this volume | USD 0 to 30 |
-| Egress | small payloads | USD 1 to 5 |
-| **Total** | | **USD 35 to 110** |
+The split matters, and it is not where you would guess from the diagram. Only
+fourteen resources are inside `modules/tenant`. The inference service, the
+Artifact Registry, the Anthropic key secret, the static dashboard bucket and the
+CI identity are all declared at the root, which means **one per deployment,
+shared by every tenant in it**. The expensive always-warm container is on the
+shared side, so the marginal tenant is cheaper than the first.
 
-Budget **USD 70 a month, USD 840 a year** for a production tenant.
+### Shared, once per deployment
+
+| Line | Sizing | Per month | Per year |
+| --- | --- | --- | --- |
+| Inference service | 1 vCPU / 1 GiB, kept warm | USD 15 to 40 | USD 180 to 480 |
+| Artifact Registry | inference image about 1.2 GB, platform about 200 MB | USD 0.50 to 2 | USD 6 to 24 |
+| Anthropic key secret | 1 secret plus access operations | USD 0.06 | USD 1 |
+| Static dashboard bucket | optional, `host_dashboard` | USD 0.20 | USD 2 |
+| Terraform state bucket | versioned, 30 versions | USD 0.10 | USD 1 |
+| Cloud Logging above the free tier | shared 50 GiB across the project | USD 0 to 20 | USD 0 to 240 |
+| **Shared total** | | **USD 16 to 62** | **USD 190 to 750** |
+
+Budget **USD 470 a year** for the shared layer. The sick-leave Cloud Run service
+would add USD 144 to 360 a year, but `deploy_sick_leave` is false: it runs on
+Vercel.
+
+### Per tenant
+
+| Line | Sizing | Per month | Per year |
+| --- | --- | --- | --- |
+| Platform service | 1 vCPU / 512 MiB, warm, only if `deploy_platform` | USD 12 to 30 | USD 144 to 360 |
+| Ingest job | 2 vCPU / 2 GiB, minutes per run | under USD 1 | under USD 12 |
+| Landing and derived buckets | tens of MB | under USD 1 | under USD 12 |
+| Pseudonymisation key secret | 1 secret | USD 0.06 | USD 1 |
+| Egress | small payloads | USD 1 to 5 | USD 12 to 60 |
+| Attributable audit log volume | | USD 0 to 10 | USD 0 to 120 |
+| **Per tenant, platform on Cloud Run** | | **USD 14 to 47** | **USD 170 to 565** |
+| **Per tenant, platform on Vercel** | | **USD 2 to 17** | **USD 25 to 205** |
+
+Budget **USD 360 a year** on Cloud Run, or **USD 110 a year** on Vercel, where
+the seat cost moves to the tooling table instead.
 
 Two things set the floor:
 
@@ -170,23 +198,37 @@ Cloudsmiths organisation will fail that job** until a free key is obtained from
 gitleaks.io and set as `GITLEAKS_LICENSE`, or the job is switched to running the
 MIT-licensed gitleaks binary directly. Worth doing before the move, not after.
 
-## Totals
+## Annual totals
 
-Per tenant per year, production:
+Four scenarios, all in USD per year. "Fixed" is the shared layer and the
+tooling; "variable" is what each new tenant adds.
 
-| | USD |
-| --- | --- |
-| Google Cloud | 840 |
-| Model inference | 240 |
-| Tooling, allocated across two tenants | 850 |
-| **Total** | **about 1,930** |
+| | Demo only | 1 tenant, Vercel | 1 tenant, Cloud Run | 4 tenants, Vercel |
+| --- | --- | --- | --- | --- |
+| Shared Google Cloud | 40 | 470 | 470 | 470 |
+| Per-tenant Google Cloud | 25 | 110 | 360 | 440 |
+| Tenant model inference | 24 | 240 | 240 | 960 |
+| CI guardrail evals | 108 | 108 | 108 | 108 |
+| GitHub Team, 3 users | 144 | 144 | 144 | 144 |
+| GitHub Code Security, 3 committers | 0 | 1,080 | 1,080 | 1,080 |
+| Vercel Pro | 0 | 480 | 0 | 960 |
+| **Total** | **about 340** | **about 2,630** | **about 2,400** | **about 4,160** |
+| **Per tenant** | 340 | 2,630 | 2,400 | **about 1,040** |
 
-A demo tenant, scale to zero, no warm instances: **about USD 150 a year.**
+Two figures to carry around:
 
-Allocated tooling falls as tenants are added. At four tenants the per-tenant
-total is closer to USD 1,500; at eight, closer to USD 1,300. The variable part,
-cloud and inference at about USD 1,080, is what genuinely scales with each new
-tenant.
+**Fixed cost of running the platform at all: about USD 1,250 a year**, or about
+USD 2,330 with the Code Security licence. Shared cloud, the eval gate and
+GitHub seats. This is incurred whether there is one tenant or ten.
+
+**Marginal cost of the next tenant: about USD 350 a year** on Vercel, or about
+USD 600 on Cloud Run, plus a Vercel seat if one is needed. That is the number
+that matters for pricing: per-tenant infrastructure and inference are a rounding
+error against the effort to onboard, so what a tenant costs to serve is set
+almost entirely by the support model, not by the cloud.
+
+The demo column is what the current deployment costs: no warm instances, no
+Code Security licence, no Vercel Pro seats.
 
 ## What this means
 
