@@ -159,6 +159,82 @@ tabular data: 6,000 rows today, and a real two-year extract at perhaps 100,000
 rows still trains in minutes on a laptop. Worth stating explicitly, because
 clients often assume machine learning implies GPU spend. It does not here.
 
+## Worked example: one client tenant in africa-south1
+
+The figures above assume a tier 1 region. A South African client wanting
+in-country residency means `africa-south1` (Johannesburg), which is **tier 2**:
+USD 0.0000336 per vCPU-second and USD 0.0000035 per GiB-second, a **40 percent
+premium** on both against tier 1. On these volumes that is roughly USD 120 a
+year across the whole deployment. Residency is cheap here, and this should not
+be the reason to put the data anywhere else.
+
+A month is 2,628,000 seconds. A warm instance with `cpu_idle = true` is billed
+for its idle CPU at the reduced rate:
+
+| Resource | Per month | Per year |
+| --- | --- | --- |
+| Platform service, 1 vCPU / 512 MiB, warm | USD 13.80 | USD 166 |
+| Ingest job, monthly run of a few minutes | under USD 0.10 | about USD 1 |
+| Landing and derived buckets, under 1 GB | under USD 0.05 | under USD 1 |
+| Pseudonymisation key secret | USD 0.06 | USD 1 |
+| Egress, about 40 users in region | USD 1 to 3 | USD 12 to 36 |
+| Audit logs | within free tier | USD 0 |
+| **Tenant total** | **about USD 16** | **about USD 200** |
+
+If that client has its own project rather than being a tenant in Welo's, it also
+carries the shared layer: the inference service at USD 18.40 a month (USD 221 a
+year), Artifact Registry at about USD 6 a year, two secrets and a state bucket
+at about USD 2, less a one-off free tier credit of about USD 23. That is **about
+USD 206 a year**, so a client in its own project is **about USD 405 a year** in
+Google Cloud, all in.
+
+### `cpu_idle` is worth more than everything else on this page
+
+All three services set `cpu_idle = true`. Flipping it to false bills the warm
+instance for CPU at the full active rate for every second it exists:
+
+| | Per month | Per year |
+| --- | --- | --- |
+| 1 vCPU / 1 GiB warm, `cpu_idle = true` | USD 18.40 | USD 221 |
+| the same with `cpu_idle = false` | USD 97.50 | USD 1,170 |
+
+**A 5.3x difference from one boolean**, and more than the entire rest of the
+Google Cloud bill. It is the only infrastructure setting here worth guarding.
+
+### The cost is flat in headcount
+
+The canonical extract is 146 bytes per employee per monthly file, measured from
+`synthetic_upload_extract.csv` at 846 KB for 5,800 rows. A two-year backfill is
+24 files:
+
+| Workforce | Two-year backfill | Storage cost |
+| --- | --- | --- |
+| 5,800 | 20 MB | under USD 1 a year |
+| 30,000 | 105 MB | under USD 1 a year |
+
+Serving cost is driven by how many HR and occupational health users log in, not
+by how many employees are covered, and that number does not scale with the
+workforce. Training is scikit-learn on tabular data and stays in minutes.
+
+So Google Cloud cost is **essentially flat in the number of covered lives**. If
+a contract is priced per covered life, infrastructure margin improves with every
+employee added. The cost drivers are the number of tenants and whether instances
+are kept warm.
+
+### Two things to confirm with the client
+
+**The uploaded source files do not persist.** `raw_retention_days` is 30, so a
+two-year backfill is deleted from the landing bucket 30 days after upload. That
+is deliberate, because it is the only copy carrying the employer's own
+identifiers, and the derived artifacts persist for 730 days. It should still be
+stated in the data agreement rather than discovered.
+
+**The model call leaves the country even when the data does not.** Claude is not
+served from `africa-south1`, so the agent request goes to whichever region or
+API endpoint is configured while everything else stays in Johannesburg. That has
+no cost impact and a real contractual one under POPIA section 72. See
+`docs/data-governance.md`.
+
 ## Tooling, fixed rather than per tenant
 
 These are platform costs, so they divide across tenants rather than multiplying.
