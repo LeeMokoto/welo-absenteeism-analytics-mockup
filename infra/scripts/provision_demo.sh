@@ -90,20 +90,44 @@ stage_0() {
     fi
   fi
 
+  # Three outcomes, not two. "False" is a definite no and has to stop the run:
+  # without billing, every later stage fails on a 403 whose message
+  # ("the billing account for the owning project is disabled in state absent")
+  # does not say the obvious thing, which is that no billing account is linked.
+  # An empty result is a different case, where the query itself was refused for
+  # want of billing.projects.get, and that is only a warning.
   local billing
   billing="$(gcloud billing projects describe "${PROJECT_ID}" \
-             --format='value(billingEnabled)' 2>/dev/null || echo "unknown")"
-  if [ "${billing}" = "True" ]; then
-    local account_id
-    account_id="$(gcloud billing projects describe "${PROJECT_ID}" \
-                  --format='value(billingAccountName)' 2>/dev/null | sed 's|billingAccounts/||')"
-    info "billing enabled, account ${account_id}"
-    info "to switch the budget alert on, put this in ${TFVARS}:"
-    info "  billing_account = \"${account_id}\""
-  else
-    info "could not confirm billing is enabled (needs billing.projects.get)."
-    info "If the next stage fails on an API enablement, that is the likely cause."
-  fi
+             --format='value(billingEnabled)' 2>/dev/null || true)"
+
+  case "${billing}" in
+    True)
+      local account_id
+      account_id="$(gcloud billing projects describe "${PROJECT_ID}" \
+                    --format='value(billingAccountName)' 2>/dev/null | sed 's|billingAccounts/||')"
+      info "billing enabled, account ${account_id}"
+      info "to switch the budget alert on, put this in ${TFVARS}:"
+      info "  billing_account = \"${account_id}\""
+      ;;
+    False)
+      printf '\n'
+      info "No billing account is linked to ${PROJECT_ID}."
+      info "Nothing can be created without one: buckets, APIs and Cloud Run all refuse."
+      info ""
+      info "  gcloud billing accounts list"
+      info "  gcloud billing projects link ${PROJECT_ID} --billing-account=ACCOUNT_ID"
+      info ""
+      info "If that list is empty you have no billing account on this login yet;"
+      info "create one at https://console.cloud.google.com/billing (needs a payment method)."
+      info "Then run this script again."
+      die "billing not enabled on ${PROJECT_ID}"
+      ;;
+    *)
+      info "could not confirm billing (needs billing.projects.get on the project)."
+      info "If the next stage fails with a 403 about the billing account, that is why:"
+      info "  gcloud billing projects link ${PROJECT_ID} --billing-account=ACCOUNT_ID"
+      ;;
+  esac
 
   [ -f "${TF_DIR}/${TFVARS}" ] || {
     info "${TFVARS} not found, creating it from the example"
