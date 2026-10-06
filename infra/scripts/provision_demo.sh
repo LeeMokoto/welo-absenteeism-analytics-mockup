@@ -68,6 +68,28 @@ stage_0() {
     || die "no application default credentials. Run: gcloud auth application-default login"
   info "application default credentials present"
 
+  # The ADC file carries its own quota project, set when you last ran
+  # `gcloud auth application-default login`. It does not follow
+  # `gcloud config set project`, so after switching projects the two disagree
+  # and gcloud warns about it. Terraform reads ADC, so the stale project is the
+  # one its API calls bill quota against and check serviceusage against. Usually
+  # harmless, occasionally a confusing permission error partway through an apply,
+  # so it is cheaper to align it here than to diagnose it at stage 5.
+  local adc_file adc_quota
+  adc_file="$(gcloud info --format='value(config.paths.global_config_dir)' 2>/dev/null)/application_default_credentials.json"
+  if [ -f "${adc_file}" ]; then
+    adc_quota="$(sed -n 's/.*"quota_project_id"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' "${adc_file}" | head -1)"
+    if [ -z "${adc_quota}" ]; then
+      info "ADC has no quota project set. To silence the warning and be explicit:"
+      info "  gcloud auth application-default set-quota-project ${PROJECT_ID}"
+    elif [ "${adc_quota}" != "${PROJECT_ID}" ]; then
+      info "ADC quota project is '${adc_quota}' but we are provisioning '${PROJECT_ID}'. Align them:"
+      info "  gcloud auth application-default set-quota-project ${PROJECT_ID}"
+    else
+      info "ADC quota project matches ${PROJECT_ID}"
+    fi
+  fi
+
   local billing
   billing="$(gcloud billing projects describe "${PROJECT_ID}" \
              --format='value(billingEnabled)' 2>/dev/null || echo "unknown")"
