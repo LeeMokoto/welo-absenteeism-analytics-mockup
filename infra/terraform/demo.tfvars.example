@@ -1,93 +1,107 @@
-# Copy to demo.tfvars and edit. One file per environment: keep a separate
-# client.tfvars for the client's project when you migrate.
+# Variables for the absenteeism-demo project.
 #
+# Copy to demo.tfvars and adjust. demo.tfvars is gitignored; this example is
+# tracked, so keep anything secret out of both.
+#
+#   cp demo.tfvars.example demo.tfvars
 #   terraform apply -var-file=demo.tfvars
+#
+# Pre-filled for the demo project. One file per environment: keep a separate
+# client.tfvars for a client project when you migrate.
 
-project_id = "my-demo-project"
-region     = "europe-west1"
+project_id = "absenteeism-demo"
 
-# Prefix for every tenant bucket. Bucket names are global across all of GCS, so
-# there is no default: choose something that identifies this deployment.
-bucket_prefix = "welo-CHANGE-ME"
+# africa-south1 (Johannesburg) keeps the demo in country, which is the point
+# when showing it to a South African client. It is a tier 2 region, about 40
+# percent more per vCPU-second and GiB-second than europe-west1, which on these
+# volumes is roughly USD 10 a year. Switch to europe-west1 if you would rather
+# have the cheaper tier and do not need the residency story.
+#
+# Bucket location is immutable: changing this after the first apply replaces
+# every bucket, so decide before you run it rather than after.
+region = "africa-south1"
+
+# Prefix for tenant bucket names, which are global across all of GCS. Buckets
+# become welo-ad-demo-raw and welo-ad-demo-derived. If the apply fails with
+# "bucket already exists", someone else has taken the name: change this.
+bucket_prefix = "welo-ad"
+
+# Build the image first with infra/scripts/build_and_push.sh, then paste its ref
+# here. infra/scripts/provision_demo.sh does this for you.
+image = "africa-south1-docker.pkg.dev/absenteeism-demo/welo/welo-inference:latest"
 
 # --- Tenants ---
-# The platform's unit of isolation. Each entry gets its own landing and derived
-# buckets, its own pseudonymisation key, its own service accounts, and
-# optionally its own ingest job and application instance. Adding a client is
-# adding an entry here. The key is permanent: changing it replaces everything
-# belonging to that tenant.
+# One demo tenant. Adding a client is adding an entry here; the key is
+# permanent, since changing it replaces everything belonging to that tenant.
 #
-# deploy_platform = false leaves the application on Vercel; the tenant's
-# environment still comes out of this config, as `terraform output
-# tenant_platform_env`.
+# deploy_platform stays false: the platform runs on Vercel today, and the
+# tenant's environment still comes out of this config as
+# `terraform output tenant_platform_env` for you to set there. Turning it true
+# also runs the Next.js app on Cloud Run, which costs about USD 14 a month more
+# and is worth doing when you want to show the whole stack inside GCP.
 tenants = {
   demo = {
     display_name = "Demo tenant"
     environment  = "demo"
     synthetic    = true
-    # enable_agents   = true    # wire the shared Anthropic key into this tenant
-    # deploy_ingest   = true    # needs ingest_image
-    # deploy_platform = true    # needs platform_image; otherwise Vercel
-  }
 
-  # A real client, for shape. suppression_threshold may be raised but never
-  # lowered below five, and synthetic = false removes the demo marking.
-  # glencore = {
-  #   display_name          = "Glencore South Africa"
-  #   environment           = "production"
-  #   synthetic             = false
-  #   suppression_threshold = 10
-  #   region                = "africa-south1"
-  #   modules               = { absence = true, sick_leave = false, control_centre = false }
-  #   allow_unauthenticated = false
-  #   deploy_ingest         = true
-  #   ingest_image          = "europe-west1-docker.pkg.dev/my-demo-project/welo/welo-ingest:latest"
-  #   labels                = { cost-centre = "mining-sa" }
-  # }
+    # Switch on once the Anthropic key is in Secret Manager. Until then the
+    # application renders with the agent panels showing a disabled state.
+    enable_agents = false
+
+    # Needs an ingest image, which does not exist yet. The buckets, the
+    # pseudonymisation key and the service accounts are created either way, so
+    # the signed-URL upload target works before the processor does.
+    deploy_ingest   = false
+    deploy_platform = false
+  }
 }
 
-# Build the image first with infra/scripts/build_and_push.sh, then paste its ref:
-image = "europe-west1-docker.pkg.dev/my-demo-project/welo/welo-inference:latest"
-
-# --- Sick Leave dashboard (Next.js) ---
-# The sick-leave dashboard is hosted on Vercel, so it is NOT deployed here.
-# Set this true only to run it on Cloud Run as well (for example to keep it
-# inside the client's project); you must then build its image with
-# build_and_push_sick_leave.sh and set sick_leave_image.
-deploy_sick_leave = false
-# sick_leave_image         = "europe-west1-docker.pkg.dev/my-demo-project/welo/welo-sick-leave:latest"
-# sick_leave_enable_agents = false
-# sick_leave_agent_model   = "claude-sonnet-5"
-
-# --- Dashboard static hosting (optional) ---
-host_dashboard   = true
-dashboard_bucket = "welo-dashboard-demo-CHANGE-ME-unique" # globally unique
-dashboard_public = true
+# --- Dashboard static hosting ---
+# The standalone absenteeism dashboard is already served from Vercel, so this is
+# off. Turn it on to serve it from GCS as well; dashboard_bucket must then be
+# globally unique.
+host_dashboard   = false
+dashboard_bucket = ""
 
 # --- Agents ---
-# Where the agents call Claude:
-#   "anthropic" (default): first-party Anthropic API with a key from Secret
-#     Manager. Right for the public demo.
-#   "vertex": Claude on Google Vertex AI, authenticated as the runtime service
-#     account (no key, data stays in the chosen Google region). Preferred for
-#     Welo's own project. Terraform then grants the SA roles/aiplatform.user and
-#     sets WELO_VERTEX_PROJECT / WELO_VERTEX_REGION for you; ignore the key
-#     handling section below.
+# "anthropic" uses the first-party API with a key from Secret Manager, which is
+# right for a demo and is what Vercel already uses. "vertex" authenticates as
+# the runtime service account with no key, but Claude is not served from
+# africa-south1, so a vertex deployment has to name a region elsewhere and the
+# call leaves the country. See docs/data-governance.md.
 llm_provider = "anthropic"
-# vertex_region = "us-east5"   # only when llm_provider = "vertex"
 
-# First deploy: leave false (the what-if panel still works). On the anthropic
-# path, add the key to the secret, then set true and re-apply to switch the
-# agents on. On the vertex path, set true once the SA has Vertex access.
+# First apply: leave false. Add the key to the secret, then set true and
+# re-apply. infra/scripts/provision_demo.sh walks this.
 enable_agents = false
 agent_model   = "claude-opus-4-8"
 
 # --- Security ---
+# Public for a demo. For anything with real data this becomes false and access
+# goes through the identity provider instead.
 allow_unauthenticated = true
-cors_origins          = ["*"] # lock to the dashboard origin for a real deploy
+cors_origins          = ["*"]
 
 # --- Key handling ---
-# Recommended: leave false and add the key via gcloud (see outputs.add_key_command)
-# so it never lands in Terraform state.
+# Leave false and add the key with gcloud, so it never lands in Terraform state.
 create_secret_version = false
-# anthropic_api_key   = "sk-ant-..."   # only if create_secret_version = true
+
+# --- Billing budget ---
+# Expected spend for this demo is single digits a month with nothing kept warm.
+# A budget of 50 alerts long before anything is wasted and well before the
+# cpu_idle mistake (about USD 190 a month if both services are flipped) could
+# run for long.
+#
+# Fill in the billing account to switch it on:
+#   gcloud billing projects describe absenteeism-demo \
+#     --format='value(billingAccountName)'
+# billing_account = "012345-67890A-BCDEF0"
+budget_amount   = 50
+budget_currency = "USD"
+
+# --- CI identity (optional) ---
+# Keyless CI authentication through Workload Identity Federation. Set this to
+# let GitHub Actions plan against the project with no service account key.
+# ci_github_repository = "LeeMokoto/welo-absenteeism-analytics-mockup"
+# ci_state_bucket      = "welo-ad-tfstate"

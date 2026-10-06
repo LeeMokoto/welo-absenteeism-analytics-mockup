@@ -348,3 +348,36 @@ variable "enable_data_access_logs" {
   EOT
   default     = true
 }
+
+# --- Billing budget ----------------------------------------------------------
+
+variable "billing_account" {
+  type        = string
+  description = <<-EOT
+    Billing account id the project is attached to, as the bare id
+    (012345-67890A-BCDEF0), for the budget alert. Find it with
+    `gcloud billing projects describe PROJECT --format='value(billingAccountName)'`.
+
+    Empty creates no budget. It is optional because setting it needs
+    billing.budgets.create on the billing account, which the person running a
+    first apply may not have.
+  EOT
+  default     = ""
+}
+
+variable "budget_amount" {
+  type        = number
+  description = <<-EOT
+    Monthly budget in whole currency units. Set it above the expected run rate
+    with enough headroom that normal variation does not alert, and low enough
+    that a configuration mistake does. For the demo, expected spend is single
+    digits a month, so a budget of 50 alerts long before anything is wasted.
+  EOT
+  default     = 0
+}
+
+variable "budget_currency" {
+  type        = string
+  description = "Currency for the budget. Must match the billing account's currency."
+  default     = "USD"
+}

@@ -133,3 +133,61 @@ run "a_wildcard_repository_is_rejected" {
 
   expect_failures = [var.ci_github_repository]
 }
+
+# --- Budget -----------------------------------------------------------------
+# The budget is optional because it needs a billing account id and the
+# permission to read it. Optional must mean absent, not half-created.
+
+run "no_budget_unless_a_billing_account_and_amount_are_given" {
+  command = plan
+
+  variables {
+    billing_account = ""
+    budget_amount   = 50
+  }
+
+  assert {
+    condition     = length(google_billing_budget.project) == 0
+    error_message = "A budget must not be created without a billing account."
+  }
+}
+
+run "a_budget_alerts_before_it_is_exceeded_not_after" {
+  command = plan
+
+  variables {
+    billing_account = "012345-67890A-BCDEF0"
+    budget_amount   = 50
+  }
+
+  assert {
+    condition     = length(google_billing_budget.project) == 1
+    error_message = "A billing account and an amount should produce a budget."
+  }
+
+  # A budget that only alerts at 100 percent tells you after the money is spent.
+  assert {
+    condition = anytrue([
+      for r in google_billing_budget.project[0].threshold_rules :
+      r.threshold_percent < 1.0
+    ])
+    error_message = "The budget must alert below 100 percent, not only once it is exceeded."
+  }
+
+  # A step change in run rate partway through a month only shows up in actual
+  # spend near month end. The forecast rule is what catches it early.
+  assert {
+    condition = anytrue([
+      for r in google_billing_budget.project[0].threshold_rules :
+      r.spend_basis == "FORECASTED_SPEND"
+    ])
+    error_message = "The budget must carry a forecast rule, or a mid-month run-rate change is caught too late."
+  }
+
+  # Scoped to this project, so another project in the billing account cannot
+  # consume the budget and silence the alert.
+  assert {
+    condition     = contains(google_billing_budget.project[0].budget_filter[0].projects, "projects/welo-test")
+    error_message = "The budget must be scoped to this project."
+  }
+}

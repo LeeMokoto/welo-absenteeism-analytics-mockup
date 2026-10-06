@@ -170,7 +170,69 @@ two deployments never share state.
 
 To validate or format without a backend at all: `terraform init -backend=false`.
 
-## Deploy (demo)
+## Provision the demo (scripted)
+
+`infra/scripts/provision_demo.sh` runs the whole sequence against the
+`absenteeism-demo` project. Every stage is idempotent, so a failed run is
+resumed by running it again, and nothing in it deletes anything.
+
+```bash
+gcloud auth login
+gcloud auth application-default login     # separate login; Terraform uses this one
+gcloud config set project absenteeism-demo
+
+infra/scripts/provision_demo.sh           # all stages
+infra/scripts/provision_demo.sh 5         # just one
+```
+
+| Stage | What it does |
+| --- | --- |
+| 0 | Preflight: both logins, project exists, billing, creates `demo.tfvars` and `backend.demo.hcl` from the examples, prints your billing account id for the budget |
+| 1 | Creates the Terraform state bucket through `./bootstrap` |
+| 2 | `terraform init` against that bucket, then validate |
+| 3 | Enables the APIs and creates the Artifact Registry repository |
+| 4 | Builds and pushes the inference image with Cloud Build |
+| 5 | Applies everything: Cloud Run, the tenant's buckets and identities, the secret containers |
+| 6 | Generates the tenant's pseudonymisation key, loads the Anthropic key |
+| 7 | Re-applies with the agents switched on |
+| 8 | Health checks, prints the outputs and what to do next |
+
+The staging is not arbitrary. The registry has to exist before an image can be
+pushed to it, the image before Cloud Run can reference it, and the secrets have
+to hold values before the agents can be switched on. A single apply fails on the
+first of those.
+
+Secrets are piped to `gcloud` on stdin, never passed as an argument, because
+arguments are visible in the process list. Stage 6 skips a secret that already
+holds a version rather than rotating it: rotating a tenant's pseudonymisation
+key makes every existing pseudonym unresolvable (see `docs/data-governance.md`).
+
+Overrides are environment variables: `PROJECT_ID`, `REGION`, `STATE_BUCKET`,
+`TFVARS`, `BACKEND`, `IMAGE_TAG`, `ANTHROPIC_API_KEY`.
+
+### Two decisions to make before the first run
+
+**Region.** `demo.tfvars.example` is set to `africa-south1`, which keeps the
+demo in country for a South African client. It is a tier 2 region, roughly 40
+percent more per vCPU-second than `europe-west1`, which on demo volumes is about
+USD 10 a year. **Bucket location is immutable**, so changing this after the
+first apply replaces every bucket.
+
+**Bucket prefix.** `welo-ad` gives `welo-ad-demo-raw` and `welo-ad-demo-derived`.
+Bucket names are global across all of GCS, so if the apply fails with "bucket
+already exists", someone else has the name and this needs changing.
+
+Both are one-line edits in `demo.tfvars` and both are cheap to change before the
+first apply, awkward after it.
+
+### What the demo costs
+
+Single digits a month with nothing kept warm. `demo.tfvars.example` sets a
+budget of USD 50, which needs only the billing account id filling in; stage 0
+prints it for you. See `docs/run-cost-model.md` for where the money goes and for
+the one setting (`cpu_idle`) worth guarding.
+
+## Deploy (demo, by hand)
 
 ```bash
 cd infra/terraform

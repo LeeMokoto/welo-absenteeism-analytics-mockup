@@ -1,9 +1,20 @@
-# Copy to backend.demo.hcl and fill in. One file per environment; the file
-# itself is gitignored because it names a real bucket.
+# Backend configuration for the absenteeism-demo project.
+#
+# Copy to backend.demo.hcl (gitignored) and run:
 #
 #   terraform init -backend-config=backend.demo.hcl
 #
-# The bucket must already exist. Create it with ./bootstrap.
+# The bucket must already exist. infra/scripts/provision_demo.sh creates it
+# through ./bootstrap, or create it by hand:
+#
+#   cd bootstrap
+#   terraform init
+#   terraform apply -var project_id=absenteeism-demo \
+#                   -var region=africa-south1 \
+#                   -var state_bucket=welo-ad-tfstate
+#
+# One prefix per environment, so the demo and a client deployment never share
+# state.
 
-bucket = "welo-tfstate-CHANGE-ME-unique"
+bucket = "welo-ad-tfstate"
 prefix = "welo-platform/demo"
