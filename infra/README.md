@@ -28,6 +28,8 @@ client is adding a map entry rather than forking the configuration.
 | Runtime service accounts | One per service, least-privilege. |
 | GCS bucket (optional) | Serves the static dashboard. |
 | API enablement | Run, Cloud Build, Artifact Registry, Secret Manager, Storage, IAM Credentials (+ Vertex AI when `llm_provider = vertex`). |
+| Security monitoring | Audit logging, a retained security log bucket and 11 detections. See `modules/security-monitoring`. |
+| Billing budget | Monthly budget with alerts at 50, 90 and 100 percent plus a forecast rule. Optional. |
 
 ### Per tenant (`modules/tenant`)
 
@@ -64,6 +66,13 @@ with no credentials.
 - **The pseudonymisation key never enters state.** Terraform creates the secret
   container; the value is added out of band. See
   `terraform output tenant_setup_commands`.
+- **Security events are logged and alerted on.** `modules/security-monitoring`
+  owns Data Access audit configuration, routes audit logs and refused requests
+  to a 365-day bucket, and raises 11 detections including a service account key
+  being created, a bucket or service being opened to the internet, a person
+  reading a secret payload, and audit logging being changed. Every alert carries
+  its runbook. `terraform output security_detections` lists them with a status,
+  so the ones that are not yet live say so.
 - **Raw uploads expire.** The landing bucket deletes objects after
   `raw_retention_days` (30 by default) and superseded versions after 7 days,
   because that is the only copy carrying the employer's own identifiers.

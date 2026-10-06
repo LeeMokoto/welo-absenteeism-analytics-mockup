@@ -381,3 +381,92 @@ variable "budget_currency" {
   description = "Currency for the budget. Must match the billing account's currency."
   default     = "USD"
 }
+
+# --- Security monitoring -----------------------------------------------------
+
+variable "enable_security_monitoring" {
+  type        = bool
+  description = <<-EOT
+    Provision security logging and alerting: Data Access audit configuration, a
+    retained security log bucket, and the detections in
+    modules/security-monitoring.
+
+    On by default. The module is also the single owner of audit config for the
+    project, so turning it off turns Data Access logging off with it.
+  EOT
+  default     = true
+}
+
+variable "security_alert_label" {
+  type        = string
+  description = "Short name in alert titles, so an alert says which deployment it came from."
+  default     = "demo"
+}
+
+variable "security_alert_emails" {
+  type        = list(string)
+  description = <<-EOT
+    Addresses that receive every security alert.
+
+    Empty creates the detections and tells nobody, which is worth avoiding: the
+    `notifies` output says so in as many words when it happens.
+  EOT
+  default     = []
+}
+
+variable "security_notification_channel_ids" {
+  type        = list(string)
+  description = "Existing notification channels to add, e.g. a Slack channel created in the console."
+  default     = []
+}
+
+variable "log_retention_days" {
+  type        = number
+  description = <<-EOT
+    How long security logs are kept. Intrusions are routinely found months
+    after the fact, so a window shorter than the time to detection cannot
+    support an investigation.
+  EOT
+  default     = 365
+  validation {
+    condition     = var.log_retention_days >= 30
+    error_message = "Security logs must be kept at least 30 days. A shorter window cannot support an investigation."
+  }
+}
+
+variable "data_access_audit_services" {
+  type        = list(string)
+  description = <<-EOT
+    Services that get Data Access audit logs, owned by the security-monitoring
+    module. Storage and Secret Manager are the two that matter for this
+    platform: object reads on tenant buckets, and payload reads of a tenant's
+    pseudonymisation key.
+  EOT
+  default = [
+    "storage.googleapis.com",
+    "secretmanager.googleapis.com",
+    "iam.googleapis.com",
+    "cloudkms.googleapis.com",
+  ]
+}
+
+variable "break_glass_principals" {
+  type        = list(string)
+  description = "Break-glass accounts whose every action raises a critical alert. Empty creates no such detection."
+  default     = []
+}
+
+variable "enable_application_event_detections" {
+  type        = bool
+  description = <<-EOT
+    Create the detections that depend on services emitting structured security
+    events (cross-tenant access, MFA removal, privileged role assignment, data
+    export, login and authorisation failures).
+
+    False, because nothing emits those events yet and most of them presuppose
+    authentication this platform does not have. A policy that cannot fire reads
+    as coverage while protecting nothing, so it is turned on in the same change
+    that starts emitting the events, not before.
+  EOT
+  default     = false
+}

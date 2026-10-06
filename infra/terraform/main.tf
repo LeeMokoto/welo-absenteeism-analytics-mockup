@@ -243,9 +243,9 @@ resource "google_storage_bucket" "dashboard" {
   # data. The contents are regenerated from the repository by
   # infra/scripts/upload_dashboard.sh, so the repository is the version history
   # and object versions would only accumulate copies of a build artifact.
-  # checkov:skip=CKV_GCP_62: Access logging is configured project-wide through
-  # google_project_iam_audit_config (see the data access logging section), which
-  # covers this bucket and every bucket added later. Per-bucket logging would be
+  # checkov:skip=CKV_GCP_62: Access logging is configured project-wide by
+  # modules/security-monitoring, which covers this bucket and every bucket added
+  # later, and alerts on a bucket being made public. Per-bucket logging would be
   # a second, partial copy of the same record.
   count                       = var.host_dashboard ? 1 : 0
   name                        = var.dashboard_bucket
@@ -442,37 +442,51 @@ module "tenant" {
   depends_on = [google_project_service.services]
 }
 
-# --- Data access logging ----------------------------------------------------
-# Who read what, and when.
+# --- Security logging and alerting -------------------------------------------
+# Audit logging used to be declared here directly. It now lives in
+# modules/security-monitoring, which keeps the audit config and adds what makes
+# it useful: the logs are routed to a retained bucket and alerted on. Audit logs
+# nobody reads are a cost, not a control.
 #
-# Cloud Storage can write per-bucket access logs, which is the mechanism most
-# scanners look for, but it is the legacy one: it covers only the buckets
-# someone remembered to configure, lands as CSV in another bucket, and says
-# nothing about Secret Manager. Project-level data access logging covers every
-# bucket in the project including ones added later, covers secret payload reads,
-# and lands in Cloud Logging where it can be alerted on and exported.
+# The move also fixes a correctness problem. google_project_iam_audit_config is
+# authoritative per project and service, so two resources covering one service
+# overwrite each other on every apply while Terraform reports no conflict. One
+# owner is the only arrangement that stays correct, and the module is it.
 #
-# Secret Manager DATA_READ is the valuable one for this platform: it records
-# every read of a tenant's pseudonymisation key, which is the key that makes
-# employee records re-identifiable to the employer.
-#
-# This is admin-level configuration on the project, so it is also the setting a
-# client's own security team will want to see rather than take on trust.
+# Still true, and still the reason this matters: Secret Manager DATA_READ
+# records every read of a tenant's pseudonymisation key, which is the key that
+# makes employee records re-identifiable to the employer. The module alerts on
+# a person doing it.
 
-resource "google_project_iam_audit_config" "data_access" {
-  for_each = var.enable_data_access_logs ? toset([
-    "storage.googleapis.com",
-    "secretmanager.googleapis.com",
-  ]) : toset([])
+module "security_monitoring" {
+  count  = var.enable_security_monitoring ? 1 : 0
+  source = "./modules/security-monitoring"
 
-  project = var.project_id
-  service = each.value
+  project_id    = var.project_id
+  project_label = var.security_alert_label
 
-  audit_log_config {
-    log_type = "DATA_READ"
-  }
+  log_bucket_location = var.region
+  log_retention_days  = var.log_retention_days
 
-  audit_log_config {
-    log_type = "DATA_WRITE"
-  }
+  data_access_audit_services = var.enable_data_access_logs ? var.data_access_audit_services : []
+
+  alert_emails                   = var.security_alert_emails
+  extra_notification_channel_ids = var.security_notification_channel_ids
+
+  # Services that are meant to be publicly invocable. Without this the "opened
+  # to the internet" detection would fire on our own apply, and an alert that
+  # fires on the expected case is one people learn to ignore. Anything not
+  # listed still alerts.
+  public_run_services = compact([
+    var.allow_unauthenticated ? var.service_name : "",
+    var.allow_unauthenticated && var.deploy_sick_leave ? var.sick_leave_service_name : "",
+  ])
+
+  break_glass_principals = var.break_glass_principals
+
+  # Off until something emits the structured security events. The module README
+  # carries the contract.
+  enable_application_event_detections = var.enable_application_event_detections
+
+  depends_on = [google_project_service.services]
 }

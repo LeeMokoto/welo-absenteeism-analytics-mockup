@@ -177,6 +177,28 @@ a code owner review, and conversation resolution, with force pushes and
 deletions off. That is repository configuration rather than something this
 repository can set.
 
+## Runtime monitoring
+
+Everything above is about what reaches a deployment. `modules/security-monitoring`
+covers what happens once it is running: Data Access audit logging, a 365-day
+security log bucket, and 11 detections across the control plane, the network and
+the application, each carrying a runbook in the alert itself.
+
+It is the single owner of audit configuration for the project, which it has to
+be: `google_project_iam_audit_config` is authoritative per project and service,
+so two resources covering one service overwrite each other on every apply while
+Terraform reports no conflict. That collision was real, between the root
+configuration and the estate-wide module this one is adapted from, and a test
+now asserts it stays fixed.
+
+Detections carry a status. `live` means a log source produces those entries
+today; `awaiting instrumentation` means the detection is correct but nothing
+emits the event. Only live ones are created, and a test asserts that, because an
+alert policy that cannot fire reads as coverage in an assessment response while
+protecting nothing. The six application-event detections sit behind that flag
+until services emit the contract in the module's README, which is blocked on the
+same identity provider gap as everything else.
+
 ## Not yet done
 
 Named so the gaps are not mistaken for coverage.

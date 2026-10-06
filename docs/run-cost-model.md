@@ -116,6 +116,7 @@ shared side, so the marginal tenant is cheaper than the first.
 | Static dashboard bucket | optional, `host_dashboard` | USD 0.20 | USD 2 |
 | Terraform state bucket | versioned, 30 versions | USD 0.10 | USD 1 |
 | Cloud Logging above the free tier | shared 50 GiB across the project | USD 0 to 20 | USD 0 to 240 |
+| Security log bucket | audit logs and refused requests, 365 days | under USD 1 | under USD 12 |
 | **Shared total** | | **USD 16 to 62** | **USD 190 to 750** |
 
 Budget **USD 470 a year** for the shared layer. The sick-leave Cloud Run service
@@ -187,6 +188,20 @@ year), Artifact Registry at about USD 6 a year, two secrets and a state bucket
 at about USD 2, less a one-off free tier credit of about USD 23. That is **about
 USD 206 a year**, so a client in its own project is **about USD 405 a year** in
 Google Cloud, all in.
+
+### What security monitoring adds, and what it deliberately does not
+
+`modules/security-monitoring` routes audit logs and refused Cloud Run requests
+to a dedicated 365-day bucket. At this deployment's volume that stays inside the
+50 GiB monthly free tier, so it costs cents.
+
+The two sources that would change that are not routed, because this deployment
+has neither: VPC flow logs and load balancer logs. The estate-wide module the
+cut-down one is adapted from carries both, and on a project that has them they
+plausibly run to USD 900 to 1,500 a year, which is more than everything else on
+this page put together. If this deployment ever grows a VPC or a load balancer,
+revisit the sampling rate before enabling them, and remember the 50 GiB free
+tier is **per project and shared across every tenant in it**.
 
 ### `cpu_idle` is worth more than everything else on this page
 

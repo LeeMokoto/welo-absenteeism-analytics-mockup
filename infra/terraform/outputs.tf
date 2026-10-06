@@ -77,3 +77,32 @@ output "tenant_setup_commands" {
     }
   }
 }
+
+# --- Security monitoring -----------------------------------------------------
+
+output "security_detections" {
+  description = "Active detections by key, with layer, severity, trigger and status. Useful as assessment evidence."
+  value       = var.enable_security_monitoring ? module.security_monitoring[0].detections : {}
+}
+
+output "security_detection_summary" {
+  description = "How many detections are active, by layer."
+  value       = var.enable_security_monitoring ? module.security_monitoring[0].detection_summary : {}
+}
+
+output "security_log_bucket" {
+  description = "Where security logs are routed and retained."
+  value       = var.enable_security_monitoring ? module.security_monitoring[0].log_bucket : "security monitoring disabled"
+}
+
+output "security_audited_services" {
+  description = "Services with Data Access audit logging. The security-monitoring module is their single owner."
+  value       = var.enable_security_monitoring ? module.security_monitoring[0].audited_services : []
+}
+
+# Says so plainly when the detections exist and nobody is told, which is the
+# failure mode that looks like coverage from a distance.
+output "security_notifies" {
+  description = "Where security alerts go."
+  value       = var.enable_security_monitoring ? module.security_monitoring[0].notifies : "security monitoring disabled"
+}

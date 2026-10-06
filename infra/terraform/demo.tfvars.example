@@ -87,6 +87,23 @@ cors_origins          = ["*"]
 # Leave false and add the key with gcloud, so it never lands in Terraform state.
 create_secret_version = false
 
+# --- Security monitoring ---
+# Audit logging, a retained security log bucket and the detections in
+# modules/security-monitoring. Eleven are live against a project shaped like
+# this one: IAM changes, service account key creation, a Cloud Run service or a
+# bucket being opened to the internet, a person reading a secret payload, audit
+# or logging configuration being changed, and a spike in refused requests.
+#
+# Put at least one address here. Without it the detections are created and
+# nobody is told, which looks like coverage and is not; `terraform output
+# security_notifies` says so in as many words.
+security_alert_emails = ["you@cloudsmiths.co.za"] # CHANGE ME
+security_alert_label  = "demo"
+
+# The inference service is intentionally public for the demo, so it is excluded
+# from the "opened to the internet" detection automatically (see main.tf). Any
+# other service becoming public still alerts.
+
 # --- Billing budget ---
 # Expected spend for this demo is single digits a month with nothing kept warm.
 # A budget of 50 alerts long before anything is wasted and well before the
