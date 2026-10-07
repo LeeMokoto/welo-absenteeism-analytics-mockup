@@ -362,6 +362,15 @@ Not alignment issues, but worth resolving before a client reads them.
    when the landing zone is built", which is honest, but `welo-platform-state`
    and the rest appear as statements of fact in the resource table.
 
+## Fixed since this check
+
+- **`roles/aiplatform.user` was granted whenever `llm_provider` was vertex,
+  regardless of whether agents were on.** A client tenant whose recorded
+  position is "agents off" would have held a service account able to call
+  Vertex AI, so the permission preceded the client's written section 72
+  approval. Now gated on `enable_agents` as well, with two tests asserting the
+  permission is absent while agents are off and present when they are on.
+
 ## What to do first
 
 In the order that the cost of delay suggests:

@@ -99,7 +99,13 @@ resource "google_secret_manager_secret_iam_member" "run_access" {
 # invoking models. Bound at the project level, which Vertex requires.
 
 resource "google_project_iam_member" "vertex_user" {
-  count   = local.use_vertex ? 1 : 0
+  # Gated on the agents being on, not merely on the provider being vertex.
+  # A client tenant whose recorded position is "agents off" should not have a
+  # service account that can call Vertex AI: the permission would exist before
+  # the client's written section 72 approval of a cross-border transfer does,
+  # and a security review reasonably asks why. Both flip together when the
+  # approval lands.
+  count   = local.use_vertex && var.enable_agents ? 1 : 0
   project = var.project_id
   role    = "roles/aiplatform.user"
   member  = "serviceAccount:${google_service_account.run.email}"

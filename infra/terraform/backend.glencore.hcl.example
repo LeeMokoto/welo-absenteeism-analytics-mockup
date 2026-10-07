@@ -1,0 +1,22 @@
+# Backend configuration for welo-glencore-prod.
+#
+# Copy to backend.glencore.hcl (gitignored) and run:
+#
+#   terraform init -backend-config=backend.glencore.hcl -reconfigure
+#
+# A separate state file from the demo, which is the point: a mistake in one
+# deployment must not be able to reach the other. The document holds state per
+# tenant in a central state project; until that project exists, a distinct
+# prefix in the same bucket keeps them apart, and a distinct bucket keeps them
+# further apart still.
+#
+# Create the bucket first:
+#
+#   cd bootstrap
+#   terraform init
+#   terraform apply -var project_id=welo-glencore-prod \
+#                   -var region=africa-south1 \
+#                   -var state_bucket=welo-glencore-tfstate
+
+bucket = "welo-glencore-tfstate"
+prefix = "welo-platform/glencore"

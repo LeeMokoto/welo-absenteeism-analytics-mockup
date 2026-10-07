@@ -128,3 +128,50 @@ run "a_retention_window_too_short_to_investigate_is_rejected" {
 
   expect_failures = [var.log_retention_days]
 }
+
+# --- Agents off means no capability to call out ------------------------------
+# A client tenant's recorded position can be "agents off" while its service
+# account still holds permission to call Vertex AI, if the grant follows only
+# the provider setting. The position and the permission have to agree.
+
+run "vertex_permission_does_not_exist_while_agents_are_off" {
+  command = plan
+
+  variables {
+    llm_provider  = "vertex"
+    vertex_region = "eu"
+    enable_agents = false
+  }
+
+  assert {
+    condition     = length(google_project_iam_member.vertex_user) == 0
+    error_message = "With agents off, nothing should hold roles/aiplatform.user. The permission would precede the client's section 72 approval."
+  }
+
+  # And no Anthropic key secret either: the vertex path uses no key, so a
+  # client project should not contain one.
+  assert {
+    condition     = length(google_secret_manager_secret.anthropic) == 0
+    error_message = "A tenant on the vertex path with agents off should hold no Anthropic API key secret."
+  }
+}
+
+run "turning_agents_on_grants_exactly_what_vertex_needs" {
+  command = plan
+
+  variables {
+    llm_provider  = "vertex"
+    vertex_region = "eu"
+    enable_agents = true
+  }
+
+  assert {
+    condition     = length(google_project_iam_member.vertex_user) == 1
+    error_message = "With agents on over vertex, the runtime service account needs roles/aiplatform.user."
+  }
+
+  assert {
+    condition     = google_project_iam_member.vertex_user[0].role == "roles/aiplatform.user"
+    error_message = "aiplatform.user is the least-privilege role for invoking models; nothing broader should be granted."
+  }
+}

@@ -336,6 +336,44 @@ support the Vertex path, so run it with the anthropic key even if the inference
 service is on Vertex; setting `sick_leave_enable_agents = true` makes Terraform
 create the shared key secret in that case.
 
+## Provisioning a client tenant
+
+`glencore.tfvars.example` and `backend.glencore.hcl.example` are the production
+starting point. They differ from the demo everywhere it matters: real data not
+synthetic, no public endpoint, customer-managed keys, in-country region, locked
+CORS origins, a raised suppression threshold, and the Vertex EU multi-region
+endpoint recorded even though agents stay off.
+
+```bash
+cd bootstrap
+terraform apply -var project_id=welo-glencore-prod \
+                -var region=africa-south1 \
+                -var state_bucket=welo-glencore-tfstate
+cd ..
+cp backend.glencore.hcl.example backend.glencore.hcl
+cp glencore.tfvars.example glencore.tfvars      # then fill every CHANGE ME
+terraform init -backend-config=backend.glencore.hcl -reconfigure
+terraform apply -var-file=glencore.tfvars
+```
+
+A separate state file from the demo, deliberately: a mistake in one deployment
+must not be able to reach the other.
+
+### This provisions a tenant, it does not open the data gate
+
+Applying that file gives a correctly configured **empty** tenant. The solution
+design document's data gate requires more before a first real upload, and most
+of it is not built: identity provider federation (there is no authentication in
+the application at all), complementary suppression, a VPC Service Controls
+perimeter, the model backtest and withdrawal path, per-layer retention in the
+manifest, the ingest container, an independent penetration test, this tenant's
+delta test with clean Security Command Center findings, and a signed operator
+agreement.
+
+`docs/design-alignment.md` tracks the full list. `deploy_platform` is false in
+the example for that reason: an application with no authentication should not be
+reachable, and making it reachable is not the fix.
+
 ## Migrating to the client's environment
 
 The whole point of the parameterisation. When the client is ready:

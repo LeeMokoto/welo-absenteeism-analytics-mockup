@@ -1,0 +1,218 @@
+# Variables for welo-glencore-prod.
+#
+# Copy to glencore.tfvars and fill in every CHANGE ME. glencore.tfvars is
+# gitignored; this example is tracked, so nothing secret belongs in either.
+#
+#   terraform init -backend-config=backend.glencore.hcl
+#   terraform apply -var-file=glencore.tfvars
+#
+# This is also the template for any client tenant. Everything that differs from
+# demo.tfvars.example differs because this one holds real employee health data.
+#
+# ===========================================================================
+# READ THIS FIRST: this file does not make the tenant safe to use
+# ===========================================================================
+#
+# These values are the production-correct settings for the configuration as it
+# exists. They are necessary and they are not sufficient. The solution design
+# document's data gate requires the following before Glencore's first real
+# upload, and most of it is not built:
+#
+#   Built and verified
+#     - Suppression floor of five, enforced on both the Terraform and
+#       application side
+#     - No individual-level score served by any module
+#     - No long-lived credential anywhere (federation, signBlob)
+#     - Per-tenant pseudonymisation key, never in Terraform state
+#     - Audit logging and 11 security detections
+#
+#   NOT built. Each one is a gate item in the document's assurance table.
+#     - Identity provider federation. There is no authentication in the
+#       application at all. This is why deploy_platform is false below: a
+#       tenant application with no authentication must not be reachable.
+#     - Complementary suppression. A suppressed cohort's headcount is
+#       currently recoverable by subtraction from a stated total. On real
+#       sick-leave data that is a POPIA disclosure failure on special
+#       personal information. See docs/design-alignment.md.
+#     - VPC Service Controls perimeter
+#     - Model backtest against a naive baseline, and the withdrawal path
+#     - Per-layer retention in the manifest
+#     - Ingest container, so no upload path exists yet
+#     - Independent penetration test, and the delta test of this tenant's
+#       modules and SSO with clean Security Command Center findings
+#     - A signed operator agreement, which the document requires before any
+#       upload
+#
+# Applying this file provisions a correctly configured empty tenant. It does
+# not open the data gate. Do not load client data into it.
+
+project_id = "welo-glencore-prod" # CHANGE ME if the project name differs
+
+# Every resource in country, as the document requires. africa-south1 is a
+# tier 2 region, about 40 percent more per vCPU-second than europe-west1, which
+# at this scale is roughly USD 10 a year. Bucket location is immutable.
+region = "africa-south1"
+
+# Buckets become welo-za-glencore-raw and welo-za-glencore-derived. Bucket
+# names are global across all of GCS, so if the apply reports the name is
+# taken, change this.
+bucket_prefix = "welo-za"
+
+# --- The tenant --------------------------------------------------------------
+# The key is "glencore" and it is permanent: changing it replaces every
+# resource belonging to this tenant.
+
+tenants = {
+  glencore = {
+    display_name = "Glencore South Africa"
+
+    # Shown in the application shell, so nobody is ever unsure which tenant
+    # they are in.
+    environment = "production"
+
+    # The single most important line in this file. True marks the data as
+    # synthetic in the UI, which would be a false statement about client data.
+    synthetic = false
+
+    # Five is the floor, not a recommendation. Glencore's agreed minimum goes
+    # here and belongs in the operator agreement; the document's own worked
+    # example uses ten. It can be raised at any time and never lowered.
+    suppression_threshold = 5 # CHANGE ME to the agreed value
+
+    region = "africa-south1"
+
+    # The document has Glencore on absence analytics. Sick leave is Anglo
+    # American's module, and the control centre is next phase and stays off
+    # until its actions store and outbound task integration pass a delta test.
+    modules = {
+      absence        = true
+      sick_leave     = false
+      control_centre = false
+    }
+
+    # Customer-managed encryption, which the document requires for a client
+    # tenant and which this configuration leaves optional. Without it the
+    # buckets fall back to Google-managed keys, and the document's provable
+    # deletion at contract end depends on the tenant holding its own keys.
+    #
+    # The key ring is not created by this configuration. Create it in
+    # africa-south1, grant the Cloud Storage service agent
+    # roles/cloudkms.cryptoKeyEncrypterDecrypter on the key, then set it here.
+    kms_key_name = "" # CHANGE ME: projects/welo-glencore-prod/locations/africa-south1/keyRings/.../cryptoKeys/...
+
+    # Retention. The document sets this per layer in the manifest and this
+    # configuration carries two buckets, so these are the two that exist. The
+    # landing bucket is a transfer point and holds the only copy with
+    # Glencore's own identifiers in it, so it stays short.
+    raw_retention_days     = 30
+    derived_retention_days = 730 # CHANGE ME to the agreed retention
+
+    # A destroy must not be able to take employee records with it. Never true
+    # for a tenant holding client data.
+    force_destroy_buckets = false
+
+    # No public URL. There is no authentication in the application, so the
+    # only thing standing between a cohort health dashboard and the internet
+    # would be this flag.
+    allow_unauthenticated = false
+
+    # Agents off. The document makes this the default for every client tenant
+    # until the client approves in writing where inference runs, as a
+    # cross-border transfer under POPIA section 72.
+    enable_agents = false
+
+    # No ingest image exists yet, so there is no upload path. The buckets, the
+    # pseudonymisation key and the service accounts are still created, which
+    # means the signed-URL target exists before the processor does.
+    deploy_ingest = false
+    ingest_image  = ""
+
+    # The application stays off until there is an identity provider in front
+    # of it. Turning this true with allow_unauthenticated = false gives a
+    # service nobody can reach; turning both true gives client health data on
+    # an open URL. Neither is the answer: the answer is SSO.
+    deploy_platform = false
+    platform_image  = ""
+
+    labels = {
+      classification = "special-personal-information"
+      cost-centre    = "CHANGE ME"
+      owner          = "CHANGE ME"
+    }
+  }
+}
+
+# --- Shared services --------------------------------------------------------
+
+# The inference service. Build it into this project's own Artifact Registry
+# rather than promoting an image across projects by tag; the document's
+# pipeline promotes by digest from a central registry, which this
+# configuration does not yet do.
+#
+#   infra/scripts/build_and_push.sh welo-glencore-prod africa-south1
+image = "africa-south1-docker.pkg.dev/welo-glencore-prod/welo/welo-inference:latest" # CHANGE ME to a digest
+
+# The inference service is not public in a client tenant.
+allow_unauthenticated = false
+
+# Locked to the tenant's own hostname. The document puts each tenant on its own
+# hostname under a Welo domain, which is an open decision in the document and
+# has to be settled before this tenant is provisioned.
+cors_origins = ["https://CHANGE-ME.welo.example"] # CHANGE ME
+
+# The standalone static dashboard is synthetic and public by design. It has no
+# place in a client project.
+host_dashboard   = false
+dashboard_bucket = ""
+
+# --- Agents -----------------------------------------------------------------
+# Off, as above. These values record the position the document commits to, so
+# that switching agents on later cannot quietly land on the wrong endpoint.
+#
+# The document: Claude is called through the Vertex AI eu multi-region
+# endpoint, which routes only within the European Union, and the global
+# endpoint is never used. Note that the repository's vertex_region default is
+# us-east5, which would send inference to the United States against that
+# statement, so this must be set explicitly here until the default changes.
+llm_provider  = "vertex"
+vertex_region = "eu"
+
+# Requires the client's written section 72 approval of the European Union as a
+# cross-border transfer, recorded against this tenant, before it becomes true.
+enable_agents = false
+
+# --- Security monitoring ----------------------------------------------------
+
+enable_security_monitoring = true
+security_alert_label       = "glencore"
+
+# At least one address, and ideally a rotation rather than one person. Without
+# any, the detections are created and nobody is told; terraform output
+# security_notifies says so in as many words.
+security_alert_emails = ["CHANGE ME"]
+
+# Full year, so a breach found months later can still be investigated.
+log_retention_days = 365
+
+# Break-glass accounts, whose every action raises a critical alert. The
+# document requires a sealed account for outages. Empty until one exists.
+break_glass_principals = []
+
+# --- Billing ----------------------------------------------------------------
+# Expected Google Cloud spend for this tenant is roughly USD 35 a month with
+# nothing kept warm, or USD 405 a year as a tenant in its own project. A budget
+# of 150 leaves headroom for normal variation and still catches the cpu_idle
+# mistake, which would take one warm service from USD 18 to USD 98 a month.
+# See docs/run-cost-model.md.
+#
+#   gcloud billing projects describe welo-glencore-prod \
+#     --format='value(billingAccountName)'
+billing_account = "" # CHANGE ME
+budget_amount   = 150
+budget_currency = "USD"
+
+# --- CI ---------------------------------------------------------------------
+# Keyless CI authentication, restricted to the one repository. Enable it so a
+# pull request can plan against this project without any credential existing.
+# ci_github_repository = "LeeMokoto/welo-absenteeism-analytics-mockup"
+# ci_state_bucket      = "welo-glencore-tfstate"
