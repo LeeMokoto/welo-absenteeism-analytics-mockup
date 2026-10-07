@@ -11,12 +11,12 @@ is fine from the distance that is not.
 
 Three categories:
 
-- **Contradicts** — the document and the code disagree. One of them is wrong,
+- **Contradicts**: the document and the code disagree. One of them is wrong,
   and a client reading the document would be misled by the code or the reverse.
-- **Promised, not built** — the document commits to a control that does not
+- **Promised, not built**: the document commits to a control that does not
   exist yet. Fine while the document is read as design, not fine in an
   assessment response.
-- **Aligned** — worth recording, because it is most of the governance substance.
+- **Aligned**: worth recording, because it is most of the governance substance.
 
 Re-check this file when either side changes.
 
