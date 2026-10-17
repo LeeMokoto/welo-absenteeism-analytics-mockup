@@ -4,7 +4,7 @@
 # feed in last. The container listens on $PORT, which Cloud Run injects
 # at runtime and which defaults to 8080 when running locally.
 
-FROM python:3.12-slim AS base
+FROM python:3.14-slim AS base
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
