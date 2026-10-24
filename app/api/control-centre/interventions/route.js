@@ -82,12 +82,6 @@ export async function POST(request) {
   }
 
   /*
-    The authorised, validated record goes back for the client to persist. The
-    creator is stamped here rather than taken from the body, so a record cannot
-    claim to have been drafted by somebody else, which is what the separation of
-    creation from approval rests on.
-  */
-  /*
     Comparators are chosen here, once, and never again.
 
     They are the other reportable cohorts of the same dimension as they stand
@@ -105,6 +99,12 @@ export async function POST(request) {
 
   const created = new Date().toISOString().slice(0, 10);
 
+  /*
+    The authorised, validated record goes back for the client to persist. The
+    creator is stamped here rather than taken from the body, so a record cannot
+    claim to have been drafted by somebody else, which is what the separation of
+    creation from approval rests on.
+  */
   return Response.json({
     record: {
       ...stripIndividualFields(record),
