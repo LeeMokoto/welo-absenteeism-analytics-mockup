@@ -33,7 +33,7 @@ def test_available_with_key():
 
 def test_agents_listed():
     svc = AgentService(api_key="sk-ant-test-key")
-    assert set(svc.agents) == {"analyst", "case", "coordinator"}
+    assert set(svc.agents) == {"analyst", "case", "coordinator", "playbook"}
 
 
 def test_unknown_agent_raises():
@@ -42,7 +42,11 @@ def test_unknown_agent_raises():
         svc._system_for("nope")
 
 
-@pytest.mark.parametrize("agent", ["analyst", "case", "coordinator"])
+# Parametrised off the service's own role list rather than a hardcoded one, so a
+# role added to agent_prompts.json is held to the guardrails without anybody
+# remembering to extend this test. The previous version listed three roles by
+# hand, which meant a fourth would have shipped unchecked.
+@pytest.mark.parametrize("agent", sorted(AgentService(api_key="sk-ant-test-key").agents))
 def test_guardrails_present_in_every_system_prompt(agent):
     svc = AgentService(api_key="sk-ant-test-key")
     system = svc._system_for(agent)
@@ -52,6 +56,32 @@ def test_guardrails_present_in_every_system_prompt(agent):
     assert "disciplinary" in low       # never disciplinary use
     # no em or en dashes introduced in the prompt itself
     assert "–" not in system and "—" not in system
+
+
+def test_playbook_prompt_refuses_the_things_a_playbook_must_refuse():
+    """The playbook agent drafts the first artefact that says what will be done
+    to a group of people, so its prompt carries the constraints explicitly
+    rather than relying on the shared guardrails alone."""
+    svc = AgentService(api_key="sk-ant-test-key")
+    low = svc._system_for("playbook").lower()
+
+    # Cohort level, never a person.
+    assert "never name, number or identify a person" in low
+    assert "employee key" in low
+
+    # Care, not discipline, and not attendance management.
+    for phrase in ("disciplinary step", "attendance-management step", "treats absence as suspect"):
+        assert phrase in low, phrase
+
+    # Proposes, never decides. POPIA section 71.
+    assert "section 71" in low
+    assert "you never decide" in low
+
+    # Must not promise an outcome.
+    assert "do not promise an outcome" in low
+
+    # The output shape the parser depends on.
+    assert "step | action | owner | horizon | measure" in low
 
 
 def test_user_content_grounds_on_data():

@@ -30,7 +30,12 @@ import {
   assume a bug rather than a decision.
 */
 
-export default function InterventionsScreen({ dimensions, cohorts, suppressionThreshold }) {
+export default function InterventionsScreen({
+  dimensions,
+  cohorts,
+  suppressionThreshold,
+  canCreate = false,
+}) {
   // Seeded records render on the server so the screen is never empty; records
   // from this browser are merged after mount, which is also why the list is
   // keyed off a counter rather than recomputed inline.
@@ -86,12 +91,18 @@ export default function InterventionsScreen({ dimensions, cohorts, suppressionTh
       <div className="section">
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 16 }}>
           <div className="card-title">Register</div>
-          <button className="lens-btn" onClick={() => setCreating((v) => !v)}>
-            {creating ? "Cancel" : "New intervention"}
-          </button>
+          {canCreate ? (
+            <button className="lens-btn" onClick={() => setCreating((v) => !v)}>
+              {creating ? "Cancel" : "New intervention"}
+            </button>
+          ) : (
+            <span className="caption">
+              Your role can read the register and not add to it
+            </span>
+          )}
         </div>
 
-        {creating ? (
+        {canCreate && creating ? (
           <NewIntervention
             dimensions={dimensions}
             targetable={targetable}
@@ -212,6 +223,7 @@ function NewIntervention({ dimensions, targetable, cohorts, suppressionThreshold
   const [picks, setPicks] = useState([{ dimension: "", cohort: "" }]);
   const [errors, setErrors] = useState([]);
   const [notice, setNotice] = useState("");
+  const [saving, setSaving] = useState(false);
 
   const selections = picks.filter((p) => p.dimension && p.cohort);
   const check = canSaveIntervention(selections, {
@@ -223,27 +235,53 @@ function NewIntervention({ dimensions, targetable, cohorts, suppressionThreshold
   const setPick = (i, patch) =>
     setPicks((prev) => prev.map((p, j) => (j === i ? { ...p, ...patch } : p)));
 
-  function save() {
+  /*
+    Saving goes through the API before it touches browser storage. The checks
+    below run here too, so a user sees a problem without a round trip, but the
+    decision that matters is the server's: the role check and the target
+    validation both execute there, so a client that skips this form is refused
+    rather than trusted. The store stays browser-local either way.
+  */
+  async function save() {
     const problems = [...check.errors];
     if (!title.trim()) problems.push("An intervention needs a title.");
     if (!owner.trim()) problems.push("An intervention needs a named owner.");
     setErrors(problems);
     if (problems.length) return;
 
-    const { persisted } = createIntervention({
-      title: title.trim(),
-      owner: owner.trim(),
-      rationale: rationale.trim(),
-      target: selections,
-      headcount: check.headcount,
-      due: null,
-    });
-    setNotice(
-      persisted
-        ? ""
-        : "Saved for this view only: this browser is not storing it, so it will not survive a reload."
-    );
-    onSaved();
+    setSaving(true);
+    try {
+      const res = await fetch("/api/control-centre/interventions", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          record: {
+            title: title.trim(),
+            owner: owner.trim(),
+            rationale: rationale.trim(),
+            target: selections,
+            due: null,
+          },
+        }),
+      });
+      const body = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setErrors(body.errors || [body.error || `The record was refused (${res.status}).`]);
+        return;
+      }
+
+      const { persisted } = createIntervention(body.record);
+      setNotice(
+        persisted
+          ? ""
+          : "Saved for this view only: this browser is not storing it, so it will not survive a reload."
+      );
+      onSaved();
+    } catch {
+      setErrors(["Could not reach the server to authorise this record."]);
+    } finally {
+      setSaving(false);
+    }
   }
 
   return (
@@ -335,8 +373,13 @@ function NewIntervention({ dimensions, targetable, cohorts, suppressionThreshold
 
       {notice ? <div className="indicative" style={{ marginTop: 12 }}>{notice}</div> : null}
 
-      <button className="lens-btn active" style={{ marginTop: 16 }} onClick={save}>
-        Save intervention
+      <button
+        className="lens-btn active"
+        style={{ marginTop: 16 }}
+        onClick={save}
+        disabled={saving}
+      >
+        {saving ? "Authorising" : "Save intervention"}
       </button>
     </div>
   );

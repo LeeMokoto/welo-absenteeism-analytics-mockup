@@ -330,3 +330,40 @@ test("an empty threshold is missing, not zero", () => {
   }
   assert.equal(validateRule({ ...base, threshold: 0 }, actx).ok, true, "an explicit zero is a real threshold");
 })
+
+/*
+  A dimension the feed does not carry is still refused for the right reason.
+
+  cohort_condition is in NEVER_TARGETABLE but absent from this tenant's feed, so
+  the lookup misses and the honest-looking answer is "unknown dimension". That is
+  true and it teaches the wrong lesson: the reason condition data cannot be
+  targeted is that it is condition data, and that does not depend on whether the
+  feed happens to report it. A client who later adds the dimension must not
+  discover that the refusal changes meaning.
+*/
+test("condition data is refused as condition data, not as a lookup miss", () => {
+  const dimensions = [{ key: "cohort_load", label: "Operational load" }];
+  const { ok, errors } = validateTarget(
+    [{ dimension: "cohort_condition", cohort: "Respiratory" }],
+    { dimensions, cohorts: { cohort_load: [] } },
+  );
+  assert.equal(ok, false);
+  assert.ok(
+    errors.some((e) => e.includes("special personal information")),
+    `expected the condition reason, got: ${errors.join(" | ")}`,
+  );
+  assert.ok(!errors.some((e) => e.includes("unknown dimension")));
+});
+
+test("the same holds for every never-targetable dimension absent from a feed", () => {
+  for (const key of Object.keys(NEVER_TARGETABLE)) {
+    const reason = untargetableReason(key);
+    assert.equal(reason, NEVER_TARGETABLE[key], `${key} gave "${reason}"`);
+  }
+});
+
+test("a genuinely unknown dimension is still reported as unknown", () => {
+  assert.equal(untargetableReason("cohort_invented"), "not in this tenant's targeting list");
+  assert.equal(untargetableReason(undefined), "unknown dimension");
+  assert.equal(untargetableReason(null), "unknown dimension");
+});

@@ -445,6 +445,80 @@ Not alignment issues, but worth resolving before a client reads them.
   tests now assert the full key set and the descriptor's value, verified by
   removing the wiring and watching them fail.
 
+- **`control.create` was held by no role, and creation was gated on
+  `control.view`.** The permission existed, was referenced, and nobody had it,
+  so the test asserting that no role can both create and approve passed on a
+  vacuum. Meanwhile the control centre's create form was gated on
+  `control.view`, which the Approver holds, so the role whose entire purpose is
+  to approve what it did not create could create. Granted to Analyst and
+  Prospect, the roles that act on cohorts; the Approver still cannot create. A
+  new test fails if any permission is held by nobody, because that is either a
+  missing grant or dead code and both make a test about who holds it pass for
+  the wrong reason.
+- **Creating an intervention had no server-side check at all.** The store is
+  browser-local, which is not a reason to have no authorisation. There is now a
+  write API that enforces `control.create`, revalidates the target against the
+  targeting rules, refuses a record carrying an employee identifier rather than
+  cleaning it, and stamps the creator from the session rather than the body, so
+  a record cannot claim to have been drafted by somebody else. The persistence
+  stays browser-local; when it becomes Cloud SQL it moves into that handler and
+  nothing above it changes.
+- **Playbooks exist, which makes `control.approve` mean something.** It was held
+  by the Approver and consumed by nothing. See below.
+- **A condition-data target was refused for the wrong reason.** Because
+  `cohort_condition` is absent from this tenant's feed, the lookup missed and
+  the refusal said "unknown dimension", which is true and teaches the wrong
+  lesson: the reason is that it is condition data, and that does not depend on
+  whether the feed reports it. Fixed, with a test over every never-targetable
+  dimension.
+- **The smoke test's employee-identifier leak check was measuring a dead
+  port.** It ran after the first server was stopped, so curl returned nothing,
+  grep found nothing in nothing, and it passed. Moved before the stop, and it
+  now fails if the body is empty. Same class as the disabled-module check fixed
+  earlier: a check that cannot fail reads as coverage.
+
+## Control centre, phase 4: playbooks
+
+Built. A playbook is the plan attached to an intervention: steps, the function
+that owns each, a horizon, and a measure the platform actually reports. An agent
+drafts it and a person decides it.
+
+Four controls, each with tests written as the thing that must not get through:
+
+1. A playbook carries no target of its own and inherits the intervention's, so a
+   plan cannot reach a wider group than the record it hangs off. Carrying its
+   own is refused even when the target would be valid.
+2. No step names a person. An employee key, an email address, an identity
+   number or a per-person field is refused rather than stripped, because a step
+   whose meaning depended on a name is not the same step with the name removed.
+3. No step may be a disciplinary action, an attendance-management action,
+   surveillance of a person, or an employment consequence attached to a health
+   measure. This is the one an agent draft drifts into while sounding helpful,
+   so the refusal names the step and the line it crossed.
+4. At least one step must name a reportable measure, or nothing can close the
+   plan out and an intervention gets declared a success on no evidence.
+
+Drafting is deliberately not streamed. A streamed draft reaches the screen
+before anything has checked it, and a disciplinary step then reads as a
+suggestion the product made. The whole draft is parsed and validated server
+side, so what arrives is either a plan that passes or a refusal attributed to a
+step.
+
+Approval is separate from drafting by identity, not only by role: the drafter
+cannot approve their own plan even if their role holds the permission, because
+roles are configuration and this is the invariant. One seeded playbook is a
+rejected agent draft that proposed a disciplinary step, kept rather than deleted
+so the refusal is visible without anybody having to trigger one.
+
+Honest limits. The drafting endpoint needs a configured agent, so in this
+deployment it returns 503 and the screen says so rather than inventing a plan.
+Decisions can only be recorded on playbooks drafted in the same browser, since
+the seeded ones are shared and overwriting them would show the next visitor
+somebody else's choice; the interface does not offer a button the store would
+refuse. Outcome measurement is still blocked on the schema time axis, so a
+playbook reports an observed difference against comparable cohorts over a fixed
+period and says in as many words that this is not evidence it caused anything.
+
 ## What to do first
 
 Items 1, 3 and 4 of the original list are done and recorded above. What is left

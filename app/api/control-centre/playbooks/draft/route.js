@@ -1,0 +1,195 @@
+/*
+  Draft a playbook for an intervention.
+
+  Deliberately not streaming, unlike the dashboard's agent panels. A streamed
+  draft arrives on screen a token at a time, which means the reader sees it
+  before anything has checked it, and a disciplinary step reads as a suggestion
+  the product made. Here the whole draft is parsed and validated before it is
+  returned, so what reaches the screen is either a plan that passes or a
+  refusal that names the step and the line it crossed. A few seconds of latency
+  buys that, and drafting a plan is not a keystroke-latency task.
+
+  Two permissions, not one. USE_AGENTS because this calls a model, and
+  CONTROL_CREATE because a drafted playbook is a proposal attached to a durable
+  record. The Approver holds neither, which is the point: the role that decides
+  does not draft.
+
+  The draft is returned as a proposal. Nothing here approves it, nothing here
+  persists it, and the response says so. POPIA section 71 is the reason that is
+  a hard line rather than a workflow preference.
+*/
+
+import Anthropic from "@anthropic-ai/sdk";
+import { requirePermission } from "@/lib/platform/session";
+import { PERMISSIONS, can } from "@/lib/platform/roles";
+import { getManifest } from "@/lib/platform/manifest";
+import { canSaveIntervention } from "@/modules/control-centre/targeting";
+import { parseDraft, validatePlaybook } from "@/modules/control-centre/playbooks";
+import { portfolio } from "@/modules/absence/data/portfolio";
+import { systemPromptFor, ABSENTEEISM_MODEL, MAX_TOKENS } from "@/app/api/absenteeism/_prompts";
+
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+
+function redact(s) {
+  return String(s || "").replace(/sk-ant-[A-Za-z0-9_-]+/g, "sk-ant-[REDACTED]");
+}
+
+/*
+  The grounding: the intervention, and the figures for the cohorts it targets.
+  Nothing else. The agent cannot reason about a cohort the intervention does not
+  name, because it is not given one, which is a stronger control than asking it
+  not to.
+*/
+function groundingFor(intervention) {
+  const cohorts = portfolio.cohorts || {};
+  const dimensions = portfolio.cohort_dimensions || [];
+
+  const targeted = (intervention.target || []).map((t) => {
+    const dim = dimensions.find((d) => d.key === t.dimension);
+    const row = (cohorts[t.dimension] || []).find((c) => c.key === t.cohort);
+    return {
+      dimension: dim?.label || t.dimension,
+      cohort: t.cohort,
+      // A suppressed cohort carries no figures, and the absence of them is
+      // what the agent should see rather than a zero.
+      figures: row && !row.suppressed ? row : null,
+      suppressed: Boolean(row?.suppressed),
+    };
+  });
+
+  return {
+    intervention: {
+      title: intervention.title,
+      rationale: intervention.rationale || null,
+      owner: intervention.owner || null,
+      status: intervention.status || "Proposed",
+    },
+    targeted_cohorts: targeted,
+    suppression_threshold: getManifest().suppressionThreshold,
+    note: "Cohort aggregates only. No individual records exist in this payload.",
+  };
+}
+
+export async function POST(request) {
+  const { session, allowed } = await requirePermission(PERMISSIONS.USE_AGENTS);
+  if (!allowed) {
+    return Response.json({ error: "This role may not use the agents." }, { status: 403 });
+  }
+  if (!can(session, PERMISSIONS.CONTROL_CREATE)) {
+    return Response.json(
+      { error: "This role may read the control centre and not draft plans for it." },
+      { status: 403 },
+    );
+  }
+
+  let body;
+  try {
+    body = await request.json();
+  } catch {
+    return Response.json({ error: "Body was not valid JSON." }, { status: 400 });
+  }
+
+  const intervention = body?.intervention;
+  if (!intervention || typeof intervention !== "object") {
+    return Response.json({ error: "An intervention is required." }, { status: 400 });
+  }
+
+  /*
+    Re-validate the parent's target here rather than trusting it. The record may
+    have come from browser storage, so the target arriving over the wire is
+    caller-supplied whatever its history. If it would be refused at save, it is
+    refused as a drafting basis too, which keeps one rule in one place.
+  */
+  const manifest = getManifest();
+  const targetCheck = canSaveIntervention(intervention.target, {
+    dimensions: portfolio.cohort_dimensions || [],
+    cohorts: portfolio.cohorts || {},
+    suppressionThreshold: manifest.suppressionThreshold,
+  });
+  if (!targetCheck.ok) {
+    return Response.json(
+      {
+        error: "The intervention's target does not meet the targeting rules, so no plan is drafted for it.",
+        errors: targetCheck.errors,
+      },
+      { status: 422 },
+    );
+  }
+
+  const apiKey = process.env.ANTHROPIC_API_KEY;
+  if (!apiKey) {
+    return Response.json({ error: "Agent service is not configured." }, { status: 503 });
+  }
+
+  const system = systemPromptFor("playbook");
+  if (!system) {
+    return Response.json({ error: "The playbook agent is not configured." }, { status: 500 });
+  }
+
+  let text;
+  try {
+    const client = new Anthropic({ apiKey });
+    const message = await client.messages.create({
+      model: ABSENTEEISM_MODEL,
+      max_tokens: MAX_TOKENS,
+      system,
+      messages: [
+        {
+          role: "user",
+          content:
+            "DATA (the intervention and the cohort figures behind it):\n```json\n" +
+            JSON.stringify(groundingFor(intervention), null, 2) +
+            "\n```\n\nREQUEST:\nDraft the playbook for this intervention.",
+        },
+      ],
+    });
+    text = (message.content || [])
+      .filter((b) => b.type === "text")
+      .map((b) => b.text)
+      .join("\n");
+  } catch (err) {
+    console.error(
+      "[control-centre playbook] draft failed",
+      JSON.stringify({
+        model: ABSENTEEISM_MODEL,
+        status: Number(err?.status) || null,
+        type: err?.error?.error?.type || err?.name || null,
+        message: redact(err?.error?.error?.message || err?.message || String(err)),
+      }),
+    );
+    return Response.json({ error: "The drafting request failed." }, { status: 502 });
+  }
+
+  const { steps, why } = parseDraft(text);
+
+  const proposal = {
+    intervention_id: intervention.id,
+    title: `Playbook for ${intervention.title}`,
+    steps,
+    why,
+    status: "Drafted",
+    drafted_by: session.email,
+    drafted_by_role: session.role,
+    drafted_with: "agent",
+    drafted_at: new Date().toISOString().slice(0, 10),
+  };
+
+  const check = validatePlaybook(proposal, { intervention });
+
+  /*
+    A refused draft comes back with a 200 and the reasons, not an error status.
+    The request succeeded: the agent produced something and the platform
+    refused part of it, and that refusal is information the drafter should see
+    attributed to the step it came from. Returning a 4xx would make the screen
+    treat it as a failure and hide the one thing worth reading.
+  */
+  return Response.json({
+    proposal,
+    ok: check.ok,
+    errors: check.errors,
+    model: ABSENTEEISM_MODEL,
+    decided: false,
+    note: "A proposal, not a decision. It is recorded only once a person with the approver role accepts it, and that person cannot be the drafter.",
+  });
+}

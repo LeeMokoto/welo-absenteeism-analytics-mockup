@@ -30,6 +30,9 @@ adding a job does not mean editing branch protection.
 | Non-root containers | `docker run id -u` on both images | A Dockerfile edit that dropped the `USER` line |
 | Platform renders | production build plus a route smoke test | A screen that 500s, renders `NaN`, serves a disabled module under a 200, or leaks an identifier |
 | Agent guardrails | live evals, where a key is available | A prompt change that lets an agent recommend disciplinary use |
+| Agent prompt guardrails | parametrised over the service's own role list | A role added to agent_prompts.json without the shared guardrails, which the previous hardcoded list of three would have missed |
+| Playbook refusals | unit tests written as the drafts that must not pass | An agent draft proposing a disciplinary step, a step naming a person, or a plan measuring nothing |
+| Control centre writes | role matrix over the write APIs in the smoke test | A permission held by nobody while the action it guards is gated on a weaker one |
 | Container CVEs, fixable | Trivy, `CRITICAL` only, unfixed excluded, non-zero exit | A critical vulnerability whose remedy is a version bump nobody made |
 
 Container scanning runs twice, because "block on any critical finding" and "do

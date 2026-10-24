@@ -20,9 +20,10 @@ export const controlCentreModule = {
   home: "/control-centre",
   screens: [
     { href: "/control-centre", label: "Interventions" },
+    { href: "/control-centre/playbooks", label: "Playbooks" },
     { href: "/control-centre/alerts", label: "Alert rules" },
   ],
-  agents: [],
+  agents: ["playbook"],
   guardrails: [
     "Every record refers to a cohort. No record carries an employee key, and the store strips individual fields rather than trusting its callers.",
     "Targeting is stricter than reporting: at most two dimensions, never a protected attribute, never condition data.",
@@ -32,6 +33,10 @@ export const controlCentreModule = {
     "Alert rules are scoped with the same rules as an intervention target, and no alert names a cohort under the threshold: a rule across a dimension skips what it cannot report on and says how many.",
     "Rules watch rates and averages, never counts. A rule on a count fires because a cohort is large rather than because it is unwell.",
     "The actions store is mocked in this tenant and the interface says so, rather than letting a walkthrough imply a durable record was filed.",
+    "A playbook carries no target of its own: it inherits the intervention's, so a plan cannot reach a wider group than the record it hangs off.",
+    "No playbook step names a person, and no step may be a disciplinary action, an attendance-management action, surveillance of a person, or an employment consequence attached to a health measure. A draft that contains one is refused with the step named.",
+    "Every playbook step that counts names a measure the platform actually reports, so a plan can be closed out against something rather than declared a success.",
+    "The agent drafts and a person decides. The approver is never the drafter, checked by identity and not only by role, because POPIA section 71 restricts decisions based solely on automated processing.",
   ],
 };
 

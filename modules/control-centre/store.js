@@ -120,6 +120,129 @@ const SEEDED_RULES = [
   },
 ];
 
+/*
+  Seeded playbooks. Three states on purpose, because the states are the point of
+  the screen: one approved by somebody who did not draft it, one waiting for a
+  decision, and one rejected with the reason recorded.
+
+  The rejected one is the most useful thing on the screen. It is an agent draft
+  that proposed a disciplinary step, which the platform refused and a human
+  then rejected, and it is kept rather than deleted so the record shows that the
+  refusal happened. A control nobody can see working is hard to believe in.
+*/
+const SEEDED_PLAYBOOKS = [
+  {
+    id: "pb-001",
+    intervention_id: "icv-001",
+    title: "Playbook for Rostering review for high-intensity operations",
+    status: "Approved",
+    drafted_by: "sipho.dlamini@example.com",
+    drafted_by_role: "analyst",
+    drafted_with: "agent",
+    drafted_at: "2026-08-15",
+    why:
+      "The cohort carries 18.7 absent days per head against 8.2 for the lightest band, and consecutive shifts and overtime are the two inputs the roster controls directly.",
+    steps: [
+      {
+        action: "Cap consecutive shifts at eight across the cohort and hold a rest-day floor of two in fourteen.",
+        owner: "Shift scheduling",
+        horizon: "immediate",
+        measure: "absent_days_per_head_annual",
+      },
+      {
+        action: "Move the relief pool to cover the two sites carrying the largest cover gap before overtime is offered.",
+        owner: "Operations lead",
+        horizon: "short",
+        measure: "absent_days_per_head_annual",
+      },
+      {
+        action: "Review the roster change with the cohort's shift leads each quarter and keep or revert it on the measure.",
+        owner: "Operations lead",
+        horizon: "sustained",
+        measure: "mean_fatigue",
+      },
+    ],
+    approval: {
+      by: "naledi.khumalo@example.com",
+      by_role: "approver",
+      at: "2026-08-18",
+      decision: "approved",
+      note: "Rostering change only, no individual follow up. Approved for the cohort.",
+    },
+  },
+  {
+    id: "pb-002",
+    intervention_id: "icv-002",
+    title: "Playbook for Fatigue screening clinic, critical band",
+    status: "In review",
+    drafted_by: "sipho.dlamini@example.com",
+    drafted_by_role: "analyst",
+    drafted_with: "agent",
+    drafted_at: "2026-09-03",
+    why:
+      "Fatigue is the strongest single driver in the model, and this band sits at a mean score of 71.9 against a cohort mean of 57.",
+    steps: [
+      {
+        action: "Offer fatigue and sleep screening to the whole band through the on-site clinic, opt in, during shift hours.",
+        owner: "Occupational health",
+        horizon: "immediate",
+        measure: "mean_fatigue",
+      },
+      {
+        action: "Route anyone who wants it into the existing medical aid care pathway, with no report back to the line.",
+        owner: "Occupational health",
+        horizon: "short",
+        measure: null,
+      },
+      {
+        action: "Brief shift leads on the rest-day floor and on what they may and may not ask about a screening.",
+        owner: "Health and safety",
+        horizon: "immediate",
+        measure: null,
+      },
+    ],
+    approval: null,
+  },
+  {
+    id: "pb-003",
+    intervention_id: "icv-003",
+    title: "Playbook for Return-to-work conversations for new starters",
+    status: "Rejected",
+    drafted_by: "sipho.dlamini@example.com",
+    drafted_by_role: "analyst",
+    drafted_with: "agent",
+    drafted_at: "2026-10-12",
+    why:
+      "Onboarding strain shows in the first two years, at 11.9 absent days per head against 12.1 across all tenure bands, so the case rests on the shape of the spells rather than the total.",
+    steps: [
+      {
+        action: "Offer a structured, voluntary return-to-work conversation focused on support and workload.",
+        owner: "HR business partner",
+        horizon: "short",
+        measure: "absent_days_per_head_annual",
+      },
+      {
+        action: "Where absence continues after the conversation, begin a disciplinary process in line with policy.",
+        owner: "HR business partner",
+        horizon: "short",
+        measure: null,
+      },
+    ],
+    approval: {
+      by: "naledi.khumalo@example.com",
+      by_role: "approver",
+      at: "2026-10-13",
+      decision: "rejected",
+      note:
+        "Step 2 is a disciplinary process attached to clinical absence data, which the platform refused at drafting and which is not something this programme does. Redraft without it.",
+    },
+  },
+];
+
+export function seededPlaybooks() {
+  return SEEDED_PLAYBOOKS.map((p) => ({ ...p, source: "seeded" }));
+}
+
 export function seededRules() {
   return SEEDED_RULES.map((r) => ({ ...r, source: "seeded" }));
 }
@@ -154,6 +277,111 @@ function writeLocal(records) {
 
 export function listInterventions() {
   return [...seeded(), ...readLocal()];
+}
+
+// Playbooks drafted during a walkthrough, held in the same browser-local way as
+// interventions and for the same reason.
+const LOCAL_PLAYBOOKS_KEY = "welo.control-centre.playbooks.v1";
+
+function readLocalPlaybooks() {
+  if (typeof window === "undefined") return [];
+  try {
+    const raw = window.localStorage.getItem(LOCAL_PLAYBOOKS_KEY);
+    const parsed = raw ? JSON.parse(raw) : [];
+    return Array.isArray(parsed) ? parsed.map((p) => ({ ...p, source: "local" })) : [];
+  } catch {
+    return [];
+  }
+}
+
+function writeLocalPlaybooks(records) {
+  if (typeof window === "undefined") return false;
+  try {
+    window.localStorage.setItem(LOCAL_PLAYBOOKS_KEY, JSON.stringify(records));
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+export function listPlaybooks() {
+  return [...seededPlaybooks(), ...readLocalPlaybooks()];
+}
+
+/*
+  Save a drafted playbook. Status is forced to Drafted and approval to null
+  whatever the caller passed: a playbook cannot be created already approved,
+  because then nothing was approved by anybody.
+*/
+export function createPlaybook(playbook) {
+  const clean = stripIndividualFields(playbook);
+  const saved = {
+    ...clean,
+    id: `pb-local-${Date.now().toString(36)}`,
+    status: "Drafted",
+    approval: null,
+    source: "local",
+  };
+  const persisted = writeLocalPlaybooks([
+    ...readLocalPlaybooks().map(({ source, ...p }) => p),
+    { ...saved, source: undefined },
+  ]);
+  return { record: saved, persisted };
+}
+
+/*
+  Record a decision on a playbook.
+
+  Only local playbooks can be decided in this tenant: the seeded ones are shared
+  and already carry their decisions, and letting a walkthrough overwrite them
+  would mean the next visitor sees somebody else's choice. The caller checks
+  permission and the drafter rule first; this refuses a seeded record and an
+  already-decided one, so neither depends on the interface getting it right.
+*/
+export function decidePlaybook(id, { decision, note, by, byRole }) {
+  if (!["approved", "rejected"].includes(decision)) {
+    return { ok: false, reason: "A decision is either approved or rejected." };
+  }
+  const local = readLocalPlaybooks();
+  const target = local.find((p) => p.id === id);
+  if (!target) {
+    return {
+      ok: false,
+      reason:
+        "Only playbooks drafted in this browser can be decided here. The seeded ones carry their decisions already.",
+    };
+  }
+  if (target.approval) {
+    return { ok: false, reason: "This playbook has already been decided." };
+  }
+
+  const updated = local.map((p) =>
+    p.id === id
+      ? {
+          ...p,
+          status: decision === "approved" ? "Approved" : "Rejected",
+          approval: {
+            by,
+            by_role: byRole,
+            at: new Date().toISOString().slice(0, 10),
+            decision,
+            note: note || "",
+          },
+        }
+      : p,
+  );
+
+  const persisted = writeLocalPlaybooks(updated.map(({ source, ...p }) => p));
+  return { ok: true, persisted };
+}
+
+export function clearLocalPlaybooks() {
+  if (typeof window === "undefined") return;
+  try {
+    window.localStorage.removeItem(LOCAL_PLAYBOOKS_KEY);
+  } catch {
+    /* nothing to clear */
+  }
 }
 
 /*

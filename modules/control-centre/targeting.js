@@ -67,10 +67,20 @@ export function targetableDimensions(dimensions, allowed = TARGETABLE_BY_DEFAULT
   assume a bug and ask for it to be added.
 */
 export function untargetableReason(dimension, allowed = TARGETABLE_BY_DEFAULT) {
-  if (!dimension) return "unknown dimension";
-  if (NEVER_TARGETABLE[dimension.key]) return NEVER_TARGETABLE[dimension.key];
-  if (dimension.protected) return "protected attribute";
-  if (!allowed.includes(dimension.key)) return "not in this tenant's targeting list";
+  // Accepts a dimension object or a bare key. The key form matters: a tenant
+  // whose feed does not carry cohort_condition would otherwise be told a
+  // condition target is an "unknown dimension", which is true and teaches the
+  // wrong lesson. The reason it cannot be targeted is that it is condition
+  // data, and that stays the reason whether or not the feed reports it.
+  const key = typeof dimension === "string" ? dimension : dimension?.key;
+
+  if (NEVER_TARGETABLE[key]) return NEVER_TARGETABLE[key];
+  if (!key) return "unknown dimension";
+  if (typeof dimension !== "string") {
+    if (!dimension) return "unknown dimension";
+    if (dimension.protected) return "protected attribute";
+  }
+  if (!allowed.includes(key)) return "not in this tenant's targeting list";
   return null;
 }
 
@@ -105,7 +115,9 @@ export function validateTarget(selections, { dimensions, cohorts, allowed = TARG
     seen.add(pick.dimension);
 
     const dim = (dimensions || []).find((d) => d.key === pick.dimension);
-    const reason = untargetableReason(dim, allowed);
+    // Fall back to the key so a dimension the feed does not carry is still
+    // refused for the right reason rather than as a lookup miss.
+    const reason = untargetableReason(dim || pick.dimension, allowed);
     if (reason) {
       errors.push(`${dim?.label || pick.dimension} cannot be targeted: ${reason}.`);
       continue;

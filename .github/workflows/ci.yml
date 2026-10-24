@@ -127,8 +127,8 @@ jobs:
           mapfile -t FILES < <(find lib modules -name '*.test.mjs' | sort)
           echo "collected ${#FILES[@]} test files:"
           printf '  %s\n' "${FILES[@]}"
-          if [ "${#FILES[@]}" -lt 3 ]; then
-            echo "expected at least 3 test files, found ${#FILES[@]}" >&2
+          if [ "${#FILES[@]}" -lt 5 ]; then
+            echo "expected at least 5 test files, found ${#FILES[@]}" >&2
             exit 1
           fi
           node --test "${FILES[@]}"
@@ -146,11 +146,22 @@ jobs:
         run: |
           cp -r .next/static .next/standalone/.next/static
           cp -r public .next/standalone/public
+
+          # Wait for a server and fail loudly if it never answers. Without this
+          # a server that did not start shows up as a wrong status code on an
+          # unrelated assertion, and the error points at the wrong thing.
+          wait_up() {
+            for i in $(seq 1 40); do
+              curl -sf -o /dev/null "http://127.0.0.1:$1/signin" && return 0
+              sleep 1
+            done
+            echo "::error::no server answered on port $1 after 40s"
+            return 1
+          }
+
           PORT=3000 node .next/standalone/server.js &
-          for i in $(seq 1 40); do
-            curl -sf -o /dev/null http://127.0.0.1:3000/signin && break
-            sleep 1
-          done
+          SRV_DISABLED=$!
+          wait_up 3000 || exit 1
           fail=0
 
           # Every shell route needs a session now. Unauthenticated is a
@@ -188,22 +199,49 @@ jobs:
           # The gate lives in the module layout, so every screen in the module
           # is gated, including ones added later. Checked here, against the
           # same still-running server, rather than after it is stopped.
-          code=$(curl -s -b /tmp/jar -o /dev/null -w '%{http_code}' http://127.0.0.1:3000/control-centre/alerts)
-          echo "/control-centre/alerts (module disabled) -> $code"
-          [ "$code" = "404" ] || { echo "::error::a disabled module screen returned $code, expected 404"; fail=1; }
+          for path in /control-centre/alerts /control-centre/playbooks; do
+            code=$(curl -s -b /tmp/jar -o /dev/null -w '%{http_code}' "http://127.0.0.1:3000$path")
+            echo "$path (module disabled) -> $code"
+            [ "$code" = "404" ] || { echo "::error::a disabled module screen returned $code at $path, expected 404"; fail=1; }
+          done
+
+          # No screen may leak an employee identifier. The module data is built
+          # from aggregates only, so an identifier appearing in rendered output
+          # means a per-person section reached a cohort screen.
+          #
+          # This runs here, against the still-running server on 3000. It used to
+          # sit after the kill below, where it queried a dead port: curl
+          # returned nothing, grep found nothing in nothing, and the check
+          # passed on an empty response. A leak check that cannot fail is worse
+          # than no leak check, because it reads as coverage.
+          for path in /absence /absence/cohorts /absence/outcomes /absence/operations; do
+            body=$(curl -s -b /tmp/jar "http://127.0.0.1:3000$path")
+            if [ -z "$body" ]; then
+              echo "::error::$path returned an empty body, so the leak check measured nothing"
+              fail=1
+            fi
+            if printf '%s' "$body" | grep -qE 'employee_id|EMP[0-9]{3,}'; then
+              echo "::error::$path rendered what looks like an employee identifier"
+              fail=1
+            fi
+          done
 
           # And the other direction: gating that never lets anything through is
           # not gating, it is a broken route. Start a second server with the
           # module on and check it renders.
-          kill %1 2>/dev/null || true
+          # Stopped by pid, and its child with it. The standalone server spawns
+          # one, so `kill %1` returned while the child still held the port.
+          # Different ports mean the two servers do not collide either way, but
+          # leaving a half-killed process behind made failures here hard to read.
+          pkill -P "$SRV_DISABLED" 2>/dev/null || true
+          kill "$SRV_DISABLED" 2>/dev/null || true
+
           WELO_MODULE_CONTROL_CENTRE=1 PORT=3001 node .next/standalone/server.js &
-          for i in $(seq 1 40); do
-            curl -sf -o /dev/null http://127.0.0.1:3001/signin && break
-            sleep 1
-          done
+          SRV_ENABLED=$!
+          wait_up 3001 || exit 1
           curl -s -c /tmp/jar2 -X POST -H 'content-type: application/json' \
             -d '{"email":"sipho.dlamini@example.com"}' http://127.0.0.1:3001/api/session > /dev/null
-          for path in /control-centre /control-centre/alerts; do
+          for path in /control-centre /control-centre/playbooks /control-centre/alerts; do
             code=$(curl -s -b /tmp/jar2 -o /tmp/cc.html -w '%{http_code}' "http://127.0.0.1:3001$path")
             echo "$path (module enabled) -> $code"
             [ "$code" = "200" ] || { echo "::error::an enabled module returned $code at $path, expected 200"; fail=1; }
@@ -218,16 +256,6 @@ jobs:
           done
 
 
-          # No screen may leak an employee identifier. The module data is built
-          # from aggregates only, so an identifier appearing in rendered output
-          # means a per-person section reached a cohort screen.
-          for path in /absence /absence/cohorts /absence/outcomes /absence/operations; do
-            body=$(curl -s -b /tmp/jar "http://127.0.0.1:3000$path")
-            if printf '%s' "$body" | grep -qE 'employee_id|EMP[0-9]{3,}'; then
-              echo "::error::$path rendered what looks like an employee identifier"
-              fail=1
-            fi
-          done
 
           # Role based access control, asserted end to end. The permission model
           # has unit tests; this checks the routes actually enforce it, because
@@ -252,6 +280,11 @@ jobs:
             "support@example.com:/absence:403" \
             "support@example.com:/admin:403" \
             "prospect@example.com:/sick-leave/case:403" \
+            "naledi.khumalo@example.com:/control-centre/playbooks:200" \
+            "sipho.dlamini@example.com:/control-centre/playbooks:200" \
+            "thandi.mokoena@example.com:/control-centre/playbooks:403" \
+            "johan.vandermerwe@example.com:/control-centre/playbooks:403" \
+            "support@example.com:/control-centre/playbooks:403" \
           ; do
             email="${case%%:*}"; rest="${case#*:}"; route="${rest%%:*}"; want="${rest##*:}"
             curl -s -c /tmp/jar3 -X POST -H 'content-type: application/json' \
@@ -270,6 +303,63 @@ jobs:
             http://127.0.0.1:3001/api/absenteeism/agents/analyst/stream)
           echo "agent API as viewer -> $code"
           [ "$code" = "403" ] || { echo "::error::the agent API allowed a role without use.agents ($code)"; fail=1; }
+
+          # Creating is a different permission from reading the register, and
+          # from approving. This is the check that would have caught
+          # control.create being held by nobody while the create form was
+          # gated on control.view: the Approver could do both.
+          #
+          # account:endpoint:expected. 503 is a pass for the drafting endpoint:
+          # it means authorised and the agent is simply not configured in CI.
+          CC_TARGET='{"dimension":"cohort_fatigue","cohort":"Critical"}'
+          for case in \
+            "sipho.dlamini@example.com:interventions:200" \
+            "prospect@example.com:interventions:200" \
+            "naledi.khumalo@example.com:interventions:403" \
+            "thandi.mokoena@example.com:interventions:403" \
+            "support@example.com:interventions:403" \
+            "sipho.dlamini@example.com:draft:503" \
+            "naledi.khumalo@example.com:draft:403" \
+            "thandi.mokoena@example.com:draft:403" \
+          ; do
+            email="${case%%:*}"; rest="${case#*:}"; what="${rest%%:*}"; want="${rest##*:}"
+            curl -s -c /tmp/jar5 -X POST -H 'content-type: application/json' \
+              -d "{\"email\":\"$email\"}" http://127.0.0.1:3001/api/session > /dev/null
+            if [ "$what" = "interventions" ]; then
+              url=http://127.0.0.1:3001/api/control-centre/interventions
+              payload="{\"record\":{\"title\":\"Smoke\",\"target\":[$CC_TARGET]}}"
+            else
+              url=http://127.0.0.1:3001/api/control-centre/playbooks/draft
+              payload="{\"intervention\":{\"id\":\"icv-002\",\"title\":\"Smoke\",\"target\":[$CC_TARGET]}}"
+            fi
+            got=$(curl -s -b /tmp/jar5 -o /dev/null -w '%{http_code}' -X POST \
+              -H 'content-type: application/json' -d "$payload" "$url")
+            printf '  %-32s %-16s want %s got %s\n' "$email" "$what" "$want" "$got"
+            [ "$got" = "$want" ] || { echo "::error::$email got $got on $what, expected $want"; fail=1; }
+          done
+
+          # And the write API refuses a record carrying a person, rather than
+          # cleaning it and reporting success. The store strips; the API refuses.
+          curl -s -c /tmp/jar6 -X POST -H 'content-type: application/json' \
+            -d '{"email":"sipho.dlamini@example.com"}' http://127.0.0.1:3001/api/session > /dev/null
+          code=$(curl -s -b /tmp/jar6 -o /dev/null -w '%{http_code}' -X POST \
+            -H 'content-type: application/json' \
+            -d "{\"record\":{\"title\":\"Smoke\",\"employee_id\":105525,\"target\":[$CC_TARGET]}}" \
+            http://127.0.0.1:3001/api/control-centre/interventions)
+          echo "intervention carrying an employee key -> $code"
+          [ "$code" = "422" ] || { echo "::error::a record carrying an employee key was not refused ($code)"; fail=1; }
+
+          # A protected attribute cannot be targeted, over the API and not only
+          # in the form.
+          code=$(curl -s -b /tmp/jar6 -o /dev/null -w '%{http_code}' -X POST \
+            -H 'content-type: application/json' \
+            -d '{"record":{"title":"Smoke","target":[{"dimension":"cohort_age","cohort":"50+"}]}}' \
+            http://127.0.0.1:3001/api/control-centre/interventions)
+          echo "intervention targeting an age band -> $code"
+          [ "$code" = "422" ] || { echo "::error::targeting a protected attribute was not refused ($code)"; fail=1; }
+
+          pkill -P "$SRV_ENABLED" 2>/dev/null || true
+          kill "$SRV_ENABLED" 2>/dev/null || true
 
           exit $fail
 
