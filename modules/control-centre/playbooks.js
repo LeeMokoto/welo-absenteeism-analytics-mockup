@@ -173,12 +173,30 @@ export function individualReferenceIn(text) {
   for (const field of INDIVIDUAL_FIELDS) {
     // A step that names the field is describing per-person data even when it
     // carries no value yet.
+    //
+    // Only the fields that are unambiguous as data references, though. Some
+    // entries in INDIVIDUAL_FIELDS are ordinary English words, and matching
+    // those refused a correctly worded step: "applied to the roster rather
+    // than to individuals" names no individual, it says the opposite, and the
+    // screen rejected it for the word. "Send an email to the cohort" would
+    // have gone the same way. A screen that refuses the right sentence teaches
+    // people to write a worse one.
+    if (AMBIGUOUS_FIELD_WORDS.has(field)) continue;
     if (new RegExp(`\\b${field.replace(/_/g, "[ _]")}\\b`, "i").test(s)) {
       hits.push(`the field ${field}`);
     }
   }
   return [...new Set(hits)];
 }
+
+/*
+  Fields whose names are also ordinary words, so they are not treated as data
+  references on their own. The real leak they would have caught is caught
+  better by INDIVIDUAL_PATTERNS above, which match an actual employee key, an
+  actual email address and an actual identity number rather than the English
+  word for one.
+*/
+const AMBIGUOUS_FIELD_WORDS = new Set(["name", "email", "individuals"]);
 
 /*
   Validate a single step. Returns the list of problems, empty when it is fine.

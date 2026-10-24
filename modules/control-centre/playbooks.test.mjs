@@ -427,3 +427,36 @@ test("the interface is not offered a decision the store would refuse", () => {
   // the store is not the limitation.
   assert.equal(canApprovePlaybook(playbook(), approver, { hasApprovePermission: true }), true);
 });
+
+/*
+  The individual-reference screen must not refuse a step for saying the right
+  thing. Three entries in INDIVIDUAL_FIELDS are ordinary English words, and
+  matching them turned "applied to the roster rather than to individuals" into
+  a refusal: a step that names nobody, refused for the word for nobody. Found
+  because the fallback drafter's own template tripped it.
+
+  A screen that refuses the correct sentence teaches people to write a worse
+  one, so the real identifiers are caught by pattern and the bare words are not.
+*/
+test("saying a step is not about individuals is not a reference to an individual", () => {
+  for (const line of [
+    "Cap consecutive shifts across the cohort, applied to the roster rather than to individuals.",
+    "Send an email to the cohort explaining what was agreed and why.",
+    "Report the change back by name of site, not by name of person.",
+  ]) {
+    assert.deepEqual(individualReferenceIn(line), [], `wrongly refused: ${line}`);
+    assert.deepEqual(validateStep({ ...GOOD_STEP, action: line }), [], `wrongly refused: ${line}`);
+  }
+});
+
+test("an actual identifier is still caught, which is what the screen is for", () => {
+  // The words were dropped from the field-name check; the patterns that catch
+  // the real thing are untouched.
+  assert.ok(individualReferenceIn("Email thandi.mokoena@example.com the roster").length > 0);
+  assert.ok(individualReferenceIn("Check EMP-10432 before the shift").length > 0);
+  assert.ok(individualReferenceIn("Verify against 8001015009087").length > 0);
+  // And the field-shaped references remain refused.
+  assert.ok(individualReferenceIn("Export the employee_id column").length > 0);
+  assert.ok(individualReferenceIn("Pull the employee number for each case").length > 0);
+  assert.ok(individualReferenceIn("Attach the id_number to the referral").length > 0);
+});

@@ -25,6 +25,7 @@ import { PERMISSIONS, can } from "@/lib/platform/roles";
 import { getManifest } from "@/lib/platform/manifest";
 import { canSaveIntervention } from "@/modules/control-centre/targeting";
 import { parseDraft, validatePlaybook } from "@/modules/control-centre/playbooks";
+import { FALLBACK_NOTICE, fallbackDraft } from "@/modules/control-centre/draftFallback";
 import { portfolio } from "@/modules/absence/data/portfolio";
 import { systemPromptFor, ABSENTEEISM_MODEL, MAX_TOKENS } from "@/app/api/absenteeism/_prompts";
 
@@ -118,8 +119,28 @@ export async function POST(request) {
   }
 
   const apiKey = process.env.ANTHROPIC_API_KEY;
+
+  /*
+    No key, so no model. The endpoint used to return 503 here, which meant the
+    one thing this screen exists to show, that a plan is drafted, checked and
+    decided by someone who did not draft it, could not be shown at all in a
+    deployment without a secret. The governance does not depend on the model, so
+    neither does the demonstration of it.
+
+    The fallback is labelled at every layer: `drafted_with: "template"` on the
+    record, a notice in this response, and a badge on the screen. It also goes
+    through exactly the same validation below, because a template that skipped
+    the checks would make the checks look like theatre.
+  */
   if (!apiKey) {
-    return Response.json({ error: "Agent service is not configured." }, { status: 503 });
+    const draft = fallbackDraft(intervention, portfolio.cohorts || {});
+    return Response.json(
+      buildProposal(intervention, session, draft, {
+        model: null,
+        source: "template",
+        notice: FALLBACK_NOTICE,
+      }),
+    );
   }
 
   const system = systemPromptFor("playbook");
@@ -163,33 +184,49 @@ export async function POST(request) {
 
   const { steps, why } = parseDraft(text);
 
+  return Response.json(
+    buildProposal(intervention, session, { steps, why, drafted_with: "agent" }, {
+      model: ABSENTEEISM_MODEL,
+      source: "agent",
+      notice: null,
+    }),
+  );
+}
+
+/*
+  One construction for both paths, so the model draft and the template draft are
+  validated identically and shaped identically. Two code paths building a
+  proposal is how one of them quietly stops being checked.
+
+  A refused draft comes back with a 200 and the reasons, not an error status.
+  The request succeeded: something was produced and the platform refused part of
+  it, and that refusal is information the drafter should see attributed to the
+  step it came from. Returning a 4xx would make the screen treat it as a failure
+  and hide the one thing worth reading.
+*/
+function buildProposal(intervention, session, draft, { model, source, notice }) {
   const proposal = {
     intervention_id: intervention.id,
     title: `Playbook for ${intervention.title}`,
-    steps,
-    why,
+    steps: draft.steps,
+    why: draft.why,
     status: "Drafted",
     drafted_by: session.email,
     drafted_by_role: session.role,
-    drafted_with: "agent",
+    drafted_with: draft.drafted_with,
     drafted_at: new Date().toISOString().slice(0, 10),
   };
 
   const check = validatePlaybook(proposal, { intervention });
 
-  /*
-    A refused draft comes back with a 200 and the reasons, not an error status.
-    The request succeeded: the agent produced something and the platform
-    refused part of it, and that refusal is information the drafter should see
-    attributed to the step it came from. Returning a 4xx would make the screen
-    treat it as a failure and hide the one thing worth reading.
-  */
-  return Response.json({
+  return {
     proposal,
     ok: check.ok,
     errors: check.errors,
-    model: ABSENTEEISM_MODEL,
+    model,
+    source,
+    notice,
     decided: false,
     note: "A proposal, not a decision. It is recorded only once a person with the approver role accepts it, and that person cannot be the drafter.",
-  });
+  };
 }

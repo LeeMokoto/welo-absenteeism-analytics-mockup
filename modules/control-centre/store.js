@@ -85,6 +85,28 @@ const SEEDED = [
     // missing rather than reporting a difference from a single period.
     comparators: ["Established (2-5y)", "Experienced (5-10y)", "Veteran (10y+)"],
   },
+  /*
+    Deliberately has no playbook, so a visitor can draft one on arrival.
+
+    Without it every seeded intervention was already covered and the playbooks
+    screen offered nothing to try: the three seeded playbooks exist to show the
+    approved, pending and rejected states, and drafting needs a record that is
+    not one of them. Found by walking the flow in a browser rather than by
+    reading the code, which is the only way this kind of gap shows up.
+  */
+  {
+    id: "icv-004",
+    title: "Relief pool review for standard operations",
+    target: [{ dimension: "cohort_load", cohort: "Standard ops" }],
+    headcount: null,
+    owner: "Operations lead",
+    created: "2026-10-20",
+    due: null,
+    status: "Proposed",
+    rationale:
+      "The largest cohort, and the one absorbing cover for the rest. Worth checking whether relief is coming out of the same people repeatedly before any roster change elsewhere is made permanent.",
+    comparators: ["High-intensity ops", "Light duty"],
+  },
 ];
 
 /*

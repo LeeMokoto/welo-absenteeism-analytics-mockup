@@ -41,6 +41,7 @@ export const controlCentreModule = {
     "No playbook step names a person, and no step may be a disciplinary action, an attendance-management action, surveillance of a person, or an employment consequence attached to a health measure. A draft that contains one is refused with the step named.",
     "Every playbook step that counts names a measure the platform actually reports, so a plan can be closed out against something rather than declared a success.",
     "The agent drafts and a person decides. The approver is never the drafter, checked by identity and not only by role, because POPIA section 71 restricts decisions based solely on automated processing.",
+    "Where no agent key is configured, a plan is assembled from a template and labelled template rather than agent, on the record and in the interface. The governance does not depend on a model, so neither does demonstrating it, and a template never passes as a model draft.",
   ],
 };
 

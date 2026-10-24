@@ -202,8 +202,10 @@ function Drafting({ interventions, agentsAvailable, onSaved }) {
 
             {!agentsAvailable ? (
               <div className="indicative" style={{ marginTop: 12 }}>
-                The agent is not configured in this deployment, so drafting will report that
-                rather than inventing a plan.
+                No agent key is configured here, so the plan will be assembled from a template
+                using this cohort&apos;s reported figures. It is held to the same rules as a model
+                draft and filed as a template, so the record says how it was produced. The
+                approval flow below is the same either way.
               </div>
             ) : null}
 
@@ -213,7 +215,7 @@ function Drafting({ interventions, agentsAvailable, onSaved }) {
               onClick={draft}
               disabled={!intervention || busy}
             >
-              {busy ? "Drafting" : "Draft with the agent"}
+              {busy ? "Drafting" : agentsAvailable ? "Draft with the agent" : "Assemble from a template"}
             </button>
           </>
         )}
@@ -231,11 +233,21 @@ function Proposal({ result, onKeep }) {
 
   return (
     <div style={{ marginTop: 20, paddingTop: 18, borderTop: "1px solid var(--line-soft)" }}>
-      <div className="card-title">Proposed plan</div>
+      <div className="card-title">
+        Proposed plan
+        {proposal.drafted_with === "template" ? (
+          <span className="tier Moderate" style={{ marginLeft: 10, verticalAlign: "middle" }}>
+            template
+          </span>
+        ) : null}
+      </div>
       <p className="card-note">
         A proposal, not a decision. It is filed only when somebody with the approver role accepts
         it, and that person cannot be whoever drafted it.
       </p>
+      {result.notice ? (
+        <div className="indicative" style={{ marginBottom: 12 }}>{result.notice}</div>
+      ) : null}
 
       <Steps steps={proposal.steps} />
 
@@ -342,7 +354,12 @@ function PlaybookCard({ playbook, intervention, session, canApprove, onDecided }
       </div>
 
       <p className="card-note">
-        {playbook.drafted_with === "agent" ? "Agent drafted" : "Written by hand"} on{" "}
+        {playbook.drafted_with === "agent"
+          ? "Agent drafted"
+          : playbook.drafted_with === "template"
+          ? "Assembled from a template, no model called"
+          : "Written by hand"}{" "}
+        on{" "}
         {playbook.drafted_at} by the {playbook.drafted_by_role} role.
         {intervention ? ` Target inherited from "${intervention.title}".` : " Parent record not in this browser."}
       </p>

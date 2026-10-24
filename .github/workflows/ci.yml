@@ -144,8 +144,8 @@ jobs:
           mapfile -t FILES < <(find lib modules -name '*.test.mjs' | sort)
           echo "collected ${#FILES[@]} test files:"
           printf '  %s\n' "${FILES[@]}"
-          if [ "${#FILES[@]}" -lt 6 ]; then
-            echo "expected at least 6 test files, found ${#FILES[@]}" >&2
+          if [ "${#FILES[@]}" -lt 7 ]; then
+            echo "expected at least 7 test files, found ${#FILES[@]}" >&2
             exit 1
           fi
           node --test "${FILES[@]}"
@@ -326,8 +326,11 @@ jobs:
           # control.create being held by nobody while the create form was
           # gated on control.view: the Approver could do both.
           #
-          # account:endpoint:expected. 503 is a pass for the drafting endpoint:
-          # it means authorised and the agent is simply not configured in CI.
+          # account:endpoint:expected. Drafting returns 200 with no agent key
+          # configured: the plan is assembled from a template and labelled as
+          # one, so the approval flow is demonstrable without a secret. It used
+          # to 503, which made the screen's whole point unreachable in CI and in
+          # any deployment without a key.
           CC_TARGET='{"dimension":"cohort_fatigue","cohort":"Critical"}'
           for case in \
             "sipho.dlamini@example.com:interventions:200" \
@@ -335,7 +338,7 @@ jobs:
             "naledi.khumalo@example.com:interventions:403" \
             "thandi.mokoena@example.com:interventions:403" \
             "support@example.com:interventions:403" \
-            "sipho.dlamini@example.com:draft:503" \
+            "sipho.dlamini@example.com:draft:200" \
             "naledi.khumalo@example.com:draft:403" \
             "thandi.mokoena@example.com:draft:403" \
           ; do
@@ -363,6 +366,32 @@ jobs:
             -H 'content-type: application/json' \
             -d "{\"record\":{\"title\":\"Smoke\",\"employee_id\":105525,\"target\":[$CC_TARGET]}}" \
             http://127.0.0.1:3001/api/control-centre/interventions)
+          # A template draft must never pass as a model draft. Checked over the
+          # wire rather than in the unit test alone, because the label has to
+          # survive the route, not just the module.
+          #
+          # Its own session: /tmp/jar5 is left holding whichever account the
+          # matrix above finished on, which is a refused role, so reusing it
+          # drafted as the viewer and asserted against a 403 body.
+          curl -s -c /tmp/jar-draft -X POST -H 'content-type: application/json' \
+            -d '{"email":"sipho.dlamini@example.com"}' http://127.0.0.1:3001/api/session > /dev/null
+          body=$(curl -s -b /tmp/jar-draft -X POST -H 'content-type: application/json' \
+            -d "{\"intervention\":{\"id\":\"icv-004\",\"title\":\"Smoke\",\"created\":\"2026-04-02\",\"target\":[{\"dimension\":\"cohort_load\",\"cohort\":\"Standard ops\"}]}}" \
+            http://127.0.0.1:3001/api/control-centre/playbooks/draft)
+          echo "$body" | grep -q '"drafted_with":"template"' || {
+            echo "::error::a draft produced without an agent key was not labelled as a template"
+            fail=1
+          }
+          echo "$body" | grep -q '"source":"template"' || {
+            echo "::error::the drafting response did not declare its source"
+            fail=1
+          }
+          echo "$body" | grep -q '"ok":true' || {
+            echo "::error::the template draft did not pass the playbook rules it is held to"
+            fail=1
+          }
+          echo "template draft labelled and validated"
+
           echo "intervention carrying an employee key -> $code"
           [ "$code" = "422" ] || { echo "::error::a record carrying an employee key was not refused ($code)"; fail=1; }
 

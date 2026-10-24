@@ -607,6 +607,64 @@ rest on. Still absent: model gating, the backtest and the drift monitoring, all
 of which need a trained-per-tenant model rather than just a time axis. The copy
 on `/absence/outcomes` still says so.
 
+## The agent backend is mocked for the control centre
+
+The playbook screen's point is the governance: a plan is drafted, checked
+against rules that can refuse it, and decided by somebody who did not draft it.
+None of that depends on a language model, and all of it was unreachable without
+one, because the drafting endpoint returned 503 with no key configured. A demo
+tenant that cannot demonstrate its own approval flow is a worse problem than a
+demo tenant without an LLM.
+
+With no key, a plan is now assembled from a template filled with the targeted
+cohort's own reported figures: deterministic, one template per targetable
+dimension because the lever differs, and the WHY paragraph is arithmetic over
+the cohort's row against the rest of its dimension.
+
+Two rules it keeps, both tested:
+
+- **It goes through the same validation as a model draft.** A template exempt
+  from the checks would make the checks look like theatre.
+- **It cannot pass as a model draft.** `drafted_with` is `template`, not
+  `agent`, on the record and in the response; the screen badges it; the button
+  reads "Assemble from a template"; and the notice says in as many words that
+  no language model was called. The CI smoke step asserts the label over the
+  wire, because it has to survive the route and not only the module.
+
+It proposes nothing a model draft would be refused for. Writing disciplinary
+language into the product in order to demonstrate that the product rejects
+disciplinary language is not a trade worth making, so the refusal story stays
+with the seeded rejected playbook, which is a real example kept on purpose.
+
+What it is not: a reason the model is unnecessary. The steps are generic by
+construction and the screen says so. A model reads the cohort's actual driver
+mix and writes to it, which is the difference a buyer should see once a key is
+configured. The other two agents, the Portfolio Analyst and the Case Assistant,
+are untouched and still report that they are not configured.
+
+### Three things the walkthrough found
+
+Worth recording because none of them would have shown up in a unit test.
+
+**Every seeded intervention already had a playbook**, so the screen offered
+nothing to draft and a visitor could not try the flow at all without first
+creating an intervention. A fourth seeded intervention now has no playbook, so
+drafting is available on arrival while the three playbook states are kept.
+
+**The individual-reference screen refused a correctly worded step.**
+`INDIVIDUAL_FIELDS` is used to catch a step naming per-person data, and three of
+its entries are ordinary English words, so "applied to the roster rather than to
+individuals" was refused for containing the word for nobody. "Send an email to
+the cohort" would have gone the same way. A screen that refuses the right
+sentence teaches people to write a worse one. The ambiguous words are no longer
+matched as field references; the actual identifiers are still caught by pattern,
+and both directions are now tested.
+
+**A CI check was asserting against the wrong session.** The new template check
+reused a cookie jar the role matrix had left holding a refused account, so it
+drafted as the viewer and asserted the label against a 403 body. It failed
+loudly rather than passing, which is the only reason it was found before merge.
+
 ## What to do first
 
 The schema time axis is settled and built, and is recorded above. What is left
