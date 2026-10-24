@@ -68,7 +68,7 @@ Interactive OpenAPI docs are served at `/docs`.
 | `ANTHROPIC_API_KEY` / `WELO_ANTHROPIC_API_KEY` | (unset) | Enables the AI agents on the `anthropic` provider |
 | `WELO_VERTEX_PROJECT` | (unset) | GCP project for the `vertex` provider (required in that mode) |
 | `WELO_VERTEX_REGION` | `us-east5` | Vertex AI region serving the Claude models |
-| `WELO_AGENT_MODEL` | `claude-opus-4-8` | Model the agents call (same id on either provider) |
+| `WELO_AGENT_MODEL` | `claude-opus-5-5` | Model the agents call (same id on either provider) |
 | `WELO_AGENT_TIMEOUT_S` | `60` | Per-call Anthropic timeout |
 | `WELO_AGENT_MAX_RETRIES` | `2` | Anthropic transient-error retries |
 | `WELO_RATE_LIMIT_PER_MIN` | `60` | Per-client cap on `/scenario` (0 disables) |

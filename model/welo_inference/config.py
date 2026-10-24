@@ -48,7 +48,7 @@ class InferenceConfig:
     llm_provider: str = _env("WELO_LLM_PROVIDER", "anthropic").strip().lower()
     vertex_project: str | None = _env("WELO_VERTEX_PROJECT", "") or None
     vertex_region: str = _env("WELO_VERTEX_REGION", "us-east5")
-    agent_model: str = _env("WELO_AGENT_MODEL", "claude-opus-4-8")
+    agent_model: str = _env("WELO_AGENT_MODEL", "claude-opus-5-5")
     agent_thinking: bool = _env("WELO_AGENT_THINKING", "1") not in ("0", "false", "False", "")
     # Reliability knobs: keep a demo alive in front of a client. The Anthropic
     # client retries transient errors and times out rather than hanging; the

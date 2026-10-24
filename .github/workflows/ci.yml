@@ -144,8 +144,8 @@ jobs:
           mapfile -t FILES < <(find lib modules -name '*.test.mjs' | sort)
           echo "collected ${#FILES[@]} test files:"
           printf '  %s\n' "${FILES[@]}"
-          if [ "${#FILES[@]}" -lt 11 ]; then
-            echo "expected at least 11 test files, found ${#FILES[@]}" >&2
+          if [ "${#FILES[@]}" -lt 12 ]; then
+            echo "expected at least 12 test files, found ${#FILES[@]}" >&2
             exit 1
           fi
           node --test "${FILES[@]}"
@@ -338,6 +338,7 @@ jobs:
           # to 503, which made the screen's whole point unreachable in CI and in
           # any deployment without a key.
           CC_TARGET='{"dimension":"cohort_fatigue","cohort":"Critical"}'
+          CC_TARGET_LOAD='{"dimension":"cohort_load","cohort":"Standard ops"}'
           for case in \
             "sipho.dlamini@example.com:interventions:200" \
             "prospect@example.com:interventions:200" \
@@ -423,6 +424,60 @@ jobs:
             fail=1
           }
           echo "sick-leave agent summarises and declines correctly"
+
+          # The strategic one. The template path exists so the demo works
+          # without a secret; it must never run when a key is configured, or a
+          # buyer would be shown arithmetic and told it was the model.
+          #
+          # A deliberately invalid key proves the branch without needing a
+          # valid one: the route must attempt the model and report a rejected
+          # key, naming the model it tried. A summary coming back here would
+          # mean the fallback had quietly become the product.
+          # On its own port, alongside the others rather than replacing one.
+          # Stopping the 3001 server here left every later check in this step
+          # talking to a dead port, which failed as a connection error with no
+          # assertion to explain it.
+          ANTHROPIC_API_KEY=sk-ant-ci-deliberately-invalid WELO_MODULE_CONTROL_CENTRE=1 \
+            PORT=3002 node .next/standalone/server.js &
+          SRV_KEYED=$!
+          wait_up 3002 || exit 1
+          curl -s -c /tmp/jar-keyed -X POST -H 'content-type: application/json' \
+            -d '{"email":"sipho.dlamini@example.com"}' http://127.0.0.1:3002/api/session > /dev/null
+
+          keyed=$(curl -s -m 60 -b /tmp/jar-keyed -X POST -H 'content-type: application/json' \
+            -d '{"agent":"analyst","question":"Where is sick leave cost concentrating and why","context":{"headline":{}}}' \
+            http://127.0.0.1:3002/api/sick-leave/agent)
+          echo "$keyed" | grep -q '"source":"summary"' && {
+            echo "::error::a key is configured and the agent still answered from the template. The fallback has become the product."
+            fail=1
+          }
+          echo "$keyed" | grep -q 'claude-' || {
+            echo "::error::the agent did not report which model it tried"
+            fail=1
+          }
+          echo "$keyed" | grep -qi 'sk-ant' && {
+            echo "::error::the agent response echoed something key-shaped"
+            fail=1
+          }
+          echo "with a key configured, the agent calls the model: $(echo "$keyed" | head -c 100)"
+
+          # And the drafter, which is the most consequential call, explains the
+          # failure rather than reporting that it failed.
+          drafted=$(curl -s -m 60 -b /tmp/jar-keyed -X POST -H 'content-type: application/json' \
+            -d "{\"intervention\":{\"id\":\"icv-004\",\"title\":\"Smoke\",\"created\":\"2026-04-02\",\"target\":[$CC_TARGET_LOAD]}}" \
+            http://127.0.0.1:3002/api/control-centre/playbooks/draft)
+          echo "$drafted" | grep -q '"drafted_with":"template"' && {
+            echo "::error::a key is configured and the drafter still produced a template"
+            fail=1
+          }
+          echo "$drafted" | grep -q 'key was rejected' || {
+            echo "::error::the drafter did not explain the failure; it said: $(echo "$drafted" | head -c 120)"
+            fail=1
+          }
+          echo "with a key configured, the drafter calls the model and explains a failure"
+
+          pkill -P "$SRV_KEYED" 2>/dev/null || true
+          kill "$SRV_KEYED" 2>/dev/null || true
 
           echo "intervention carrying an employee key -> $code"
           [ "$code" = "422" ] || { echo "::error::a record carrying an employee key was not refused ($code)"; fail=1; }

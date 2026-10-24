@@ -16,7 +16,7 @@ export const ABSENTEEISM_AGENT_IDS = Object.keys(prompts.roles);
 // Matches the Python service default (WELO_AGENT_MODEL) so the two deployments
 // answer alike; override per environment with WELO_AGENT_MODEL on Vercel.
 export const ABSENTEEISM_MODEL =
-  process.env.WELO_AGENT_MODEL || "claude-opus-4-8";
+  process.env.WELO_AGENT_MODEL || "claude-opus-5-5";
 
 export function systemPromptFor(agent) {
   const role = prompts.roles[agent];

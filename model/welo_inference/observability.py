@@ -87,10 +87,25 @@ def configure_logging(level: str = "INFO", fmt: str = "json") -> None:
 
 # USD per 1M tokens (input, output). Estimates for attribution, not billing.
 _PRICING: Dict[str, tuple] = {
+    # Current generation. Rates confirmed against Anthropic's published pricing
+    # page rather than recalled: a cost estimator with invented numbers reports
+    # confidently and wrongly, which is worse than reporting nothing.
+    #
+    # Haiku 5.5 is priced in two tiers, 0.10/0.50 up to a 100k prompt and
+    # 0.50/2.50 above it. The table holds one pair per model, so the lower tier
+    # is recorded: the agent groundings here are a few KB of cohort aggregates,
+    # nowhere near the boundary. An estimate for a prompt over 100k understates
+    # by five times, and `estimate_cost_usd` says so.
+    "claude-opus-5-5": (4.0, 20.0),
+    "claude-sonnet-5-5": (2.0, 10.0),
+    "claude-haiku-5-5": (0.10, 0.50),
+    "claude-fable-5-1": (10.0, 50.0),
+    # Earlier generations, kept because a deployment may still be pinned to one.
+    "claude-opus-5": (5.0, 25.0),
     "claude-opus-4-8": (5.0, 25.0),
     "claude-opus-4-7": (5.0, 25.0),
     "claude-opus-4-6": (5.0, 25.0),
-    "claude-sonnet-5": (3.0, 15.0),
+    "claude-sonnet-5": (2.0, 10.0),
     "claude-sonnet-4-6": (3.0, 15.0),
     "claude-haiku-4-5": (1.0, 5.0),
     "claude-fable-5": (10.0, 50.0),

@@ -59,8 +59,8 @@ the agents, set the server-side key before starting:
 
 ```bash
 export ANTHROPIC_API_KEY=sk-ant-...
-# optional model override (default claude-sonnet-5):
-export SICK_LEAVE_AGENT_MODEL=claude-sonnet-5
+# optional model override (default claude-sonnet-5-5):
+export SICK_LEAVE_AGENT_MODEL=claude-sonnet-5-5
 npm run dev
 ```
 

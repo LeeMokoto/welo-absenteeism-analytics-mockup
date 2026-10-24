@@ -95,7 +95,7 @@ llm_provider = "anthropic"
 # First apply: leave false. Add the key to the secret, then set true and
 # re-apply. infra/scripts/provision_demo.sh walks this.
 enable_agents = false
-agent_model   = "claude-opus-4-8"
+agent_model   = "claude-opus-5-5"
 
 # --- Security ---
 # Public for a demo. For anything with real data this becomes false and access

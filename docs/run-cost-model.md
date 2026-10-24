@@ -82,17 +82,25 @@ a 20x reduction on anything repeated between calls.
 
 ### Two levers worth pulling
 
-**The configured models are a generation behind, and the current ones are
-cheaper.** `agent_model` defaults to `claude-opus-4-8` and
-`sick_leave_agent_model` to `claude-sonnet-5`. Opus 5.5 lists at USD 4/20 against
-USD 5/25 for Opus 4.8: about 20% cheaper and more capable. Refreshing both
-defaults lowers cost and raises quality at once.
+**The model lag is fixed.** `agent_model` now defaults to `claude-opus-5-5` and
+`sick_leave_agent_model` to `claude-sonnet-5-5`. Rates confirmed against
+Anthropic's published pricing rather than recalled: Opus 5.5 at USD 4/20 against
+USD 5/25 for Opus 4.8, and Sonnet 5.5 at USD 2/10. About 20% cheaper on the
+Opus path and more capable, so the lever paid both ways.
+
+Prompt caching and adaptive thinking now run on the Next.js routes as well as
+the Python service. The system prompt is stable and the grounding is what
+varies, so it caches; cache reads are USD 0.20/MTok against USD 4, which is the
+20x reduction described above and it was previously only being had on one of the
+two deployments.
 
 **Haiku may be enough for the analyst agent.** It summarises figures already
-computed and on screen. Haiku 4.5 is a quarter the cost of Opus 5.5 per answer.
-Whether quality holds is an empirical question and there is already a harness to
-answer it: run `python -m welo_inference.evals` with the model switched and
-compare.
+computed and on screen. Haiku 5.5 lists at USD 0.10/0.50 for prompts under
+100k tokens, which is a fortieth of Opus 5.5 on input and a fortieth on output;
+the groundings here are a few KB, so that is the tier that applies. Whether
+quality holds is an empirical question and there is already a harness to answer
+it: run `python -m welo_inference.evals` with the model switched and compare.
+That run needs a key, so it has not been done.
 
 ## Google Cloud, per tenant
 

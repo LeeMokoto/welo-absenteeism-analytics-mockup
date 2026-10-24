@@ -76,7 +76,7 @@ class AgentService:
 
     def __init__(
         self,
-        model: str = "claude-opus-4-8",
+        model: str = "claude-opus-5-5",
         api_key: Optional[str] = None,
         thinking: bool = True,
         timeout_s: float = 60.0,

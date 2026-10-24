@@ -101,7 +101,7 @@ Edit the JSON, never a copy.
 | `WELO_ANTHROPIC_API_KEY` | (none) | Optional namespaced override, takes precedence over `ANTHROPIC_API_KEY`. |
 | `WELO_VERTEX_PROJECT` | (none) | GCP project for the `vertex` provider (required in that mode). |
 | `WELO_VERTEX_REGION` | `us-east5` | Vertex AI region serving the Claude models. |
-| `WELO_AGENT_MODEL` | `claude-opus-4-8` | Model the agents call (same id on either provider). Swap to `claude-sonnet-5` or `claude-haiku-4-5` to trade quality for cost. |
+| `WELO_AGENT_MODEL` | `claude-opus-5-5` | Model the agents call (same id on either provider). Swap to `claude-sonnet-5-5` or `claude-haiku-5-5` to trade quality for cost. |
 | `WELO_AGENT_THINKING` | `1` | Adaptive thinking on. Set `0` for slightly snappier, lighter turns. |
 | `WELO_AGENT_TIMEOUT_S` | `60` | Per-call timeout for the Anthropic client. |
 | `WELO_AGENT_MAX_RETRIES` | `2` | Automatic retries on transient API errors. |
@@ -146,9 +146,9 @@ per-interaction cost:
 
 | Model | Approx per interaction |
 | --- | --- |
-| `claude-opus-4-8` | a couple of US cents |
-| `claude-sonnet-5` | under a cent |
-| `claude-haiku-4-5` | a fraction of a cent |
+| `claude-opus-5-5` | a couple of US cents |
+| `claude-sonnet-5-5` | under a cent |
+| `claude-haiku-5-5` | a fraction of a cent |
 
 A full client demo session is cents, not dollars. The per-agent system prompt is
 marked cacheable, so repeated calls in a session are cheaper still.

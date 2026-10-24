@@ -13,13 +13,14 @@ import Anthropic from "@anthropic-ai/sdk";
 import { SYSTEM_PROMPTS } from "@/modules/sick-leave/agentPrompts";
 import { AGENT_IDS, AGENTS } from "@/modules/sick-leave/agentMeta";
 import { canAnswer, fallbackAnswer, refusal } from "@/modules/sick-leave/agentFallback";
+import { agentFailureLog, explainAgentFailure, redact } from "@/lib/platform/agentErrors";
 import { requirePermission } from "@/lib/platform/session";
 import { PERMISSIONS } from "@/lib/platform/roles";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-const MODEL = process.env.SICK_LEAVE_AGENT_MODEL || "claude-sonnet-5";
+const MODEL = process.env.SICK_LEAVE_AGENT_MODEL || "claude-sonnet-5-5";
 const MAX_TOKENS = 1200;
 
 // Config check for debugging a deployment: reports whether a key is present and
@@ -139,7 +140,16 @@ export async function POST(request) {
     const message = await client.messages.create({
       model: MODEL,
       max_tokens: MAX_TOKENS,
-      system: SYSTEM_PROMPTS[agent],
+      /*
+        The system prompt is marked cacheable and thinking is adaptive, which
+        is what the Python service has always done. These routes did not, so
+        the two deployments answered the same questions with different
+        reasoning effort and the Vercel one paid for the same system prompt on
+        every call. The prompt is stable and the grounding is what varies, so
+        it caches well.
+      */
+      system: [{ type: "text", text: SYSTEM_PROMPTS[agent], cache_control: { type: "ephemeral" } }],
+      thinking: { type: "adaptive" },
       messages: [{ role: "user", content: userContent }],
     });
     const text = (message.content || [])
@@ -147,68 +157,38 @@ export async function POST(request) {
       .map((b) => b.text)
       .join("")
       .trim();
-    return json({ text, model: MODEL, source: "model" });
+    const usage = message.usage || {};
+    return json({
+      text,
+      model: MODEL,
+      source: "model",
+      // Surfaced so a cold call and a cached one are distinguishable when
+      // somebody is working out what the agents actually cost.
+      usage: {
+        input_tokens: usage.input_tokens ?? null,
+        output_tokens: usage.output_tokens ?? null,
+        cache_creation_input_tokens: usage.cache_creation_input_tokens ?? null,
+        cache_read_input_tokens: usage.cache_read_input_tokens ?? null,
+      },
+    });
   } catch (err) {
     const status = Number(err?.status) || 0;
     // Log the real error server side (visible in the platform's function logs).
     // Redact anything key-shaped first: an SDK error can echo request context.
-    console.error(
-      "[sick-leave agent] request failed",
-      JSON.stringify({
-        agent,
-        model: MODEL,
-        status: status || null,
-        type: err?.error?.error?.type || err?.name || null,
-        message: redact(err?.error?.error?.message || err?.message || String(err)),
-      })
-    );
+    console.error(...agentFailureLog("sick-leave agent", { agent, model: MODEL, err }));
     return json(
-      { error: explain(status, err), model: MODEL },
+      {
+        error: explainAgentFailure(status, err, {
+          model: MODEL,
+          modelEnvVar: "SICK_LEAVE_AGENT_MODEL",
+        }),
+        model: MODEL,
+      },
       status >= 400 && status < 600 ? status : 502
     );
   }
 }
 
-// Turn an upstream failure into something the operator can act on. These
-// messages are shown in the dashboard, so they name the likely fix and never
-// include credentials.
-function explain(status, err) {
-  switch (status) {
-    case 401:
-      return "The Anthropic API key was rejected. Check the key configured for this deployment.";
-    case 403:
-      return "The Anthropic API key is not permitted to make this request. Check the key's permissions.";
-    case 404:
-      return `The model "${MODEL}" is not available to this account. Set SICK_LEAVE_AGENT_MODEL to a model the account can use, then redeploy.`;
-    case 400: {
-      // The key authenticated (that would be 401), so the request itself was
-      // rejected. The two common causes are an exhausted credit balance and a
-      // model id the account cannot use; both come back as 400 here.
-      const detail = redact(err?.error?.error?.message || "");
-      if (/credit balance|too low|billing/i.test(detail)) {
-        return "The Anthropic account has insufficient credit. Top up or raise the spend cap in the Anthropic console, then try again.";
-      }
-      if (/model/i.test(detail)) {
-        return `The model "${MODEL}" was rejected. Set SICK_LEAVE_AGENT_MODEL to a model this account can use, then redeploy. Upstream said: ${detail}`;
-      }
-      return `The request was rejected as invalid. Upstream said: ${detail || "no detail returned"}`;
-    }
-    case 429:
-      return "Rate limited by the Anthropic API, or the account is out of credit. Wait a moment, or check the billing and spend cap.";
-    case 500:
-    case 502:
-    case 503:
-    case 529:
-      return "The Anthropic API is temporarily unavailable. Try again in a moment.";
-    default:
-      return `The agent request did not complete${status ? ` (status ${status})` : ""}. The reason is in the server logs.`;
-  }
-}
-
-// Never echo anything key-shaped back to the browser or into a log line.
-function redact(s) {
-  return String(s || "").replace(/sk-ant-[A-Za-z0-9_-]+/g, "sk-ant-[REDACTED]");
-}
 
 function json(payload, status = 200) {
   return new Response(JSON.stringify(payload), {

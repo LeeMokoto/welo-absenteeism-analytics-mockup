@@ -111,7 +111,7 @@ variable "sick_leave_enable_agents" {
 variable "sick_leave_agent_model" {
   type        = string
   description = "Model the sick-leave agents call."
-  default     = "claude-sonnet-5"
+  default     = "claude-sonnet-5-5"
 }
 
 # --- Agents (LLM provider) ---------------------------------------------------
@@ -184,7 +184,7 @@ variable "enable_agents" {
 variable "agent_model" {
   type        = string
   description = "Model the agents call."
-  default     = "claude-opus-4-8"
+  default     = "claude-opus-5-5"
 }
 
 variable "rate_limit_per_min" {

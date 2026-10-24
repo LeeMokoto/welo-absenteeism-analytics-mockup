@@ -23,6 +23,7 @@ import {
   MAX_TOKENS,
   ABSENTEEISM_MODEL,
 } from "../../../_prompts";
+import { agentFailureLog, explainAgentFailure } from "@/lib/platform/agentErrors";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -34,10 +35,6 @@ function frame(event, payload) {
   return encoder.encode(`${head}data: ${JSON.stringify(payload)}\n\n`);
 }
 
-// Never echo anything key-shaped back to the browser or into a log line.
-function redact(s) {
-  return String(s || "").replace(/sk-ant-[A-Za-z0-9_-]+/g, "sk-ant-[REDACTED]");
-}
 
 export async function POST(request, { params }) {
   // The solution design puts the role check in the API, so a hidden menu item
@@ -83,7 +80,11 @@ export async function POST(request, { params }) {
         const run = client.messages.stream({
           model: ABSENTEEISM_MODEL,
           max_tokens: MAX_TOKENS,
-          system,
+          // Cached system prompt and adaptive thinking, matching the Python
+          // service. The system prompt is stable across every call on this
+          // route and only the grounding varies.
+          system: [{ type: "text", text: system, cache_control: { type: "ephemeral" } }],
+          thinking: { type: "adaptive" },
           messages: [{ role: "user", content: userContent(question, data) }],
         });
 
@@ -96,19 +97,16 @@ export async function POST(request, { params }) {
         await run.finalMessage();
         controller.enqueue(frame("done", {}));
       } catch (err) {
-        console.error(
-          "[absenteeism agent] stream failed",
-          JSON.stringify({
-            agent,
-            model: ABSENTEEISM_MODEL,
-            status: Number(err?.status) || null,
-            type: err?.error?.error?.type || err?.name || null,
-            message: redact(err?.error?.error?.message || err?.message || String(err)),
-          })
-        );
+        console.error(...agentFailureLog("absenteeism agent", { agent, model: ABSENTEEISM_MODEL, err }));
+        // Explained, not relayed. The raw upstream message is the least
+        // useful thing to put in front of somebody: it describes what the API
+        // objected to, not what they should change.
         controller.enqueue(
           frame("error", {
-            error: redact(err?.error?.error?.message || err?.message || "The agent request failed."),
+            error: explainAgentFailure(Number(err?.status) || 0, err, {
+              model: ABSENTEEISM_MODEL,
+              modelEnvVar: "WELO_AGENT_MODEL",
+            }),
           })
         );
       } finally {

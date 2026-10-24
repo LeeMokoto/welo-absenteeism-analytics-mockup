@@ -28,13 +28,11 @@ import { parseDraft, validatePlaybook } from "@/modules/control-centre/playbooks
 import { FALLBACK_NOTICE, fallbackDraft } from "@/modules/control-centre/draftFallback";
 import { portfolio } from "@/modules/absence/data/portfolio";
 import { systemPromptFor, ABSENTEEISM_MODEL, MAX_TOKENS } from "@/app/api/absenteeism/_prompts";
+import { agentFailureLog, explainAgentFailure } from "@/lib/platform/agentErrors";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-function redact(s) {
-  return String(s || "").replace(/sk-ant-[A-Za-z0-9_-]+/g, "sk-ant-[REDACTED]");
-}
 
 /*
   The grounding: the intervention, and the figures for the cohorts it targets.
@@ -154,7 +152,11 @@ export async function POST(request) {
     const message = await client.messages.create({
       model: ABSENTEEISM_MODEL,
       max_tokens: MAX_TOKENS,
-      system,
+      // Drafting a plan is the most consequential agent call in the product,
+      // so adaptive thinking matters most here. The system prompt carries the
+      // whole output contract and every constraint, so it caches well.
+      system: [{ type: "text", text: system, cache_control: { type: "ephemeral" } }],
+      thinking: { type: "adaptive" },
       messages: [
         {
           role: "user",
@@ -170,16 +172,25 @@ export async function POST(request) {
       .map((b) => b.text)
       .join("\n");
   } catch (err) {
-    console.error(
-      "[control-centre playbook] draft failed",
-      JSON.stringify({
+    console.error(...agentFailureLog("control-centre playbook", { agent: "playbook", model: ABSENTEEISM_MODEL, err }));
+    /*
+      Explained rather than reported. "The drafting request failed" tells an
+      operator nothing, and this is the most consequential agent call in the
+      product, so it names the likely fix the way the sick-leave route always
+      has. The upstream status is preserved where it is one, so a 401 does not
+      arrive as a 502 and send somebody looking at the wrong thing.
+    */
+    const status = Number(err?.status) || 0;
+    return Response.json(
+      {
+        error: explainAgentFailure(status, err, {
+          model: ABSENTEEISM_MODEL,
+          modelEnvVar: "WELO_AGENT_MODEL",
+        }),
         model: ABSENTEEISM_MODEL,
-        status: Number(err?.status) || null,
-        type: err?.error?.error?.type || err?.name || null,
-        message: redact(err?.error?.error?.message || err?.message || String(err)),
-      }),
+      },
+      { status: status >= 400 && status < 600 ? status : 502 },
     );
-    return Response.json({ error: "The drafting request failed." }, { status: 502 });
   }
 
   const { steps, why } = parseDraft(text);
