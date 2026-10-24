@@ -2,16 +2,24 @@
 //
 // One dashboard engine (index.html), multiple industry framings. Select with a
 // query param on the URL, e.g.
-//   index.html                      -> mining (default)
-//   index.html?industry=generic     -> cross-industry / generic
+//   index.html                      -> industrial (default)
+//   index.html?industry=mining
 //   index.html?industry=manufacturing
 //   index.html?industry=logistics
+//   index.html?industry=generic     -> cross-industry, no sector wording
+//
+// The default is `industrial`: sector-neutral blue collar wording that fits any
+// employer with a shift-based frontline workforce. That is the version that
+// goes to prospective buyers, because a demo framed as somebody else's industry
+// asks the buyer to do the translating. Mining is still a profile rather than
+// the baseline, so a mining prospect gets their own words with one query param.
 //
 // Each profile supplies the industry-variable copy keyed by the data-ind
 // attributes in index.html. Anything not listed falls back to the markup
-// default (which is the mining wording). The underlying model output is shared;
-// only the framing changes. To add a vertical, copy the generic block and tweak
-// the title and copy.
+// default, which carries the industrial wording, so a failed config load
+// degrades to the neutral version rather than to a vertical. The underlying
+// model output is shared; only the framing changes. To add a vertical, copy the
+// industrial block and tweak the title and copy.
 
 // Currency: the dashboard stores every amount in Rand and converts on the fly.
 // Update this rate as needed (Rand per 1 US dollar). Default currency is ZAR;
@@ -19,6 +27,22 @@
 window.WELO_FX = { zarPerUsd: 18.5 };
 
 window.WELO_PROFILES = {
+  // The shipped default. Blue collar, sector-neutral: plants, a distribution
+  // centre, a depot, and a workforce mostly on a shift roster.
+  industrial: {
+    title: "Welo · Absenteeism Intelligence · Industrial",
+    copy: {
+      "metric-covered-detail": "scored industrial workforce",
+      "individuals-disclaimer":
+        "IDs are synthetic industrial workforce records, not real people.",
+      "chronic-sub":
+        "% screened positive by operational-load cohort · anchored to published SA frontline workforce benchmarks until pilot screening lands",
+      "hr-absence-detail": "annualised · vs ~4% SA industrial benchmark",
+      "roi-sub":
+        "Projected impact across a 6,000-life industrial workforce · illustrative, benchmark-anchored on model output.",
+    },
+  },
+
   mining: {
     title: "Welo · Absenteeism Intelligence · Mining",
     copy: {
@@ -139,7 +163,7 @@ window.WELO_PROFILES.logistics = {
     seasonality: {
       subCalendar: "52-week projection · festive peak-season freight layered on the winter respiratory band",
       chipCalendar: "Peak-season + winter",
-      noteCalendar: "Peak freight Nov–Jan drives the largest spike · winter band adds a mid-year lift · Mondays run hot year-round",
+      noteCalendar: "Peak freight Nov to Jan drives the largest spike · winter band adds a mid-year lift · Mondays run hot year-round",
       subQuarter: "quarterly absent days · festive peak freight is the year's high point",
       chipQuarter: "Peak-season Q4",
       quarters: [

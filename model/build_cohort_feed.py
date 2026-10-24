@@ -1,11 +1,11 @@
-"""Enrich the mining dashboard feed with cohort aggregates and per-individual
+"""Enrich the base dashboard feed with cohort aggregates and per-individual
 records, computed from the real model predictions joined to the deterministic
-synthetic mining cohort attributes (seed 7, n=5800, validated to match
-predictions 1:1 on actual absence hours).
+synthetic industrial workforce cohort attributes (seed 7, n=5800, validated to
+match predictions 1:1 on actual absence hours).
 
 The cohort / individual / HR-ops computation lives in feed_enrich.py and is
 shared with the sector feed builder (build_sector_feeds.py). This script is the
-mining entry point: it reproduces the mining cohort, joins it to the committed
+base entry point: it reproduces the base cohort, joins it to the committed
 predictions, and rewrites data/outputs/dashboard_feed.json / .js.
 """
 from __future__ import annotations
@@ -15,13 +15,13 @@ import pandas as pd
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, ROOT)
-from welo_pipeline.adapters.synthetic import SyntheticMiningAdapter
+from welo_pipeline.adapters.synthetic import SyntheticWorkforceAdapter
 import feed_enrich
 
 # ---- load real model output + reproduce attributes -------------------------
 preds = pd.read_csv(f"{ROOT}/data/outputs/predictions.csv")
-syn = SyntheticMiningAdapter(n_rows=5800, random_seed=7,
-                             cohort="glencore_sa_mining").load()
+syn = SyntheticWorkforceAdapter(n_rows=5800, random_seed=7,
+                                cohort="sa_shift_workforce").load()
 df = preds.merge(syn, on="employee_id", how="left", suffixes=("", "_attr"))
 syn_mask = df["source_dataset"].str.startswith("synthetic").fillna(False)
 df = df[syn_mask].copy()

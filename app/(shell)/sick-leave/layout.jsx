@@ -2,6 +2,7 @@ import GovernanceNote from "@/modules/sick-leave/components/GovernanceNote";
 import ModuleTabs from "@/components/platform/ModuleTabs";
 import { meta } from "@/modules/sick-leave/data/sampleData";
 import { num } from "@/modules/sick-leave/format";
+import { getManifest } from "@/lib/platform/manifest";
 
 // Module layout: the header and screen tabs shared by every sick-leave screen.
 // The tabs are links to real routes, mirroring the sidebar, so a screen can be
@@ -13,6 +14,8 @@ const SCREENS = [
 ];
 
 export default function SickLeaveLayout({ children }) {
+  const tenant = getManifest().tenant;
+
   return (
     <div className="page">
       <header style={{ paddingTop: 36 }}>
@@ -21,9 +24,10 @@ export default function SickLeaveLayout({ children }) {
           Statutory sick leave
         </h1>
         <p style={{ marginTop: 10, maxWidth: 720, color: "var(--ink-mute)", fontSize: 14.5 }}>
-          Oriented at care pathways and workforce planning. A mining division of{" "}
-          {num(meta.cohortSize)} employees across {meta.siteCount} sites. Not used for HR review
-          or disciplinary purposes.
+          Oriented at care pathways and workforce planning. {tenant.descriptor}:{" "}
+          {num(meta.cohortSize)} employees across {meta.siteCount} sites, most of them on a shift
+          roster where an absence has to be covered on the day. Not used for HR review or
+          disciplinary purposes.
         </p>
       </header>
 

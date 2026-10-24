@@ -47,6 +47,18 @@ variable "display_name" {
   description = "Tenant name shown in the application shell (WELO_TENANT_NAME)."
 }
 
+variable "descriptor" {
+  type        = string
+  description = <<-EOT
+    What kind of employer this tenant is, in the words its screens use
+    (WELO_TENANT_DESCRIPTOR). The default is sector neutral and matches the
+    synthetic workforce the demo ships with: shift-based frontline operations
+    across plants, a distribution centre and a depot. Set it to a client's own
+    words for a client tenant.
+  EOT
+  default     = "A multi-site industrial operation"
+}
+
 variable "environment" {
   type        = string
   description = "Environment badge shown in the shell (WELO_TENANT_ENV), e.g. demo or production."

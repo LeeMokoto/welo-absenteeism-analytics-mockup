@@ -1,15 +1,22 @@
-"""Synthetic mining-cohort generator.
+"""Synthetic industrial-workforce generator.
 
 This adapter creates plausibility-anchored synthetic rows shaped like a
-South African mining workforce so the demo model has enough samples to
-learn something useful. The distributions are calibrated to published
-SA mining-cohort epidemiology (hypertension around 26 percent, type 2
-diabetes around 13 percent, mean BMI near 27, and so on) and to the
-workload and shift assumptions used elsewhere on the dashboard.
+South African shift-based industrial workforce, so the demo model has
+enough samples to learn something useful.
 
-This is not Glencore data. Every row carries
-``source_dataset = "synthetic_mining_v1"`` so downstream filters can
-exclude it the moment real client data arrives.
+On the calibration anchor, precisely: the distributions are calibrated
+to published South African mining-cohort epidemiology (hypertension
+around 26 percent, type 2 diabetes around 13 percent, mean BMI near 27,
+and so on), because that is the best-documented published source for a
+South African frontline workforce on a shift roster. The demo presents
+it as an industrial workforce rather than a mining one, and the
+cohort is a reasonable stand-in across heavy industry, but the anchor
+is what it is and the model card says so rather than implying a broader
+evidence base than exists.
+
+No client data is used here, and none ever was. Every row carries
+``source_dataset = "synthetic_industrial_v1"`` so downstream filters
+can exclude it the moment real client data arrives.
 
 The absence target is generated from a defensible data-generating
 process, and the model learns that process. That is the whole point of
@@ -25,14 +32,14 @@ import pandas as pd
 from .base import BaseAdapter
 
 
-class SyntheticMiningAdapter(BaseAdapter):
-    name = "synthetic_mining"
+class SyntheticWorkforceAdapter(BaseAdapter):
+    name = "synthetic_workforce"
 
     def __init__(
         self,
         n_rows: int = 800,
         random_seed: int = 7,
-        cohort: str = "glencore_sa_mining",
+        cohort: str = "sa_shift_workforce",
         **kwargs,
     ) -> None:
         super().__init__(**kwargs)
@@ -161,7 +168,7 @@ class SyntheticMiningAdapter(BaseAdapter):
                 "days_since_last_leave": days_since_leave,
                 "perceived_stress_score": perceived_stress,
                 "absence_duration_hours": absence_hours,
-                "source_dataset": f"synthetic_mining_v1__{self.cohort}",
+                "source_dataset": f"synthetic_industrial_v1__{self.cohort}",
             }
         )
         return self._coerce_to_canonical(df)

@@ -2,7 +2,8 @@
 
 A Next.js App Router sibling to the static absenteeism dashboard, built on
 statutory sick leave. Route: `/sick-leave`. Synthetic sample data only, sized to
-look like a mining division (4,200 employees, four sites). No client data.
+look like a multi-site industrial employer (4,200 employees, four sites). No
+client data.
 
 ## The constraint that shapes it
 

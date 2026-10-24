@@ -150,8 +150,8 @@ export default function AbsenceOutcomesScreen() {
             <div className="indicative" style={{ marginTop: 10 }}>
               The cohort lens covers {num(shown.count)} lives, {randCompact(cohortTotal)} of
               exposure. The remaining {num(unassigned)} lives come from the public benchmark set
-              and carry no mining cohort, which is why the rows above do not add up to the
-              headline.
+              and carry none of this tenant&apos;s cohort attributes, which is why the rows above
+              do not add up to the headline.
             </div>
           ) : null}
         </div>

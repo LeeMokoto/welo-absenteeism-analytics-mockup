@@ -5,7 +5,7 @@ When the live Glencore feed lands, only two things need to change. The
 ships (a CSV export, an HRIS pull, Parquet, and so on) and rename the
 columns to the canonical Welo schema, and ``configs/glencore.yaml``
 points the pipeline at this adapter in place of ``uci`` plus
-``synthetic_mining``. Everything downstream, from feature engineering
+``synthetic_workforce``. Everything downstream, from feature engineering
 through model training to the dashboard JSON, stays exactly as it is.
 """
 

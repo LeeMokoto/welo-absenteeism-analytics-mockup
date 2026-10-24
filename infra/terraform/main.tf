@@ -415,6 +415,7 @@ module "tenant" {
   bucket_prefix = var.bucket_prefix
 
   display_name          = each.value.display_name
+  descriptor            = each.value.descriptor
   environment           = each.value.environment
   synthetic             = each.value.synthetic
   suppression_threshold = each.value.suppression_threshold

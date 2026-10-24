@@ -208,3 +208,73 @@ run "an_unbounded_landing_bucket_retention_is_rejected" {
 
   expect_failures = [var.raw_retention_days]
 }
+
+# The manifest is the contract between this module and the application: a
+# tenant differs from another by these environment variables, not by a fork of
+# the code. lib/platform/manifest.js reads exactly these names, so a key added
+# on one side and missed on the other produces a tenant that silently falls
+# back to a default. That is the kind of break nothing notices, so it is
+# asserted here rather than left to a reviewer.
+run "the_manifest_carries_every_variable_the_application_reads" {
+  command = plan
+
+  module {
+    source = "./modules/tenant"
+  }
+
+  variables {
+    tenant_key    = "tenant1"
+    project_id    = "welo-test"
+    region        = "europe-west1"
+    bucket_prefix = "welo-test"
+    display_name  = "Test tenant"
+    descriptor    = "A multi-site industrial operation"
+  }
+
+  assert {
+    condition = alltrue([
+      for k in [
+        "WELO_TENANT_NAME",
+        "WELO_TENANT_DESCRIPTOR",
+        "WELO_TENANT_ENV",
+        "WELO_TENANT_SYNTHETIC",
+        "WELO_SUPPRESSION_THRESHOLD",
+        "WELO_MODULE_ABSENCE",
+        "WELO_MODULE_SICK_LEAVE",
+        "WELO_MODULE_CONTROL_CENTRE",
+      ] : contains(keys(local.manifest_env), k)
+    ])
+    error_message = "The manifest env is missing a variable lib/platform/manifest.js reads. A tenant would fall back to a default instead of its configuration."
+  }
+
+  # The descriptor is what the screens call this employer. An empty one reads
+  # as a missing sentence rather than a neutral default, so carry it through.
+  assert {
+    condition     = local.manifest_env["WELO_TENANT_DESCRIPTOR"] == "A multi-site industrial operation"
+    error_message = "The tenant descriptor must reach the application manifest."
+  }
+}
+
+# The demo tenant ships sector neutral, because it is the tenant that goes to
+# prospective buyers across heavy industry. The default is asserted so a change
+# to it is a deliberate one.
+run "the_default_descriptor_is_sector_neutral" {
+  command = plan
+
+  module {
+    source = "./modules/tenant"
+  }
+
+  variables {
+    tenant_key    = "tenant1"
+    project_id    = "welo-test"
+    region        = "europe-west1"
+    bucket_prefix = "welo-test"
+    display_name  = "Test tenant"
+  }
+
+  assert {
+    condition     = local.manifest_env["WELO_TENANT_DESCRIPTOR"] == "A multi-site industrial operation"
+    error_message = "The tenant descriptor defaults to a sector neutral industrial employer."
+  }
+}

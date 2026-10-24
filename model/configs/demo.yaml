@@ -7,9 +7,9 @@ source:
 
 augmentation:
   enabled: true
-  adapter: synthetic_mining
+  adapter: synthetic_workforce
   n_rows: 5800
-  cohort: glencore_sa_mining
+  cohort: sa_shift_workforce
 
 target:
   regression: absence_duration_hours

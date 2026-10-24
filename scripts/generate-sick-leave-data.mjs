@@ -22,6 +22,16 @@ import { writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import { COST_MODEL, coverDayCostRand } from "../modules/sick-leave/costModel.js";
+import {
+  SITES as SITE_WEIGHTS,
+  SITE_NAMES as SITES,
+  FUNCTION_NAMES,
+  SHIFT_NAMES,
+  SCHEDULED_DAYS_PER_YEAR as SCHEDULED_DAYS,
+  SITE_FUNCTION_MIX,
+  FUNCTION_SHIFT_MIX,
+  FUNCTION_CHAPTER_MOD as CHAPTER_MOD,
+} from "../modules/sick-leave/dimensions.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const OUT_DIR = join(__dirname, "..", "modules", "sick-leave", "data");
@@ -62,30 +72,13 @@ const TODAY = new Date("2026-08-28T00:00:00Z");
 const CYCLE_MONTHS = 36;
 const STANDARD_ENTITLEMENT = 30; // BCEA: 30 days per 36-month cycle, 5-day week
 
-const SITES = ["North Shaft", "South Shaft", "Central Plant", "Logistics Hub"];
-const FUNCTIONS = [
-  "Mining Operations",
-  "Processing",
-  "Engineering and Maintenance",
-  "Logistics",
-  "Administration",
-];
-const SHIFTS = [
-  "Continuous (4 on 4 off)",
-  "Day shift",
-  "Rotating three-shift",
-  "Standard business hours",
-];
+// Sites, functions, shift patterns and their scheduled-day denominators all
+// come from modules/sick-leave/dimensions.js, so the generated data and the
+// screens that read it cannot disagree about what a site is called.
+const FUNCTIONS = FUNCTION_NAMES;
+const SHIFTS = SHIFT_NAMES;
+const SCHEDULED_DAYS_PER_YEAR = SCHEDULED_DAYS;
 const AGE_BANDS = ["18-29", "30-39", "40-49", "50-59", "60+"];
-
-// Scheduled working days per 12 months by shift pattern (indicative denominator
-// for the sick leave rate).
-const SCHEDULED_DAYS_PER_YEAR = {
-  "Continuous (4 on 4 off)": 182,
-  "Day shift": 232,
-  "Rotating three-shift": 219,
-  "Standard business hours": 232,
-};
 
 const ICD_CHAPTERS = [
   "Respiratory (J)",
@@ -137,8 +130,9 @@ const DRIVER_DERIVATION = {
     "Derived from the presence of an injury chapter spell and an open return-to-work state.",
 };
 
-// Base ICD chapter weights, then a per-function modifier (mining skews to
-// musculoskeletal, injury and respiratory).
+// Base ICD chapter weights, then a per-function modifier from dimensions.js
+// (frontline and trade work skews to musculoskeletal and injury; the office
+// skews the other way).
 const CHAPTER_BASE = {
   "Respiratory (J)": 20,
   "Musculoskeletal (M)": 22,
@@ -151,13 +145,7 @@ const CHAPTER_BASE = {
   "Symptoms and ill-defined (R)": 4,
   "Not recorded": 6,
 };
-const FUNCTION_CHAPTER_MOD = {
-  "Mining Operations": { "Musculoskeletal (M)": 1.5, "Injury and external causes (S and T)": 1.7, "Respiratory (J)": 1.2 },
-  Processing: { "Respiratory (J)": 1.6, "Musculoskeletal (M)": 1.2 },
-  "Engineering and Maintenance": { "Injury and external causes (S and T)": 1.4, "Musculoskeletal (M)": 1.3 },
-  Logistics: { "Musculoskeletal (M)": 1.3, "Circulatory (I)": 1.2 },
-  Administration: { "Mental and behavioural (F)": 1.4, "Musculoskeletal (M)": 0.6, "Injury and external causes (S and T)": 0.4 },
-};
+const FUNCTION_CHAPTER_MOD = CHAPTER_MOD;
 
 // ---- Date helpers -----------------------------------------------------------
 function addMonths(date, months) {
@@ -209,32 +197,13 @@ function spellDaysFor(chapter) {
 
 function buildEmployee(i) {
   const employeeId = "EMP-" + String(10000 + i).padStart(5, "0");
-  const site = weighted([
-    ["North Shaft", 30],
-    ["South Shaft", 28],
-    ["Central Plant", 26],
-    ["Logistics Hub", 16],
-  ]);
-  // Function mix depends a little on the site.
-  const fnPairs =
-    site === "Logistics Hub"
-      ? [["Logistics", 45], ["Engineering and Maintenance", 18], ["Administration", 20], ["Processing", 9], ["Mining Operations", 8]]
-      : site === "Central Plant"
-      ? [["Processing", 42], ["Engineering and Maintenance", 26], ["Mining Operations", 10], ["Logistics", 10], ["Administration", 12]]
-      : [["Mining Operations", 46], ["Engineering and Maintenance", 22], ["Processing", 12], ["Logistics", 8], ["Administration", 12]];
-  const fn = weighted(fnPairs);
-
-  // Shift pattern depends on function.
-  const shift =
-    fn === "Administration"
-      ? "Standard business hours"
-      : fn === "Mining Operations"
-      ? weighted([["Continuous (4 on 4 off)", 55], ["Rotating three-shift", 40], ["Day shift", 5]])
-      : fn === "Processing"
-      ? weighted([["Rotating three-shift", 60], ["Continuous (4 on 4 off)", 30], ["Day shift", 10]])
-      : fn === "Logistics"
-      ? weighted([["Day shift", 55], ["Rotating three-shift", 30], ["Continuous (4 on 4 off)", 15]])
-      : weighted([["Day shift", 60], ["Rotating three-shift", 25], ["Continuous (4 on 4 off)", 15]]);
+  const site = weighted(SITE_WEIGHTS.map((s) => [s.name, s.weight]));
+  // Function mix depends on the site: a distribution centre is mostly
+  // warehouse, a plant is mostly production.
+  const fn = weighted(SITE_FUNCTION_MIX[site]);
+  // Shift pattern depends on the function. Frontline production runs the
+  // continuous and rotating rosters; the office does not.
+  const shift = weighted(FUNCTION_SHIFT_MIX[fn]);
 
   const tenureMonths = randint(1, 340);
   const ageBand = weighted([
@@ -259,7 +228,9 @@ function buildEmployee(i) {
   // Spell propensity: cohort-shaped, no individual timing signal.
   let lambda = 0.9 + monthsElapsed * 0.06;
   if (shift === "Continuous (4 on 4 off)" || shift === "Rotating three-shift") lambda *= 1.25;
-  if (fn === "Mining Operations" || fn === "Processing") lambda *= 1.15;
+  // Frontline production carries the heaviest physical load, so a slightly
+  // higher spell rate. Cohort-shaped, not individual.
+  if (fn === "Production and operations") lambda *= 1.15;
   if (ageBand === "50-59") lambda *= 1.1;
   if (ageBand === "60+") lambda *= 1.2;
   const spellCount = Math.max(0, Math.round(gauss(lambda, Math.sqrt(lambda))));

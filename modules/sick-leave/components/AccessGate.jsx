@@ -1,9 +1,9 @@
 "use client";
 
 /*
-  Communicates the production access posture of the clinical case view. This
-  build has no auth, but the controls are threaded through so Anglo's security
-  reviewer can see them in the design:
+  Communicates the production access posture of the clinical case view. The
+  tenant's identity provider is mocked in this build, but the controls are
+  threaded through so a client's security reviewer can see them in the design:
   - allowedRoles: the roles that would be permitted in production.
   - onRecordOpen: an audit callback fired whenever a record is opened.
   Both are real props here, stubbed rather than enforced.

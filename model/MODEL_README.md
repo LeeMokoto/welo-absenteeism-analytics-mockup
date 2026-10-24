@@ -1,14 +1,16 @@
 # Welo Health Intelligence: Absenteeism
 
-This repository contains the absenteeism prediction stack that Welo uses to forecast workforce absence, surface the drivers behind it, and turn the result into the dashboard view that mining-sector clients see. It ships three things that fit together: a modular training pipeline, a FastAPI inference service designed for Cloud Run, and the dashboard assets that consume the model output.
+This repository contains the absenteeism prediction stack that Welo uses to forecast workforce absence, surface the drivers behind it, and turn the result into the dashboard view that clients see. It ships three things that fit together: a modular training pipeline, a FastAPI inference service designed for Cloud Run, and the dashboard assets that consume the model output.
 
-The current build is a demo configuration. It learns from a small UCI absenteeism dataset blended with a plausibility-anchored synthetic mining cohort, so the model returns realistic numbers and the SHAP explanations make clinical sense. When the live Glencore feed (or any other client feed) arrives, only the data adapter and its YAML config need to change. Everything downstream stays the same.
+The current build is a demo configuration. It learns from a small UCI absenteeism dataset blended with a plausibility-anchored synthetic industrial workforce cohort, so the model returns realistic numbers and the SHAP explanations make clinical sense. When a live client feed arrives, only the data adapter and its YAML config need to change. Everything downstream stays the same.
+
+The demo tenant is deliberately sector neutral, because it is distributed to prospective buyers across heavy industry and a demo framed as one vertical asks every other buyer to do the translating.
 
 ## What lives where
 
 The `welo_pipeline` package is the training side. It is organised by stage, with one module per step, so `ingest.py` pulls data through a configured adapter, `validate.py` produces a structured data-quality report, `features.py` does the feature engineering (including the composite fatigue and burnout score that drives the headline lever), `train.py` fits the regression and classification models inside a sklearn pipeline, `score.py` produces per-employee predictions, `explain.py` derives SHAP-based reasons, and `export.py` packages the result as the JSON shape the dashboard consumes. The `pipeline.py` module wires them together so the notebook and the CLI go through the same path.
 
-The `welo_pipeline/adapters` package is where source-specific data shapes live. There is an adapter for the UCI subset, one for the synthetic mining cohort, and a stub for the Glencore feed that documents the rename map that will be needed on day one of live data. The pipeline never imports an adapter directly; it asks the registry by name.
+The `welo_pipeline/adapters` package is where source-specific data shapes live. There is an adapter for the UCI subset, one for the synthetic industrial workforce cohort, and a stub for a first client feed that documents the rename map that will be needed on day one of live data. The pipeline never imports an adapter directly; it asks the registry by name.
 
 The `welo_inference` package is the runtime side. It loads the persisted model artifacts and the cached dashboard feed once at startup and answers requests in memory through a small set of FastAPI endpoints. There is no training at request time.
 
@@ -30,7 +32,7 @@ The `requirements.txt` covers everything for both training and inference, includ
 
 ## Running the training pipeline
 
-The pipeline is config-driven. The demo configuration lives in `configs/demo.yaml` and points at the UCI export with the synthetic mining cohort layered on top. Run it from the repository root:
+The pipeline is config-driven. The demo configuration lives in `configs/demo.yaml` and points at the UCI export with the synthetic industrial workforce cohort layered on top. Run it from the repository root:
 
 ```bash
 python -m welo_pipeline --config configs/demo.yaml
@@ -102,7 +104,9 @@ To wire the same payload into the Next.js dashboard under `welo-nextjs/`, fetch 
 
 ## Data and adapters
 
-The repository contains three CSV exports used for the demo (`welo_export.csv`, `welo_full_export.csv`, and `welo_full_export_2.csv`) plus the synthetic mining cohort, which is generated in code. The synthetic adapter is calibrated to South African mining-cohort epidemiology and to the workload and shift assumptions the dashboard makes, and every synthetic row is tagged with `source_dataset = "synthetic_mining_v1"` so it can be filtered out the moment real client data lands.
+The repository contains three CSV exports used for the demo (`welo_export.csv`, `welo_full_export.csv`, and `welo_full_export_2.csv`) plus the synthetic industrial workforce cohort, which is generated in code. Every synthetic row is tagged with `source_dataset = "synthetic_industrial_v1"` so it can be filtered out the moment real client data lands.
+
+On the calibration anchor, precisely: the synthetic adapter is calibrated to published South African mining-cohort epidemiology (hypertension around 26 percent, type 2 diabetes around 13 percent, mean BMI near 27) and to the workload and shift assumptions the dashboard makes, because that is the best-documented published source for a South African frontline workforce on a shift roster. The demo presents the cohort as an industrial workforce, which is a reasonable stand-in across heavy industry, but the anchor is what it is and this is the place that says so. No client data was used, and none ever was.
 
 The UCI subset is small (about 200 rows). It is enough to demonstrate the pipeline end to end, but the headline numbers in the demo are driven by the synthetic cohort. None of the synthetic data is presented as a real client outcome on the dashboard.
 

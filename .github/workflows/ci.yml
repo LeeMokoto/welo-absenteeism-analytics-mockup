@@ -118,8 +118,20 @@ jobs:
       - name: Install (from the lockfile, no resolution)
         run: npm ci
 
-      - name: Module unit tests
-        run: node --test modules/**/*.test.mjs
+      # The glob used to be modules/**/*.test.mjs, which without globstar
+      # expands one level and silently skipped every test under lib/, including
+      # the RBAC matrix. Name both roots and assert the count, so a test file
+      # that stops being collected fails here instead of passing quietly.
+      - name: Unit tests
+        run: |
+          mapfile -t FILES < <(find lib modules -name '*.test.mjs' | sort)
+          echo "collected ${#FILES[@]} test files:"
+          printf '  %s\n' "${FILES[@]}"
+          if [ "${#FILES[@]}" -lt 3 ]; then
+            echo "expected at least 3 test files, found ${#FILES[@]}" >&2
+            exit 1
+          fi
+          node --test "${FILES[@]}"
 
       - name: Build
         run: npm run build

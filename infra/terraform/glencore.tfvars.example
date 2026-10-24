@@ -66,6 +66,11 @@ tenants = {
   glencore = {
     display_name = "Glencore South Africa"
 
+    # The demo tenant is deliberately sector neutral, because it goes to buyers
+    # across heavy industry. A client tenant is not: say what this employer
+    # actually is, in their words.
+    descriptor = "A South African mining operation"
+
     # Shown in the application shell, so nobody is ever unsure which tenant
     # they are in.
     environment = "production"

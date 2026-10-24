@@ -12,12 +12,12 @@ from typing import Dict, Type
 
 from .base import BaseAdapter
 from .uci import UCIAdapter
-from .synthetic import SyntheticMiningAdapter
+from .synthetic import SyntheticWorkforceAdapter
 from .glencore import GlencoreAdapter
 
 _REGISTRY: Dict[str, Type[BaseAdapter]] = {
     "uci": UCIAdapter,
-    "synthetic_mining": SyntheticMiningAdapter,
+    "synthetic_workforce": SyntheticWorkforceAdapter,
     "glencore": GlencoreAdapter,
 }
 

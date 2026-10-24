@@ -66,7 +66,7 @@ window.WELO_FEED = {
     {
       "row_id": 5725,
       "employee_id": 105525,
-      "source_dataset": "synthetic_mining_v1__glencore_sa_mining",
+      "source_dataset": "synthetic_industrial_v1__sa_shift_workforce",
       "predicted_absent_hours": 113.68,
       "predicted_absent_days_90d": 42.63,
       "predicted_risk_band": "Critical",
@@ -77,7 +77,7 @@ window.WELO_FEED = {
     {
       "row_id": 2209,
       "employee_id": 102009,
-      "source_dataset": "synthetic_mining_v1__glencore_sa_mining",
+      "source_dataset": "synthetic_industrial_v1__sa_shift_workforce",
       "predicted_absent_hours": 106.01,
       "predicted_absent_days_90d": 39.75,
       "predicted_risk_band": "Critical",
@@ -88,7 +88,7 @@ window.WELO_FEED = {
     {
       "row_id": 1623,
       "employee_id": 101423,
-      "source_dataset": "synthetic_mining_v1__glencore_sa_mining",
+      "source_dataset": "synthetic_industrial_v1__sa_shift_workforce",
       "predicted_absent_hours": 101.71,
       "predicted_absent_days_90d": 38.14,
       "predicted_risk_band": "Critical",
@@ -115,7 +115,7 @@ window.WELO_FEED = {
     {
       "row_id": 3263,
       "employee_id": 103063,
-      "source_dataset": "synthetic_mining_v1__glencore_sa_mining",
+      "source_dataset": "synthetic_industrial_v1__sa_shift_workforce",
       "predicted_absent_hours": 92.27,
       "predicted_absent_days_90d": 34.6,
       "predicted_risk_band": "Critical",
@@ -126,7 +126,7 @@ window.WELO_FEED = {
     {
       "row_id": 1291,
       "employee_id": 101091,
-      "source_dataset": "synthetic_mining_v1__glencore_sa_mining",
+      "source_dataset": "synthetic_industrial_v1__sa_shift_workforce",
       "predicted_absent_hours": 87.36,
       "predicted_absent_days_90d": 32.76,
       "predicted_risk_band": "Critical",
@@ -137,7 +137,7 @@ window.WELO_FEED = {
     {
       "row_id": 2990,
       "employee_id": 102790,
-      "source_dataset": "synthetic_mining_v1__glencore_sa_mining",
+      "source_dataset": "synthetic_industrial_v1__sa_shift_workforce",
       "predicted_absent_hours": 85.57,
       "predicted_absent_days_90d": 32.09,
       "predicted_risk_band": "Critical",
@@ -148,7 +148,7 @@ window.WELO_FEED = {
     {
       "row_id": 3994,
       "employee_id": 103794,
-      "source_dataset": "synthetic_mining_v1__glencore_sa_mining",
+      "source_dataset": "synthetic_industrial_v1__sa_shift_workforce",
       "predicted_absent_hours": 85.56,
       "predicted_absent_days_90d": 32.08,
       "predicted_risk_band": "Critical",
@@ -159,7 +159,7 @@ window.WELO_FEED = {
     {
       "row_id": 2482,
       "employee_id": 102282,
-      "source_dataset": "synthetic_mining_v1__glencore_sa_mining",
+      "source_dataset": "synthetic_industrial_v1__sa_shift_workforce",
       "predicted_absent_hours": 83.84,
       "predicted_absent_days_90d": 31.44,
       "predicted_risk_band": "Critical",
@@ -186,7 +186,7 @@ window.WELO_FEED = {
     {
       "row_id": 4877,
       "employee_id": 104677,
-      "source_dataset": "synthetic_mining_v1__glencore_sa_mining",
+      "source_dataset": "synthetic_industrial_v1__sa_shift_workforce",
       "predicted_absent_hours": 83.73,
       "predicted_absent_days_90d": 31.4,
       "predicted_risk_band": "Critical",
@@ -213,7 +213,7 @@ window.WELO_FEED = {
     {
       "row_id": 4092,
       "employee_id": 103892,
-      "source_dataset": "synthetic_mining_v1__glencore_sa_mining",
+      "source_dataset": "synthetic_industrial_v1__sa_shift_workforce",
       "predicted_absent_hours": 83.29,
       "predicted_absent_days_90d": 31.24,
       "predicted_risk_band": "Critical",
@@ -224,7 +224,7 @@ window.WELO_FEED = {
     {
       "row_id": 4313,
       "employee_id": 104113,
-      "source_dataset": "synthetic_mining_v1__glencore_sa_mining",
+      "source_dataset": "synthetic_industrial_v1__sa_shift_workforce",
       "predicted_absent_hours": 81.73,
       "predicted_absent_days_90d": 30.65,
       "predicted_risk_band": "Critical",
@@ -235,7 +235,7 @@ window.WELO_FEED = {
     {
       "row_id": 2697,
       "employee_id": 102497,
-      "source_dataset": "synthetic_mining_v1__glencore_sa_mining",
+      "source_dataset": "synthetic_industrial_v1__sa_shift_workforce",
       "predicted_absent_hours": 79.99,
       "predicted_absent_days_90d": 30.0,
       "predicted_risk_band": "Critical",
@@ -246,7 +246,7 @@ window.WELO_FEED = {
     {
       "row_id": 2903,
       "employee_id": 102703,
-      "source_dataset": "synthetic_mining_v1__glencore_sa_mining",
+      "source_dataset": "synthetic_industrial_v1__sa_shift_workforce",
       "predicted_absent_hours": 79.62,
       "predicted_absent_days_90d": 29.86,
       "predicted_risk_band": "Critical",
@@ -257,7 +257,7 @@ window.WELO_FEED = {
     {
       "row_id": 5320,
       "employee_id": 105120,
-      "source_dataset": "synthetic_mining_v1__glencore_sa_mining",
+      "source_dataset": "synthetic_industrial_v1__sa_shift_workforce",
       "predicted_absent_hours": 79.12,
       "predicted_absent_days_90d": 29.67,
       "predicted_risk_band": "Critical",
@@ -268,7 +268,7 @@ window.WELO_FEED = {
     {
       "row_id": 3793,
       "employee_id": 103593,
-      "source_dataset": "synthetic_mining_v1__glencore_sa_mining",
+      "source_dataset": "synthetic_industrial_v1__sa_shift_workforce",
       "predicted_absent_hours": 78.77,
       "predicted_absent_days_90d": 29.54,
       "predicted_risk_band": "Critical",
@@ -279,7 +279,7 @@ window.WELO_FEED = {
     {
       "row_id": 4884,
       "employee_id": 104684,
-      "source_dataset": "synthetic_mining_v1__glencore_sa_mining",
+      "source_dataset": "synthetic_industrial_v1__sa_shift_workforce",
       "predicted_absent_hours": 78.64,
       "predicted_absent_days_90d": 29.49,
       "predicted_risk_band": "Critical",
@@ -290,7 +290,7 @@ window.WELO_FEED = {
     {
       "row_id": 782,
       "employee_id": 100582,
-      "source_dataset": "synthetic_mining_v1__glencore_sa_mining",
+      "source_dataset": "synthetic_industrial_v1__sa_shift_workforce",
       "predicted_absent_hours": 78.61,
       "predicted_absent_days_90d": 29.48,
       "predicted_risk_band": "Critical",
@@ -317,7 +317,7 @@ window.WELO_FEED = {
     {
       "row_id": 1483,
       "employee_id": 101283,
-      "source_dataset": "synthetic_mining_v1__glencore_sa_mining",
+      "source_dataset": "synthetic_industrial_v1__sa_shift_workforce",
       "predicted_absent_hours": 78.25,
       "predicted_absent_days_90d": 29.34,
       "predicted_risk_band": "Critical",
@@ -328,7 +328,7 @@ window.WELO_FEED = {
     {
       "row_id": 2941,
       "employee_id": 102741,
-      "source_dataset": "synthetic_mining_v1__glencore_sa_mining",
+      "source_dataset": "synthetic_industrial_v1__sa_shift_workforce",
       "predicted_absent_hours": 77.86,
       "predicted_absent_days_90d": 29.2,
       "predicted_risk_band": "Critical",
@@ -339,7 +339,7 @@ window.WELO_FEED = {
     {
       "row_id": 4267,
       "employee_id": 104067,
-      "source_dataset": "synthetic_mining_v1__glencore_sa_mining",
+      "source_dataset": "synthetic_industrial_v1__sa_shift_workforce",
       "predicted_absent_hours": 77.61,
       "predicted_absent_days_90d": 29.1,
       "predicted_risk_band": "Critical",
@@ -424,7 +424,7 @@ window.WELO_FEED = {
   },
   "data_provenance": [
     {
-      "source": "synthetic_mining_v1__glencore_sa_mining",
+      "source": "synthetic_industrial_v1__sa_shift_workforce",
       "rows": 5800
     },
     {
@@ -628,8 +628,8 @@ window.WELO_FEED = {
         }
       },
       {
-        "key": "30\u201339",
-        "label": "30\u201339",
+        "key": "30-39",
+        "label": "30-39",
         "count": 2323,
         "predicted_absent_days_90d": 6346.0,
         "predicted_absent_days_annual": 25386.0,
@@ -647,8 +647,8 @@ window.WELO_FEED = {
         }
       },
       {
-        "key": "40\u201349",
-        "label": "40\u201349",
+        "key": "40-49",
+        "label": "40-49",
         "count": 1880,
         "predicted_absent_days_90d": 6445.0,
         "predicted_absent_days_annual": 25777.0,
@@ -706,8 +706,8 @@ window.WELO_FEED = {
         }
       },
       {
-        "key": "Established (2\u20135y)",
-        "label": "Established (2\u20135y)",
+        "key": "Established (2-5y)",
+        "label": "Established (2-5y)",
         "count": 1625,
         "predicted_absent_days_90d": 5095.0,
         "predicted_absent_days_annual": 20381.0,
@@ -725,8 +725,8 @@ window.WELO_FEED = {
         }
       },
       {
-        "key": "Experienced (5\u201310y)",
-        "label": "Experienced (5\u201310y)",
+        "key": "Experienced (5-10y)",
+        "label": "Experienced (5-10y)",
         "count": 2227,
         "predicted_absent_days_90d": 6845.0,
         "predicted_absent_days_annual": 27379.0,
@@ -861,8 +861,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -918,8 +918,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -1050,7 +1050,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
         "cohort_age": "50+",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -1106,7 +1106,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Smoker"
       },
@@ -1164,7 +1164,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
         "cohort_age": "50+",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -1220,8 +1220,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -1277,8 +1277,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -1351,8 +1351,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -1426,7 +1426,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
         "cohort_age": "50+",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -1483,7 +1483,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
         "cohort_age": "50+",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -1540,7 +1540,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
         "cohort_age": "50+",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -1596,8 +1596,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -1653,8 +1653,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -1711,7 +1711,7 @@ window.WELO_FEED = {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
         "cohort_age": "50+",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -1768,7 +1768,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
         "cohort_age": "50+",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -1898,8 +1898,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -1956,7 +1956,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
         "cohort_age": "50+",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -2070,7 +2070,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
         "cohort_age": "50+",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -2183,8 +2183,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -2241,7 +2241,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
         "cohort_age": "50+",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -2297,8 +2297,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -2354,7 +2354,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
@@ -2406,8 +2406,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -2464,7 +2464,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
         "cohort_age": "50+",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -2577,7 +2577,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker + drinker"
       },
@@ -2634,8 +2634,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -2691,8 +2691,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -2749,7 +2749,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -2862,8 +2862,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -2919,8 +2919,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -2976,7 +2976,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Regular drinker"
       },
@@ -3033,8 +3033,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -3090,8 +3090,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -3147,8 +3147,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -3204,8 +3204,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -3261,8 +3261,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -3318,8 +3318,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -3427,7 +3427,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Regular drinker"
       },
@@ -3484,8 +3484,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -3541,8 +3541,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -3599,7 +3599,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
         "cohort_age": "50+",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -3655,8 +3655,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -3712,7 +3712,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -3764,7 +3764,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -3817,7 +3817,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
         "cohort_age": "50+",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -3873,7 +3873,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -3930,8 +3930,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -3987,8 +3987,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -4044,7 +4044,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -4101,7 +4101,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -4158,8 +4158,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -4216,7 +4216,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
         "cohort_age": "50+",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -4272,7 +4272,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Regular drinker"
       },
@@ -4329,8 +4329,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -4387,7 +4387,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Moderate",
         "cohort_age": "50+",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -4443,7 +4443,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker + drinker"
       },
@@ -4500,8 +4500,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -4557,8 +4557,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -4614,8 +4614,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -4671,8 +4671,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -4728,8 +4728,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -4785,8 +4785,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -4899,8 +4899,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -4957,7 +4957,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
         "cohort_age": "50+",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -5014,7 +5014,7 @@ window.WELO_FEED = {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
         "cohort_age": "50+",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -5060,7 +5060,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
@@ -5117,8 +5117,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -5174,8 +5174,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -5231,7 +5231,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker + drinker"
       },
@@ -5289,7 +5289,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
         "cohort_age": "50+",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -5397,8 +5397,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -5454,8 +5454,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -5507,7 +5507,7 @@ window.WELO_FEED = {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Critical",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -5672,7 +5672,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker + drinker"
       },
@@ -5729,7 +5729,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
@@ -5787,7 +5787,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
         "cohort_age": "50+",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -5843,8 +5843,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -5900,7 +5900,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
@@ -5958,7 +5958,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
         "cohort_age": "50+",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -6014,8 +6014,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -6071,8 +6071,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -6128,8 +6128,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -6180,7 +6180,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker + drinker"
       },
@@ -6295,7 +6295,7 @@ window.WELO_FEED = {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
         "cohort_age": "50+",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -6346,7 +6346,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Smoker"
       },
@@ -6403,8 +6403,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -6460,8 +6460,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -6512,7 +6512,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -6569,8 +6569,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -6683,8 +6683,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -6740,8 +6740,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -6797,8 +6797,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -6855,7 +6855,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -6911,8 +6911,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -6963,8 +6963,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -7020,7 +7020,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -7078,7 +7078,7 @@ window.WELO_FEED = {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Critical",
         "cohort_age": "50+",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -7134,7 +7134,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -7191,8 +7191,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -7249,7 +7249,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
         "cohort_age": "50+",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -7305,8 +7305,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -7362,8 +7362,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -7419,7 +7419,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Regular drinker"
       },
@@ -7476,7 +7476,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker + drinker"
       },
@@ -7533,8 +7533,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -7591,7 +7591,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
         "cohort_age": "50+",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -7647,8 +7647,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -7756,8 +7756,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -7803,7 +7803,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Smoker"
       },
@@ -7860,8 +7860,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -7917,7 +7917,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker + drinker"
       },
@@ -7974,8 +7974,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -8032,7 +8032,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
         "cohort_age": "50+",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -8088,8 +8088,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -8146,7 +8146,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
         "cohort_age": "50+",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -8254,8 +8254,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -8311,8 +8311,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -8420,7 +8420,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker + drinker"
       },
@@ -8477,7 +8477,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -8534,8 +8534,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -8591,8 +8591,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -8648,7 +8648,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker + drinker"
       },
@@ -8757,7 +8757,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -8814,7 +8814,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Smoker"
       },
@@ -8928,8 +8928,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -8985,8 +8985,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -9042,7 +9042,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -9099,8 +9099,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -9146,8 +9146,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -9203,8 +9203,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -9260,8 +9260,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -9374,7 +9374,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker + drinker"
       },
@@ -9431,8 +9431,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -9488,7 +9488,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker + drinker"
       },
@@ -9545,8 +9545,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -9602,8 +9602,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -9659,8 +9659,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -9773,7 +9773,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -9830,8 +9830,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -9887,8 +9887,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -9944,8 +9944,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -9996,8 +9996,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -10053,8 +10053,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -10162,7 +10162,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -10219,8 +10219,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -10276,8 +10276,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -10334,7 +10334,7 @@ window.WELO_FEED = {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Critical",
         "cohort_age": "50+",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -10390,8 +10390,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -10505,7 +10505,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
         "cohort_age": "50+",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -10561,7 +10561,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -10618,7 +10618,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker + drinker"
       },
@@ -10733,7 +10733,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
         "cohort_age": "50+",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -10784,8 +10784,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -10841,8 +10841,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -10898,8 +10898,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -10955,8 +10955,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -11012,8 +11012,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -11070,7 +11070,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
         "cohort_age": "50+",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -11126,8 +11126,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -11184,7 +11184,7 @@ window.WELO_FEED = {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Moderate",
         "cohort_age": "50+",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -11292,7 +11292,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
@@ -11349,8 +11349,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -11406,8 +11406,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -11464,7 +11464,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -11521,7 +11521,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
         "cohort_age": "50+",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -11577,8 +11577,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -11635,7 +11635,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -11691,8 +11691,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -11749,7 +11749,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
         "cohort_age": "50+",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -11805,8 +11805,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -11863,7 +11863,7 @@ window.WELO_FEED = {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
         "cohort_age": "50+",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -11920,7 +11920,7 @@ window.WELO_FEED = {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -11976,8 +11976,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -12033,7 +12033,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Smoker"
       },
@@ -12090,7 +12090,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker + drinker"
       },
@@ -12190,7 +12190,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
         "cohort_age": "50+",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -12246,8 +12246,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -12303,8 +12303,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -12417,8 +12417,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -12526,8 +12526,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -12583,8 +12583,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -12640,8 +12640,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -12697,8 +12697,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -12754,8 +12754,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -12811,7 +12811,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Smoker"
       },
@@ -12869,7 +12869,7 @@ window.WELO_FEED = {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Critical",
         "cohort_age": "50+",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -12925,8 +12925,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -12983,7 +12983,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
         "cohort_age": "50+",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -13039,8 +13039,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -13096,8 +13096,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -13205,7 +13205,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Regular drinker"
       },
@@ -13262,8 +13262,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -13319,8 +13319,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -13366,7 +13366,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -13423,7 +13423,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker + drinker"
       },
@@ -13480,8 +13480,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -13537,8 +13537,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -13594,8 +13594,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -13646,7 +13646,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Smoker"
       },
@@ -13703,7 +13703,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker + drinker"
       },
@@ -13761,7 +13761,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -13817,8 +13817,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -13874,8 +13874,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -13931,7 +13931,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -14045,8 +14045,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -14154,8 +14154,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -14211,7 +14211,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker + drinker"
       },
@@ -14320,8 +14320,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -14434,8 +14434,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -14491,8 +14491,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -14543,7 +14543,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker + drinker"
       },
@@ -14600,8 +14600,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -14657,7 +14657,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
@@ -14714,8 +14714,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -14771,8 +14771,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -14823,7 +14823,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Regular drinker"
       },
@@ -14880,8 +14880,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -14927,8 +14927,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -14984,8 +14984,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -15041,8 +15041,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -15098,8 +15098,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -15156,7 +15156,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
         "cohort_age": "50+",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -15212,7 +15212,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -15269,8 +15269,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -15326,8 +15326,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -15383,8 +15383,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -15441,7 +15441,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -15497,8 +15497,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -15554,7 +15554,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
@@ -15612,7 +15612,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -15668,8 +15668,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -15725,7 +15725,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -15782,8 +15782,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -15834,8 +15834,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -15891,8 +15891,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -15948,8 +15948,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -16000,8 +16000,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -16052,8 +16052,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -16109,8 +16109,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -16166,8 +16166,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -16224,7 +16224,7 @@ window.WELO_FEED = {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
         "cohort_age": "50+",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -16276,7 +16276,7 @@ window.WELO_FEED = {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
         "cohort_age": "50+",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -16333,7 +16333,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Moderate",
         "cohort_age": "50+",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -16389,8 +16389,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -16446,8 +16446,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -16498,8 +16498,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -16555,7 +16555,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Smoker"
       },
@@ -16612,7 +16612,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -16670,7 +16670,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -16727,7 +16727,7 @@ window.WELO_FEED = {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
         "cohort_age": "50+",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -16783,7 +16783,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -16841,7 +16841,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -16897,7 +16897,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Smoker"
       },
@@ -16954,8 +16954,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -17006,8 +17006,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -17063,8 +17063,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -17120,8 +17120,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -17177,8 +17177,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -17234,8 +17234,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -17292,7 +17292,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
         "cohort_age": "50+",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -17349,7 +17349,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -17405,8 +17405,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -17457,7 +17457,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -17514,7 +17514,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -17571,7 +17571,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -17628,8 +17628,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -17727,8 +17727,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -17784,8 +17784,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -17841,8 +17841,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -17898,8 +17898,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -18002,8 +18002,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -18049,7 +18049,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Regular drinker"
       },
@@ -18106,8 +18106,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -18159,7 +18159,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -18215,7 +18215,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker + drinker"
       },
@@ -18272,7 +18272,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -18329,8 +18329,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -18376,8 +18376,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -18433,8 +18433,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -18490,8 +18490,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -18548,7 +18548,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
         "cohort_age": "50+",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -18604,8 +18604,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -18656,7 +18656,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -18713,7 +18713,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -18770,8 +18770,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -18817,7 +18817,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker + drinker"
       },
@@ -18870,7 +18870,7 @@ window.WELO_FEED = {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
         "cohort_age": "50+",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -18921,7 +18921,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
@@ -18968,7 +18968,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -19020,8 +19020,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -19078,7 +19078,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -19135,7 +19135,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
         "cohort_age": "50+",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -19186,7 +19186,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -19300,8 +19300,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -19358,7 +19358,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Moderate",
         "cohort_age": "50+",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -19409,8 +19409,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -19466,8 +19466,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -19524,7 +19524,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -19580,7 +19580,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Regular drinker"
       },
@@ -19637,8 +19637,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -19694,8 +19694,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -19808,7 +19808,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -19865,8 +19865,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -19922,7 +19922,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker + drinker"
       },
@@ -19974,8 +19974,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -20031,8 +20031,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -20088,7 +20088,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker + drinker"
       },
@@ -20193,7 +20193,7 @@ window.WELO_FEED = {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
         "cohort_age": "50+",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -20249,8 +20249,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -20290,8 +20290,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -20347,8 +20347,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -20404,7 +20404,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -20461,8 +20461,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -20519,7 +20519,7 @@ window.WELO_FEED = {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
         "cohort_age": "50+",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -20571,7 +20571,7 @@ window.WELO_FEED = {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Critical",
         "cohort_age": "50+",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -20628,7 +20628,7 @@ window.WELO_FEED = {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Critical",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -20684,7 +20684,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -20742,7 +20742,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -20798,8 +20798,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -20856,7 +20856,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -20912,8 +20912,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -20969,7 +20969,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -21027,7 +21027,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -21074,7 +21074,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -21131,7 +21131,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
         "cohort_age": "50+",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -21240,7 +21240,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
         "cohort_age": "50+",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -21296,8 +21296,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -21405,8 +21405,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -21462,8 +21462,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -21515,7 +21515,7 @@ window.WELO_FEED = {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
         "cohort_age": "50+",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -21628,8 +21628,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -21685,8 +21685,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -21737,7 +21737,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker + drinker"
       },
@@ -21794,8 +21794,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -21851,8 +21851,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -21908,8 +21908,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -21965,7 +21965,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -22023,7 +22023,7 @@ window.WELO_FEED = {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -22075,7 +22075,7 @@ window.WELO_FEED = {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
         "cohort_age": "50+",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -22131,8 +22131,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -22189,7 +22189,7 @@ window.WELO_FEED = {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
         "cohort_age": "50+",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -22292,8 +22292,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -22349,7 +22349,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -22463,7 +22463,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -22578,7 +22578,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -22634,8 +22634,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -22691,8 +22691,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -22748,8 +22748,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -22805,8 +22805,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -22852,8 +22852,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -22909,7 +22909,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker + drinker"
       },
@@ -22966,7 +22966,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Smoker"
       },
@@ -23023,8 +23023,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -23128,7 +23128,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
         "cohort_age": "50+",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -23185,7 +23185,7 @@ window.WELO_FEED = {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Moderate",
         "cohort_age": "50+",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -23237,7 +23237,7 @@ window.WELO_FEED = {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -23293,7 +23293,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker + drinker"
       },
@@ -23350,7 +23350,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -23407,7 +23407,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker + drinker"
       },
@@ -23464,8 +23464,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -23511,8 +23511,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -23568,8 +23568,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -23625,7 +23625,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Regular drinker"
       },
@@ -23682,8 +23682,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -23739,7 +23739,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Smoker"
       },
@@ -23796,7 +23796,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -23848,8 +23848,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -23905,8 +23905,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -23962,7 +23962,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
@@ -24019,7 +24019,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Smoker"
       },
@@ -24076,7 +24076,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -24133,7 +24133,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -24190,7 +24190,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -24289,7 +24289,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Smoker"
       },
@@ -24346,8 +24346,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -24403,8 +24403,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -24460,7 +24460,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker + drinker"
       },
@@ -24517,7 +24517,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -24574,7 +24574,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
@@ -24631,8 +24631,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -24689,7 +24689,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -24745,7 +24745,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
@@ -24802,7 +24802,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -24859,8 +24859,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -24917,7 +24917,7 @@ window.WELO_FEED = {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Critical",
         "cohort_age": "50+",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -24973,7 +24973,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker + drinker"
       },
@@ -25030,8 +25030,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -25087,8 +25087,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -25144,7 +25144,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Regular drinker"
       },
@@ -25202,7 +25202,7 @@ window.WELO_FEED = {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -25258,8 +25258,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -25310,8 +25310,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -25367,7 +25367,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -25424,7 +25424,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -25472,7 +25472,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -25585,7 +25585,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -25643,7 +25643,7 @@ window.WELO_FEED = {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Moderate",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -25694,7 +25694,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Regular drinker"
       },
@@ -25751,8 +25751,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -25809,7 +25809,7 @@ window.WELO_FEED = {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
         "cohort_age": "50+",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -25865,8 +25865,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -25922,7 +25922,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -25979,8 +25979,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -26031,8 +26031,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -26089,7 +26089,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -26145,8 +26145,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -26203,7 +26203,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -26260,7 +26260,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
         "cohort_age": "50+",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -26316,8 +26316,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -26374,7 +26374,7 @@ window.WELO_FEED = {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
         "cohort_age": "50+",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -26426,7 +26426,7 @@ window.WELO_FEED = {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -26482,8 +26482,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -26539,8 +26539,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -26596,8 +26596,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -26653,8 +26653,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -26710,7 +26710,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Regular drinker"
       },
@@ -26767,8 +26767,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -26824,7 +26824,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -26881,7 +26881,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -26938,8 +26938,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -26995,7 +26995,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -27053,7 +27053,7 @@ window.WELO_FEED = {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -27109,8 +27109,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -27265,8 +27265,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -27323,7 +27323,7 @@ window.WELO_FEED = {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
         "cohort_age": "50+",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -27374,7 +27374,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker + drinker"
       },
@@ -27431,8 +27431,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -27488,7 +27488,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -27546,7 +27546,7 @@ window.WELO_FEED = {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Critical",
         "cohort_age": "50+",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -27597,8 +27597,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -27644,8 +27644,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -27701,8 +27701,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -27758,8 +27758,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -27815,8 +27815,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -27862,7 +27862,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Regular drinker"
       },
@@ -27914,7 +27914,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Regular drinker"
       },
@@ -27971,8 +27971,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -28029,7 +28029,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
         "cohort_age": "50+",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -28085,8 +28085,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -28143,7 +28143,7 @@ window.WELO_FEED = {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
         "cohort_age": "50+",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -28200,7 +28200,7 @@ window.WELO_FEED = {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
         "cohort_age": "50+",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -28246,8 +28246,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -28303,8 +28303,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -28360,7 +28360,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Smoker"
       },
@@ -28412,7 +28412,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Regular drinker"
       },
@@ -28469,8 +28469,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -28526,7 +28526,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker + drinker"
       },
@@ -28583,8 +28583,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -28635,8 +28635,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -28692,8 +28692,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -28749,8 +28749,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -28806,7 +28806,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Regular drinker"
       },
@@ -28864,7 +28864,7 @@ window.WELO_FEED = {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
         "cohort_age": "50+",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -28920,7 +28920,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Regular drinker"
       },
@@ -28977,8 +28977,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -29034,7 +29034,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Regular drinker"
       },
@@ -29091,8 +29091,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -29148,7 +29148,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker + drinker"
       },
@@ -29196,7 +29196,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
         "cohort_age": "50+",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -29253,7 +29253,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -29309,7 +29309,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -29366,8 +29366,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -29423,8 +29423,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -29480,8 +29480,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -29594,7 +29594,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Regular drinker"
       },
@@ -29651,8 +29651,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -29708,7 +29708,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -29766,7 +29766,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -29822,7 +29822,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker + drinker"
       },
@@ -29879,8 +29879,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -29931,8 +29931,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -29978,7 +29978,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker + drinker"
       },
@@ -30030,8 +30030,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -30087,8 +30087,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -30144,8 +30144,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -30186,7 +30186,7 @@ window.WELO_FEED = {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -30243,7 +30243,7 @@ window.WELO_FEED = {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
         "cohort_age": "50+",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -30299,8 +30299,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -30356,8 +30356,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -30413,7 +30413,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -30470,8 +30470,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -30527,8 +30527,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -30584,8 +30584,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -30642,7 +30642,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
         "cohort_age": "50+",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -30698,8 +30698,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -30813,7 +30813,7 @@ window.WELO_FEED = {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -30869,8 +30869,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -30926,7 +30926,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -30983,8 +30983,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -31041,7 +31041,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -31097,8 +31097,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -31154,7 +31154,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Regular drinker"
       },
@@ -31211,7 +31211,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -31268,8 +31268,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -31315,7 +31315,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -31373,7 +31373,7 @@ window.WELO_FEED = {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
         "cohort_age": "50+",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -31477,7 +31477,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -31533,8 +31533,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -31591,7 +31591,7 @@ window.WELO_FEED = {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
         "cohort_age": "50+",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -31637,7 +31637,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
@@ -31689,7 +31689,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -31741,7 +31741,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Smoker"
       },
@@ -31798,7 +31798,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -31855,8 +31855,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -31912,8 +31912,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -31969,8 +31969,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -32027,7 +32027,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
         "cohort_age": "50+",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -32140,7 +32140,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker + drinker"
       },
@@ -32197,8 +32197,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -32254,7 +32254,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -32312,7 +32312,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -32368,8 +32368,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -32415,7 +32415,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -32472,8 +32472,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -32529,7 +32529,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Regular drinker"
       },
@@ -32586,7 +32586,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -32644,7 +32644,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
         "cohort_age": "50+",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -32700,8 +32700,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -32757,8 +32757,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -32815,7 +32815,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -32872,7 +32872,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
         "cohort_age": "50+",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -32923,7 +32923,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -32981,7 +32981,7 @@ window.WELO_FEED = {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -33037,7 +33037,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -33089,8 +33089,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -33146,8 +33146,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -33203,8 +33203,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -33255,7 +33255,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Smoker"
       },
@@ -33312,8 +33312,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -33369,8 +33369,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -33410,8 +33410,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -33457,8 +33457,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -33515,7 +33515,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
         "cohort_age": "50+",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -33566,8 +33566,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -33680,8 +33680,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -33732,8 +33732,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -33789,8 +33789,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -33846,7 +33846,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Regular drinker"
       },
@@ -33903,8 +33903,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -33950,7 +33950,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
@@ -34002,8 +34002,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -34059,8 +34059,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -34116,7 +34116,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -34173,8 +34173,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -34230,7 +34230,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Regular drinker"
       },
@@ -34277,7 +34277,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -34334,8 +34334,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -34387,7 +34387,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -34443,7 +34443,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker + drinker"
       },
@@ -34495,8 +34495,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -34553,7 +34553,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -34604,7 +34604,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Regular drinker"
       },
@@ -34661,7 +34661,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -34718,7 +34718,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker + drinker"
       },
@@ -34765,8 +34765,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -34823,7 +34823,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -34879,7 +34879,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Smoker"
       },
@@ -34931,8 +34931,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -34988,7 +34988,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -35040,8 +35040,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -35092,8 +35092,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -35149,8 +35149,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -35196,7 +35196,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
@@ -35243,7 +35243,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -35295,8 +35295,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -35404,8 +35404,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -35451,8 +35451,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -35503,7 +35503,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Low",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
@@ -35544,8 +35544,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -35658,8 +35658,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -35716,7 +35716,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
         "cohort_age": "50+",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -35767,7 +35767,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
@@ -35820,7 +35820,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -35877,7 +35877,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -35933,7 +35933,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Smoker"
       },
@@ -35990,7 +35990,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -36047,7 +36047,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Regular drinker"
       },
@@ -36104,8 +36104,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -36145,7 +36145,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -36202,8 +36202,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -36254,8 +36254,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -36311,7 +36311,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker + drinker"
       },
@@ -36359,7 +36359,7 @@ window.WELO_FEED = {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -36410,7 +36410,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -36458,7 +36458,7 @@ window.WELO_FEED = {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
         "cohort_age": "50+",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -36509,7 +36509,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Smoker"
       },
@@ -36556,8 +36556,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -36608,7 +36608,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -36665,8 +36665,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -36722,7 +36722,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Regular drinker"
       },
@@ -36779,8 +36779,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -36836,8 +36836,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -36893,7 +36893,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -36950,8 +36950,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -37007,8 +37007,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -37064,8 +37064,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -37121,8 +37121,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -37173,7 +37173,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -37225,8 +37225,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -37282,8 +37282,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -37339,8 +37339,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -37396,7 +37396,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -37448,8 +37448,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -37505,7 +37505,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Regular drinker"
       },
@@ -37562,8 +37562,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -37619,8 +37619,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -37676,8 +37676,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -37733,7 +37733,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -37790,7 +37790,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Regular drinker"
       },
@@ -37838,7 +37838,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -37894,8 +37894,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -37946,7 +37946,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Regular drinker"
       },
@@ -38004,7 +38004,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
         "cohort_age": "50+",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -38060,7 +38060,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -38117,8 +38117,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -38231,8 +38231,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -38283,8 +38283,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -38335,7 +38335,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Smoker"
       },
@@ -38392,8 +38392,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -38445,7 +38445,7 @@ window.WELO_FEED = {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -38491,8 +38491,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -38548,7 +38548,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -38601,7 +38601,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -38714,8 +38714,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -38814,7 +38814,7 @@ window.WELO_FEED = {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -38865,7 +38865,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Regular drinker"
       },
@@ -38922,7 +38922,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -38979,8 +38979,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -39031,8 +39031,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -39088,7 +39088,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Regular drinker"
       },
@@ -39146,7 +39146,7 @@ window.WELO_FEED = {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
         "cohort_age": "50+",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -39202,8 +39202,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -39259,7 +39259,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Regular drinker"
       },
@@ -39311,8 +39311,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -39363,8 +39363,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -39421,7 +39421,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -39477,7 +39477,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -39535,7 +39535,7 @@ window.WELO_FEED = {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -39591,7 +39591,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -39644,7 +39644,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
         "cohort_age": "50+",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -39695,8 +39695,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -39752,8 +39752,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -39809,7 +39809,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker + drinker"
       },
@@ -39866,8 +39866,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -39923,8 +39923,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -39980,8 +39980,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -40033,7 +40033,7 @@ window.WELO_FEED = {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
         "cohort_age": "50+",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -40089,7 +40089,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Regular drinker"
       },
@@ -40146,8 +40146,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -40199,7 +40199,7 @@ window.WELO_FEED = {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Critical",
         "cohort_age": "50+",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -40255,7 +40255,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -40312,8 +40312,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -40369,8 +40369,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -40427,7 +40427,7 @@ window.WELO_FEED = {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -40483,8 +40483,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -40535,8 +40535,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -40593,7 +40593,7 @@ window.WELO_FEED = {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
         "cohort_age": "50+",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -40639,7 +40639,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker + drinker"
       },
@@ -40680,8 +40680,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -40732,8 +40732,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -40789,8 +40789,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -40836,8 +40836,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -40883,8 +40883,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -40940,7 +40940,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -40997,8 +40997,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -41049,8 +41049,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -41106,7 +41106,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -41163,7 +41163,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -41220,8 +41220,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -41277,8 +41277,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -41330,7 +41330,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -41386,8 +41386,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -41443,7 +41443,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker + drinker"
       },
@@ -41495,7 +41495,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -41552,8 +41552,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -41609,8 +41609,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -41666,8 +41666,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -41723,8 +41723,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -41781,7 +41781,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -41837,7 +41837,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -42008,8 +42008,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -42055,8 +42055,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -42107,8 +42107,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -42216,8 +42216,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -42263,8 +42263,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -42320,7 +42320,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -42377,8 +42377,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -42434,8 +42434,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -42486,8 +42486,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -42539,7 +42539,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -42647,8 +42647,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -42694,7 +42694,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker + drinker"
       },
@@ -42793,7 +42793,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker + drinker"
       },
@@ -42902,8 +42902,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -42959,8 +42959,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -43016,7 +43016,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -43073,8 +43073,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -43120,7 +43120,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Regular drinker"
       },
@@ -43177,8 +43177,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -43234,7 +43234,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -43291,8 +43291,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -43343,7 +43343,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -43401,7 +43401,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -43458,7 +43458,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -43514,8 +43514,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -43571,8 +43571,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -43675,8 +43675,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -43732,8 +43732,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -43789,7 +43789,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Smoker"
       },
@@ -43846,8 +43846,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -43903,8 +43903,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -43955,8 +43955,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -44064,8 +44064,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -44111,8 +44111,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -44168,7 +44168,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Smoker"
       },
@@ -44215,7 +44215,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -44273,7 +44273,7 @@ window.WELO_FEED = {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
         "cohort_age": "50+",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -44330,7 +44330,7 @@ window.WELO_FEED = {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
         "cohort_age": "50+",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -44376,8 +44376,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -44433,8 +44433,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Low",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -44480,8 +44480,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -44537,8 +44537,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -44594,7 +44594,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Smoker"
       },
@@ -44651,8 +44651,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -44761,7 +44761,7 @@ window.WELO_FEED = {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
         "cohort_age": "50+",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -44808,7 +44808,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
         "cohort_age": "50+",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -44864,8 +44864,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -44921,8 +44921,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -44979,7 +44979,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
         "cohort_age": "50+",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -45035,8 +45035,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -45092,8 +45092,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -45149,7 +45149,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -45190,7 +45190,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Regular drinker"
       },
@@ -45242,7 +45242,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker + drinker"
       },
@@ -45283,8 +45283,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -45335,7 +45335,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -45382,8 +45382,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -45439,7 +45439,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -45487,7 +45487,7 @@ window.WELO_FEED = {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
         "cohort_age": "50+",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -45544,7 +45544,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
         "cohort_age": "50+",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -45601,7 +45601,7 @@ window.WELO_FEED = {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
         "cohort_age": "50+",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -45648,7 +45648,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -45699,8 +45699,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -45756,8 +45756,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -45803,8 +45803,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -45856,7 +45856,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -45913,7 +45913,7 @@ window.WELO_FEED = {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Moderate",
         "cohort_age": "50+",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -45959,8 +45959,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -46006,8 +46006,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -46058,7 +46058,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -46115,8 +46115,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -46167,8 +46167,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -46214,8 +46214,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -46328,7 +46328,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -46386,7 +46386,7 @@ window.WELO_FEED = {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
         "cohort_age": "50+",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -46432,8 +46432,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -46479,8 +46479,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -46527,7 +46527,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -46583,7 +46583,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -46640,8 +46640,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -46697,8 +46697,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -46749,8 +46749,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -46806,7 +46806,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Regular drinker"
       },
@@ -46863,8 +46863,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -46920,7 +46920,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -47029,8 +47029,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -47086,7 +47086,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
@@ -47133,8 +47133,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -47190,8 +47190,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -47356,7 +47356,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -47413,7 +47413,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -47465,7 +47465,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Regular drinker"
       },
@@ -47517,8 +47517,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -47569,7 +47569,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -47627,7 +47627,7 @@ window.WELO_FEED = {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
         "cohort_age": "50+",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -47683,8 +47683,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -47740,8 +47740,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -47787,7 +47787,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
@@ -47839,7 +47839,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker + drinker"
       },
@@ -47953,7 +47953,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -48010,7 +48010,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Regular drinker"
       },
@@ -48067,7 +48067,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Regular drinker"
       },
@@ -48124,7 +48124,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -48171,8 +48171,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -48219,7 +48219,7 @@ window.WELO_FEED = {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -48275,8 +48275,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -48379,7 +48379,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Regular drinker"
       },
@@ -48426,8 +48426,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -48467,8 +48467,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -48520,7 +48520,7 @@ window.WELO_FEED = {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Critical",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -48633,8 +48633,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -48681,7 +48681,7 @@ window.WELO_FEED = {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
         "cohort_age": "50+",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -48727,7 +48727,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -48768,8 +48768,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -48815,7 +48815,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Regular drinker"
       },
@@ -48872,8 +48872,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -48929,8 +48929,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -48976,8 +48976,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -49033,7 +49033,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -49080,7 +49080,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -49127,7 +49127,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -49179,8 +49179,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -49232,7 +49232,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -49278,8 +49278,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -49335,8 +49335,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -49382,8 +49382,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -49423,8 +49423,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -49481,7 +49481,7 @@ window.WELO_FEED = {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
         "cohort_age": "50+",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -49527,8 +49527,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -49568,7 +49568,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -49615,8 +49615,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -49672,7 +49672,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Regular drinker"
       },
@@ -49719,8 +49719,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -49776,7 +49776,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -49828,7 +49828,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Regular drinker"
       },
@@ -49885,8 +49885,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -49937,7 +49937,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -49990,7 +49990,7 @@ window.WELO_FEED = {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
         "cohort_age": "50+",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -50041,7 +50041,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -50098,8 +50098,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -50155,8 +50155,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -50213,7 +50213,7 @@ window.WELO_FEED = {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Moderate",
         "cohort_age": "50+",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -50264,8 +50264,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -50316,7 +50316,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -50368,8 +50368,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -50421,7 +50421,7 @@ window.WELO_FEED = {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
         "cohort_age": "50+",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -50461,8 +50461,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -50508,8 +50508,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -50555,8 +50555,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -50613,7 +50613,7 @@ window.WELO_FEED = {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -50664,8 +50664,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -50716,7 +50716,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Smoker"
       },
@@ -50764,7 +50764,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
         "cohort_age": "50+",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -50820,8 +50820,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -50872,8 +50872,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -50929,8 +50929,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -50986,8 +50986,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -51043,8 +51043,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -51095,8 +51095,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -51152,7 +51152,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -51261,8 +51261,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -51302,8 +51302,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -51354,7 +51354,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -51411,7 +51411,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Regular drinker"
       },
@@ -51463,7 +51463,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -51515,8 +51515,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -51677,7 +51677,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
         "cohort_age": "50+",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -51728,8 +51728,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -51780,7 +51780,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Regular drinker"
       },
@@ -51837,8 +51837,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -51894,7 +51894,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Regular drinker"
       },
@@ -51951,8 +51951,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -52009,7 +52009,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -52065,8 +52065,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -52122,8 +52122,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -52232,7 +52232,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -52288,7 +52288,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -52345,8 +52345,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -52397,8 +52397,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -52454,8 +52454,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -52511,7 +52511,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Regular drinker"
       },
@@ -52568,8 +52568,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -52615,8 +52615,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -52672,8 +52672,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -52729,7 +52729,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -52786,7 +52786,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -52833,8 +52833,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -52947,8 +52947,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -52999,8 +52999,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -53051,8 +53051,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -53108,8 +53108,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -53149,8 +53149,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -53196,7 +53196,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Regular drinker"
       },
@@ -53248,8 +53248,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -53352,8 +53352,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -53409,8 +53409,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -53509,7 +53509,7 @@ window.WELO_FEED = {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -53560,7 +53560,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -53607,8 +53607,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -53659,8 +53659,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -53706,8 +53706,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -53747,7 +53747,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Regular drinker"
       },
@@ -53804,8 +53804,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -53852,7 +53852,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -53908,8 +53908,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -53961,7 +53961,7 @@ window.WELO_FEED = {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -54007,8 +54007,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -54059,8 +54059,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -54116,8 +54116,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -54163,7 +54163,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Regular drinker"
       },
@@ -54210,8 +54210,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -54257,7 +54257,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -54304,8 +54304,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -54352,7 +54352,7 @@ window.WELO_FEED = {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -54409,7 +54409,7 @@ window.WELO_FEED = {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -54460,8 +54460,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -54517,7 +54517,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Regular drinker"
       },
@@ -54564,7 +54564,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -54616,8 +54616,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -54668,8 +54668,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -54721,7 +54721,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -54778,7 +54778,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Moderate",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -54830,7 +54830,7 @@ window.WELO_FEED = {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
         "cohort_age": "50+",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -54870,8 +54870,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -54911,8 +54911,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -54958,7 +54958,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -55011,7 +55011,7 @@ window.WELO_FEED = {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -55068,7 +55068,7 @@ window.WELO_FEED = {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -55108,8 +55108,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -55160,8 +55160,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Low",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -55207,8 +55207,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -55264,7 +55264,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Regular drinker"
       },
@@ -55311,8 +55311,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -55358,8 +55358,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -55405,8 +55405,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -55452,7 +55452,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -55509,8 +55509,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -55550,7 +55550,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Regular drinker"
       },
@@ -55608,7 +55608,7 @@ window.WELO_FEED = {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Moderate",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -55721,8 +55721,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -55773,8 +55773,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -55830,8 +55830,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -55934,7 +55934,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Regular drinker"
       },
@@ -55986,8 +55986,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -56027,7 +56027,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
@@ -56079,8 +56079,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -56126,7 +56126,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -56178,7 +56178,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -56226,7 +56226,7 @@ window.WELO_FEED = {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -56277,7 +56277,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Regular drinker"
       },
@@ -56329,7 +56329,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker"
       },
@@ -56381,7 +56381,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -56434,7 +56434,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -56485,7 +56485,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -56526,7 +56526,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -56578,8 +56578,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -56625,7 +56625,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -56677,7 +56677,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -56729,8 +56729,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -56781,8 +56781,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -56833,8 +56833,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -56891,7 +56891,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -56947,7 +56947,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -57005,7 +57005,7 @@ window.WELO_FEED = {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -57051,8 +57051,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -57109,7 +57109,7 @@ window.WELO_FEED = {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -57155,7 +57155,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Smoker + drinker"
       },
@@ -57196,8 +57196,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -57248,8 +57248,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -57358,7 +57358,7 @@ window.WELO_FEED = {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -57410,7 +57410,7 @@ window.WELO_FEED = {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -57509,7 +57509,7 @@ window.WELO_FEED = {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -57565,8 +57565,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -57617,8 +57617,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -57664,7 +57664,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -57716,7 +57716,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -57763,8 +57763,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -57867,8 +57867,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -57914,8 +57914,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -57967,7 +57967,7 @@ window.WELO_FEED = {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -58018,8 +58018,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -58075,8 +58075,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -58127,8 +58127,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -58184,8 +58184,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -58236,8 +58236,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -58324,7 +58324,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Regular drinker"
       },
@@ -58365,8 +58365,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -58417,8 +58417,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -58464,8 +58464,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -58505,8 +58505,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -58552,8 +58552,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -58708,8 +58708,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Critical",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -58760,7 +58760,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -58807,8 +58807,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -58848,8 +58848,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -58895,7 +58895,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -58943,7 +58943,7 @@ window.WELO_FEED = {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "Critical",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -58994,8 +58994,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -59051,8 +59051,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -59092,7 +59092,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -59192,7 +59192,7 @@ window.WELO_FEED = {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -59243,7 +59243,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -59290,8 +59290,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -59446,8 +59446,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -59498,7 +59498,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
@@ -59545,8 +59545,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "High-intensity ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -59597,8 +59597,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -59639,7 +59639,7 @@ window.WELO_FEED = {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -59685,7 +59685,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -59726,8 +59726,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -59767,8 +59767,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -59814,7 +59814,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -59871,8 +59871,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -59912,8 +59912,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -60053,7 +60053,7 @@ window.WELO_FEED = {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -60093,7 +60093,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -60146,7 +60146,7 @@ window.WELO_FEED = {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {
@@ -60233,8 +60233,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -60285,8 +60285,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -60332,7 +60332,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -60379,8 +60379,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "40-49",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -60426,7 +60426,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -60473,8 +60473,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -60514,7 +60514,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -60555,7 +60555,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -60659,7 +60659,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -60701,7 +60701,7 @@ window.WELO_FEED = {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -60752,7 +60752,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
+        "cohort_age": "30-39",
         "cohort_tenure": "Veteran (10y+)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
@@ -60794,7 +60794,7 @@ window.WELO_FEED = {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker + drinker"
       },
       "attrs": {
@@ -60845,8 +60845,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -60886,7 +60886,7 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "40\u201349",
+        "cohort_age": "40-49",
         "cohort_tenure": "New (<2y)",
         "cohort_lifestyle": "Smoker"
       },
@@ -60927,8 +60927,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -60980,7 +60980,7 @@ window.WELO_FEED = {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Regular drinker"
       },
       "attrs": {
@@ -61027,7 +61027,7 @@ window.WELO_FEED = {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
         "cohort_age": "50+",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -61079,7 +61079,7 @@ window.WELO_FEED = {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -61120,7 +61120,7 @@ window.WELO_FEED = {
         "cohort_load": "Light duty",
         "cohort_fatigue": "High",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -61160,8 +61160,8 @@ window.WELO_FEED = {
       "cohorts": {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "Moderate",
-        "cohort_age": "30\u201339",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_age": "30-39",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -61208,7 +61208,7 @@ window.WELO_FEED = {
         "cohort_load": "Standard ops",
         "cohort_fatigue": "High",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Experienced (5\u201310y)",
+        "cohort_tenure": "Experienced (5-10y)",
         "cohort_lifestyle": "Low lifestyle risk"
       },
       "attrs": {
@@ -61255,7 +61255,7 @@ window.WELO_FEED = {
         "cohort_load": "Light duty",
         "cohort_fatigue": "Moderate",
         "cohort_age": "Under 30",
-        "cohort_tenure": "Established (2\u20135y)",
+        "cohort_tenure": "Established (2-5y)",
         "cohort_lifestyle": "Smoker"
       },
       "attrs": {

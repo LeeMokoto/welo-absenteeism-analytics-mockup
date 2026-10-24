@@ -1327,7 +1327,8 @@ table { border-collapse: collapse; width: 100%; }
 [data-theme="logistics"]     { --red:#4338CA; --red-bright:#5B4FD6; --red-deep:#352AA0; --red-soft:#EAE8FB; --red-faint:#F4F3FD; }
 
 /* Trend-chart SVG uses hardcoded brand red; map it onto the themed accent
-   (identical to red under the mining theme, so this is safe everywhere). */
+   (identical to red under the default industrial theme, which keeps the Welo
+   brand ramp, so this is safe everywhere). */
 .trend-chart polyline[stroke="#C0392B"] { stroke: var(--red); }
 .trend-chart circle[stroke="#C0392B"]   { stroke: var(--red); }
 .trend-chart circle[fill="#C0392B"]     { fill: var(--red); }
@@ -1364,9 +1365,9 @@ table { border-collapse: collapse; width: 100%; }
 // Set the industry accent theme before first paint (no colour flash).
 (function () {
   try {
-    var k = (new URLSearchParams(location.search).get('industry') || 'mining')
+    var k = (new URLSearchParams(location.search).get('industry') || 'industrial')
       .toLowerCase().replace(/[^a-z]/g, '');
-    document.documentElement.dataset.theme = k || 'mining';
+    document.documentElement.dataset.theme = k || 'industrial';
   } catch (e) {}
 })();
 </script>
@@ -1462,7 +1463,7 @@ table { border-collapse: collapse; width: 100%; }
       <div class="card-watermark">01</div>
       <div class="metric-label">Covered lives</div>
       <div class="metric-value"><span data-welo="metric:covered_lives">6,000</span></div>
-      <div class="metric-detail" data-ind="metric-covered-detail">scored mining cohort</div>
+      <div class="metric-detail" data-ind="metric-covered-detail">scored industrial workforce</div>
       <div class="metric-sub" style="color: var(--ink-mute)">
         full model scope
       </div>
@@ -1827,7 +1828,7 @@ table { border-collapse: collapse; width: 100%; }
     <div class="panel-header">
       <div>
         <div class="panel-title">Chronic disease hotspots · cohort × condition</div>
-        <div class="panel-sub" data-ind="chronic-sub">% screened positive by operational-load cohort · anchored to SA mining-cohort benchmarks until pilot screening lands</div>
+        <div class="panel-sub" data-ind="chronic-sub">% screened positive by operational-load cohort · anchored to published SA frontline workforce benchmarks until pilot screening lands</div>
       </div>
       <span class="chip amber">Benchmark-anchored</span>
     </div>
@@ -2020,7 +2021,7 @@ table { border-collapse: collapse; width: 100%; }
     <div>
       <div class="eyebrow">Individual view</div>
       <h1 class="screen-title">Down to the <span style="color: var(--red)">individual</span>.</h1>
-      <div class="screen-sub">The model scores every covered life. High and critical employees are listed first. Click any row for the full prediction, drivers and profile. <span style="color:var(--ink-faint)" data-ind="individuals-disclaimer">IDs are synthetic mining-cohort records, not real people.</span></div>
+      <div class="screen-sub">The model scores every covered life. High and critical employees are listed first. Click any row for the full prediction, drivers and profile. <span style="color:var(--ink-faint)" data-ind="individuals-disclaimer">IDs are synthetic industrial workforce records, not real people.</span></div>
     </div>
     <div class="screen-context">
       <span data-welo="individuals-context">high &amp; critical first</span>
@@ -2215,7 +2216,7 @@ table { border-collapse: collapse; width: 100%; }
       <div class="card-watermark">01</div>
       <div class="metric-label">Predicted absence rate</div>
       <div class="metric-value"><span data-welo="hr:absence_rate">5.3</span>%</div>
-      <div class="metric-detail" data-ind="hr-absence-detail">annualised · vs ~4% SA mining benchmark</div>
+      <div class="metric-detail" data-ind="hr-absence-detail">annualised · vs ~4% SA industrial benchmark</div>
     </div>
     <div class="metric-card highlight">
       <div class="card-watermark">02</div>
@@ -2476,7 +2477,7 @@ table { border-collapse: collapse; width: 100%; }
     <div>
       <div class="eyebrow">Outcomes</div>
       <h1 class="screen-title">Numbers that move boards, <br><span style="color: var(--ink-faint)">not just HR decks.</span></h1>
-      <div class="screen-sub" data-ind="roi-sub">Projected impact across the 6,000-life mining cohort · benchmark-anchored on model output.</div>
+      <div class="screen-sub" data-ind="roi-sub">Projected impact across a 6,000-life industrial workforce · illustrative, benchmark-anchored on model output.</div>
     </div>
     <div class="client-select">
       <span class="client-select-name">All cohorts</span>
@@ -2719,9 +2720,10 @@ table { border-collapse: collapse; width: 100%; }
 <script src="config/agents.js" onerror="window.WeloAgents=null;"></script>
 <script>
 // Load the feed for the selected industry. Manufacturing and logistics have
-// their own sector-calibrated cohort; mining and generic share the mining feed.
+// their own sector-calibrated cohort; industrial, mining and generic share the
+// base feed, which is the one the model was actually fitted on.
 (function () {
-  var k = (new URLSearchParams(location.search).get('industry') || 'mining').toLowerCase().replace(/[^a-z]/g, '');
+  var k = (new URLSearchParams(location.search).get('industry') || 'industrial').toLowerCase().replace(/[^a-z]/g, '');
   var sector = { manufacturing: 1, logistics: 1 };
   var file = sector[k] ? 'dashboard_feed.' + k + '.js' : 'dashboard_feed.js';
   document.write('<scr' + 'ipt src="model/data/outputs/' + file + '" onerror="window.WELO_FEED=null;"><\/scr' + 'ipt>');
@@ -2729,15 +2731,16 @@ table { border-collapse: collapse; width: 100%; }
 </script>
 
 <script>
-// Industry framing: pick the profile from ?industry=<key> (default mining) and
-// apply its copy to the [data-ind] elements. Falls back to the mining wording
-// baked into the markup if the config is missing.
+// Industry framing: pick the profile from ?industry=<key> (default industrial)
+// and apply its copy to the [data-ind] elements. Falls back to the sector
+// neutral wording baked into the markup if the config is missing, so a missing
+// config never silently reframes the demo as one particular vertical.
 (function welo_industry() {
   const profiles = window.WELO_PROFILES;
   if (!profiles) return;
   const params = new URLSearchParams(location.search);
-  const key = (params.get('industry') || 'mining').toLowerCase();
-  const themeKey = profiles[key] ? key : 'mining';
+  const key = (params.get('industry') || 'industrial').toLowerCase();
+  const themeKey = profiles[key] ? key : 'industrial';
   const profile = profiles[themeKey];
   document.documentElement.dataset.theme = themeKey;
   if (profile.title) document.title = profile.title;
@@ -2746,7 +2749,8 @@ table { border-collapse: collapse; width: 100%; }
   });
 
   // Sector benchmarks: re-skin the two clinical heatmaps + seasonality panels.
-  // Mining/generic have no `benchmarks` block, so they keep the static markup.
+  // Industrial, mining and generic have no `benchmarks` block, so they keep the
+  // static markup.
   if (profile.benchmarks) applyBenchmarks(profile.benchmarks);
 
   // Preview-only switcher: add ?preview=1 to the URL to flip between versions.
@@ -2960,7 +2964,7 @@ updateScenario(parseInt(slider.value));
       const cell = document.createElement('div');
       cell.className = 'cal-cell';
 
-      // Seasonality pattern: mining default, or the sector pattern set by the
+      // Seasonality pattern: the base pattern, or the sector pattern set by the
       // industry profile (window.__WELO_SEASON).
       const S = window.__WELO_SEASON || {
         monday: 1.5, friday: 0.8, sat: -0.4, sun: -0.6,
@@ -3065,7 +3069,7 @@ window.addEventListener('load', () => {
   setZar('[data-welo="metric:projected_addressable_saving_rand"]', h.projected_addressable_saving_rand, 'mag');
 
   // Outcomes & ROI screen: drive the headline money and scale the illustrative
-  // seasonality / driver splits to this cohort (mining ratios = 1, so unchanged).
+  // seasonality / driver splits to this cohort (base ratios = 1, so unchanged).
   const annualDays = h.predicted_absent_days_annual || 76462;
   const saveRatio = (h.projected_addressable_saving_rand || 3532544) / 3532544;
   const daysRatio = annualDays / 76462;

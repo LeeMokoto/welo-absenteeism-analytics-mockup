@@ -1,6 +1,6 @@
 """Sector-calibrated synthetic cohorts.
 
-Same data-generating process as the mining cohort (so the model's learned
+Same data-generating process as the base industrial cohort (so the model's learned
 relationships between risk factors and absence are preserved) but with the
 INPUT distributions re-calibrated to each sector's workforce norms. Only the
 population changes, not the model.
@@ -8,14 +8,15 @@ population changes, not the model.
 The calibrations are illustrative, anchored to plausible South African
 sector norms (sedentary line/driving work carries higher BMI; logistics runs
 longer hours and worse sleep; manufacturing is lighter and more stable than
-deep-level mining). They stay illustrative until real client data lands, and
+deep-level heavy industry). They stay illustrative until real client data
+lands, and
 every row is tagged with its sector source_dataset so it can be filtered out.
 """
 from __future__ import annotations
 import numpy as np
 import pandas as pd
 
-# Baseline knobs match welo_pipeline.adapters.synthetic (the mining cohort).
+# Baseline knobs match welo_pipeline.adapters.synthetic (the base cohort).
 _BASE = dict(
     age_mean=38.0, age_std=9.0, gender_m=0.82,
     smoking_p=[0.42, 0.20, 0.13, 0.25],      # Never/Former/Occasional/Daily
@@ -77,7 +78,7 @@ def generate_cohort(sector: str, n_rows: int = 6000, random_seed: int = 7) -> pd
     consecutive_shifts = rng.poisson(lam=p["consec_lambda"], size=n).clip(0, 21).astype(int)
     days_since_leave = np.clip(rng.gamma(shape=2.0, scale=55, size=n), 0, 365).round().astype(int)
 
-    # Fatigue composite and absence DGP: identical to the mining generator.
+    # Fatigue composite and absence DGP: identical to the base generator.
     sleep_deficit = np.clip(6.5 - sleep_hours, 0, None)
     overtime_contrib = np.minimum(overtime_14d / 40.0 * 25.0, 25.0)
     shift_contrib = np.minimum(consecutive_shifts / 14.0 * 15.0, 15.0)

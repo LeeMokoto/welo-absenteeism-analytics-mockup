@@ -2,7 +2,7 @@
   "n_rows": 6000,
   "n_cols": 24,
   "rows_per_source": {
-    "synthetic_mining_v1__glencore_sa_mining": 5800,
+    "synthetic_industrial_v1__sa_shift_workforce": 5800,
     "uci_absenteeism": 200
   },
   "missingness_pct": {

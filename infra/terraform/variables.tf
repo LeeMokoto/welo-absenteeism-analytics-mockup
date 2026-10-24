@@ -215,6 +215,7 @@ variable "bucket_prefix" {
 variable "tenants" {
   type = map(object({
     display_name          = string
+    descriptor            = optional(string, "A multi-site industrial operation")
     environment           = optional(string, "demo")
     synthetic             = optional(bool, true)
     suppression_threshold = optional(number, 5)
@@ -254,7 +255,7 @@ variable "tenants" {
   EOT
   default = {
     demo = {
-      display_name = "Demo tenant"
+      display_name = "Demo Industrial Group"
       environment  = "demo"
       synthetic    = true
     }

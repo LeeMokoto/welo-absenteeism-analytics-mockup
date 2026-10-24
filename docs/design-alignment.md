@@ -389,6 +389,36 @@ Not alignment issues, but worth resolving before a client reads them.
   Vertex AI, so the permission preceded the client's written section 72
   approval. Now gated on `enable_agents` as well, with two tests asserting the
   permission is absent while agents are off and present when they are on.
+- **The demo tenant was framed as a mining division, and the solution design
+  describes mining clients.** The demo is the artifact distributed to
+  prospective buyers, most of whom are not miners, so the tenant that ships is
+  now a sector-neutral blue collar industrial employer. The mining framing is
+  one selectable profile rather than the baseline. The decision is held by
+  `lib/platform/demoVocabulary.test.mjs`, which fails if a named client or a
+  word only one vertical uses reaches a demo surface.
+- **The synthetic cohort was labelled `synthetic_mining_v1__glencore_sa_mining`,
+  which named a client whose data was never used.** The label was misleading in
+  both directions: it put a prospective buyer's competitor in the model card,
+  and it implied Glencore data was in the training set when none was. Now
+  `synthetic_industrial_v1__sa_shift_workforce`. The calibration anchor is
+  unchanged and is stated plainly in the adapter docstring, `MODEL_README.md`
+  and the README: the input distributions are anchored to published South
+  African mining-cohort epidemiology, because that is the best-documented
+  published source for a South African frontline workforce on a shift roster.
+  Relabelling the provenance string changed no prediction, because
+  `source_dataset` is carried alongside the feature matrix rather than inside
+  it.
+- **CI was not running the RBAC unit tests.** The step used the glob
+  `modules/**/*.test.mjs`, which without `globstar` expands one level, so every
+  test under `lib/` was silently skipped, including the role matrix added with
+  the mocked sign-in. The step now names both roots and fails if it collects
+  fewer test files than exist.
+- **Nothing asserted the tenant manifest contract.** The environment variables
+  Terraform emits are the only thing connecting the module to
+  `lib/platform/manifest.js`, and a key added on one side and missed on the
+  other produces a tenant that falls back to a default rather than failing. Two
+  tests now assert the full key set and the descriptor's value, verified by
+  removing the wiring and watching them fail.
 
 ## What to do first
 

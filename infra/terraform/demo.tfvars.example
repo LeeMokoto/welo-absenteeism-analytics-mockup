@@ -39,9 +39,20 @@ image = "africa-south1-docker.pkg.dev/absenteeism-demo/welo/welo-inference:lates
 # `terraform output tenant_platform_env` for you to set there. Turning it true
 # also runs the Next.js app on Cloud Run, which costs about USD 14 a month more
 # and is worth doing when you want to show the whole stack inside GCP.
+#
+# The demo tenant is a sector-neutral blue collar employer, because this is the
+# tenant that goes to prospective buyers and most of them are not miners. The
+# synthetic workforce behind it is shift-based frontline operations across two
+# plants, a distribution centre and a depot, which a manufacturer, a logistics
+# operator, a contractor or a mine can all map their own sites onto.
+#
+# Before a specific prospect meeting, set display_name and descriptor to their
+# company and their words. Nothing else needs to change, and the data stays
+# synthetic.
 tenants = {
   demo = {
-    display_name = "Demo tenant"
+    display_name = "Demo Industrial Group"
+    descriptor   = "A multi-site industrial operation"
     environment  = "demo"
     synthetic    = true
 

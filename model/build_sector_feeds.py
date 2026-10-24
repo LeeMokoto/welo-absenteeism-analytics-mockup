@@ -1,7 +1,7 @@
 """Build sector dashboard feeds (manufacturing, logistics).
 
 Generates a sector-calibrated synthetic cohort, scores it with the SAME
-persisted model as mining (one model, different populations), then runs the
+persisted model as the base cohort (one model, different populations), then runs the
 shared enrichment to produce data/outputs/dashboard_feed.<sector>.json / .js.
 Global feature importance and model metrics are reused from the trained model,
 since the model itself is unchanged; SHAP per-row reasons are omitted for the
@@ -27,8 +27,8 @@ THRESHOLDS = {"low": 4, "medium": 16, "high": 40}  # from configs/demo.yaml
 MODELS_DIR = f"{ROOT}/models"
 
 # Reuse the trained model's global importance + metrics (model is unchanged).
-_mining = json.load(open(f"{ROOT}/data/outputs/dashboard_feed.json"))
-GLOBAL_IMPORTANCE = pd.DataFrame(_mining["global_feature_importance"])
+_base = json.load(open(f"{ROOT}/data/outputs/dashboard_feed.json"))
+GLOBAL_IMPORTANCE = pd.DataFrame(_base["global_feature_importance"])
 METRICS = json.load(open(f"{ROOT}/reports/model_metrics.json"))
 
 

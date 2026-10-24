@@ -97,13 +97,13 @@ DIMENSIONS = [
      "order": ["Critical", "High", "Moderate", "Low"],
      "blurb": "Composite fatigue & burnout score band, the single strongest driver in the model."},
     {"key": "cohort_age",       "label": "Age band",
-     "order": ["Under 30", "30–39", "40–49", "50+"],
+     "order": ["Under 30", "30-39", "40-49", "50+"],
      # Protected under the Employment Equity Act: reportable, never targetable,
      # and suppressed at a higher minimum than the other dimensions.
      "protected": True, "min_cohort": PROTECTED_MIN_COHORT,
      "blurb": "Age cohort. Metabolic and chronic-disease risk rises with age. A protected attribute: reported at a higher minimum cohort size and never available for targeting."},
     {"key": "cohort_tenure",    "label": "Tenure band",
-     "order": ["New (<2y)", "Established (2–5y)", "Experienced (5–10y)", "Veteran (10y+)"],
+     "order": ["New (<2y)", "Established (2-5y)", "Experienced (5-10y)", "Veteran (10y+)"],
      "blurb": "Time in service: onboarding strain vs. long-service chronic load."},
     {"key": "cohort_lifestyle", "label": "Lifestyle risk",
      "order": ["Smoker + drinker", "Smoker", "Regular drinker", "Low lifestyle risk"],
@@ -142,9 +142,9 @@ def add_cohort_columns(df):
     df["cohort_load"] = np.where(load_score > 0.6, "High-intensity ops",
                         np.where(load_score < -0.4, "Light duty", "Standard ops"))
     df["cohort_age"] = _band(df["age"], [0, 30, 40, 50, 200],
-                             ["Under 30", "30–39", "40–49", "50+"]).astype(str)
+                             ["Under 30", "30-39", "40-49", "50+"]).astype(str)
     df["cohort_tenure"] = _band(df["tenure_years"], [0, 2, 5, 10, 100],
-                                ["New (<2y)", "Established (2–5y)", "Experienced (5–10y)", "Veteran (10y+)"]).astype(str)
+                                ["New (<2y)", "Established (2-5y)", "Experienced (5-10y)", "Veteran (10y+)"]).astype(str)
     df["cohort_fatigue"] = df["fatigue_band"].str.capitalize()
     df["cohort_lifestyle"] = np.where(
         df["smoking_status"].isin(["Daily", "Occasional"]) & df["alcohol_frequency"].isin(["Regularly", "Heavy"]),
