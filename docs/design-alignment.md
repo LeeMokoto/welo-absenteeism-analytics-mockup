@@ -519,29 +519,111 @@ refuse. Outcome measurement is still blocked on the schema time axis, so a
 playbook reports an observed difference against comparable cohorts over a fixed
 period and says in as many words that this is not evidence it caused anything.
 
+## Outcome tracking, built
+
+The schema decision was monthly snapshots. The canonical extract is now 25
+columns: `period_start` and `data_as_of` ahead of the 23 that were there.
+
+`period_start` is the first day of the month a row describes. `data_as_of` is
+when the extract was taken, which is a different thing and is why both exist: a
+month is restated as late certificates arrive, so two extracts of the same month
+disagree and neither is wrong. Without the second field a reader cannot tell
+which vintage they are holding.
+
+Both are **required**, not NA-filled. `BaseAdapter._coerce_to_canonical` used to
+fill every missing canonical column with NA, which was fine for a body
+measurement the imputer handles and became dangerous the moment the time axis
+arrived: an extract with no period would have passed ingest and produced an
+undated dataset that looks complete, surfacing months later as an outcome report
+nobody can compute. Four columns are now refused rather than invented, and an
+adapter for a source that genuinely has no period has to set one explicitly and
+say so, which is what the UCI subset now does against its documented window.
+
+### The four decisions
+
+**Comparators freeze when the intervention is created.** Chosen after the
+result, they are the ones that flatter it, and nobody doing that experiences
+themselves as cheating. The write API picks them once, from the other reportable
+cohorts of the same dimension, and stores them on the record. A caller-supplied
+comparators field is ignored. There is no fallback to a live list: an
+intervention with none is reported as unmeasurable, which is a better outcome
+than a measurable one assembled in hindsight. One seeded record is deliberately
+in that state so the refusal is visible.
+
+**Cohort membership freezes at the baseline period.** `cohort_load` is banded on
+within-period z-scores, so a roster change that lowers overtime would re-band
+those people out of the high-load cohort and the group measured at the end would
+not be the group the intervention named. The series fixes membership at baseline
+and follows it, and a test asserts the headcount cannot move between periods.
+
+**Suppression holds across the series.** A cohort visible in one month and
+withheld in the next leaks the withheld count through the difference, so a
+cohort under the floor is withheld for every period rather than per period. A
+frozen comparator that is withheld is carried through marked as withheld rather
+than dropped, so a reader can see the comparison is narrower than the one
+registered.
+
+**No single percentage improvement is published.** The measurement returns the
+targeted change, the comparator change, and the difference between them, with no
+field that collapses them into one number and no percentage anywhere. A test
+asserts the refusal. The difference is deliberately not called an effect: it is
+what is left after removing the movement common to cohorts nobody intervened on,
+which is a better estimate than the raw change and still not a causal one. The
+caveat names the selection problem, because a cohort picked for being extreme
+moves toward the average on its own and that is the thing a reader is least
+likely to think of.
+
+### What the measure is
+
+Actual absence, not predicted absence. The model targets; the actuals measure.
+Measuring an intervention with the model that selected the cohort for it would
+be measuring our own prediction and would report a success whenever the model
+revised its view. `build_outcome_series.py` loads no model.
+
+### The demo series, stated plainly
+
+Twelve monthly periods. The intervention is simulated **mechanistically**: from
+April the targeted cohort's overtime falls and consecutive shifts are capped,
+and the absence that follows is whatever the data-generating process produces.
+No outcome is written in by hand. A winter term is layered on every cohort,
+because South African absence rises June to August for reasons not in the
+feature set.
+
+That combination produces the case worth showing. The targeted cohort's raw
+change is 1.4 days per head lower, the comparators moved 0.9 days per head
+*higher* on winter alone, and the honest estimate is therefore 2.3 days lower,
+larger than the naive before-and-after. July on its own reads worse than
+baseline. So the naive read understates the change overall and panics in the
+middle, and the comparator correction fixes both. It is worth knowing that
+careful measurement here finds more than the careless kind, not less.
+
+On a client's data the mechanism is unknown, and the platform reports an
+observed difference rather than a cause.
+
+### What this unblocks and what it does not
+
+Unblocked: outcome tracking, and the model history window now has a field to
+rest on. Still absent: model gating, the backtest and the drift monitoring, all
+of which need a trained-per-tenant model rather than just a time axis. The copy
+on `/absence/outcomes` still says so.
+
 ## What to do first
 
-Items 1, 3 and 4 of the original list are done and recorded above. What is left
+The schema time axis is settled and built, and is recorded above. What is left
 needs a decision rather than a commit, in the order that the cost of delay
 suggests:
 
-1. **Settle the schema time axis.** The canonical extract is 23 columns with no
-   date, period or `as_of`. That blocks outcome tracking, the model history
-   window, model gating and lineage, all at once, and it is the only item here
-   that blocks building rather than deciding. Note that the two modules already
-   disagree: the absence model is scalar per employee, while sick leave is
-   episode-level with dated spells.
-2. **Settle the project name** before more is built in `absenteeism-demo`. A
+1. **Settle the project name** before more is built in `absenteeism-demo`. A
    project cannot be renamed.
-3. **Split the Analyst role, or change the sentence.** The document says no role
+2. **Split the Analyst role, or change the sentence.** The document says no role
    sees data below cohort level and then gives Analyst the Case Assistant, which
    sits on an individual case view. Both cannot hold, and the code implements
    the role table, so an HR business partner currently has an occupational
    health nurse's reach. See 7a.
-4. **Decide whether the manifest standard is the target or the specification.**
+3. **Decide whether the manifest standard is the target or the specification.**
    Seven of twelve fields are absent, and the document says the pipeline
    validates all of them before any deployment.
-5. **Soften two sentences in the document** to match what now exists: the image
+4. **Soften two sentences in the document** to match what now exists: the image
    guardrail blocks on a fixable critical finding, and the scanner is Trivy in
    CI rather than Artifact Registry. Registry scanning of published images
    remains a genuine gap.

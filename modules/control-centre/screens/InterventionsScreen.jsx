@@ -15,6 +15,8 @@ import {
   listInterventions,
   seeded,
 } from "../store";
+import { blockers, measureOutcome, summarise } from "../outcomes";
+import { cohortSeries } from "../data/series";
 
 /*
   Interventions register.
@@ -184,22 +186,11 @@ function InterventionCard({ record, dimensions }) {
         </tbody>
       </table>
 
-      {record.outcome?.measured ? (
-        <div style={{ marginTop: 14 }}>
-          <div className="caption">
-            Observed against {record.outcome.comparators.join(" and ")}
-          </div>
-          <div style={{ fontSize: 18, fontWeight: 600, letterSpacing: "-0.02em", marginTop: 4 }}>
-            {record.outcome.baseline_days_per_head} to {record.outcome.observed_days_per_head} days
-            per head
-          </div>
-          <div className="indicative" style={{ marginTop: 8 }}>{record.outcome.note}</div>
-        </div>
-      ) : (
-        <div className="indicative" style={{ marginTop: 14 }}>
-          No outcome yet. Measurement starts once the intervention has run a full period.
-        </div>
-      )}
+      {/* Computed from the monthly series, never stored on the record. The
+          figures used to be two hand-written numbers, which meant the one
+          screen making a claim about whether the product works was the one
+          screen with no measurement behind it. */}
+      <Outcome record={record} />
 
       {record.source === "local" ? (
         <div className="indicative" style={{ marginTop: 10 }}>
@@ -395,6 +386,57 @@ function Field({ label, value, onChange, placeholder }) {
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
       />
+    </div>
+  );
+}
+
+/*
+  The outcome, or the reason there is not one.
+
+  Three states, and the middle one is the one that matters: measurable,
+  blocked with the reason stated, and not yet run. A screen that renders
+  "no outcome yet" for an intervention whose comparators were never frozen
+  teaches the reader to wait for a number that is never coming.
+*/
+function Outcome({ record }) {
+  const why = blockers(record, cohortSeries);
+  const outcome = why.length ? null : measureOutcome(record, cohortSeries);
+  const said = summarise(outcome);
+
+  if (!said) {
+    return (
+      <div className="indicative" style={{ marginTop: 14 }}>
+        Not measurable yet: {why.join("; ")}.
+      </div>
+    );
+  }
+
+  return (
+    <div style={{ marginTop: 14, paddingTop: 12, borderTop: "1px solid var(--line-soft)" }}>
+      <div className="caption">
+        Measured against {outcome.comparators.map((c) => c.cohort).join(" and ")}
+      </div>
+
+      <div style={{ fontSize: 15, marginTop: 6 }}>{said.raw}</div>
+      <div style={{ fontSize: 13, color: "var(--ink-mute)", marginTop: 6 }}>{said.context}</div>
+
+      {said.headline ? (
+        <div
+          style={{
+            marginTop: 10,
+            paddingTop: 10,
+            borderTop: "1px solid var(--line-soft)",
+            fontSize: 15,
+            fontWeight: 600,
+            letterSpacing: "-0.01em",
+          }}
+        >
+          {said.headline}
+        </div>
+      ) : null}
+
+      <div className="indicative" style={{ marginTop: 10 }}>{said.caveat}</div>
+      <div className="caption" style={{ marginTop: 8 }}>{said.provenance}</div>
     </div>
   );
 }

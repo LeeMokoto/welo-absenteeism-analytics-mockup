@@ -33,3 +33,7 @@ public/absenteeism/
 # Generated absence module screen data (built from the pipeline feed by
 # scripts/build-absence-module-data.mjs before each build).
 modules/absence/data/portfolio.js
+
+# Generated control centre monthly series (built from the pipeline by
+# scripts/build-control-centre-data.mjs before each build).
+modules/control-centre/data/series.js

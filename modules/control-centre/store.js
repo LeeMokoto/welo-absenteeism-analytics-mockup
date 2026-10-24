@@ -40,19 +40,16 @@ const SEEDED = [
     target: [{ dimension: "cohort_load", cohort: "High-intensity ops" }],
     headcount: 2030,
     owner: "Operations lead",
-    created: "2026-08-14",
+    created: "2026-04-02",
     due: "2026-11-30",
     status: "Measuring",
     rationale:
       "Highest absence per head and the cohort where rostering is a lever Welo can actually pull. Consecutive-shift caps and a rest-day floor, applied to the whole cohort.",
-    outcome: {
-      measured: true,
-      baseline_days_per_head: 18.7,
-      observed_days_per_head: 17.9,
-      comparators: ["Standard ops", "Light duty"],
-      note:
-        "An observed difference against comparable cohorts over the same fixed period. Not proof the change caused it.",
-    },
+    // Frozen when the record was created, which is what makes the later
+    // measurement worth anything. The outcome is not stored: it is computed
+    // from the monthly series by modules/control-centre/outcomes.js, so it
+    // cannot be a number somebody typed.
+    comparators: ["Standard ops", "Light duty"],
   },
   {
     id: "icv-002",
@@ -65,7 +62,12 @@ const SEEDED = [
     status: "Running",
     rationale:
       "The strongest single driver in the model. Offer screening to the cohort and route anyone who wants it into the existing care pathway.",
-    outcome: null,
+    // No comparators: this record predates the platform freezing them. It is
+    // kept that way on purpose. There is enough series here to produce a
+    // number for it, and the platform refuses, because comparators chosen now
+    // would be comparators chosen knowing the answer. An unmeasurable
+    // intervention is a better outcome than a measurable one built that way.
+    comparators: null,
   },
   {
     id: "icv-003",
@@ -78,7 +80,10 @@ const SEEDED = [
     status: "Proposed",
     rationale:
       "Onboarding strain shows in the first two years. A structured return-to-work conversation is a support step, not an attendance one.",
-    outcome: null,
+    // Comparators frozen correctly, and still not measurable: one month of
+    // series since it was created. The platform says how many months are
+    // missing rather than reporting a difference from a single period.
+    comparators: ["Established (2-5y)", "Experienced (5-10y)", "Veteran (10y+)"],
   },
 ];
 

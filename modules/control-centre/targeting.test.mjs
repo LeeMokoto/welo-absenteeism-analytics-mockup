@@ -202,12 +202,39 @@ test("creating a record strips an individual field a caller passes by accident",
   assert.equal(record.outcome, null);
 });
 
-test("a seeded outcome is framed as observed, never as caused", () => {
-  const measured = seeded().filter((r) => r.outcome?.measured);
-  assert.ok(measured.length, "there should be a measured example to look at");
-  for (const r of measured) {
-    assert.match(r.outcome.note, /[Nn]ot proof/);
-    assert.ok(r.outcome.comparators.length, "an outcome needs comparators");
+/*
+  Outcomes used to be two numbers stored on the seeded record, with a note
+  saying they were not proof. They are now computed from the monthly series, so
+  what this has to assert moved: not that a stored note is worded carefully, but
+  that no record stores an outcome at all, and that the records carry the thing
+  measurement actually depends on.
+
+  The measurement itself, and the framing it produces, are tested in
+  outcomes.test.mjs against both a fixture and the real shipped series.
+*/
+test("no seeded record stores an outcome, because outcomes are computed", () => {
+  for (const r of seeded()) {
+    assert.equal(r.outcome, undefined, `${r.id} stores an outcome instead of computing one`);
+  }
+});
+
+test("a seeded record either freezes comparators or is plainly unmeasurable", () => {
+  const records = seeded();
+  const withComparators = records.filter((r) => Array.isArray(r.comparators) && r.comparators.length);
+  assert.ok(withComparators.length, "there should be a measurable example to look at");
+
+  // And one record deliberately has none, so the refusal is visible in the demo
+  // rather than only in a test.
+  const without = records.filter((r) => !Array.isArray(r.comparators) || !r.comparators.length);
+  assert.ok(without.length, "the demo should show an intervention that cannot be measured");
+
+  for (const r of withComparators) {
+    assert.ok(r.created, `${r.id} has comparators but no creation date to freeze them against`);
+    // A comparator is never the targeted cohort itself.
+    const targeted = (r.target || []).map((t) => t.cohort);
+    for (const c of r.comparators) {
+      assert.ok(!targeted.includes(c), `${r.id} lists its own cohort as a comparator`);
+    }
   }
 });
 

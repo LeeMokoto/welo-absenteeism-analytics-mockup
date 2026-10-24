@@ -57,6 +57,20 @@ class GlencoreAdapter(BaseAdapter):
             "DaysSinceLeave": "days_since_last_leave",
             "PSS10Score": "perceived_stress_score",
             "AbsentHours90d": "absence_duration_hours",
+            # The time axis. Schema version 2 requires both, and this is the
+            # first thing to agree with the client on day one of live data:
+            # which month a row describes, and when the extract was taken.
+            # They are not the same field. A month is restated as late
+            # certificates arrive, so two extracts of the same month disagree
+            # and neither is wrong; data_as_of is what tells them apart.
+            #
+            # Named here as a guess at the client's column names. If the feed
+            # has no period at all, the answer is not to fill one in: it is
+            # that outcome tracking cannot run until the extract carries one,
+            # and the base adapter refuses the extract so that fact surfaces at
+            # ingest rather than months later.
+            "PeriodStart": "period_start",
+            "ExtractDate": "data_as_of",
         }
         df = df.rename(columns=rename_map)
         df["source_dataset"] = "glencore_live_v1"

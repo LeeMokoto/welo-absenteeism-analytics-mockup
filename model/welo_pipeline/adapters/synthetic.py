@@ -40,12 +40,19 @@ class SyntheticWorkforceAdapter(BaseAdapter):
         n_rows: int = 800,
         random_seed: int = 7,
         cohort: str = "sa_shift_workforce",
+        period_start: str = "2026-10-01",
+        data_as_of: str = "2026-10-01",
         **kwargs,
     ) -> None:
         super().__init__(**kwargs)
         self.n_rows = int(n_rows)
         self.seed = int(random_seed)
         self.cohort = cohort
+        # One month per extract, because that is what a client uploads. The
+        # cohort is a snapshot of that month, and build_outcome_series.py is
+        # what walks a series of them.
+        self.period_start = period_start
+        self.data_as_of = data_as_of
 
     def load(self) -> pd.DataFrame:
         rng = np.random.default_rng(self.seed)
@@ -169,6 +176,8 @@ class SyntheticWorkforceAdapter(BaseAdapter):
                 "perceived_stress_score": perceived_stress,
                 "absence_duration_hours": absence_hours,
                 "source_dataset": f"synthetic_industrial_v1__{self.cohort}",
+                "period_start": self.period_start,
+                "data_as_of": self.data_as_of,
             }
         )
         return self._coerce_to_canonical(df)

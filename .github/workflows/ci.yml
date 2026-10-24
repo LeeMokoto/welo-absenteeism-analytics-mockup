@@ -71,11 +71,28 @@ jobs:
 
       - name: Lint (ruff)
         working-directory: model
-        run: python -m ruff check welo_inference tests
+        run: python -m ruff check welo_inference tests build_outcome_series.py
 
       - name: Tests (unit + integration)
         working-directory: model
         run: python -m pytest
+
+      # The monthly cohort series is committed, because the Next build reads it
+      # and CI must not need a model run to build the application. A committed
+      # generated file goes stale in silence, so this rebuilds it and fails if
+      # the result differs: an outcome report computed from a stale series is
+      # the kind of wrong that looks right.
+      - name: The committed cohort series matches its builder
+        working-directory: model
+        run: |
+          cp data/outputs/cohort_series.json /tmp/series-committed.json
+          python build_outcome_series.py > /dev/null
+          if ! diff -q /tmp/series-committed.json data/outputs/cohort_series.json; then
+            echo "::error::model/data/outputs/cohort_series.json is stale. Run python model/build_outcome_series.py and commit the result."
+            diff /tmp/series-committed.json data/outputs/cohort_series.json | head -20
+            exit 1
+          fi
+          echo "cohort series is in sync with build_outcome_series.py"
 
       # The runtime lock is what the container installs. It is audited rather
       # than the dev environment, because the lock is what reaches a client.
@@ -127,8 +144,8 @@ jobs:
           mapfile -t FILES < <(find lib modules -name '*.test.mjs' | sort)
           echo "collected ${#FILES[@]} test files:"
           printf '  %s\n' "${FILES[@]}"
-          if [ "${#FILES[@]}" -lt 5 ]; then
-            echo "expected at least 5 test files, found ${#FILES[@]}" >&2
+          if [ "${#FILES[@]}" -lt 6 ]; then
+            echo "expected at least 6 test files, found ${#FILES[@]}" >&2
             exit 1
           fi
           node --test "${FILES[@]}"

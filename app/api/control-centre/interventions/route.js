@@ -21,6 +21,7 @@ import { requirePermission } from "@/lib/platform/session";
 import { PERMISSIONS } from "@/lib/platform/roles";
 import { getManifest } from "@/lib/platform/manifest";
 import { canSaveIntervention } from "@/modules/control-centre/targeting";
+import { freezeComparators } from "@/modules/control-centre/outcomes";
 import { carriesIndividual, stripIndividualFields } from "@/modules/control-centre/store";
 import { portfolio } from "@/modules/absence/data/portfolio";
 
@@ -86,15 +87,40 @@ export async function POST(request) {
     claim to have been drafted by somebody else, which is what the separation of
     creation from approval rests on.
   */
+  /*
+    Comparators are chosen here, once, and never again.
+
+    They are the other reportable cohorts of the same dimension as they stand
+    at this moment. Choosing them later, when the result is known, means
+    choosing the ones that flatter it, and nobody doing that experiences
+    themselves as cheating. Freezing them on the record at creation is the
+    pre-registration principle, and it is why the measurement this enables is
+    worth reading at all.
+
+    A caller-supplied comparators field is ignored rather than honoured: the
+    whole control is that the client does not get to pick them.
+  */
+  const target = (record.target || [])[0];
+  const comparators = freezeComparators(target, portfolio.cohorts || {});
+
+  const created = new Date().toISOString().slice(0, 10);
+
   return Response.json({
     record: {
       ...stripIndividualFields(record),
+      created,
       created_by_role: session.role,
       created_by: session.email,
       headcount: check.headcount,
       needs_headcount_confirmation: check.needsConfirmation,
+      comparators,
+      comparators_frozen_at: created,
     },
     store: "mock",
-    note: "Authorised and validated server side. Persistence is browser-local in this tenant.",
+    note: "Authorised and validated server side. Comparators frozen at creation. Persistence is browser-local in this tenant.",
+    comparators_note:
+      comparators.length === 0
+        ? "No other cohort of this dimension is reportable, so no comparator could be frozen. This intervention will not be measurable, and the platform will say so rather than comparing it against cohorts chosen later."
+        : `Frozen against ${comparators.join(" and ")}. These cannot be changed afterwards.`,
   });
 }
