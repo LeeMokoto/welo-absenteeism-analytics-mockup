@@ -722,6 +722,105 @@ Python inference service, which is a separate deployment rather than an agent
 key, and that screen was never ported into the shell. Everything a visitor can
 reach works with no secrets at all.
 
+## Control centre, phase 5: outbound tasks and briefings
+
+The last phase. The control centre now goes from noticing a cohort to acting on
+it and measuring what happened, inside the product.
+
+### Outbound tasks
+
+A task is one step of an approved playbook, addressed to the function that owns
+it, leaving the platform. It is the only thing in the product whose purpose is
+to make something leave, so it carries the tightest rules in it.
+
+**No approved playbook, no task.** The gate, and the reason the approval flow
+exists at all. A Drafted, In review, Rejected or Superseded playbook produces
+nothing, and a status of "Approved" with no approval block is not an approval:
+the status is caller-supplied and the approval is the thing that permits it. A
+playbook recording the same person as drafter and approver is refused too.
+
+**Dispatch needs CONTROL_CREATE, not CONTROL_APPROVE.** Approval is the gate:
+the approver decides whether this may ever leave, and the people doing the work
+release it. Giving dispatch to the approver would make the approver the doer and
+collapse the separation the role exists for. So the Approver can permit a task
+and cannot send one, which is the right way round, and CI asserts the 403.
+
+**The screens run again at dispatch.** A step is validated when the playbook is
+written; a task is the thing that actually goes, and the text can have been
+edited in between. Checking once and trusting forever is how the second version
+gets out, so the individual-reference and refused-language screens both run
+again here.
+
+**A step sends once.** Two tasks for one step means somebody does the work
+twice. The caller checks and the store refuses a duplicate as well, so it does
+not depend on the interface asking.
+
+**Destinations are queues, never people.** A task addressed to a named
+individual stops working the day they leave, and the record is then about them.
+
+Nothing is actually sent. The record says `mock`, the response says it, and the
+confirmation on screen says it, because the moment after clicking Send is
+exactly when somebody could believe something was sent.
+
+### Briefings
+
+One artefact answering "what do I need to do", composed from what the other
+screens already publish. It reaches into nothing richer, so it cannot say more
+than the screens do.
+
+**Decisions lead, measurements follow.** A digest that opens with the
+improvement and buries three plans awaiting approval trains people to skim it.
+The order is a property of the object, not a layout choice, and when there is
+nothing to decide it says so rather than finding something cheerful.
+
+**The caveat travels inside it.** A briefing is forwarded and pasted and read by
+people who never saw the screen it came from, so the outcome caveat is carried
+in full rather than left behind. A test asserts no claim field implies
+causation and no percentage reaches one.
+
+**A skipped cohort is named as skipped.** A rule that could not evaluate a
+cohort looks exactly like a rule that found nothing, so the briefing says how
+many and that silence on those is not safety.
+
+It is deliberately not a push. Nothing in it sends anything: the one thing that
+leaves is an outbound task, with its own gate. A briefing that emailed itself
+would be a second outbound path with none of those controls.
+
+### The control centre is on by default now
+
+For a synthetic tenant, and off for a real one. It used to default off
+everywhere, which was right while the module did not exist and wrong once it
+did: a deployment with no tfvars, such as the Vercel one, got no control centre
+unless somebody remembered an environment variable.
+
+Flipping it on everywhere would have been the easy version and the wrong one.
+The actions store is mocked and browser-local, so a client tenant provisioned on
+defaults would have been handed a register that files nothing. The rule lives in
+`lib/platform/moduleDefaults.js`, with its own tests, because for a real tenant
+it cannot be observed through a page at all: the session layer refuses first and
+the route redirects before any module flag is read.
+
+### Three things the walkthrough found
+
+**The approver arrived with nothing to approve.** The one pending seeded
+playbook could not be decided, and the interface told them it "carries its
+decision already", which was not true of that record. A decision on a seeded
+playbook is now an overlay in the browser: the walkthrough works and the shipped
+example is still what the next visitor loads. The protection was the point, not
+the refusal.
+
+**The smoke test's "disabled module" server was not disabled.** Those
+assertions had been passing on the old default rather than on a setting, so when
+the default changed they failed, correctly. The server now says
+`WELO_MODULE_CONTROL_CENTRE=0` explicitly, which is what the variable name
+always claimed.
+
+**A new CI block clobbered an existing check.** Inserting it between a `$code`
+assignment and the assertion that read it made an unrelated check report the
+wrong status. Moved, and given its own variable. Second time this shape of
+mistake has appeared in this file, after the cookie jar: a long shell step with
+shared variables is the hazard, and naming them per check is the fix.
+
 ## What to do first
 
 The schema time axis is settled and built, and is recorded above. What is left

@@ -411,7 +411,7 @@ test("a draft that slips in a disciplinary step parses and is then refused", () 
   assert.ok(!errors.some((e) => e.startsWith("Step 1")));
 });
 
-test("the interface is not offered a decision the store would refuse", () => {
+test("the store limitation is still expressible, even though the demo no longer needs it", () => {
   const approver = { email: "naledi.khumalo@example.com", role: "approver" };
   const shared = playbook({ source: "seeded" });
   assert.equal(

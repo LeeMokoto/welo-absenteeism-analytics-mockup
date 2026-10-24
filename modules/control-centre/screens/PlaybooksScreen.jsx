@@ -11,12 +11,15 @@ import {
 import { MEASURES } from "../alerts";
 import {
   createPlaybook,
+  createTask,
   decidePlaybook,
   listInterventions,
   listPlaybooks,
+  listTasks,
   seededPlaybooks,
   seeded,
 } from "../store";
+import { describeTask, dispatchable } from "../tasks";
 
 /*
   Playbooks.
@@ -113,6 +116,7 @@ export default function PlaybooksScreen({ session, canCreate, canApprove, agents
             intervention={interventions.find((i) => i.id === p.intervention_id) || null}
             session={session}
             canApprove={canApprove}
+            canCreate={canCreate}
             onDecided={() => setRevision((r) => r + 1)}
           />
         ))}
@@ -317,15 +321,17 @@ function Steps({ steps }) {
   );
 }
 
-function PlaybookCard({ playbook, intervention, session, canApprove, onDecided }) {
+function PlaybookCard({ playbook, intervention, session, canApprove, canCreate, onDecided }) {
   const [note, setNote] = useState("");
   const [problem, setProblem] = useState("");
 
   const blockers = approvalBlockers(playbook, session, {
     hasApprovePermission: canApprove,
-    // The mocked store can only record a decision on a playbook drafted in
-    // this browser, so a button is not offered for one it would refuse.
-    storeCanDecide: playbook.source !== "seeded",
+    // A seeded playbook can now be decided as an overlay in this browser, so
+    // the only thing the store refuses is a shipped example that already
+    // carries its decision. That is already covered by the "already decided"
+    // blocker, so there is nothing extra to withhold here.
+    storeCanDecide: true,
   });
   const decidable = blockers.length === 0;
   const check = validatePlaybook({ ...playbook, target: undefined }, { intervention });
@@ -425,6 +431,15 @@ function PlaybookCard({ playbook, intervention, session, canApprove, onDecided }
         </div>
       )}
 
+      {playbook.status === "Approved" ? (
+        <Dispatch
+          playbook={playbook}
+          intervention={intervention}
+          canCreate={canCreate}
+          onSent={onDecided}
+        />
+      ) : null}
+
       {outcome ? (
         <div className="card cream" style={{ marginTop: 14 }}>
           <div className="caption">Measured</div>
@@ -440,4 +455,122 @@ function tierFor(status) {
   if (status === "Approved") return "Low";
   if (status === "Rejected" || status === "Superseded") return "Elevated";
   return "Moderate";
+}
+
+/*
+  Sending an approved step to a queue.
+
+  Only rendered for an approved playbook, because that is the gate, and the API
+  refuses a step from any other status whatever this screen does. Each step is
+  listed with whether it can be sent and why not, rather than filtered: a step
+  that cannot be sent is the more interesting row, and an absence tells the
+  reader nothing.
+
+  The Approver sees this section and no buttons. Approval permits a task to
+  leave; releasing it belongs to the people doing the work, and showing the
+  reason is better than showing nothing.
+*/
+function Dispatch({ playbook, intervention, canCreate, onSent }) {
+  const [tasks, setTasks] = useState([]);
+  const [busy, setBusy] = useState("");
+  const [problem, setProblem] = useState("");
+
+  useEffect(() => {
+    setTasks(listTasks());
+  }, [playbook.id]);
+
+  const rows = dispatchable(playbook, { existingTasks: tasks });
+  const mine = tasks.filter((t) => t.playbook_id === playbook.id && t.status !== "Cancelled");
+
+  async function send(row) {
+    setBusy(row.key);
+    setProblem("");
+    try {
+      const res = await fetch("/api/control-centre/tasks", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ playbook, step: row.step, intervention, existingTasks: tasks }),
+      });
+      const body = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setProblem(body.error || `The task was refused (${res.status}).`);
+        return;
+      }
+      const saved = createTask(body.task);
+      if (!saved.ok) {
+        setProblem(saved.reason);
+        return;
+      }
+      setTasks(listTasks());
+      onSent();
+    } catch {
+      setProblem("Could not reach the server to authorise this task.");
+    } finally {
+      setBusy("");
+    }
+  }
+
+  return (
+    <div style={{ marginTop: 14, paddingTop: 12, borderTop: "1px solid var(--line-soft)" }}>
+      <div className="caption">Send to a queue</div>
+      <p className="card-note" style={{ marginTop: 6 }}>
+        {canCreate
+          ? "An approved step can be released to the function that owns it. Nothing leaves this deployment: there is no outbound integration, and the record says so."
+          : "Your role approves tasks and does not send them. Approval permits a task to leave; releasing it belongs to the people doing the work."}
+      </p>
+
+      <table className="data" style={{ marginTop: 8 }}>
+        <thead>
+          <tr><th>Step</th><th>Queue</th><th>State</th></tr>
+        </thead>
+        <tbody>
+          {rows.map((row) => (
+            <tr key={row.key}>
+              <td style={{ whiteSpace: "normal" }}>{row.step.action}</td>
+              <td className="caption">{row.destination_label || "none configured"}</td>
+              <td style={{ whiteSpace: "normal" }}>
+                {row.existing ? (
+                  <span className="caption">Recorded {row.existing.dispatched_at}</span>
+                ) : row.ok ? (
+                  canCreate ? (
+                    <button
+                      className="lens-btn"
+                      onClick={() => send(row)}
+                      disabled={busy === row.key}
+                    >
+                      {busy === row.key ? "Recording" : "Send"}
+                    </button>
+                  ) : (
+                    <span className="caption">ready</span>
+                  )
+                ) : (
+                  <span className="caption">{row.blockers.join("; ")}</span>
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      {problem ? <div className="indicative" style={{ marginTop: 10 }}>{problem}</div> : null}
+
+      {/* The moment after clicking Send is exactly when somebody could believe
+          something was sent, so the confirmation carries the transport note
+          rather than leaving it on the record. */}
+      {mine.length ? (
+        <div style={{ marginTop: 10 }}>
+          <ul style={{ margin: 0, paddingLeft: 18 }}>
+            {mine.map((t) => (
+              <li key={t.id} className="card-note" style={{ marginBottom: 6 }}>
+                {describeTask(t)}
+              </li>
+            ))}
+          </ul>
+          <div className="indicative" style={{ marginTop: 8 }}>
+            {mine[0].transport_note}
+          </div>
+        </div>
+      ) : null}
+    </div>
+  );
 }

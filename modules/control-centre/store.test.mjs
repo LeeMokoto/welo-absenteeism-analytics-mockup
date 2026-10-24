@@ -35,6 +35,7 @@ const {
   createPlaybook,
   decidePlaybook,
   clearLocal,
+  clearLocalDecisions,
   clearLocalPlaybooks,
   listInterventions,
   listPlaybooks,
@@ -46,6 +47,7 @@ const {
 beforeEach(() => {
   clearLocal();
   clearLocalPlaybooks();
+  clearLocalDecisions();
 });
 
 // --- Seeded records are the shape the real store will hold ------------------
@@ -165,17 +167,29 @@ test("a rejection is recorded as plainly as an approval", () => {
   assert.equal(saved.approval.note, "Step 2 is a disciplinary process.");
 });
 
-test("a seeded playbook cannot be decided, so one walkthrough cannot overwrite the next", () => {
-  const seededId = seededPlaybooks()[0].id;
-  const res = decidePlaybook(seededId, {
+test("one walkthrough's decision cannot reach the next visitor", () => {
+  /*
+    This used to assert that a seeded playbook could not be decided at all,
+    which protected the next visitor and left the approver with nothing to
+    approve on arrival. The protection was the point, not the refusal, so the
+    decision is now an overlay: the walkthrough works and the shipped record
+    is still what the next visitor loads.
+  */
+  const pending = seededPlaybooks().find((p) => !p.approval);
+  decidePlaybook(pending.id, {
     decision: "rejected",
+    note: "No.",
     by: "naledi.khumalo@example.com",
     byRole: "approver",
   });
-  assert.equal(res.ok, false);
-  assert.ok(res.reason.includes("drafted in this browser"));
-  // And the shared record is untouched.
-  assert.equal(seededPlaybooks()[0].status, "Approved");
+
+  // Visible here, in this browser.
+  assert.equal(listPlaybooks().find((p) => p.id === pending.id).status, "Rejected");
+
+  // Gone for the next visitor, who reads the shipped set.
+  assert.equal(seededPlaybooks().find((p) => p.id === pending.id).approval, null);
+  clearLocalDecisions();
+  assert.equal(listPlaybooks().find((p) => p.id === pending.id).approval, null);
 });
 
 test("only approved or rejected are decisions", () => {
@@ -212,4 +226,53 @@ test("clearing removes only what this browser added", () => {
   clearLocal();
   assert.equal(listPlaybooks().length, seededPlaybooks().length);
   assert.equal(listInterventions().length, seeded().length);
+});
+
+/*
+  A seeded playbook can be decided in a walkthrough, as an overlay.
+
+  Before this the approver arrived with nothing to approve: the one pending
+  seeded playbook could not be decided and the interface told them it carried
+  its decision already, which was not true of that record. The overlay keeps
+  the shipped example intact for the next visitor while letting this one work.
+*/
+test("a pending seeded playbook can be decided, without changing the shipped record", () => {
+  const pending = seededPlaybooks().find((p) => !p.approval);
+  assert.ok(pending, "the demo needs a pending seeded playbook to approve");
+
+  const res = decidePlaybook(pending.id, {
+    decision: "approved",
+    note: "Cohort level only.",
+    by: "naledi.khumalo@example.com",
+    byRole: "approver",
+  });
+  assert.equal(res.ok, true);
+  assert.equal(res.overlay, true);
+
+  const merged = listPlaybooks().find((p) => p.id === pending.id);
+  assert.equal(merged.status, "Approved");
+  assert.equal(merged.approval.by_role, "approver");
+  assert.equal(merged.decided_in_this_browser, true);
+
+  // The shipped record is untouched, so the next visitor still sees it pending.
+  assert.equal(seededPlaybooks().find((p) => p.id === pending.id).approval, null);
+});
+
+test("a seeded playbook that already carries a decision is refused", () => {
+  const decided = seededPlaybooks().find((p) => p.approval);
+  const res = decidePlaybook(decided.id, {
+    decision: "rejected",
+    by: "naledi.khumalo@example.com",
+    byRole: "approver",
+  });
+  assert.equal(res.ok, false);
+  assert.match(res.reason, /shipped example/);
+});
+
+test("an overlay decision cannot be taken twice", () => {
+  const pending = seededPlaybooks().find((p) => !p.approval);
+  decidePlaybook(pending.id, { decision: "approved", by: "a@example.com", byRole: "approver" });
+  const again = decidePlaybook(pending.id, { decision: "rejected", by: "b@example.com", byRole: "approver" });
+  assert.equal(again.ok, false);
+  assert.match(again.reason, /already been decided/);
 });

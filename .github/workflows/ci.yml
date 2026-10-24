@@ -144,8 +144,8 @@ jobs:
           mapfile -t FILES < <(find lib modules -name '*.test.mjs' | sort)
           echo "collected ${#FILES[@]} test files:"
           printf '  %s\n' "${FILES[@]}"
-          if [ "${#FILES[@]}" -lt 8 ]; then
-            echo "expected at least 8 test files, found ${#FILES[@]}" >&2
+          if [ "${#FILES[@]}" -lt 11 ]; then
+            echo "expected at least 11 test files, found ${#FILES[@]}" >&2
             exit 1
           fi
           node --test "${FILES[@]}"
@@ -176,7 +176,11 @@ jobs:
             return 1
           }
 
-          PORT=3000 node .next/standalone/server.js &
+          # Explicitly off. The control centre now defaults on for a synthetic
+          # tenant, so these assertions used to pass on a default rather than on
+          # a setting. The variable name was always SRV_DISABLED; now it is
+          # actually disabled because this says so.
+          WELO_MODULE_CONTROL_CENTRE=0 PORT=3000 node .next/standalone/server.js &
           SRV_DISABLED=$!
           wait_up 3000 || exit 1
           fail=0
@@ -216,7 +220,7 @@ jobs:
           # The gate lives in the module layout, so every screen in the module
           # is gated, including ones added later. Checked here, against the
           # same still-running server, rather than after it is stopped.
-          for path in /control-centre/alerts /control-centre/playbooks; do
+          for path in /control-centre/alerts /control-centre/playbooks /control-centre/briefing; do
             code=$(curl -s -b /tmp/jar -o /dev/null -w '%{http_code}' "http://127.0.0.1:3000$path")
             echo "$path (module disabled) -> $code"
             [ "$code" = "404" ] || { echo "::error::a disabled module screen returned $code at $path, expected 404"; fail=1; }
@@ -258,7 +262,7 @@ jobs:
           wait_up 3001 || exit 1
           curl -s -c /tmp/jar2 -X POST -H 'content-type: application/json' \
             -d '{"email":"sipho.dlamini@example.com"}' http://127.0.0.1:3001/api/session > /dev/null
-          for path in /control-centre /control-centre/playbooks /control-centre/alerts; do
+          for path in /control-centre /control-centre/playbooks /control-centre/alerts /control-centre/briefing; do
             code=$(curl -s -b /tmp/jar2 -o /tmp/cc.html -w '%{http_code}' "http://127.0.0.1:3001$path")
             echo "$path (module enabled) -> $code"
             [ "$code" = "200" ] || { echo "::error::an enabled module returned $code at $path, expected 200"; fail=1; }
@@ -302,6 +306,8 @@ jobs:
             "thandi.mokoena@example.com:/control-centre/playbooks:403" \
             "johan.vandermerwe@example.com:/control-centre/playbooks:403" \
             "support@example.com:/control-centre/playbooks:403" \
+            "naledi.khumalo@example.com:/control-centre/briefing:200" \
+            "thandi.mokoena@example.com:/control-centre/briefing:403" \
           ; do
             email="${case%%:*}"; rest="${case#*:}"; route="${rest%%:*}"; want="${rest##*:}"
             curl -s -c /tmp/jar3 -X POST -H 'content-type: application/json' \
@@ -429,6 +435,43 @@ jobs:
             http://127.0.0.1:3001/api/control-centre/interventions)
           echo "intervention targeting an age band -> $code"
           [ "$code" = "422" ] || { echo "::error::targeting a protected attribute was not refused ($code)"; fail=1; }
+
+          # Outbound tasks. Two assertions that matter more than the rest:
+          # nothing leaves without an approval, and the approver cannot send.
+          # The second is the separation the role exists for, and it is the
+          # kind of thing a convenience change would quietly undo.
+          APPROVED='{"id":"pb-001","intervention_id":"icv-001","title":"P","status":"Approved","drafted_by":"sipho.dlamini@example.com","steps":[{"action":"Cap consecutive shifts across the cohort.","owner":"Shift scheduling","horizon":"immediate","measure":"absent_days_per_head_annual"}],"approval":{"by":"naledi.khumalo@example.com","by_role":"approver","at":"2026-08-18","decision":"approved"}}'
+          STEP='{"action":"Cap consecutive shifts across the cohort.","owner":"Shift scheduling","horizon":"immediate","measure":"absent_days_per_head_annual"}'
+          ICV='{"id":"icv-001","title":"Rostering review","target":[{"dimension":"cohort_load","cohort":"High-intensity ops"}]}'
+
+          taskcode=$(curl -s -b /tmp/jar-draft -o /tmp/task.json -w '%{http_code}' -X POST \
+            -H 'content-type: application/json' \
+            -d "{\"playbook\":$APPROVED,\"step\":$STEP,\"intervention\":$ICV}" \
+            http://127.0.0.1:3001/api/control-centre/tasks)
+          echo "task from an approved playbook -> $taskcode"
+          [ "$taskcode" = "200" ] || { echo "::error::an approved step could not be released ($taskcode)"; fail=1; }
+          grep -q '"sent":false' /tmp/task.json || { echo "::error::the task response did not say it was not sent"; fail=1; }
+          grep -q '"transport":"mock"' /tmp/task.json || { echo "::error::the task did not record its transport as mocked"; fail=1; }
+
+          # Drafted rather than approved: nothing leaves.
+          DRAFTED=$(printf '%s' "$APPROVED" | sed 's/"status":"Approved"/"status":"Drafted"/; s/,"approval":{[^}]*}//')
+          taskcode=$(curl -s -b /tmp/jar-draft -o /dev/null -w '%{http_code}' -X POST \
+            -H 'content-type: application/json' \
+            -d "{\"playbook\":$DRAFTED,\"step\":$STEP,\"intervention\":$ICV}" \
+            http://127.0.0.1:3001/api/control-centre/tasks)
+          echo "task from an unapproved playbook -> $taskcode"
+          [ "$taskcode" = "422" ] || { echo "::error::a task left the platform without an approval ($taskcode)"; fail=1; }
+
+          # The approver permits a task and does not send one.
+          curl -s -c /tmp/jar-appr -X POST -H 'content-type: application/json' \
+            -d '{"email":"naledi.khumalo@example.com"}' http://127.0.0.1:3001/api/session > /dev/null
+          taskcode=$(curl -s -b /tmp/jar-appr -o /dev/null -w '%{http_code}' -X POST \
+            -H 'content-type: application/json' \
+            -d "{\"playbook\":$APPROVED,\"step\":$STEP,\"intervention\":$ICV}" \
+            http://127.0.0.1:3001/api/control-centre/tasks)
+          echo "task sent by the approver -> $taskcode"
+          [ "$taskcode" = "403" ] || { echo "::error::the approver was able to send a task ($taskcode), which collapses the separation the role exists for"; fail=1; }
+
 
           pkill -P "$SRV_ENABLED" 2>/dev/null || true
           kill "$SRV_ENABLED" 2>/dev/null || true

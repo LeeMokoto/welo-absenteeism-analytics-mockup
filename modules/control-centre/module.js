@@ -22,6 +22,7 @@ export const controlCentreModule = {
     { href: "/control-centre", label: "Interventions" },
     { href: "/control-centre/playbooks", label: "Playbooks" },
     { href: "/control-centre/alerts", label: "Alert rules" },
+    { href: "/control-centre/briefing", label: "Briefing" },
   ],
   agents: ["playbook"],
   guardrails: [
@@ -42,6 +43,11 @@ export const controlCentreModule = {
     "Every playbook step that counts names a measure the platform actually reports, so a plan can be closed out against something rather than declared a success.",
     "The agent drafts and a person decides. The approver is never the drafter, checked by identity and not only by role, because POPIA section 71 restricts decisions based solely on automated processing.",
     "Where no agent key is configured, a plan is assembled from a template and labelled template rather than agent, on the record and in the interface. The governance does not depend on a model, so neither does demonstrating it, and a template never passes as a model draft.",
+    "An outbound task exists only for a step of an approved playbook, and a status of approved with no recorded approval is not an approval. Sending needs the create permission, never the approve one: approval decides whether a task may leave, and releasing it belongs to the people doing the work.",
+    "The individual and refused-language screens run again when a task is sent, not only when the playbook was written, because the text can have been edited in between.",
+    "A step sends once. Two tasks for one step means somebody does the work twice, so the store refuses a duplicate as well as the interface.",
+    "A task goes to a queue, never to a named person, and nothing actually leaves this tenant: the record, the response and the confirmation all say so.",
+    "The briefing composes what the other screens publish and reaches into nothing richer, so it cannot say more than they do. It leads with what needs a person, carries the outcome caveat in full because it gets forwarded, and names how many cohorts a rule could not evaluate.",
   ],
 };
 

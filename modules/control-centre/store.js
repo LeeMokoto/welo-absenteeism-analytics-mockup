@@ -331,8 +331,65 @@ function writeLocalPlaybooks(records) {
   }
 }
 
+/*
+  Decisions taken during a walkthrough on a seeded playbook.
+
+  Held separately from the seeded record rather than overwriting it: the seeded
+  set is shared across visitors, so one walkthrough's approval must not become
+  the next visitor's starting state. The decision is an overlay in this browser,
+  merged at read time, and the seeded data is never touched.
+
+  Without this the approver had nothing to approve on arrival. The one seeded
+  playbook that is pending could not be decided, and the interface told them it
+  "carries its decision already", which was not true of that record.
+*/
+const LOCAL_DECISIONS_KEY = "welo.control-centre.playbook-decisions.v1";
+
+function readLocalDecisions() {
+  if (typeof window === "undefined") return {};
+  try {
+    const raw = window.localStorage.getItem(LOCAL_DECISIONS_KEY);
+    const parsed = raw ? JSON.parse(raw) : {};
+    return parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed : {};
+  } catch {
+    return {};
+  }
+}
+
+function writeLocalDecisions(map) {
+  if (typeof window === "undefined") return false;
+  try {
+    window.localStorage.setItem(LOCAL_DECISIONS_KEY, JSON.stringify(map));
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 export function listPlaybooks() {
-  return [...seededPlaybooks(), ...readLocalPlaybooks()];
+  const decisions = readLocalDecisions();
+  const seededWithDecisions = seededPlaybooks().map((p) => {
+    const decided = decisions[p.id];
+    if (!decided || p.approval) return p;
+    return {
+      ...p,
+      status: decided.decision === "approved" ? "Approved" : "Rejected",
+      approval: decided,
+      // Marks where the decision came from, so a reader can tell a walkthrough
+      // decision from the shipped example.
+      decided_in_this_browser: true,
+    };
+  });
+  return [...seededWithDecisions, ...readLocalPlaybooks()];
+}
+
+export function clearLocalDecisions() {
+  if (typeof window === "undefined") return;
+  try {
+    window.localStorage.removeItem(LOCAL_DECISIONS_KEY);
+  } catch {
+    /* nothing to clear */
+  }
 }
 
 /*
@@ -369,14 +426,32 @@ export function decidePlaybook(id, { decision, note, by, byRole }) {
   if (!["approved", "rejected"].includes(decision)) {
     return { ok: false, reason: "A decision is either approved or rejected." };
   }
+
+  const record = { by, by_role: byRole, at: new Date().toISOString().slice(0, 10), decision, note: note || "" };
+
+  /*
+    A seeded playbook is decided as an overlay in this browser. The shipped
+    record is shared, so writing to it would hand the next visitor somebody
+    else's choice; an overlay keeps the walkthrough working and leaves the
+    shipped example intact.
+  */
+  const seededTarget = seededPlaybooks().find((p) => p.id === id);
+  if (seededTarget) {
+    if (seededTarget.approval) {
+      return { ok: false, reason: "This playbook is a shipped example and already carries its decision." };
+    }
+    const decisions = readLocalDecisions();
+    if (decisions[id]) {
+      return { ok: false, reason: "This playbook has already been decided in this browser." };
+    }
+    const persisted = writeLocalDecisions({ ...decisions, [id]: record });
+    return { ok: true, persisted, overlay: true };
+  }
+
   const local = readLocalPlaybooks();
   const target = local.find((p) => p.id === id);
   if (!target) {
-    return {
-      ok: false,
-      reason:
-        "Only playbooks drafted in this browser can be decided here. The seeded ones carry their decisions already.",
-    };
+    return { ok: false, reason: "No such playbook in this browser." };
   }
   if (target.approval) {
     return { ok: false, reason: "This playbook has already been decided." };
@@ -387,19 +462,101 @@ export function decidePlaybook(id, { decision, note, by, byRole }) {
       ? {
           ...p,
           status: decision === "approved" ? "Approved" : "Rejected",
-          approval: {
-            by,
-            by_role: byRole,
-            at: new Date().toISOString().slice(0, 10),
-            decision,
-            note: note || "",
-          },
+          approval: record,
         }
       : p,
   );
 
   const persisted = writeLocalPlaybooks(updated.map(({ source, ...p }) => p));
   return { ok: true, persisted };
+}
+
+/*
+  Outbound tasks.
+
+  Browser-local like the rest, and for the same reason. The difference is what
+  the record means: an intervention and a playbook are statements inside the
+  platform, and a task is a statement that something left it. So the store
+  refuses a duplicate itself rather than trusting the caller to have checked,
+  because two tasks for one step means somebody does the work twice.
+*/
+const LOCAL_TASKS_KEY = "welo.control-centre.tasks.v1";
+
+function readLocalTasks() {
+  if (typeof window === "undefined") return [];
+  try {
+    const raw = window.localStorage.getItem(LOCAL_TASKS_KEY);
+    const parsed = raw ? JSON.parse(raw) : [];
+    return Array.isArray(parsed) ? parsed.map((t) => ({ ...t, source: "local" })) : [];
+  } catch {
+    return [];
+  }
+}
+
+function writeLocalTasks(records) {
+  if (typeof window === "undefined") return false;
+  try {
+    window.localStorage.setItem(LOCAL_TASKS_KEY, JSON.stringify(records));
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+export function listTasks() {
+  return readLocalTasks();
+}
+
+/*
+  Record a dispatched task.
+
+  Refuses a record carrying an individual field, and refuses a second open task
+  for the same step of the same playbook. The caller validates first; this is
+  the floor under that, so a path that forgets to check cannot create a
+  duplicate.
+*/
+export function createTask(task) {
+  if (carriesIndividual(task)) {
+    return { ok: false, reason: "A task refers to a cohort through a queue, never to a person." };
+  }
+  if (!task?.playbook_id || !task?.step_key) {
+    return { ok: false, reason: "A task must name the playbook step it came from." };
+  }
+
+  const existing = readLocalTasks();
+  const duplicate = existing.find(
+    (t) => t.playbook_id === task.playbook_id && t.step_key === task.step_key && t.status !== "Cancelled",
+  );
+  if (duplicate) {
+    return {
+      ok: false,
+      reason: `This step was already recorded on ${duplicate.dispatched_at}. Sending it twice means somebody does it twice.`,
+    };
+  }
+
+  const saved = { ...stripIndividualFields(task), id: `tsk-local-${Date.now().toString(36)}`, source: "local" };
+  const persisted = writeLocalTasks([...existing.map(({ source, ...t }) => t), { ...saved, source: undefined }]);
+  return { ok: true, record: saved, persisted };
+}
+
+export function cancelTask(id) {
+  const existing = readLocalTasks();
+  const target = existing.find((t) => t.id === id);
+  if (!target) return { ok: false, reason: "No such task in this browser." };
+  if (target.status === "Cancelled") return { ok: false, reason: "Already cancelled." };
+  const persisted = writeLocalTasks(
+    existing.map(({ source, ...t }) => (t.id === id ? { ...t, status: "Cancelled" } : t)),
+  );
+  return { ok: true, persisted };
+}
+
+export function clearLocalTasks() {
+  if (typeof window === "undefined") return;
+  try {
+    window.localStorage.removeItem(LOCAL_TASKS_KEY);
+  } catch {
+    /* nothing to clear */
+  }
 }
 
 export function clearLocalPlaybooks() {
