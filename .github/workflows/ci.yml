@@ -133,15 +133,30 @@ jobs:
       - name: Smoke the built server
         run: |
           cp -r .next/static .next/standalone/.next/static
+          cp -r public .next/standalone/public
           PORT=3000 node .next/standalone/server.js &
           for i in $(seq 1 40); do
-            curl -sf -o /dev/null http://127.0.0.1:3000/ && break
+            curl -sf -o /dev/null http://127.0.0.1:3000/signin && break
             sleep 1
           done
           fail=0
+
+          # Every shell route needs a session now. Unauthenticated is a
+          # redirect to the account picker, which is itself worth asserting:
+          # if this ever returns 200, the application is open.
+          code=$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:3000/absence)
+          echo "/absence with no session -> $code"
+          [ "$code" = "307" ] || { echo "::error::an unauthenticated route returned $code, expected a redirect"; fail=1; }
+
+          # Sign in as the analyst, who holds the widest read access, so the
+          # render checks below cover every screen.
+          curl -s -c /tmp/jar -X POST -H 'content-type: application/json' \
+            -d '{"email":"sipho.dlamini@example.com"}' http://127.0.0.1:3000/api/session > /dev/null
+          # /admin is not in this list: the analyst signed in above cannot reach
+          # it, and it is covered under client_admin in the RBAC matrix below.
           for path in / /absence /absence/cohorts /absence/outcomes /absence/operations \
-                      /sick-leave /sick-leave/case /sick-leave/ops /admin; do
-            code=$(curl -s -o /tmp/page.html -w '%{http_code}' "http://127.0.0.1:3000$path")
+                      /sick-leave /sick-leave/case /sick-leave/ops; do
+            code=$(curl -s -b /tmp/jar -o /tmp/page.html -w '%{http_code}' "http://127.0.0.1:3000$path")
             echo "$path -> $code"
             [ "$code" = "200" ] || { echo "::error::$path returned $code"; fail=1; }
             # A rendered NaN or undefined means a figure did not resolve.
@@ -154,9 +169,16 @@ jobs:
           # A module a tenant does not run must not be reachable, and must say
           # so with a status code rather than serving a 404 page under a 200.
           # The control centre is off by default, so it is the case to check.
-          code=$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:3000/control-centre)
+          code=$(curl -s -b /tmp/jar -o /dev/null -w '%{http_code}' http://127.0.0.1:3000/control-centre)
           echo "/control-centre (module disabled) -> $code"
           [ "$code" = "404" ] || { echo "::error::a disabled module returned $code, expected 404"; fail=1; }
+
+          # The gate lives in the module layout, so every screen in the module
+          # is gated, including ones added later. Checked here, against the
+          # same still-running server, rather than after it is stopped.
+          code=$(curl -s -b /tmp/jar -o /dev/null -w '%{http_code}' http://127.0.0.1:3000/control-centre/alerts)
+          echo "/control-centre/alerts (module disabled) -> $code"
+          [ "$code" = "404" ] || { echo "::error::a disabled module screen returned $code, expected 404"; fail=1; }
 
           # And the other direction: gating that never lets anything through is
           # not gating, it is a broken route. Start a second server with the
@@ -164,11 +186,13 @@ jobs:
           kill %1 2>/dev/null || true
           WELO_MODULE_CONTROL_CENTRE=1 PORT=3001 node .next/standalone/server.js &
           for i in $(seq 1 40); do
-            curl -sf -o /dev/null http://127.0.0.1:3001/control-centre && break
+            curl -sf -o /dev/null http://127.0.0.1:3001/signin && break
             sleep 1
           done
+          curl -s -c /tmp/jar2 -X POST -H 'content-type: application/json' \
+            -d '{"email":"sipho.dlamini@example.com"}' http://127.0.0.1:3001/api/session > /dev/null
           for path in /control-centre /control-centre/alerts; do
-            code=$(curl -s -o /tmp/cc.html -w '%{http_code}' "http://127.0.0.1:3001$path")
+            code=$(curl -s -b /tmp/jar2 -o /tmp/cc.html -w '%{http_code}' "http://127.0.0.1:3001$path")
             echo "$path (module enabled) -> $code"
             [ "$code" = "200" ] || { echo "::error::an enabled module returned $code at $path, expected 200"; fail=1; }
 
@@ -181,22 +205,59 @@ jobs:
             fi
           done
 
-          # The gate lives in the module layout, so every screen in the module
-          # is gated, including ones added later. Check the newest one.
-          code=$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:3000/control-centre/alerts)
-          echo "/control-centre/alerts (module disabled) -> $code"
-          [ "$code" = "404" ] || { echo "::error::a disabled module screen returned $code, expected 404"; fail=1; }
 
           # No screen may leak an employee identifier. The module data is built
           # from aggregates only, so an identifier appearing in rendered output
           # means a per-person section reached a cohort screen.
           for path in /absence /absence/cohorts /absence/outcomes /absence/operations; do
-            body=$(curl -s "http://127.0.0.1:3000$path")
+            body=$(curl -s -b /tmp/jar "http://127.0.0.1:3000$path")
             if printf '%s' "$body" | grep -qE 'employee_id|EMP[0-9]{3,}'; then
               echo "::error::$path rendered what looks like an employee identifier"
               fail=1
             fi
           done
+
+          # Role based access control, asserted end to end. The permission model
+          # has unit tests; this checks the routes actually enforce it, because
+          # a hidden menu item is not a control and the solution design says so.
+          #
+          # account:route:expected, as one field so the loop needs no heredoc
+          # (a heredoc terminator has to sit at column zero, which would end
+          # this YAML block scalar).
+          for case in \
+            "thandi.mokoena@example.com:/absence:200" \
+            "thandi.mokoena@example.com:/sick-leave/case:403" \
+            "thandi.mokoena@example.com:/admin:403" \
+            "thandi.mokoena@example.com:/control-centre:403" \
+            "sipho.dlamini@example.com:/sick-leave/case:200" \
+            "sipho.dlamini@example.com:/admin:403" \
+            "johan.vandermerwe@example.com:/admin:200" \
+            "johan.vandermerwe@example.com:/absence:403" \
+            "johan.vandermerwe@example.com:/sick-leave/case:403" \
+            "naledi.khumalo@example.com:/control-centre:200" \
+            "naledi.khumalo@example.com:/sick-leave/case:403" \
+            "support@example.com:/:403" \
+            "support@example.com:/absence:403" \
+            "support@example.com:/admin:403" \
+            "prospect@example.com:/sick-leave/case:403" \
+          ; do
+            email="${case%%:*}"; rest="${case#*:}"; route="${rest%%:*}"; want="${rest##*:}"
+            curl -s -c /tmp/jar3 -X POST -H 'content-type: application/json' \
+              -d "{\"email\":\"$email\"}" http://127.0.0.1:3001/api/session > /dev/null
+            got=$(curl -s -b /tmp/jar3 -o /dev/null -w '%{http_code}' "http://127.0.0.1:3001$route")
+            printf '  %-32s %-22s want %s got %s\n' "$email" "$route" "$want" "$got"
+            [ "$got" = "$want" ] || { echo "::error::$email got $got at $route, expected $want"; fail=1; }
+          done
+
+          # And the agent API refuses a role that may not use it, which is the
+          # check the solution design puts in the API rather than the menu.
+          curl -s -c /tmp/jar4 -X POST -H 'content-type: application/json' \
+            -d '{"email":"thandi.mokoena@example.com"}' http://127.0.0.1:3001/api/session > /dev/null
+          code=$(curl -s -b /tmp/jar4 -o /dev/null -w '%{http_code}' -X POST \
+            -H 'content-type: application/json' -d '{"question":"hi","data":{}}' \
+            http://127.0.0.1:3001/api/absenteeism/agents/analyst/stream)
+          echo "agent API as viewer -> $code"
+          [ "$code" = "403" ] || { echo "::error::the agent API allowed a role without use.agents ($code)"; fail=1; }
 
           exit $fail
 

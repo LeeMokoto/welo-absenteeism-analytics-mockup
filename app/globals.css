@@ -857,3 +857,82 @@ select.input {
   color: var(--ink-faint);
   background: var(--cream);
 }
+
+/* --- Mocked sign-in, and the session chip in the frame -------------------- */
+
+.signin-page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 32px 16px;
+  background: var(--cream);
+}
+.signin-card {
+  width: 100%;
+  max-width: 460px;
+  padding: 28px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(16, 15, 14, 0.04), 0 8px 24px rgba(16, 15, 14, 0.06);
+}
+/* Above the fold, deliberately. A login screen that looks real and is not is
+   the most misreadable thing in a demo. */
+.signin-mock {
+  padding: 10px 12px;
+  margin-bottom: 22px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--ink-mute);
+  background: var(--cream);
+  border: 1px dashed var(--line);
+  border-radius: 8px;
+}
+.signin-brand { display: flex; align-items: baseline; gap: 10px; }
+.signin-title { font-size: 22px; letter-spacing: -0.03em; margin: 18px 0 6px; }
+.signin-sub { font-size: 13.5px; color: var(--ink-mute); margin: 0 0 18px; }
+.signin-accounts { display: grid; gap: 2px; }
+.signin-account {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 11px 10px;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.signin-account:hover:not(:disabled) { background: var(--cream); }
+.signin-account:disabled { opacity: 0.55; cursor: default; }
+.signin-avatar {
+  flex: 0 0 auto;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--paper);
+  background: var(--ink-mute);
+  border-radius: 50%;
+}
+.signin-who { display: grid; gap: 1px; min-width: 0; }
+.signin-name { font-size: 14px; font-weight: 500; }
+.signin-email { font-size: 12.5px; color: var(--ink-mute); }
+.signin-access { font-size: 11.5px; color: var(--ink-faint); }
+.signin-busy { margin-left: auto; font-size: 11.5px; color: var(--ink-faint); }
+.signin-error { margin-top: 14px; font-size: 13px; color: var(--red); }
+.signin-foot { margin-top: 20px; font-size: 11.5px; color: var(--ink-faint); line-height: 1.5; }
+
+.shell-session { display: inline-flex; align-items: center; gap: 8px; margin-left: 14px; }
+.shell-session-role { font-size: 12px; font-weight: 500; }
+.shell-session-email { font-size: 11.5px; color: var(--ink-faint); }
+.shell-session-switch { font-size: 11.5px; color: var(--ink-mute); text-decoration: underline; }
+
+@media (max-width: 900px) {
+  .shell-session-email { display: none; }
+}

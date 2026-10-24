@@ -1,6 +1,17 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  experimental: {
+    // Enables forbidden(), which lib/platform/guard.js uses to refuse a route
+    // with a 403 rather than a 404 or a 200 carrying a denial page.
+    //
+    // Experimental, and acceptable here for one reason: it fails closed. If a
+    // future Next removes or renames this, forbidden() throws, the request
+    // becomes a 500, and access is still refused. The dependency is contained
+    // in guard.js, so repairing it is one function. CI asserts a denial is a
+    // 403, so a release that breaks it is caught rather than discovered.
+    authInterrupts: true,
+  },
   // Standalone output bundles a minimal server (.next/standalone/server.js) with
   // only the dependencies it needs, so the Cloud Run image stays small. Deployed
   // the same way as the absenteeism inference service: a container on Cloud Run

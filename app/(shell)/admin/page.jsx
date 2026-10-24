@@ -1,4 +1,6 @@
 import { getManifest } from "@/lib/platform/manifest";
+import { guard } from "@/lib/platform/guard";
+import { PERMISSIONS } from "@/lib/platform/roles";
 
 export const metadata = { title: "Tenant and modules | Welo" };
 export const dynamic = "force-dynamic";
@@ -12,7 +14,9 @@ export const dynamic = "force-dynamic";
   configuration visible to whoever is in the tenant without implying it can be
   edited from inside.
 */
-export default function AdminPage() {
+export default async function AdminPage() {
+  await guard(PERMISSIONS.VIEW_ADMIN);
+
   const manifest = getManifest();
   const t = manifest.tenant;
   const modules = [

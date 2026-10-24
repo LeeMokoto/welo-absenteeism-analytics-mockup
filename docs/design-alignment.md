@@ -256,14 +256,41 @@ project-scoped deployment does not have.
 
 ### 7. Identity, roles and access
 
-The document gives seven application roles, role checks in the API, group-to-role
-mapping from the client's identity provider, Privileged Access Manager for Welo
-access, and a sealed break-glass account.
+**Partly closed.** The document gives seven application roles, role checks in
+the API, group-to-role mapping from the client's identity provider, Privileged
+Access Manager for Welo access, and a sealed break-glass account.
 
-None of it exists. There is no authentication in the application at all;
-`allow_unauthenticated` on the Cloud Run service is the only access control. This
-is the gap already named as the largest in `docs/devsecops.md`, and the document
-makes it larger by committing to the role model above it.
+All seven roles now exist and are enforced. `lib/platform/roles.js` holds the
+permissions, every screen calls a route guard, the agent API refuses a role
+without `use.agents`, and navigation is filtered to what a session can actually
+open. A denial is a 403 rather than a hidden menu item, which is what the
+document asks for: "role checks run in the API, so a hidden menu item is never
+the only control".
+
+What is still mocked is the identity, not the authorisation. There is no SAML
+assertion and no OIDC exchange: an Entra-styled account picker sets a cookie
+holding a role key. The cookie is unsigned and trivially forgeable, which is why
+the whole mechanism refuses to run in a tenant that is not marked synthetic: no
+sign-in page, no session, and therefore no access at all. A tenant with real
+data fails closed rather than open.
+
+Still absent: group-to-role mapping, Privileged Access Manager, and the sealed
+break-glass account. `break_glass_principals` is wired into the security module,
+so the detection is ready for an account that does not exist yet.
+
+### 7a. The case view contradicts the role table
+
+The document says "No role, including client admin, can see data below cohort
+level." The Analyst row gives "HR, wellness and occupational health staff" the
+Case Assistant, which sits on an individual case view this repository ships.
+Both cannot hold.
+
+Implemented as the role table reads, so Analyst holds `view.case` and a test
+asserts no other role does. The cleaner resolution is probably to split Analyst
+into an HR analyst without the case view and a clinical role with it, since the
+current arrangement gives an HR business partner the same reach as an
+occupational health nurse. That is a decision for the document rather than the
+code.
 
 `break_glass_principals` is wired into the security module, so the detection is
 ready for an account that does not exist yet.

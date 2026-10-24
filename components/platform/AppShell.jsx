@@ -16,6 +16,26 @@ import { usePathname } from "next/navigation";
   module never sees a door to it.
 */
 
+/*
+  Who is signed in, and on what basis. The "mocked" marker is not decoration:
+  the identity is a picked account rather than a federated one, and the frame
+  is where somebody looks to find out.
+*/
+function SessionChip({ session }) {
+  return (
+    <span className="shell-session">
+      <span className="shell-session-role">{session.roleLabel}</span>
+      <span className="shell-session-email">{session.email}</span>
+      {!session.authenticated ? (
+        <span className="nav-badge" title="No identity provider: the role comes from a picked account">
+          mocked
+        </span>
+      ) : null}
+      <a className="shell-session-switch" href="/signin">switch</a>
+    </span>
+  );
+}
+
 function NavLink({ item, active }) {
   // A screen still served by the standalone build leaves the shell, so it is a
   // plain anchor and says so. The flag disappears as each screen is ported.
@@ -41,7 +61,7 @@ function NavLink({ item, active }) {
   );
 }
 
-export default function AppShell({ manifest, navigation, children }) {
+export default function AppShell({ manifest, navigation, session, children }) {
   const pathname = usePathname();
 
   // Every screen is a real route, so active state is a path comparison and the
@@ -67,6 +87,7 @@ export default function AppShell({ manifest, navigation, children }) {
           {t.synthetic ? (
             <span className="shell-synthetic">Synthetic data</span>
           ) : null}
+          {session ? <SessionChip session={session} /> : null}
         </div>
       </header>
 

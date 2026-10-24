@@ -2,6 +2,8 @@ import Link from "next/link";
 import { getManifest } from "@/lib/platform/manifest";
 import { aggregates as sickLeave, meta as sickLeaveMeta } from "@/modules/sick-leave/data/sampleData";
 import { num, pct, randCompact } from "@/modules/sick-leave/format";
+import { guard } from "@/lib/platform/guard";
+import { PERMISSIONS } from "@/lib/platform/roles";
 
 export const metadata = {
   title: "Overview | Welo Workforce Health Platform",
@@ -10,7 +12,9 @@ export const metadata = {
 // The platform's landing screen: what this tenant runs and where the weight
 // currently sits, with a route into each enabled module. Deliberately thin.
 // Its job is orientation, not analysis; the modules do the analysis.
-export default function Overview() {
+export default async function Overview() {
+  await guard(PERMISSIONS.VIEW_OVERVIEW);
+
   const manifest = getManifest();
   const m = manifest.modules;
   const sl = sickLeave.headline;

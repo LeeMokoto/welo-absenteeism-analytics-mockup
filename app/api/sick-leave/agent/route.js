@@ -12,6 +12,8 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { SYSTEM_PROMPTS } from "@/modules/sick-leave/agentPrompts";
 import { AGENT_IDS } from "@/modules/sick-leave/agentMeta";
+import { requirePermission } from "@/lib/platform/session";
+import { PERMISSIONS } from "@/lib/platform/roles";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -27,6 +29,16 @@ const MAX_TOKENS = 1200;
 // which consumes no tokens, and is the quickest way to diagnose a request that
 // is being rejected for the model rather than the credentials.
 export async function GET(request) {
+  // The solution design puts the role check in the API, so a hidden menu item
+  // is never the only control. A caller with a session that may not use the
+  // agents is refused here even though the panel is not rendered for them.
+  {
+    const { allowed } = await requirePermission(PERMISSIONS.USE_AGENTS);
+    if (!allowed) {
+      return Response.json({ error: "This role may not use the agents." }, { status: 403 });
+    }
+  }
+
   const key = process.env.ANTHROPIC_API_KEY || "";
   const out = {
     keyConfigured: Boolean(key),
@@ -55,6 +67,16 @@ export async function GET(request) {
 }
 
 export async function POST(request) {
+  // The solution design puts the role check in the API, so a hidden menu item
+  // is never the only control. A caller with a session that may not use the
+  // agents is refused here even though the panel is not rendered for them.
+  {
+    const { allowed } = await requirePermission(PERMISSIONS.USE_AGENTS);
+    if (!allowed) {
+      return Response.json({ error: "This role may not use the agents." }, { status: 403 });
+    }
+  }
+
   let body;
   try {
     body = await request.json();
