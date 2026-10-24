@@ -11,7 +11,8 @@
 
 import Anthropic from "@anthropic-ai/sdk";
 import { SYSTEM_PROMPTS } from "@/modules/sick-leave/agentPrompts";
-import { AGENT_IDS } from "@/modules/sick-leave/agentMeta";
+import { AGENT_IDS, AGENTS } from "@/modules/sick-leave/agentMeta";
+import { canAnswer, fallbackAnswer, refusal } from "@/modules/sick-leave/agentFallback";
 import { requirePermission } from "@/lib/platform/session";
 import { PERMISSIONS } from "@/lib/platform/roles";
 
@@ -98,12 +99,31 @@ export async function POST(request) {
 
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
-    // Agents are disabled without a key. The client renders the panels in a
-    // disabled state, but guard here too in case the route is called directly.
-    return json(
-      { error: "The agent service is not configured. No ANTHROPIC_API_KEY is set." },
-      503
-    );
+    /*
+      No key, so no model. This used to return 503 and the panels rendered an
+      "Agent offline" box, which left three of the four agent surfaces in the
+      demo dark: a visitor saw the cohorts, the costs and the governance, then
+      three empty boxes where the thing being sold should have been.
+
+      Instead the panel's own suggested questions are answered from the
+      grounding the screen already assembled, by arithmetic. It is labelled at
+      every layer: the answer opens by saying no language model was called,
+      `source` is `summary` rather than `model`, and the panel badges it.
+
+      A question outside the suggested set is refused by name rather than
+      answered generically. A canned paragraph returned for any input is what
+      would make a buyer think the product is cleverer than it is.
+    */
+    const text = fallbackAnswer(agent, question, context);
+    if (text) {
+      return json({ text, model: null, source: "summary" });
+    }
+    return json({
+      text: refusal(agent, AGENTS[agent]?.chips || []),
+      model: null,
+      source: "summary",
+      answered: false,
+    });
   }
 
   const client = new Anthropic({ apiKey });
@@ -127,7 +147,7 @@ export async function POST(request) {
       .map((b) => b.text)
       .join("")
       .trim();
-    return json({ text, model: MODEL });
+    return json({ text, model: MODEL, source: "model" });
   } catch (err) {
     const status = Number(err?.status) || 0;
     // Log the real error server side (visible in the platform's function logs).

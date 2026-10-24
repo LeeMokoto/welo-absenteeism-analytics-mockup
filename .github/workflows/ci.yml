@@ -144,8 +144,8 @@ jobs:
           mapfile -t FILES < <(find lib modules -name '*.test.mjs' | sort)
           echo "collected ${#FILES[@]} test files:"
           printf '  %s\n' "${FILES[@]}"
-          if [ "${#FILES[@]}" -lt 7 ]; then
-            echo "expected at least 7 test files, found ${#FILES[@]}" >&2
+          if [ "${#FILES[@]}" -lt 8 ]; then
+            echo "expected at least 8 test files, found ${#FILES[@]}" >&2
             exit 1
           fi
           node --test "${FILES[@]}"
@@ -391,6 +391,32 @@ jobs:
             fail=1
           }
           echo "template draft labelled and validated"
+
+          # The sick-leave agent panels answer their suggested questions without a
+          # key, from the figures on screen, and say so. Three of the four agent
+          # surfaces in the demo were dark before this; the label is what stops
+          # a summary passing as a model, so it is checked over the wire.
+          slbody=$(curl -s -b /tmp/jar-draft -X POST -H 'content-type: application/json' \
+            -d '{"agent":"analyst","question":"Where is sick leave cost concentrating and why","context":{"headline":{"sickLeaveRatePct":3.2,"indicativeCostRand":1,"coverCostRand":1}}}' \
+            http://127.0.0.1:3001/api/sick-leave/agent)
+          echo "$slbody" | grep -q '"source":"summary"' || {
+            echo "::error::the sick-leave agent did not answer from the figures without a key"
+            fail=1
+          }
+          echo "$slbody" | grep -q 'not by a language model' || {
+            echo "::error::a summarised answer was not labelled as not coming from a model"
+            fail=1
+          }
+          # And a question outside the suggested set is declined rather than
+          # answered with a paragraph that reads like an answer.
+          slrefuse=$(curl -s -b /tmp/jar-draft -X POST -H 'content-type: application/json' \
+            -d '{"agent":"analyst","question":"Who should we performance manage","context":{}}' \
+            http://127.0.0.1:3001/api/sick-leave/agent)
+          echo "$slrefuse" | grep -q '"answered":false' || {
+            echo "::error::an unsupported question was answered instead of declined"
+            fail=1
+          }
+          echo "sick-leave agent summarises and declines correctly"
 
           echo "intervention carrying an employee key -> $code"
           [ "$code" = "422" ] || { echo "::error::a record carrying an employee key was not refused ($code)"; fail=1; }

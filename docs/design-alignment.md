@@ -665,6 +665,63 @@ reused a cookie jar the role matrix had left holding a refused account, so it
 drafted as the viewer and asserted the label against a 403 body. It failed
 loudly rather than passing, which is the only reason it was found before merge.
 
+## Every agent surface is mocked, so the demo runs with no secrets
+
+Mocking the control centre's drafter left three of the four agent surfaces dark.
+A visitor walking the product saw the cohorts, the costs, the governance and the
+outcome measurement, then three "Agent offline" boxes where the thing being sold
+was supposed to be.
+
+The three sick-leave panels now answer their own suggested questions from the
+grounding the screen already assembles, by arithmetic. Verified in a browser:
+the Portfolio Analyst, the Cover and Roster Coordinator, and the Case Assistant
+after selecting a record, all answering with the screen's real figures and all
+labelled.
+
+Three properties, each tested:
+
+**It cannot pass as a model.** Every answer opens by saying no language model was
+called, `source` is `summary` rather than `model`, and the line under the answer
+says which produced it. The smoke test checks the label over the wire.
+
+**It answers only what it should.** The router matches the panel's own suggested
+questions. Anything else is declined by name, listing what can be asked. A
+canned paragraph returned for any input is what makes a demo feel like a trick,
+and it is the thing a buyer would later feel misled by.
+
+**It never echoes the question.** The dangerous property, and the one worth
+knowing: an answer that repeated its input would let a typed question put
+disciplinary language or somebody's name into the product's own output, on a
+screen that looks like the product said it. Every answer is a template over the
+grounding, asserted with a deliberately loaded question that matches the router.
+
+The clinical constraints hold without a model, because they are a property of
+the product rather than of the prompt: the case answers stay care and support,
+name no employment consequence, frame entitlement as planning context for the
+clinician, and say the risk tier is modelled and not a diagnosis.
+
+### Two things found by walking it
+
+**The sick-leave figures were grouped with a non-breaking space.**
+`toLocaleString("en-ZA")` uses one, which looks identical on screen and is a
+different character in a comparison, so the first version passed in the browser
+and failed its own test. Grouped explicitly now.
+
+**A whole-text screen flagged a disclaimer.** The case plan says it contains
+"nothing for a performance or disciplinary process", which is good governance
+writing and trips a check for disciplinary language. The playbook validator only
+ever screens `step.action`, never the surrounding prose, so the test was scoped
+the same way, and a second test asserts the disclaimer still names the things it
+disclaims. Removing the naming to make a check pass would have been the wrong
+repair.
+
+### What is still not mocked
+
+Nothing in the demo path. The absence module's what-if scoring still needs the
+Python inference service, which is a separate deployment rather than an agent
+key, and that screen was never ported into the shell. Everything a visitor can
+reach works with no secrets at all.
+
 ## What to do first
 
 The schema time axis is settled and built, and is recorded above. What is left
