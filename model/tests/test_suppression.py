@@ -23,6 +23,8 @@ import pytest
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from feed_enrich import (  # noqa: E402
+    DIMENSIONS,
+    PROTECTED_MIN_COHORT,
     SUPPRESSION_THRESHOLD,
     apply_complementary_suppression,
     suppressed_row,
@@ -152,3 +154,43 @@ class TestTwoCohortTable:
         rows = [cohort("A", 900), suppressed_row("B", 2)]
         out = apply_complementary_suppression(rows)
         assert visible(out) == []
+
+
+class TestProtectedAttributes:
+    """
+    Age is a reporting dimension by decision. The platform's rule attaches a
+    condition to that: a protected attribute is reported at a higher minimum
+    cohort size than the rest. Reporting is not targeting, and the control
+    centre excludes protected attributes from targeting separately.
+    """
+
+    def test_age_is_marked_protected(self):
+        age = next(d for d in DIMENSIONS if d["key"] == "cohort_age")
+        assert age.get("protected") is True
+
+    def test_age_suppresses_at_a_higher_floor_than_the_rest(self):
+        age = next(d for d in DIMENSIONS if d["key"] == "cohort_age")
+        assert age["min_cohort"] == PROTECTED_MIN_COHORT
+        assert PROTECTED_MIN_COHORT > SUPPRESSION_THRESHOLD
+
+    def test_every_other_dimension_keeps_the_ordinary_floor(self):
+        for d in DIMENSIONS:
+            if d.get("protected"):
+                continue
+            assert d.get("min_cohort", SUPPRESSION_THRESHOLD) == SUPPRESSION_THRESHOLD
+
+    def test_a_suppressed_row_reports_the_floor_that_was_applied(self):
+        # An age cohort of eight is suppressed. Telling the reader it holds
+        # "fewer than 5" would be false; it holds fewer than ten.
+        row = suppressed_row("30-39", 8, below=PROTECTED_MIN_COHORT)
+        assert row["suppressed_below"] == PROTECTED_MIN_COHORT
+
+    def test_a_complementary_row_inherits_the_floor_of_its_trigger(self):
+        rows = [
+            cohort("Under 30", 800),
+            suppressed_row("50+", 8, below=PROTECTED_MIN_COHORT),
+            cohort("40-49", 900),
+        ]
+        out = apply_complementary_suppression(rows)
+        comp = next(r for r in out if r.get("suppression") == "complementary")
+        assert comp["suppressed_below"] == PROTECTED_MIN_COHORT

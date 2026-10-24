@@ -25,8 +25,17 @@ LEAVE_GAP_DAYS = 180
 # position the platform's authorised cohort views take in BigQuery.
 SUPPRESSION_THRESHOLD = 5
 
+# A protected attribute reported at the same minimum as any other dimension is
+# not reported under the same conditions. The Employment Equity Act prohibits
+# unfair discrimination on grounds including age, and the platform's own rule is
+# that a protected attribute appears as a reporting dimension only at a client's
+# written request and with a higher minimum cohort size. This is that higher
+# minimum. The written request is a per-tenant record, not something code can
+# hold.
+PROTECTED_MIN_COHORT = 10
 
-def suppressed_row(label, n, complementary=False):
+
+def suppressed_row(label, n, complementary=False, below=SUPPRESSION_THRESHOLD):
     """
     A cohort entry stripped of every measure.
 
@@ -37,7 +46,7 @@ def suppressed_row(label, n, complementary=False):
     recovered by subtraction.
     """
     return {"key": label, "label": label, "count": None,
-            "suppressed": True, "suppressed_below": SUPPRESSION_THRESHOLD,
+            "suppressed": True, "suppressed_below": below,
             "suppression": "complementary" if complementary else "primary"}
 
 
@@ -72,9 +81,10 @@ def apply_complementary_suppression(rows):
     if not visible:
         return rows
 
+    below = suppressed[0].get("suppressed_below", SUPPRESSION_THRESHOLD)
     victim = min(visible, key=lambda r: r.get("count") or 0)
     return [
-        suppressed_row(r["label"], r.get("count"), complementary=True)
+        suppressed_row(r["label"], r.get("count"), complementary=True, below=below)
         if r is victim else r
         for r in rows
     ]
@@ -88,7 +98,10 @@ DIMENSIONS = [
      "blurb": "Composite fatigue & burnout score band, the single strongest driver in the model."},
     {"key": "cohort_age",       "label": "Age band",
      "order": ["Under 30", "30–39", "40–49", "50+"],
-     "blurb": "Age cohort. Metabolic and chronic-disease risk rises with age."},
+     # Protected under the Employment Equity Act: reportable, never targetable,
+     # and suppressed at a higher minimum than the other dimensions.
+     "protected": True, "min_cohort": PROTECTED_MIN_COHORT,
+     "blurb": "Age cohort. Metabolic and chronic-disease risk rises with age. A protected attribute: reported at a higher minimum cohort size and never available for targeting."},
     {"key": "cohort_tenure",    "label": "Tenure band",
      "order": ["New (<2y)", "Established (2–5y)", "Experienced (5–10y)", "Veteran (10y+)"],
      "blurb": "Time in service: onboarding strain vs. long-service chronic load."},
@@ -142,7 +155,7 @@ def add_cohort_columns(df):
 
 
 def compute_cohorts(df):
-    def cohort_rows(dim_key, order):
+    def cohort_rows(dim_key, order, min_cohort=SUPPRESSION_THRESHOLD):
         rows = []
         g = df.groupby(dim_key, observed=True)
         for label in order:
@@ -150,8 +163,8 @@ def compute_cohorts(df):
                 continue
             sub = df.loc[g.groups[label]]
             n = len(sub)
-            if n < SUPPRESSION_THRESHOLD:
-                rows.append(suppressed_row(label, n))
+            if n < min_cohort:
+                rows.append(suppressed_row(label, n, below=min_cohort))
                 continue
             days90 = float(sub["predicted_absent_days_90d"].sum())
             days_annual = float(sub["predicted_absent_days_monthly"].sum() * 12)
@@ -170,7 +183,11 @@ def compute_cohorts(df):
                                 for b in ["Critical", "High", "Medium", "Low"]},
             })
         return apply_complementary_suppression(rows)
-    return {d["key"]: cohort_rows(d["key"], d["order"]) for d in DIMENSIONS}
+    return {
+        d["key"]: cohort_rows(d["key"], d["order"],
+                              d.get("min_cohort", SUPPRESSION_THRESHOLD))
+        for d in DIMENSIONS
+    }
 
 
 def make_stats(df):
@@ -331,7 +348,16 @@ def enrich(feed, df, sample_n=400, seed=7, synthetic=True):
     individuals, n_hi, n_rest = compute_individuals(df, shap_by_row, sample_n=sample_n, seed=seed)
     feed["synthetic"] = bool(synthetic)
     feed["suppression_threshold"] = SUPPRESSION_THRESHOLD
-    feed["cohort_dimensions"] = [{"key": d["key"], "label": d["label"], "blurb": d["blurb"]} for d in DIMENSIONS]
+    # The interface needs to know which dimensions are protected and what floor
+    # each one suppresses at, so it can say why an age cohort disappears earlier
+    # than an operational one, and so the control centre can refuse to target a
+    # protected attribute.
+    feed["cohort_dimensions"] = [
+        {"key": d["key"], "label": d["label"], "blurb": d["blurb"],
+         "protected": bool(d.get("protected")),
+         "min_cohort": d.get("min_cohort", SUPPRESSION_THRESHOLD)}
+        for d in DIMENSIONS
+    ]
     feed["cohorts"] = cohorts
     feed["individuals"] = individuals
     feed["covered_cohort"] = {

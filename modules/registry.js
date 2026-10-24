@@ -9,8 +9,9 @@
 
 import absenceModule from "./absence/module";
 import sickLeaveModule from "./sick-leave/module";
+import controlCentreModule from "./control-centre/module";
 
-export const ALL_MODULES = [absenceModule, sickLeaveModule];
+export const ALL_MODULES = [absenceModule, sickLeaveModule, controlCentreModule];
 
 export function enabledModules(manifest) {
   return ALL_MODULES.filter((m) => manifest.modules?.[m.enabledBy]);

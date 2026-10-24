@@ -434,27 +434,37 @@
     {
       "key": "cohort_load",
       "label": "Operational load",
-      "blurb": "Composite of workload index, 14-day overtime and consecutive shifts worked, the operational levers Welo can act on with rostering."
+      "blurb": "Composite of workload index, 14-day overtime and consecutive shifts worked, the operational levers Welo can act on with rostering.",
+      "protected": false,
+      "min_cohort": 5
     },
     {
       "key": "cohort_fatigue",
       "label": "Fatigue / burnout band",
-      "blurb": "Composite fatigue & burnout score band, the single strongest driver in the model."
+      "blurb": "Composite fatigue & burnout score band, the single strongest driver in the model.",
+      "protected": false,
+      "min_cohort": 5
     },
     {
       "key": "cohort_age",
       "label": "Age band",
-      "blurb": "Age cohort. Metabolic and chronic-disease risk rises with age."
+      "blurb": "Age cohort. Metabolic and chronic-disease risk rises with age. A protected attribute: reported at a higher minimum cohort size and never available for targeting.",
+      "protected": true,
+      "min_cohort": 10
     },
     {
       "key": "cohort_tenure",
       "label": "Tenure band",
-      "blurb": "Time in service: onboarding strain vs. long-service chronic load."
+      "blurb": "Time in service: onboarding strain vs. long-service chronic load.",
+      "protected": false,
+      "min_cohort": 5
     },
     {
       "key": "cohort_lifestyle",
       "label": "Lifestyle risk",
-      "blurb": "Smoking and alcohol load; together the top SHAP driver of predicted absence."
+      "blurb": "Smoking and alcohol load; together the top SHAP driver of predicted absence.",
+      "protected": false,
+      "min_cohort": 5
     }
   ],
   "cohorts": {

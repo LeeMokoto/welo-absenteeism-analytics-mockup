@@ -45,6 +45,15 @@ tenants = {
     environment  = "demo"
     synthetic    = true
 
+    # The control centre is built and shown in the demo tenant first, against a
+    # mocked actions store. It stays false for a client tenant until the store
+    # and the outbound task integration have passed their delta test.
+    modules = {
+      absence        = true
+      sick_leave     = true
+      control_centre = true
+    }
+
     # Switch on once the Anthropic key is in Secret Manager. Until then the
     # application renders with the agent panels showing a disabled state.
     enable_agents = false

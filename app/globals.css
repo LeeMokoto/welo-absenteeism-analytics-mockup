@@ -833,3 +833,27 @@ select.input {
   padding-top: 14px;
   border-top: 1px solid var(--line-soft);
 }
+
+/* Control centre form controls. Plain inputs that inherit the shell's type and
+   spacing, so a form does not read as a different product from the dashboards
+   it sits beside. */
+.cc-input {
+  width: 100%;
+  max-width: 100%;
+  margin-top: 4px;
+  padding: 9px 11px;
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+.cc-input:focus {
+  outline: none;
+  border-color: var(--red);
+}
+.cc-input:disabled {
+  color: var(--ink-faint);
+  background: var(--cream);
+}
