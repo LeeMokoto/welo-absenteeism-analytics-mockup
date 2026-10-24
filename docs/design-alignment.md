@@ -37,9 +37,16 @@ earlier only.
 A tenant provisioned on defaults would send inference to the United States while
 the document tells the client it goes to the European Union under their written
 section 72 approval. This is the most serious item here, because it is a
-compliance statement rather than a configuration preference. Change the default
-to the EU multi-region endpoint and validate the variable against the two values
-the document permits.
+compliance statement rather than a configuration preference.
+
+**Resolved.** The default is now `eu`, and `global` is refused by a variable
+validation, because it routes to any region with capacity and so cannot support
+a residency statement. A second validation rejects anything that is not a Vertex
+location, so a typo such as `europe` fails at plan time rather than becoming an
+outage once agents are on. Three tests hold it: the default is EU, the configured
+location reaches the container as `WELO_VERTEX_REGION`, and both `global` and a
+non-location are rejected. The variable's description no longer offers
+`europe-west1` as a casual example, and `infra/README.md` matches.
 
 ### 2. Region lock
 
@@ -59,10 +66,21 @@ The code: `.github/workflows/ci.yml` scans with Trivy at CRITICAL and HIGH,
 `ignore-unfixed: true`, and uploads to the security tab. It does not block. That
 was a deliberate choice, documented in `docs/devsecops.md`: a base-image CVE with
 no available fix would otherwise stop all work. The reasoning still holds, but
-the document states the opposite as fact. Either the document softens to "blocks
-on a fixable critical finding", or the pipeline starts blocking and accepts the
-stoppage. The document's version is also Artifact Registry scanning rather than
-Trivy in CI, which is a different control at a different point.
+the document states the opposite as fact.
+
+**Resolved, by splitting it.** Scanning now runs twice. The reporting pass is
+unchanged: CRITICAL and HIGH, unfixed excluded, published to the security tab,
+blocking nothing. A second gate pass covers CRITICAL with unfixed excluded and
+exits non-zero, so a build stops exactly when the remedy is a version bump
+somebody can make. An unfixable critical still blocks nothing, because a gate
+that halts every branch gets switched off and is then worth nothing. The gate
+runs after the upload, so a blocked build still publishes its findings.
+
+The document should soften to "blocks on a critical finding with a fix
+available", which is now true. It should also stop describing this as Artifact
+Registry scanning: Trivy in CI fires before an image is ever pushed, which is
+earlier and cheaper, and it is not a substitute for registry scanning of images
+already published. The first is wording; the second is a real gap.
 
 ### 4. Customer-managed keys
 
@@ -207,10 +225,17 @@ withdrawal path, no descriptive-only mode and no drift monitoring.
 `model/models/manifest.joblib` holds class labels and feature names only, so
 there is no version, no training window and nothing to put on a model card.
 
-`/absence/outcomes` does show the cross-validated metrics, and its copy already
-claims more than the code does: "A tenant model is backtested against a naive
+`/absence/outcomes` does show the cross-validated metrics, and its copy used to
+claim more than the code does: "A tenant model is backtested against a naive
 baseline before its predictions are served, and withdrawn if it falls below that
-baseline." That sentence describes the document, not the repository.
+baseline." That sentence described the document, not the repository.
+
+**The copy is fixed.** The screen now says the metrics are cross-validated on
+the training cohort, that this is not a backtest because there is no held-out
+period, that the extract carries no time axis, and that neither the backtest nor
+the withdrawal path is built. The rest of this item stands: the gating, the
+drift monitoring and the model run record are still absent, and none of them can
+be built until the schema carries a time axis.
 
 Loading the artifacts also warns that they were pickled with scikit-learn 1.9.0
 and are read by 1.9.1, which is the skew the model run record would catch.
@@ -422,16 +447,27 @@ Not alignment issues, but worth resolving before a client reads them.
 
 ## What to do first
 
-In the order that the cost of delay suggests:
+Items 1, 3 and 4 of the original list are done and recorded above. What is left
+needs a decision rather than a commit, in the order that the cost of delay
+suggests:
 
-1. **Change the `vertex_region` default and validate it.** It is a one-line
-   change against a compliance claim, and the current default sends inference to
-   the United States.
+1. **Settle the schema time axis.** The canonical extract is 23 columns with no
+   date, period or `as_of`. That blocks outcome tracking, the model history
+   window, model gating and lineage, all at once, and it is the only item here
+   that blocks building rather than deciding. Note that the two modules already
+   disagree: the absence model is scalar per employee, while sick leave is
+   episode-level with dated spells.
 2. **Settle the project name** before more is built in `absenteeism-demo`. A
    project cannot be renamed.
-3. **Correct the copy on `/absence/outcomes`** that says a model is backtested
-   and withdrawn. It describes the document, not the code.
-4. **Reconcile the image-scanning guardrail** in one direction.
-5. **Decide whether the manifest standard is the target or the specification.**
+3. **Split the Analyst role, or change the sentence.** The document says no role
+   sees data below cohort level and then gives Analyst the Case Assistant, which
+   sits on an individual case view. Both cannot hold, and the code implements
+   the role table, so an HR business partner currently has an occupational
+   health nurse's reach. See 7a.
+4. **Decide whether the manifest standard is the target or the specification.**
    Seven of twelve fields are absent, and the document says the pipeline
    validates all of them before any deployment.
+5. **Soften two sentences in the document** to match what now exists: the image
+   guardrail blocks on a fixable critical finding, and the scanner is Trivy in
+   CI rather than Artifact Registry. Registry scanning of published images
+   remains a genuine gap.

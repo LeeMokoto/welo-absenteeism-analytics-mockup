@@ -22,7 +22,7 @@ adding a job does not mean editing branch protection.
 | --- | --- | --- |
 | Secrets | gitleaks, full history | A key committed by accident, before it is in `main` |
 | Infrastructure misconfiguration | Checkov over Terraform, Dockerfiles and the workflow | A bucket that could be made public, a container running as root, an unpinned action |
-| Infrastructure controls | `terraform test`, 17 assertions | A control that was quietly removed rather than argued about |
+| Infrastructure controls | `terraform test`, 31 runs, with the count asserted | A control that was quietly removed rather than argued about |
 | Python advisories | pip-audit over the runtime lock | A known CVE in what the container actually installs |
 | Node advisories | `npm audit --audit-level=high` | The same, for the platform |
 | Runtime lock freshness | pip-compile diff | A lock nobody recompiled, so the image no longer matches its inputs |
@@ -30,11 +30,30 @@ adding a job does not mean editing branch protection.
 | Non-root containers | `docker run id -u` on both images | A Dockerfile edit that dropped the `USER` line |
 | Platform renders | production build plus a route smoke test | A screen that 500s, renders `NaN`, serves a disabled module under a 200, or leaks an identifier |
 | Agent guardrails | live evals, where a key is available | A prompt change that lets an agent recommend disciplinary use |
+| Container CVEs, fixable | Trivy, `CRITICAL` only, unfixed excluded, non-zero exit | A critical vulnerability whose remedy is a version bump nobody made |
 
-Reported but not blocking: container CVEs (Trivy, `CRITICAL` and `HIGH`, unfixed
-excluded) and the SBOM, both to the repository's security tab. A base-image CVE
-with no available fix would otherwise stop all work until upstream moves, and
-the finding still lands somewhere someone owns it.
+Container scanning runs twice, because "block on any critical finding" and "do
+not stop all work" are both right and they conflict.
+
+The **reporting** pass covers `CRITICAL` and `HIGH` with unfixed excluded, and
+publishes to the repository's security tab without blocking. The **gate** pass
+covers `CRITICAL` with unfixed excluded and exits non-zero, so a build stops
+exactly when there is something to do about it. An unfixable critical still
+appears in the security tab and still blocks nothing, because a base-image CVE
+with no available fix would otherwise halt every branch until upstream moves,
+and a gate that halts everything gets switched off, which is worth nothing. The
+gate runs after the upload, so a blocked build still publishes its findings.
+
+This is a deliberate softening of the solution design's guardrail, which reads
+"blocks promotion of any image with a critical finding". The honest version is
+"blocks on a critical finding with a fix available", and the document should say
+that. The design also names Artifact Registry scanning rather than Trivy in CI,
+which is a different control at a different point in the pipeline: this one
+fires before an image is ever pushed, which is earlier and cheaper, and it is
+not a substitute for registry scanning of images already published.
+
+The SBOM is reported, never blocking. Its job is to make "is this image
+affected by the next advisory" answerable without rebuilding and guessing.
 
 ## Supply chain
 
@@ -116,10 +135,15 @@ along with real `*.tfvars` and backend configs.
 
 ## Controls as tests
 
-`infra/terraform/tests/` holds 17 assertions corresponding to claims made in
+`infra/terraform/tests/` holds 31 runs corresponding to claims made in
 `infra/README.md` and above. They are plan-time, use a placeholder provider
 token, reach no API and need no credentials, so they run on every pull request
 including from a fork.
+
+CI asserts the count as well as the result. `terraform test` fails when an
+assertion fails, but a run deleted rather than argued about passes in silence,
+which is the exact failure mode these tests exist to catch. The step fails if
+fewer than 31 runs are declared, so lowering the floor is a visible edit.
 
 They were checked by breaking the thing they protect. Removing public access
 prevention, forcing `force_destroy` on, giving the application write access to
@@ -145,6 +169,17 @@ What they cover:
 - The OIDC exchange is pinned to one repository, by two claims.
 - CI holds no primitive role and nothing that reads object data or secret
   payloads.
+- Vertex inference defaults to the European Union multi-region endpoint, the
+  configured location reaches the container, and `global` is refused. This is a
+  compliance statement rather than a preference: the POPIA section 72 row
+  depends on the route, so the default and the refusal are both asserted.
+- The tenant manifest carries every environment variable
+  `lib/platform/manifest.js` reads. A key added on one side and missed on the
+  other gives a tenant that falls back to a default instead of failing, which
+  nothing would notice.
+- The demo tenant's descriptor defaults to a sector-neutral industrial
+  employer, so the version distributed to prospective buyers cannot quietly
+  become one vertical's.
 
 ## Exemptions
 

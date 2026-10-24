@@ -310,9 +310,21 @@ jobs:
       # small-cell floor that cannot be lowered, tenant data a destroy cannot
       # take, and an application identity that cannot reach the raw upload.
       # These run with a placeholder token and reach no API.
+      #
+      # The floor matters as much as the result. `terraform test` fails when an
+      # assertion fails, but a run that is deleted rather than argued about
+      # passes silently, which is the exact failure mode these tests exist to
+      # catch. So the count is asserted too.
       - name: Control tests
         working-directory: infra/terraform
-        run: terraform test
+        run: |
+          terraform test | tee tf-test.out
+          runs=$(grep -c 'run "' tests/*.tftest.hcl | awk -F: '{s+=$2} END {print s}')
+          echo "control tests declared: $runs"
+          [ "$runs" -ge 31 ] || {
+            echo "::error::$runs control test runs declared, expected at least 31. A control test was removed; say why in the diff and lower the floor deliberately."
+            exit 1
+          }
 
       # The lock file pins the provider for everyone, but only for the platforms
       # it records hashes for. An operator on a Mac hitting a lock built only on
@@ -397,10 +409,14 @@ jobs:
           echo "${{ matrix.name }} runs as uid $uid"
           [ "$uid" != "0" ] || { echo "::error::${{ matrix.name }} runs as root"; exit 1; }
 
-      # Reported, not blocking. A base-image CVE with no fix available would
-      # otherwise stop all work until upstream moves; the findings still land in
-      # the security tab where someone owns them.
-      - name: Vulnerability scan (Trivy)
+      # Two passes, because "block on any critical finding" and "do not stop all
+      # work" are both right and they conflict.
+      #
+      # This one reports everything at CRITICAL and HIGH into the security tab,
+      # where it has an owner. It does not block: a base-image CVE with no fix
+      # available would otherwise halt every branch until upstream moves, and a
+      # gate that halts everything gets switched off, which is worth nothing.
+      - name: Vulnerability scan, reported (Trivy)
         uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
         with:
           image-ref: ${{ matrix.name }}:ci
@@ -415,6 +431,23 @@ jobs:
         with:
           sarif_file: trivy-${{ matrix.name }}.sarif
           category: trivy-${{ matrix.name }}
+
+      # This one blocks, on exactly what can be acted on: a CRITICAL finding
+      # that has a fix available. That is the reconciliation of the guardrail
+      # the solution design states ("blocks promotion of any image with a
+      # critical finding") with the reason it was not blocking. An unfixable
+      # critical still fails nothing and still appears above; a fixable one
+      # stops the build, because the remedy is a version bump.
+      #
+      # Runs after the upload so a blocked build still publishes its findings.
+      - name: Vulnerability gate, fixable criticals block (Trivy)
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          image-ref: ${{ matrix.name }}:ci
+          format: table
+          severity: CRITICAL
+          ignore-unfixed: true
+          exit-code: "1"
 
       # An SBOM is what makes "is this image affected by the next advisory"
       # answerable without rebuilding and guessing.

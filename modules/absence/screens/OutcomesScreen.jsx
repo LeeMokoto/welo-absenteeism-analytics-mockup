@@ -175,8 +175,12 @@ export default function AbsenceOutcomesScreen() {
             </tbody>
           </table>
           <div className="indicative" style={{ marginTop: 10 }}>
-            Cross-validated. A tenant model is backtested against a naive baseline before its
-            predictions are served, and withdrawn if it falls below that baseline.
+            Cross-validated on the training cohort, which is not a backtest: there is no
+            held-out period, because the extract carries no time axis. The solution design
+            requires a tenant model to clear a naive baseline on its own history before it
+            serves predictions, and to be withdrawn if it falls below that baseline. Neither
+            the backtest nor the withdrawal path is built, and nothing on this screen is gated
+            by them.
           </div>
         </div>
 

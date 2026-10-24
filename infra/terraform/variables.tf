@@ -135,10 +135,38 @@ variable "llm_provider" {
 variable "vertex_region" {
   type        = string
   description = <<-EOT
-    Vertex AI region that serves the Claude models when llm_provider = vertex,
-    e.g. us-east5 or europe-west1. Choose one that meets data-residency needs.
+    Vertex AI location that serves the Claude models when llm_provider = vertex.
+
+    Defaults to "eu", the European Union multi-region endpoint, because that is
+    the route the solution design commits to and the POPIA section 72 row
+    depends on. The default used to be "us-east5", which meant a tenant
+    provisioned on defaults sent inference to the United States while the
+    document told the client it went to the European Union. A default that
+    contradicts a compliance statement is worse than no default.
+
+    Accepted: "eu" or "us" (multi-region endpoints), or a single region id such
+    as us-east5 or europe-west1. "global" is rejected: it routes to any region
+    with capacity, which cannot support a residency statement, and the document
+    says it is never used.
+
+    Note that model availability differs between the global endpoint, the
+    multi-region endpoints and single regions, so check the location actually
+    serves the model in agent_model before turning agents on.
   EOT
-  default     = "us-east5"
+  default     = "eu"
+
+  validation {
+    condition     = var.vertex_region != "global"
+    error_message = "vertex_region must not be \"global\". The global endpoint routes to any region with capacity, so it cannot support a data-residency statement, and the solution design says it is never used. Use \"eu\" for the European Union multi-region endpoint."
+  }
+
+  validation {
+    # The two multi-region endpoints, or a single region id. An allow-list of
+    # every region Google serves Claude from would go stale, so this checks the
+    # shape and leaves the choice of a live region to whoever sets it.
+    condition     = contains(["eu", "us"], var.vertex_region) || can(regex("^[a-z]+-[a-z]+[0-9]+$", var.vertex_region))
+    error_message = "vertex_region must be \"eu\", \"us\", or a single region id such as us-east5 or europe-west1."
+  }
 }
 
 variable "enable_agents" {

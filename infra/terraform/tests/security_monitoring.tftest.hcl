@@ -175,3 +175,62 @@ run "turning_agents_on_grants_exactly_what_vertex_needs" {
     error_message = "aiplatform.user is the least-privilege role for invoking models; nothing broader should be granted."
   }
 }
+
+# --- The inference route is a compliance statement, not a preference ---------
+# The solution design tells the client Claude is called through the Vertex AI
+# eu multi-region endpoint, which routes only within the European Union, and
+# that the global endpoint is never used. The POPIA section 72 row depends on
+# it. The default used to be us-east5, so a tenant provisioned on defaults
+# contradicted the document it was sold on. These runs hold the default and the
+# refusal, because this is the item that costs the most when it is wrong.
+
+run "inference_defaults_to_the_european_union" {
+  command = plan
+
+  variables {
+    llm_provider  = "vertex"
+    enable_agents = true
+  }
+
+  assert {
+    condition     = var.vertex_region == "eu"
+    error_message = "vertex_region must default to the eu multi-region endpoint. A default that sends inference to the United States contradicts the section 72 position the client approved."
+  }
+
+  # The route has to reach the container, not just the variable.
+  assert {
+    condition = anytrue([
+      for c in google_cloud_run_v2_service.welo.template[0].containers :
+      anytrue([for e in c.env : e.name == "WELO_VERTEX_REGION" && e.value == "eu"])
+    ])
+    error_message = "The runtime must receive the configured Vertex location as WELO_VERTEX_REGION. A variable nothing reads is not a control."
+  }
+}
+
+run "the_global_endpoint_is_refused" {
+  command = plan
+
+  variables {
+    llm_provider  = "vertex"
+    vertex_region = "global"
+    enable_agents = true
+  }
+
+  # Routes to any region with capacity, so it cannot support a residency
+  # statement. The document says it is never used; this makes that true.
+  expect_failures = [var.vertex_region]
+}
+
+run "a_location_that_is_not_a_vertex_location_is_refused" {
+  command = plan
+
+  variables {
+    llm_provider  = "vertex"
+    vertex_region = "europe"
+    enable_agents = true
+  }
+
+  # "europe" is not a Vertex location. The multi-region endpoint is "eu", and a
+  # typo here is an outage once agents are on, so it fails at plan time.
+  expect_failures = [var.vertex_region]
+}

@@ -176,9 +176,9 @@ dashboard_bucket = ""
 #
 # The document: Claude is called through the Vertex AI eu multi-region
 # endpoint, which routes only within the European Union, and the global
-# endpoint is never used. Note that the repository's vertex_region default is
-# us-east5, which would send inference to the United States against that
-# statement, so this must be set explicitly here until the default changes.
+# endpoint is never used. The repository default is now "eu" and "global" is
+# rejected by a variable validation, so this line restates the position rather
+# than correcting a default that contradicted it.
 llm_provider  = "vertex"
 vertex_region = "eu"
 

@@ -42,6 +42,7 @@ locals {
   # what a tenant is, whoever hosts it.
   manifest_env = {
     WELO_TENANT_NAME           = var.display_name
+    WELO_TENANT_DESCRIPTOR     = var.descriptor
     WELO_TENANT_ENV            = var.environment
     WELO_TENANT_SYNTHETIC      = local.bool_env[tostring(var.synthetic)]
     WELO_SUPPRESSION_THRESHOLD = tostring(var.suppression_threshold)

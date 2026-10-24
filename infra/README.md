@@ -295,11 +295,17 @@ To deploy on Vertex, set in your `*.tfvars`:
 
 ```hcl
 llm_provider  = "vertex"
-vertex_region = "us-east5"   # a region that serves the Claude models
+vertex_region = "eu"         # the EU multi-region endpoint, and the default
 enable_agents = true         # no key needed; the SA authenticates to Vertex
 ```
 
 The same image runs either way; only config changes.
+
+`vertex_region` defaults to `eu` because that is the route the solution design
+commits to and the POPIA section 72 row depends on. `global` is rejected by a
+variable validation: it routes to any region with capacity, so it cannot
+support a residency statement. A single region id such as `us-east5` is
+accepted, so choosing one is possible but has to be deliberate.
 
 ## Switch the AI agents on (Anthropic provider)
 
