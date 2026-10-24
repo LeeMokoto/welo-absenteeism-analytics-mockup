@@ -20,6 +20,7 @@ export const controlCentreModule = {
   home: "/control-centre",
   screens: [
     { href: "/control-centre", label: "Interventions" },
+    { href: "/control-centre/alerts", label: "Alert rules" },
   ],
   agents: [],
   guardrails: [
@@ -28,6 +29,8 @@ export const controlCentreModule = {
     "Age is a reporting dimension and is not a targeting dimension. Reporting on a protected attribute is a client decision with a raised minimum cohort size; targeting on one is not available at any threshold.",
     "An intervention cannot name a cohort that is suppressed, or one below the tenant threshold.",
     "Outcomes are reported as an observed difference against comparable cohorts, never as proof that an intervention caused it.",
+    "Alert rules are scoped with the same rules as an intervention target, and no alert names a cohort under the threshold: a rule across a dimension skips what it cannot report on and says how many.",
+    "Rules watch rates and averages, never counts. A rule on a count fires because a cohort is large rather than because it is unwell.",
     "The actions store is mocked in this tenant and the interface says so, rather than letting a walkthrough imply a durable record was filed.",
   ],
 };

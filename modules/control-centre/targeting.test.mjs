@@ -210,3 +210,123 @@ test("a seeded outcome is framed as observed, never as caused", () => {
     assert.ok(r.outcome.comparators.length, "an outcome needs comparators");
   }
 });
+
+// --- Alert rules -------------------------------------------------------------
+
+import {
+  COMPARISONS,
+  MEASURES,
+  describeRule,
+  evaluateAll,
+  evaluateRule,
+  validateRule,
+} from "./alerts.js";
+import { seededRules } from "./store.js";
+
+const SUPPRESSED_COHORTS = {
+  ...COHORTS,
+  cohort_load: [
+    { key: "High-intensity ops", label: "High-intensity ops", count: 2030, high_or_critical_share: 0.2148, mean_fatigue: 68.4, absent_days_per_head_annual: 18.7 },
+    { key: "Standard ops", label: "Standard ops", suppressed: true, suppression: "primary", suppressed_below: 5 },
+    { key: "Light duty", label: "Light duty", suppressed: true, suppression: "complementary", suppressed_below: 5 },
+  ],
+  cohort_age: [
+    { key: "50+", label: "50+", count: 900, high_or_critical_share: 0.3, mean_fatigue: 70, absent_days_per_head_annual: 20 },
+  ],
+};
+
+const actx = { ...ctx, cohorts: SUPPRESSED_COHORTS };
+
+test("an alert rule on a protected attribute is refused", () => {
+  const r = validateRule(
+    { name: "Age watch", measure: "mean_fatigue", comparison: "above", threshold: 60, scope: { dimension: "cohort_age" } },
+    actx
+  );
+  assert.equal(r.ok, false);
+  assert.match(r.errors.join(" "), /age is a protected attribute/);
+});
+
+test("a rule on a targetable dimension is accepted", () => {
+  const r = validateRule(
+    { name: "Risk watch", measure: "high_or_critical_share", comparison: "above", threshold: 0.2, scope: { dimension: "cohort_load" } },
+    actx
+  );
+  assert.equal(r.ok, true, r.errors.join("; "));
+});
+
+test("a rule needs a name, a measure, a comparison and a number", () => {
+  const r = validateRule({ scope: { dimension: "cohort_load" } }, actx);
+  assert.equal(r.ok, false);
+  assert.equal(r.errors.length, 4, r.errors.join("; "));
+});
+
+test("no alert names a suppressed cohort", () => {
+  const rule = { name: "x", measure: "high_or_critical_share", comparison: "above", threshold: 0.0, scope: { dimension: "cohort_load" } };
+  const out = evaluateRule(rule, { cohorts: SUPPRESSED_COHORTS, suppressionThreshold: 5 });
+  const named = [...out.firing, ...out.quiet].map((x) => x.cohort);
+  assert.ok(!named.includes("Standard ops"), "a suppressed cohort was named in an alert");
+  assert.ok(!named.includes("Light duty"), "a withheld cohort was named in an alert");
+  assert.equal(out.firing.length, 1);
+  assert.equal(out.firing[0].cohort, "High-intensity ops");
+});
+
+test("skipped cohorts are counted and explained, not silently dropped", () => {
+  const rule = { name: "x", measure: "mean_fatigue", comparison: "above", threshold: 1, scope: { dimension: "cohort_load" } };
+  const out = evaluateRule(rule, { cohorts: SUPPRESSED_COHORTS, suppressionThreshold: 5 });
+  assert.equal(out.skipped.length, 2);
+  assert.match(out.skipped.map((s) => s.reason).join(" "), /under the reporting minimum/);
+  assert.match(out.skipped.map((s) => s.reason).join(" "), /withheld to protect/);
+});
+
+test("a cohort under the threshold is skipped even when it carries figures", () => {
+  const cohorts = { cohort_load: [{ key: "Tiny", label: "Tiny", count: 3, mean_fatigue: 90 }] };
+  const rule = { name: "x", measure: "mean_fatigue", comparison: "above", threshold: 1, scope: { dimension: "cohort_load" } };
+  const out = evaluateRule(rule, { cohorts, suppressionThreshold: 5 });
+  assert.equal(out.firing.length, 0);
+  assert.equal(out.skipped.length, 1);
+});
+
+test("measures are rates and averages, never counts", () => {
+  for (const m of MEASURES) {
+    assert.ok(!/count$/.test(m.key), `${m.key} is a count: a rule on it fires because a cohort is large`);
+  }
+});
+
+test("a rule reads as a sentence", () => {
+  const rule = seededRules()[0];
+  const text = describeRule(rule, DIMENSIONS);
+  assert.match(text, /Alert when share at high or critical risk rises above 20\.0% for any cohort of Operational load\./);
+});
+
+test("every seeded rule is valid and targets a targetable dimension", () => {
+  for (const rule of seededRules()) {
+    const r = validateRule(rule, actx);
+    assert.equal(r.ok, true, `${rule.id}: ${r.errors.join("; ")}`);
+  }
+});
+
+test("a disabled rule is not evaluated", () => {
+  const rules = [{ ...seededRules()[0], enabled: false }];
+  assert.equal(evaluateAll(rules, { cohorts: SUPPRESSED_COHORTS }).length, 0);
+});
+
+test("comparisons do what they say", () => {
+  const above = COMPARISONS.find((c) => c.key === "above");
+  const below = COMPARISONS.find((c) => c.key === "below");
+  assert.equal(above.test(5, 4), true);
+  assert.equal(above.test(4, 4), false);
+  assert.equal(below.test(3, 4), true);
+  assert.equal(below.test(4, 4), false);
+});
+
+test("an empty threshold is missing, not zero", () => {
+  // Number("") is 0, so a naive finite check accepts a blank field and the
+  // rule then fires on every cohort it meets.
+  const base = { name: "x", measure: "mean_fatigue", comparison: "above", scope: { dimension: "cohort_load" } };
+  for (const threshold of ["", null, undefined]) {
+    const r = validateRule({ ...base, threshold }, actx);
+    assert.equal(r.ok, false, `threshold ${JSON.stringify(threshold)} was accepted`);
+    assert.match(r.errors.join(" "), /numeric threshold/);
+  }
+  assert.equal(validateRule({ ...base, threshold: 0 }, actx).ok, true, "an explicit zero is a real threshold");
+})

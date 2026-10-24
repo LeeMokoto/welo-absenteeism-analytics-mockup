@@ -167,16 +167,25 @@ jobs:
             curl -sf -o /dev/null http://127.0.0.1:3001/control-centre && break
             sleep 1
           done
-          code=$(curl -s -o /tmp/cc.html -w '%{http_code}' http://127.0.0.1:3001/control-centre)
-          echo "/control-centre (module enabled) -> $code"
-          [ "$code" = "200" ] || { echo "::error::an enabled module returned $code, expected 200"; fail=1; }
+          for path in /control-centre /control-centre/alerts; do
+            code=$(curl -s -o /tmp/cc.html -w '%{http_code}' "http://127.0.0.1:3001$path")
+            echo "$path (module enabled) -> $code"
+            [ "$code" = "200" ] || { echo "::error::an enabled module returned $code at $path, expected 200"; fail=1; }
 
-          # The control centre's own rule: age is reportable and never
-          # targetable. If the screen ever offers it, that is a finding.
-          if grep -q 'value="cohort_age"' /tmp/cc.html; then
-            echo "::error::the control centre offered a protected attribute as a targeting dimension"
-            fail=1
-          fi
+            # The control centre's own rule: age is reportable and never
+            # targetable, on an intervention or an alert rule. If a screen ever
+            # offers it, that is a finding.
+            if grep -q 'value="cohort_age"' /tmp/cc.html; then
+              echo "::error::$path offered a protected attribute as a targeting dimension"
+              fail=1
+            fi
+          done
+
+          # The gate lives in the module layout, so every screen in the module
+          # is gated, including ones added later. Check the newest one.
+          code=$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:3000/control-centre/alerts)
+          echo "/control-centre/alerts (module disabled) -> $code"
+          [ "$code" = "404" ] || { echo "::error::a disabled module screen returned $code, expected 404"; fail=1; }
 
           # No screen may leak an employee identifier. The module data is built
           # from aggregates only, so an identifier appearing in rendered output

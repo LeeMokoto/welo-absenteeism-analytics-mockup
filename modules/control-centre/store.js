@@ -82,6 +82,48 @@ const SEEDED = [
   },
 ];
 
+/*
+  Seeded alert rules. Deliberately includes one scoped to a whole dimension, so
+  a walkthrough sees what happens when a rule meets a cohort it cannot
+  evaluate.
+*/
+const SEEDED_RULES = [
+  {
+    id: "rule-001",
+    name: "Elevated risk concentration",
+    measure: "high_or_critical_share",
+    comparison: "above",
+    threshold: 0.2,
+    scope: { dimension: "cohort_load" },
+    owner: "Operations lead",
+    enabled: true,
+  },
+  {
+    id: "rule-002",
+    name: "Fatigue running hot",
+    measure: "mean_fatigue",
+    comparison: "above",
+    threshold: 65,
+    scope: { dimension: "cohort_fatigue" },
+    owner: "Occupational health",
+    enabled: true,
+  },
+  {
+    id: "rule-003",
+    name: "Absence load on new starters",
+    measure: "absent_days_per_head_annual",
+    comparison: "above",
+    threshold: 12,
+    scope: { dimension: "cohort_tenure", cohort: "New (<2y)" },
+    owner: "HR business partner",
+    enabled: true,
+  },
+];
+
+export function seededRules() {
+  return SEEDED_RULES.map((r) => ({ ...r, source: "seeded" }));
+}
+
 export function seeded() {
   return SEEDED.map((r) => ({ ...r, source: "seeded" }));
 }
