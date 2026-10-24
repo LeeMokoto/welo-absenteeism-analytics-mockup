@@ -26,10 +26,58 @@ LEAVE_GAP_DAYS = 180
 SUPPRESSION_THRESHOLD = 5
 
 
-def suppressed_row(label, n):
-    """A cohort entry stripped of every measure. Callers render this as n<5."""
+def suppressed_row(label, n, complementary=False):
+    """
+    A cohort entry stripped of every measure.
+
+    Two reasons a row carries no figures, and the view says which. A primary
+    suppression is a cohort under the threshold, rendered as n<5. A
+    complementary suppression is a cohort large enough to report that is
+    withheld anyway, so that a primary suppression next to it cannot be
+    recovered by subtraction.
+    """
     return {"key": label, "label": label, "count": None,
-            "suppressed": True, "suppressed_below": SUPPRESSION_THRESHOLD}
+            "suppressed": True, "suppressed_below": SUPPRESSION_THRESHOLD,
+            "suppression": "complementary" if complementary else "primary"}
+
+
+def apply_complementary_suppression(rows):
+    """
+    A single suppressed cohort beside a published total is not suppressed.
+
+    The totals are published: covered_cohort.count appears on the portfolio
+    screen and the outcomes screen reconciles against it. So subtracting the
+    visible cohorts from the total returns the suppressed cohort's headcount
+    exactly, which is what primary suppression was supposed to prevent. This
+    was demonstrated against /absence/outcomes before the fix: three cohorts,
+    one suppressed, 5,800 stated and 4,553 visible, giving 1,247 exactly.
+
+    Hiding a second cohort removes the subtraction. With two unknowns and one
+    equation the primary cohort stays inside the range the threshold already
+    concedes, which is all it was ever protected to.
+
+    The second cohort is the smallest visible one, because suppressing the
+    smallest withholds the least. Its own value becomes approximately derivable
+    in exchange, which is acceptable: it was above the threshold and publishable
+    anyway. That trade is the point of the technique.
+
+    Does nothing when no cohort is suppressed, and nothing when two or more
+    already are.
+    """
+    suppressed = [r for r in rows if r.get("suppressed")]
+    if len(suppressed) != 1:
+        return rows
+
+    visible = [r for r in rows if not r.get("suppressed")]
+    if not visible:
+        return rows
+
+    victim = min(visible, key=lambda r: r.get("count") or 0)
+    return [
+        suppressed_row(r["label"], r.get("count"), complementary=True)
+        if r is victim else r
+        for r in rows
+    ]
 
 DIMENSIONS = [
     {"key": "cohort_load",      "label": "Operational load",
@@ -121,7 +169,7 @@ def compute_cohorts(df):
                 "risk_counts": {b: int((sub["predicted_risk_band"] == b).sum())
                                 for b in ["Critical", "High", "Medium", "Low"]},
             })
-        return rows
+        return apply_complementary_suppression(rows)
     return {d["key"]: cohort_rows(d["key"], d["order"]) for d in DIMENSIONS}
 
 
@@ -262,7 +310,9 @@ def compute_hr_ops(df):
             "mean_days_since_leave": round(float(hr["days_since_last_leave"].mean()), 0),
             "repeat_absence_count": repeat_absence,
         },
-        "by_cohort": by_cohort,
+        # Same exposure as the cohort tables: hr_ops.by_cohort sits beside a
+        # published covered-lives total on the same screen.
+        "by_cohort": apply_complementary_suppression(by_cohort),
     }
 
 

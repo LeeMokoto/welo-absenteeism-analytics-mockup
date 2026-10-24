@@ -4,6 +4,7 @@ import { useState } from "react";
 import SectionHeader from "@/modules/sick-leave/components/SectionHeader";
 import { portfolio } from "../data/portfolio";
 import { num, pct, randCompact } from "@/modules/sick-leave/format";
+import { suppressionLabel, suppressionNote, suppressionReason } from "../suppression";
 
 /*
   Absence cohorts, ported from the standalone dashboard.
@@ -56,10 +57,9 @@ export default function CohortsScreen() {
           c.suppressed ? (
             <div key={c.key} className="card">
               <div className="card-title">{c.label}</div>
-              <div className="nlt5" style={{ marginTop: 6 }}>n&lt;5 covered lives</div>
+              <div className="nlt5" style={{ marginTop: 6 }}>{suppressionLabel(c)}</div>
               <p className="card-note" style={{ marginTop: 12, marginBottom: 0 }}>
-                Suppressed: fewer than {c.suppressed_below} covered lives, so no figures are
-                reported for this cohort.
+                {suppressionNote(c, threshold)}
               </p>
             </div>
           ) : (
@@ -121,9 +121,9 @@ export default function CohortsScreen() {
                 c.suppressed ? (
                   <tr key={c.key}>
                     <td><strong>{c.label}</strong></td>
-                    <td><span className="nlt5">n&lt;5</span></td>
+                    <td><span className="nlt5">{suppressionLabel(c)}</span></td>
                     <td colSpan={6} className="caption">
-                      Suppressed, fewer than {c.suppressed_below} covered lives
+                      {suppressionReason(c, threshold)}
                     </td>
                   </tr>
                 ) : (

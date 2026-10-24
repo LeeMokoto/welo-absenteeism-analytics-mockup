@@ -134,42 +134,31 @@ precisely because there is no load balancer to attach it to.
 
 ## Promised, not built
 
-### 1. Complementary suppression, and a demonstrated leak
+### 1. Complementary suppression
 
-The document commits to it twice, in the runtime guardrails table and under
-disclosure control: "Where one cell in a row or column is suppressed, the next
-smallest cell is suppressed with it, or the total is withheld, so the hidden
-value cannot be derived by subtraction."
+**Fixed.** The document commits to it twice, and nothing implemented it. The
+gap was demonstrated rather than inferred: forcing one cohort below the
+threshold and rendering `/absence/outcomes` gave visible counts summing to
+4,553 under a note stating 5,800 covered lives, so the suppressed cohort's
+headcount was 1,247 exactly.
 
-Nothing implements it. `model/feed_enrich.py` does primary suppression only:
-`suppressed_row()` drops every measure for a cohort under the threshold.
+Withholding the total on that screen would not have been enough, because
+`covered_cohort.count` is published on the portfolio screen as well: the margin
+is available whatever any one screen does. So the fix hides a second cohort.
+`apply_complementary_suppression` in `model/feed_enrich.py` now runs over every
+cohort dimension and over `hr_ops.by_cohort`, and withholds the smallest
+visible cohort whenever exactly one is suppressed. Subtraction then returns the
+sum of two cohorts and splits no further, which leaves the suppressed one
+inside the range the threshold already concedes.
 
-This is not theoretical. Forcing one cohort below the threshold and rendering
-`/absence/outcomes` produces:
+The feed marks which suppression is which, and the screens say so. Labelling a
+complementary suppression "fewer than 5 covered lives" would be a false
+statement about a cohort that may hold thousands, shown to a client, and the
+same text was being fed to the agents as grounding.
 
-```
-High-intensity ops   2,030   38,054   R41.9m   67.0%   18.7
-Standard ops         n<5     Suppressed, fewer than 5 covered lives
-Light duty           2,523   18,768   R20.6m   33.0%    7.4
-
-The cohort lens covers 5,800 lives, R62.5m of exposure.
-```
-
-The visible counts sum to 4,553 and the note states 5,800, so the suppressed
-cohort's headcount is exactly 1,247 by subtraction. The suppression is defeated
-by the total printed underneath it.
-
-The same render exposes a second defect in that note, which is the vector: the
-`5,800` is the full covered count while the `R62.5m` is the sum of visible rows
-only, because a suppressed cohort contributes nothing to it. The note pairs a
-complete count with an incomplete total, which is both misleading on its own and
-what makes the subtraction work.
-
-That note is in `modules/absence/screens/OutcomesScreen.jsx` and was written in
-this repository, not inherited. Fixing it needs complementary suppression in the
-feed and a rule that a total is withheld when any of its components is
-suppressed, applied across every screen, export and agent grounding, as the
-document says.
+Covered by 17 tests in `model/tests/test_suppression.py`, including the
+subtraction itself, and verified end to end against all four platform screens
+and the standalone dashboard.
 
 ### 2. Lineage on screen
 
@@ -364,6 +353,9 @@ Not alignment issues, but worth resolving before a client reads them.
 
 ## Fixed since this check
 
+- **Complementary suppression.** See above. The demonstrated leak is closed in
+  the pipeline, on all four platform screens, on the standalone dashboard and
+  in the agent grounding.
 - **`roles/aiplatform.user` was granted whenever `llm_provider` was vertex,
   regardless of whether agents were on.** A client tenant whose recorded
   position is "agents off" would have held a service account able to call
@@ -380,12 +372,9 @@ In the order that the cost of delay suggests:
    the United States.
 2. **Settle the project name** before more is built in `absenteeism-demo`. A
    project cannot be renamed.
-3. **Fix the complementary suppression leak**, or remove the claim. A suppressed
-   cohort's headcount is currently recoverable by subtraction on a screen in this
-   repository.
-4. **Correct the copy on `/absence/outcomes`** that says a model is backtested
+3. **Correct the copy on `/absence/outcomes`** that says a model is backtested
    and withdrawn. It describes the document, not the code.
-5. **Reconcile the image-scanning guardrail** in one direction.
-6. **Decide whether the manifest standard is the target or the specification.**
+4. **Reconcile the image-scanning guardrail** in one direction.
+5. **Decide whether the manifest standard is the target or the specification.**
    Seven of twelve fields are absent, and the document says the pipeline
    validates all of them before any deployment.

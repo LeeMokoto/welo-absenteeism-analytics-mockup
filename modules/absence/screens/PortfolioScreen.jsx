@@ -2,6 +2,7 @@ import SectionHeader from "@/modules/sick-leave/components/SectionHeader";
 import Metric from "@/modules/sick-leave/components/Metric";
 import { portfolio } from "../data/portfolio";
 import { num, pct, randCompact, rand } from "@/modules/sick-leave/format";
+import { suppressionLabel, suppressionReason } from "../suppression";
 
 /*
   Absence portfolio, ported from the standalone dashboard into the shell.
@@ -109,9 +110,9 @@ export default function AbsencePortfolioScreen({ lens = "cohort_load" }) {
                 c.suppressed ? (
                   <tr key={c.key}>
                     <td><strong>{c.label}</strong></td>
-                    <td><span className="nlt5">n&lt;5</span></td>
+                    <td><span className="nlt5">{suppressionLabel(c)}</span></td>
                     <td colSpan={4} className="caption">
-                      Suppressed, fewer than {c.suppressed_below} covered lives
+                      {suppressionReason(c, threshold)}
                     </td>
                   </tr>
                 ) : (

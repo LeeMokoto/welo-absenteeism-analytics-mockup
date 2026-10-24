@@ -3131,7 +3131,20 @@ window.addEventListener('load', () => {
   // Small-cell suppression. The feed withholds every measure for a cohort under
   // the threshold and marks it suppressed; views render n<5 and never a figure.
   const isSupp = c => !!(c && c.suppressed);
+  // Two reasons a cohort carries no figures, and they are not interchangeable.
+  // A complementary suppression is a cohort large enough to report, withheld so
+  // that a primary suppression in the same table cannot be recovered by
+  // subtracting the visible rows from a published total. Labelling it "fewer
+  // than 5" would be a false statement about a cohort that may hold hundreds.
+  const isComp = c => !!(c && c.suppression === 'complementary');
   const nlt5 = '<span class="nlt5">n&lt;5</span>';
+  const suppMark = c => isComp(c) ? '<span class="nlt5">withheld</span>' : nlt5;
+  const suppWhy = c => isComp(c)
+    ? 'Withheld so that a suppressed cohort in this table cannot be recovered by subtraction'
+    : `Suppressed, fewer than ${c.suppressed_below} covered lives`;
+  const suppNote = c => isComp(c)
+    ? 'Withheld. This cohort is large enough to report, but another cohort in this view is suppressed, and publishing this one beside the total would give the suppressed figure away by subtraction.'
+    : `Suppressed: fewer than ${c.suppressed_below} covered lives, so no figures are reported.`;
 
   const miniBar = c => {
     const t = c.count || 1;
@@ -3148,8 +3161,8 @@ window.addEventListener('load', () => {
     pTable.innerHTML = cohorts[portfolioDim].map(c => isSupp(c) ? `
       <tr>
         <td><strong>${c.label}</strong></td>
-        <td class="cell-mono">${nlt5}</td>
-        <td colspan="5" class="cell-mono">Suppressed, fewer than ${c.suppressed_below} covered lives</td>
+        <td class="cell-mono">${suppMark(c)}</td>
+        <td colspan="5" class="cell-mono">${suppWhy(c)}</td>
       </tr>` : `
       <tr data-drill="${portfolioDim}|${c.key}">
         <td><strong>${c.label}</strong></td>
@@ -3197,11 +3210,11 @@ window.addEventListener('load', () => {
           <div class="cohort-card-top">
             <div>
               <div class="cohort-card-name">${c.label}</div>
-              <div class="cohort-card-count">${nlt5} covered lives</div>
+              <div class="cohort-card-count">${suppMark(c)}</div>
             </div>
           </div>
           <div class="cohort-card-stat-label" style="margin-top:12px">
-            Suppressed: fewer than ${c.suppressed_below} covered lives, so no figures are reported.
+            ${suppNote(c)}
           </div>
         </div>` : `
         <div class="cohort-card" data-drill="${dimKey}|${c.key}">
@@ -3230,8 +3243,8 @@ window.addEventListener('load', () => {
       dTable.innerHTML = list.map(c => isSupp(c) ? `
         <tr>
           <td><strong>${c.label}</strong></td>
-          <td class="cell-mono">${nlt5}</td>
-          <td colspan="7" class="cell-mono">Suppressed, fewer than ${c.suppressed_below} covered lives</td>
+          <td class="cell-mono">${suppMark(c)}</td>
+          <td colspan="7" class="cell-mono">${suppWhy(c)}</td>
         </tr>` : `
         <tr data-drill="${dimKey}|${c.key}">
           <td><strong>${c.label}</strong></td>
@@ -3648,10 +3661,17 @@ window.addEventListener('load', () => {
     (dims || []).forEach(d => {
       const list = cohorts[d.key];
       if (!Array.isArray(list)) return;
+      // The grounding carries the same disclosure rules as the screens. It
+      // must also carry the same distinction: telling the model a withheld
+      // cohort has fewer than five people would be false, and the model would
+      // repeat it.
       cohortSummary[dimLabel(d.key)] = list.map(c => isSupp(c) ? {
         cohort: c.label,
         suppressed: true,
-        note: `Fewer than ${c.suppressed_below} covered lives, so no figures are available for this cohort.`,
+        suppression: isComp(c) ? 'complementary' : 'primary',
+        note: isComp(c)
+          ? 'Withheld so that a suppressed cohort in this view cannot be recovered by subtraction. No figures are available for this cohort, and its size is not disclosed.'
+          : `Fewer than ${c.suppressed_below} covered lives, so no figures are available for this cohort.`,
       } : {
         cohort: c.label,
         covered_lives: c.count,

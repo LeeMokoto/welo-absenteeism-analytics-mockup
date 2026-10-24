@@ -26,6 +26,7 @@ export const absenceModule = {
   agents: ["analyst", "case", "coordinator"],
   guardrails: [
     "Cohorts under the tenant threshold carry no figures and render as n<5.",
+    "Complementary suppression: where one cohort is suppressed, a second is withheld, so the first cannot be recovered by subtracting the visible rows from a published total.",
     "Risk scores are labelled modelled, never live.",
     "No cohort screen serves individual-level scores: the ported screens read module data that carries no individual records.",
     "Agents reason only over the figures on screen and never recommend disciplinary use.",

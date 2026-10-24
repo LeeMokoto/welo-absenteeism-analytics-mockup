@@ -2,6 +2,7 @@ import SectionHeader from "@/modules/sick-leave/components/SectionHeader";
 import Metric from "@/modules/sick-leave/components/Metric";
 import { portfolio } from "../data/portfolio";
 import { num, pct, randCompact, rand } from "@/modules/sick-leave/format";
+import { suppressionLabel, suppressionReason, visibleTotals } from "../suppression";
 
 /*
   Absence outcomes and ROI, ported from the standalone dashboard.
@@ -42,10 +43,13 @@ export default function AbsenceOutcomesScreen() {
   const saving = h.projected_addressable_saving_rand || 0;
   const share = exposure ? (saving / exposure) * 100 : 0;
 
-  // The cohort lens covers the mining population only; the benchmark rows in
-  // the training data carry no cohort. State the gap rather than let the table
-  // silently fail to add up to the headline.
-  const cohortTotal = cohorts.reduce((a, c) => a + (c.cost_exposure_rand || 0), 0);
+  // Every figure in the reconciliation below comes from the same set: the
+  // cohorts actually shown. The first version of this note paired the full
+  // covered count with a total that silently excluded suppressed rows, which
+  // was both wrong on its face and the route by which a suppressed cohort's
+  // headcount could be recovered: stated total minus visible rows.
+  const shown = visibleTotals(cohorts, "cost_exposure_rand");
+  const cohortTotal = shown.measure;
   const unassigned = (h.covered_lives || 0) - (covered.count || 0);
 
   return (
@@ -104,7 +108,7 @@ export default function AbsenceOutcomesScreen() {
                 <th>Covered</th>
                 <th>Days, annual</th>
                 <th>Annual exposure</th>
-                <th>Share of cohort exposure</th>
+                <th>{shown.withheld ? "Share of shown" : "Share of cohort exposure"}</th>
                 <th>Days / head / yr</th>
               </tr>
             </thead>
@@ -113,9 +117,9 @@ export default function AbsenceOutcomesScreen() {
                 c.suppressed ? (
                   <tr key={c.key}>
                     <td><strong>{c.label}</strong></td>
-                    <td><span className="nlt5">n&lt;5</span></td>
+                    <td><span className="nlt5">{suppressionLabel(c)}</span></td>
                     <td colSpan={4} className="caption">
-                      Suppressed, fewer than {c.suppressed_below} covered lives
+                      {suppressionReason(c, threshold)}
                     </td>
                   </tr>
                 ) : (
@@ -135,9 +139,16 @@ export default function AbsenceOutcomesScreen() {
               )}
             </tbody>
           </table>
-          {unassigned > 0 ? (
+          {shown.withheld > 0 ? (
             <div className="indicative" style={{ marginTop: 10 }}>
-              The cohort lens covers {num(covered.count)} lives, {randCompact(cohortTotal)} of
+              {shown.withheld === 1 ? "One cohort is" : `${shown.withheld} cohorts are`} not
+              shown. The rows above cover {num(shown.count)} lives and{" "}
+              {randCompact(cohortTotal)} of exposure, and no total is given for the cohorts that
+              are withheld: publishing one would give a suppressed figure away by subtraction.
+            </div>
+          ) : unassigned > 0 ? (
+            <div className="indicative" style={{ marginTop: 10 }}>
+              The cohort lens covers {num(shown.count)} lives, {randCompact(cohortTotal)} of
               exposure. The remaining {num(unassigned)} lives come from the public benchmark set
               and carry no mining cohort, which is why the rows above do not add up to the
               headline.
