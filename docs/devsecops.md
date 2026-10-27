@@ -18,6 +18,20 @@ merge.
 Every item here fails the build. The `CI` job is the single required check, so
 adding a job does not mean editing branch protection.
 
+One caveat learned the hard way, worth knowing before you trust a green or a
+red on this repository. A workflow that fails to parse produces a run with
+**no jobs at all**, and GitHub reports that as a failed run. The red X is
+indistinguishable from a failing test, and none of the gates below have run.
+That state held here from 2026-10-03 to 2026-10-27, caused by a double-quoted
+string inside a `${{ }}` expression, which GitHub does not allow.
+
+So: a red CI is only meaningful once you have checked it has jobs. A run with
+zero jobs never started, whatever its conclusion says. Two things reduce the
+chance of a repeat: a check in the secret-scan job that refuses a double quote
+inside a workflow expression, and making `CI` a genuinely required check in
+branch protection, so a run that cannot start blocks the merge instead of
+being scrolled past.
+
 | Gate | Tool | What it catches |
 | --- | --- | --- |
 | Secrets | gitleaks, full history | A key committed by accident, before it is in `main` |

@@ -52,6 +52,34 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      # A GitHub expression has single-quoted strings only. A double quote in
+      # one is a parse error, and a workflow that does not parse produces a run
+      # with no jobs: GitHub reports it as a failed CI run, the red X looks
+      # like a failing test, and nothing has actually run. That state held here
+      # for three weeks before anyone looked past the colour.
+      #
+      # This check cannot save a workflow that is already broken, because a
+      # broken workflow does not run it. It catches the edit that would break
+      # it, on a branch whose workflow still parses. The durable signal is the
+      # job count: a CI run with zero jobs never started, whatever it says.
+      - name: Workflow expressions parse
+        run: |
+          python3 - <<'EOF'
+          import re, sys, pathlib
+          bad = []
+          for f in sorted(pathlib.Path(".github/workflows").glob("*.yml")):
+              text = f.read_text()
+              for m in re.finditer(r"\$\{\{(.*?)\}\}", text, re.S):
+                  if '"' in m.group(1):
+                      line = text[: m.start()].count("\n") + 1
+                      bad.append(f"{f}:{line}: {m.group(0).strip()}")
+          if bad:
+              print("\n".join(bad))
+              print("::error::a workflow expression uses double quotes; GitHub expressions take single quotes only, and the whole file fails to parse")
+              sys.exit(1)
+          print("workflow expressions parse")
+          EOF
+
   # --- Python service --------------------------------------------------------
   python:
     name: Python lint, tests, audit
@@ -820,7 +848,13 @@ jobs:
     steps:
       - name: Every required job succeeded
         run: |
-          results='${{ join(needs.*.result, " ") }}'
+          # Single quotes. A GitHub expression has no double-quoted string, so
+          # join(needs.*.result, " ") is a parse error, and a workflow that
+          # does not parse produces a run with no jobs at all. Every push since
+          # this gate was added was reported as a failed CI run that had in
+          # fact never started: red for the right reason by accident, and
+          # nothing underneath it ever ran.
+          results='${{ join(needs.*.result, ' ') }}'
           echo "results: $results"
           for r in $results; do
             [ "$r" = "success" ] || { echo "::error::a required job did not succeed"; exit 1; }
