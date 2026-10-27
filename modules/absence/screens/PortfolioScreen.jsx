@@ -4,6 +4,7 @@ import { portfolio } from "../data/portfolio";
 import { num, pct } from "@/modules/sick-leave/format";
 import { CurrencyName, CurrencyNote, Money } from "@/components/platform/Currency";
 import { suppressionLabel, suppressionReason } from "../suppression";
+import ChronicDisease from "../components/ChronicDisease";
 
 /*
   Absence portfolio, ported from the standalone dashboard into the shell.
@@ -87,6 +88,19 @@ export default function AbsencePortfolioScreen({ lens = "cohort_load" }) {
             </tbody>
           </table>
         </div>
+      </div>
+
+      {/* Always keyed to operational load, whatever lens the cohort summary
+          below is showing. The benchmark is published by operational-load
+          cohort, and re-labelling its columns as age bands or tenure bands
+          would attach a health prevalence to a group it was never measured
+          against. The one that would be worst is age, which is a protected
+          attribute here. */}
+      <div className="section">
+        <ChronicDisease
+          cohorts={(portfolio.cohorts || {}).cohort_load || []}
+          threshold={threshold}
+        />
       </div>
 
       <div className="section">

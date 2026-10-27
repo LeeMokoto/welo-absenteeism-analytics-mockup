@@ -415,6 +415,21 @@ table.data tbody tr:hover {
   color: var(--critical);
   background: var(--critical-soft);
 }
+/* Provenance chip for a panel whose figures did not come from this tenant.
+   Amber rather than the neutral modelled-tag, because "we modelled this" and
+   "this is somebody else's benchmark" are different claims and the second one
+   needs to survive being screenshotted into a deck. */
+.benchmark-tag {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 500;
+  padding: 3px 9px;
+  border-radius: 999px;
+  color: var(--medium);
+  background: var(--medium-soft);
+}
 .modelled-tag {
   font-family: var(--mono);
   font-size: 10px;

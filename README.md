@@ -221,6 +221,18 @@ metabolic + sleep/fatigue with a festive peak-season spike. Industrial, mining
 and generic keep the static markup. These tables are illustrative benchmarks, not model
 output.
 
+The chronic-disease hotspots panel also exists in the platform shell, on the
+absence Portfolio screen, carrying the dashboard's shipped-default figures
+byte for byte so the two surfaces cannot quote different numbers at the same
+prospect. Its data and its column control live in
+[`modules/absence/data/chronic.js`](modules/absence/data/chronic.js), kept out
+of the generated `portfolio.js` so a hand-written benchmark and pipeline
+output never share one object. The platform version adds one control the
+standalone does not have: columns are derived from the live cohort list, and a
+cohort under the suppression threshold is dropped rather than greyed, because
+a greyed column still puts a health prevalence beside the name of a group too
+small to report on. The driver-concentration heatmap has not been ported.
+
 Then reopen `index.html`.
 
 ## Layout
