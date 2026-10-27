@@ -15,6 +15,23 @@ model/data
 model/tests
 model/reports
 model/welo_pipeline
+
+# ...except the feed files the prebuild scripts read to generate the module
+# data and stage the standalone dashboard. Excluding model/data wholesale was
+# correct when it held only training artifacts; it silently broke the image
+# build once scripts/build-absence-module-data.mjs and
+# build-control-centre-data.mjs started reading from it, because `npm run
+# build` runs prebuild first and prebuild cannot find its input.
+#
+# Named one by one rather than un-ignoring model/data/outputs, so the CSVs
+# beside them (predictions, the synthetic upload extract) stay out of the
+# image. Those are data about people, even synthetic people, and an image
+# layer is forever.
+!model/data/outputs/dashboard_feed.json
+!model/data/outputs/dashboard_feed.js
+!model/data/outputs/dashboard_feed.manufacturing.js
+!model/data/outputs/dashboard_feed.logistics.js
+!model/data/outputs/cohort_series.json
 infra
 docs
 README.md

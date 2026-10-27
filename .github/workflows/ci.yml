@@ -193,6 +193,20 @@ jobs:
             exit 1
           fi
 
+      # The module data is generated and gitignored: modules/absence/data/
+      # portfolio.js and modules/control-centre/data/series.js are built from
+      # the model feed by the prebuild scripts. The tests that read them run
+      # before "Build", so without this step they import a file that does not
+      # exist in a fresh checkout and the job fails on a missing module rather
+      # than on anything about the code.
+      #
+      # This is why the unit tests failed in CI while passing locally: a
+      # developer's working tree has these files from an earlier build, and a
+      # clean checkout does not. It went unnoticed because the workflow itself
+      # had not parsed since 2026-10-03, so nothing ran to report it.
+      - name: Generate the module data the tests read
+        run: npm run prebuild
+
       # The glob used to be modules/**/*.test.mjs, which without globstar
       # expands one level and silently skipped every test under lib/, including
       # the RBAC matrix. Name both roots and assert the count, so a test file
@@ -202,8 +216,8 @@ jobs:
           mapfile -t FILES < <(find lib modules -name '*.test.mjs' | sort)
           echo "collected ${#FILES[@]} test files:"
           printf '  %s\n' "${FILES[@]}"
-          if [ "${#FILES[@]}" -lt 13 ]; then
-            echo "expected at least 13 test files, found ${#FILES[@]}" >&2
+          if [ "${#FILES[@]}" -lt 14 ]; then
+            echo "expected at least 14 test files, found ${#FILES[@]}" >&2
             exit 1
           fi
           node --test "${FILES[@]}"
