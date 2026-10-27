@@ -1352,6 +1352,8 @@ table { border-collapse: collapse; width: 100%; }
   color: var(--ink-mute); background: transparent; border: none; padding: 5px 12px; cursor: pointer;
 }
 .ccy-toggle button.active { color: #fff; background: var(--red); }
+/* An exchange rate with no date is a stale number pretending to be current. */
+.ccy-rate { font-family: var(--mono, monospace); font-size: 9.5px; letter-spacing: 0.06em; color: var(--ink-faint, #8a8580); white-space: nowrap; }
 
 /* HR & Ops stat grid */
 .hr-stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--radius-sm); overflow: hidden; }
@@ -1436,6 +1438,7 @@ table { border-collapse: collapse; width: 100%; }
       <button data-ccy-btn="ZAR" class="active">ZAR</button>
       <button data-ccy-btn="USD">USD</button>
     </div>
+    <span class="ccy-rate" id="ccyRate" hidden title="Rand per US dollar, and the date the rate was taken"></span>
     <div class="period-selector">
       <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
       Q2 2026
@@ -2842,7 +2845,17 @@ table { border-collapse: collapse; width: 100%; }
 // Currency layer: every amount is stored in Rand on a data-zar attribute
 // and converted on the fly. Toggle ZAR/USD in the header (or ?currency=usd).
 // =====================================================================
-const FX_ZAR_PER_USD = (window.WELO_FX && window.WELO_FX.zarPerUsd) || 18.5;
+// The rate carries the date it was taken, and an override must supply both or
+// neither: a current rate beside the default's date is how a converted figure
+// ends up carrying somebody else's date, and these figures get screenshotted.
+const FX_DEFAULT = { zarPerUsd: 18.5, asOf: '2026-10-01' };
+const FX = (function () {
+  const o = window.WELO_FX || {};
+  const r = Number(o.zarPerUsd);
+  const d = String(o.asOf || '').trim();
+  return (isFinite(r) && r > 0 && d) ? { zarPerUsd: r, asOf: d } : FX_DEFAULT;
+})();
+const FX_ZAR_PER_USD = FX.zarPerUsd;
 const CURRENCIES = {
   ZAR: { code: 'ZAR', symbol: 'R', perZar: 1 },
   USD: { code: 'USD', symbol: '$', perZar: 1 / FX_ZAR_PER_USD },
@@ -2861,7 +2874,10 @@ function curMag(v) {
 // form: 'short' (symbol + magnitude), 'full' (symbol + exact), 'mag' /
 // 'fullnum' (number only, when the symbol lives in a sibling [data-cur-sym]).
 function money(zar, form) {
-  const v = (Number(zar) || 0) * CUR.perZar;
+  // A figure the data does not carry reads n/a. Number('') is 0, and left to
+  // itself that renders as R0, which is a claim the data has not made.
+  if (zar == null || String(zar).trim() === '' || !isFinite(Number(zar))) return 'n/a';
+  const v = Number(zar) * CUR.perZar;
   if (form === 'mag') return curMag(v);
   if (form === 'fullnum') return Math.round(v).toLocaleString('en-ZA');
   if (form === 'full') return CUR.symbol + ' ' + Math.round(v).toLocaleString('en-ZA');
@@ -2880,6 +2896,12 @@ function setCurrency(code) {
   CUR = CURRENCIES[code] || CURRENCIES.ZAR;
   applyCurrency(document);
   document.querySelectorAll('[data-ccy-btn]').forEach(b => b.classList.toggle('active', b.dataset.ccyBtn === CUR.code));
+  // The rate and its date, shown only while a converted figure is on screen.
+  const chip = document.getElementById('ccyRate');
+  if (chip) {
+    chip.textContent = FX.zarPerUsd + '/USD · ' + FX.asOf;
+    chip.hidden = CUR.code === 'ZAR';
+  }
   try {
     const u = new URL(location.href);
     u.searchParams.set('currency', CUR.code.toLowerCase());
@@ -3793,9 +3815,11 @@ window.addEventListener('load', () => {
 // money element (static + feed-rendered) has its data-zar in place.
 document.querySelectorAll('[data-ccy-btn]').forEach(b =>
   b.addEventListener('click', () => setCurrency(b.dataset.ccyBtn)));
-document.querySelectorAll('[data-ccy-btn]').forEach(b =>
-  b.classList.toggle('active', b.dataset.ccyBtn === CUR.code));
-applyCurrency(document);
+// Through setCurrency rather than repeating what it does, so a page opened at
+// ?currency=usd gets the rate chip too. The init path used to set the active
+// button and apply the figures itself, which meant a reader who arrived on a
+// shared dollar link saw converted figures and no rate or date beside them.
+setCurrency(CUR.code);
 </script>
 
 </body>

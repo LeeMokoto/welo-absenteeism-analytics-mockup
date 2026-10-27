@@ -1,7 +1,8 @@
 import SectionHeader from "@/modules/sick-leave/components/SectionHeader";
 import Metric from "@/modules/sick-leave/components/Metric";
 import { portfolio } from "../data/portfolio";
-import { num, pct, randCompact, rand } from "@/modules/sick-leave/format";
+import { num, pct } from "@/modules/sick-leave/format";
+import { CurrencyName, CurrencyNote, Money } from "@/components/platform/Currency";
 import { suppressionLabel, suppressionReason } from "../suppression";
 
 /*
@@ -44,9 +45,14 @@ export default function AbsenceOpsScreen() {
         />
         <Metric
           label="Backfill cost"
-          value={randCompact(h.backfill_cost_rand_90d)}
-          unit="Rand, indicative, 90d"
-          hover={`Day rate ${rand(a.day_rate_rand)} plus a cover premium of ${rand(a.cover_premium_rand)}.`}
+          value={<Money zar={h.backfill_cost_rand_90d} compact />}
+          unit={<><CurrencyName />, indicative, 90d</>}
+          hover={
+            <>
+              Day rate <Money zar={a.day_rate_rand} /> plus a cover premium of{" "}
+              <Money zar={a.cover_premium_rand} />.
+            </>
+          }
         />
         <Metric
           label="Return to work"
@@ -55,7 +61,7 @@ export default function AbsenceOpsScreen() {
         />
       </div>
       <div className="indicative" style={{ marginTop: 10 }}>
-        Rand figures indicative. Cover and overtime are modelled projections, not live.
+        Cost figures indicative. Cover and overtime are modelled projections, not live.
       </div>
 
       <div className="section grid grid-2">
@@ -66,7 +72,7 @@ export default function AbsenceOpsScreen() {
             <tbody>
               <tr><td>Predicted absent days, 90d</td><td>{num(cover.predicted_absent_days_90d)}</td></tr>
               <tr><td>Cover gap days, 90d</td><td>{num(cover.cover_gap_days_90d)}</td></tr>
-              <tr><td>Backfill cost, 90d</td><td>{rand(cover.backfill_cost_rand_90d)}</td></tr>
+              <tr><td>Backfill cost, 90d</td><td><Money zar={cover.backfill_cost_rand_90d} /></td></tr>
               <tr><td>Mean overtime per 14 days</td><td>{cover.overtime_mean_14d} h</td></tr>
               <tr><td>On high overtime</td><td>{pct((cover.overtime_high_share || 0) * 100, 1)}</td></tr>
               <tr><td>Overtime hours, annual</td><td>{num(cover.overtime_annual_hours)}</td></tr>
@@ -158,7 +164,7 @@ export default function AbsenceOpsScreen() {
                     <td><strong>{c.label}</strong></td>
                     <td>{num(c.count)}</td>
                     <td>{num(c.cover_gap_days_90d)}</td>
-                    <td>{randCompact(c.backfill_cost_rand_90d)}</td>
+                    <td><Money zar={c.backfill_cost_rand_90d} compact /></td>
                     <td>{c.overtime_mean_14d} h</td>
                     <td>{num(c.rtw_caseload)}</td>
                     <td>{num(c.long_leave_gap)}</td>
@@ -174,11 +180,13 @@ export default function AbsenceOpsScreen() {
         <div className="card cream">
           <div className="card-title">Assumptions</div>
           <p className="card-note" style={{ marginBottom: 0 }}>
-            {num(a.work_days_per_year)} work days per year, a day rate of {rand(a.day_rate_rand)}{" "}
-            and a cover premium of {rand(a.cover_premium_rand)}. A spell is assumed to run{" "}
+            {num(a.work_days_per_year)} work days per year, a day rate of{" "}
+            <Money zar={a.day_rate_rand} /> and a cover premium of{" "}
+            <Money zar={a.cover_premium_rand} />. A spell is assumed to run{" "}
             {a.spell_length_days} days, and a long gap since leave is {a.leave_gap_days} days.
             Every figure derived from these is indicative and pre-data.
           </p>
+          <CurrencyNote />
         </div>
       </div>
     </section>

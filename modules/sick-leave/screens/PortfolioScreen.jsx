@@ -9,7 +9,8 @@ import CohortTable from "../components/CohortTable";
 import AgentPanel from "../components/AgentPanel";
 import { AGENTS } from "@/modules/sick-leave/agentMeta";
 import { buildAnalystContext } from "@/modules/sick-leave/context";
-import { pct, num, randCompact, rand } from "@/modules/sick-leave/format";
+import { pct, num } from "@/modules/sick-leave/format";
+import { CurrencyName, Money } from "@/components/platform/Currency";
 
 export default function PortfolioScreen({ aggregates, meta, agentsAvailable }) {
   const h = aggregates.headline;
@@ -23,14 +24,18 @@ export default function PortfolioScreen({ aggregates, meta, agentsAvailable }) {
         <Metric label="Total sick days" value={num(h.totalSickDays)} unit={meta.periodLabel} />
         <Metric
           label="Indicative cost"
-          value={randCompact(h.indicativeCostRand)}
-          unit="Rand, indicative"
-          hover={`Paid days ${rand(h.paidCostRand)} plus cover ${rand(h.coverCostRand)}.`}
+          value={<Money zar={h.indicativeCostRand} compact />}
+          unit={<><CurrencyName />, indicative</>}
+          hover={
+            <>
+              Paid days <Money zar={h.paidCostRand} /> plus cover <Money zar={h.coverCostRand} />.
+            </>
+          }
         />
         <Metric label="Certification rate" value={pct(h.certificationRatePct, 0)} unit="% of qualifying spells" />
       </div>
       <div className="indicative" style={{ marginTop: 10 }}>
-        Rand figures are indicative and pre-data. Rate is percent of scheduled days over the period.
+        Cost figures are indicative and pre-data. Rate is percent of scheduled days over the period.
       </div>
 
       <div className="section grid grid-2">

@@ -1,7 +1,8 @@
 import SectionHeader from "@/modules/sick-leave/components/SectionHeader";
 import Metric from "@/modules/sick-leave/components/Metric";
 import { portfolio } from "../data/portfolio";
-import { num, pct, randCompact, rand } from "@/modules/sick-leave/format";
+import { num, pct } from "@/modules/sick-leave/format";
+import { CurrencyName, CurrencyNote, Money } from "@/components/platform/Currency";
 import { suppressionLabel, suppressionReason } from "../suppression";
 
 /*
@@ -36,9 +37,9 @@ export default function AbsencePortfolioScreen({ lens = "cohort_load" }) {
         />
         <Metric
           label="Cost exposure"
-          value={randCompact(h.absence_cost_exposure_rand)}
-          unit="Rand, indicative, annual"
-          hover={`Addressable saving ${rand(h.projected_addressable_saving_rand)}.`}
+          value={<Money zar={h.absence_cost_exposure_rand} compact />}
+          unit={<><CurrencyName />, indicative, annual</>}
+          hover={<>Addressable saving <Money zar={h.projected_addressable_saving_rand} />.</>}
         />
         <Metric
           label="High or critical fatigue"
@@ -47,7 +48,7 @@ export default function AbsencePortfolioScreen({ lens = "cohort_load" }) {
         />
       </div>
       <div className="indicative" style={{ marginTop: 10 }}>
-        Rand figures are indicative and pre-data. Risk is modelled, not live.
+        Cost figures are indicative and pre-data. Risk is modelled, not live.
       </div>
 
       <div className="section grid grid-2">
@@ -121,14 +122,15 @@ export default function AbsencePortfolioScreen({ lens = "cohort_load" }) {
                     <td>{num(c.count)}</td>
                     <td>{pct((c.high_or_critical_share || 0) * 100, 1)}</td>
                     <td>{c.absent_days_per_head_annual}</td>
-                    <td>{randCompact(c.cost_exposure_rand)}</td>
+                    <td><Money zar={c.cost_exposure_rand} compact /></td>
                     <td>{c.mean_fatigue}</td>
                   </tr>
                 )
               )}
             </tbody>
           </table>
-          <div className="indicative" style={{ marginTop: 10 }}>Rand figures indicative.</div>
+          <div className="indicative" style={{ marginTop: 10 }}>Cost figures indicative.</div>
+          <CurrencyNote />
         </div>
       </div>
     </section>

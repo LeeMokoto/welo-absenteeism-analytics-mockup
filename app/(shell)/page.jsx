@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { getManifest } from "@/lib/platform/manifest";
 import { aggregates as sickLeave, meta as sickLeaveMeta } from "@/modules/sick-leave/data/sampleData";
-import { num, pct, randCompact } from "@/modules/sick-leave/format";
+import { num, pct } from "@/modules/sick-leave/format";
+import { CurrencyNote, Money } from "@/components/platform/Currency";
 import { guard } from "@/lib/platform/guard";
 import { PERMISSIONS } from "@/lib/platform/roles";
 
@@ -51,12 +52,18 @@ export default async function Overview() {
             stats={[
               ["Sick leave rate", pct(sl.sickLeaveRatePct)],
               ["Sick days", num(sl.totalSickDays)],
-              ["Indicative cost", randCompact(sl.indicativeCostRand)],
+              // A node rather than a string: this screen stays a server
+              // component and the leaf does the converting.
+              ["Indicative cost", <Money key="cost" zar={sl.indicativeCostRand} compact />],
               ["Covered", num(sickLeaveMeta.cohortSize)],
             ]}
           />
         ) : null}
       </div>
+
+      {/* The one money figure on this screen is inside a card, so the caveat
+          sits under the grid rather than in the card and clear of the link. */}
+      {m.sickLeave ? <CurrencyNote /> : null}
 
       {!m.controlCentre ? (
         <div className="section">

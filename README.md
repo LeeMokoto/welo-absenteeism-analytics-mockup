@@ -51,8 +51,29 @@ sleep, driver-fatigue) - the same model scoring three different populations.
 
 Amounts are stored in Rand and converted on the fly. A **ZAR / USD** toggle in
 the header switches every figure (headline, cohort, individual, HR, ROI) at once;
-`?currency=usd` sets it from a link. The exchange rate lives in
-[`config/industry.js`](config/industry.js) (`WELO_FX.zarPerUsd`); update it there.
+`?currency=usd` sets it from a link. Both dashboards have it: the standalone one
+and the platform shell.
+
+The rate carries the date it was taken, and that date is shown beside the
+figures whenever dollars are on screen. Set the two together or neither is
+used, because a current rate next to a stale date is how a converted figure
+ends up carrying somebody else's date.
+
+| | Standalone dashboard | Platform shell |
+| --- | --- | --- |
+| Set the rate | [`config/industry.js`](config/industry.js), `WELO_FX = { zarPerUsd, asOf }` | `WELO_FX_ZAR_PER_USD` and `WELO_FX_AS_OF` |
+| Formatter | `money()` in `index.html` | [`lib/platform/currency.js`](lib/platform/currency.js) |
+
+In the platform, money renders through the `<Money zar={...} />` leaf rather
+than a string helper, so a server-rendered screen converts without becoming a
+client component. There is deliberately no Rand formatter left in
+`modules/sick-leave/format.js`: a screen that builds its own `"R" + number`
+renders a figure the toggle cannot reach, and CI fails on one.
+
+The agents are not given the rate. They reason in Rand, the stored unit, and
+the panel says so beside the answer when dollars are on screen, rather than
+asking a model to do arithmetic whose result would be stated in confident
+prose.
 
 ### Switching versions
 

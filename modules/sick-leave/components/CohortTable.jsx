@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { pct, num, days, rand, cell } from "@/modules/sick-leave/format";
+import { pct, num, days, cell } from "@/modules/sick-leave/format";
+import { CurrencyNote, Money } from "@/components/platform/Currency";
 
 const COLS = [
   { key: "site", label: "Site", align: "left", type: "text" },
@@ -11,7 +12,9 @@ const COLS = [
   { key: "meanDaysPerEmployee", label: "Mean days", type: "num", render: (r) => days(r.meanDaysPerEmployee) },
   { key: "certificationRatePct", label: "Cert rate", type: "num", render: (r) => cell(r.certificationRatePct, r.certificationRatePct == null, (v) => pct(v, 0)) },
   { key: "pctAbove75Entitlement", label: ">75% entitlement", type: "num", render: (r) => pct(r.pctAbove75Entitlement, 0) },
-  { key: "indicativeCostRand", label: "Indicative cost", type: "num", render: (r) => rand(r.indicativeCostRand) },
+  // Sorting still uses the raw Rand value. Converting is multiplying by a
+  // positive number, so the order is the same in either currency.
+  { key: "indicativeCostRand", label: "Indicative cost", type: "num", render: (r) => <Money zar={r.indicativeCostRand} /> },
 ];
 
 export default function CohortTable({ rows }) {
@@ -69,7 +72,8 @@ export default function CohortTable({ rows }) {
           </tbody>
         </table>
       </div>
-      <div className="indicative" style={{ marginTop: 10 }}>Rand figures indicative.</div>
+      <div className="indicative" style={{ marginTop: 10 }}>Cost figures indicative.</div>
+      <CurrencyNote />
     </div>
   );
 }

@@ -1,7 +1,8 @@
 import SectionHeader from "@/modules/sick-leave/components/SectionHeader";
 import Metric from "@/modules/sick-leave/components/Metric";
 import { portfolio } from "../data/portfolio";
-import { num, pct, randCompact, rand } from "@/modules/sick-leave/format";
+import { num, pct } from "@/modules/sick-leave/format";
+import { CurrencyName, CurrencyNote, Money } from "@/components/platform/Currency";
 import { suppressionLabel, suppressionReason, visibleTotals } from "../suppression";
 
 /*
@@ -59,14 +60,19 @@ export default function AbsenceOutcomesScreen() {
       <div className="grid grid-3">
         <Metric
           label="Annual absence exposure"
-          value={randCompact(exposure)}
-          unit="Rand, indicative"
-          hover={`${num(h.predicted_absent_days_annual)} predicted absent days at a day rate of ${rand(assume.day_rate_rand)}.`}
+          value={<Money zar={exposure} compact />}
+          unit={<><CurrencyName />, indicative</>}
+          hover={
+            <>
+              {num(h.predicted_absent_days_annual)} predicted absent days at a day rate of{" "}
+              <Money zar={assume.day_rate_rand} />.
+            </>
+          }
         />
         <Metric
           label="Projected addressable saving"
-          value={randCompact(saving)}
-          unit="Rand, indicative, annual"
+          value={<Money zar={saving} compact />}
+          unit={<><CurrencyName />, indicative, annual</>}
         />
         <Metric
           label="Share of exposure"
@@ -127,7 +133,7 @@ export default function AbsenceOutcomesScreen() {
                     <td><strong>{c.label}</strong></td>
                     <td>{num(c.count)}</td>
                     <td>{num(c.predicted_absent_days_annual)}</td>
-                    <td>{randCompact(c.cost_exposure_rand)}</td>
+                    <td><Money zar={c.cost_exposure_rand} compact /></td>
                     <td>
                       {cohortTotal
                         ? pct(((c.cost_exposure_rand || 0) / cohortTotal) * 100, 1)
@@ -143,12 +149,12 @@ export default function AbsenceOutcomesScreen() {
             <div className="indicative" style={{ marginTop: 10 }}>
               {shown.withheld === 1 ? "One cohort is" : `${shown.withheld} cohorts are`} not
               shown. The rows above cover {num(shown.count)} lives and{" "}
-              {randCompact(cohortTotal)} of exposure, and no total is given for the cohorts that
+              <Money zar={cohortTotal} compact /> of exposure, and no total is given for the cohorts that
               are withheld: publishing one would give a suppressed figure away by subtraction.
             </div>
           ) : unassigned > 0 ? (
             <div className="indicative" style={{ marginTop: 10 }}>
-              The cohort lens covers {num(shown.count)} lives, {randCompact(cohortTotal)} of
+              The cohort lens covers {num(shown.count)} lives, <Money zar={cohortTotal} compact /> of
               exposure. The remaining {num(unassigned)} lives come from the public benchmark set
               and carry none of this tenant&apos;s cohort attributes, which is why the rows above
               do not add up to the headline.
@@ -186,7 +192,7 @@ export default function AbsenceOutcomesScreen() {
 
         <div className="card cream">
           <div className="card-title">Provenance and assumptions</div>
-          <p className="card-note">What the model was trained on, and what the Rand figures rest on.</p>
+          <p className="card-note">What the model was trained on, and what the cost figures rest on.</p>
           <table className="data">
             <thead>
               <tr><th>Training source</th><th>Rows</th></tr>
@@ -202,8 +208,10 @@ export default function AbsenceOutcomesScreen() {
           </table>
           <p className="card-note" style={{ marginTop: 14, marginBottom: 0 }}>
             {num(assume.work_days_per_year)} work days per year at a day rate of{" "}
-            {rand(assume.day_rate_rand)}. No client data has been used to train this model.
+            <Money zar={assume.day_rate_rand} />. No client data has been used to train this
+            model.
           </p>
+          <CurrencyNote />
         </div>
       </div>
     </section>
@@ -216,7 +224,10 @@ function Bar({ label, value, max, tone }) {
     <div style={{ display: "grid", gap: 6, marginTop: 14 }}>
       <div style={{ display: "flex", justifyContent: "space-between", gap: 12 }}>
         <span className="caption">{label}</span>
-        <span className="caption">{rand(value)}</span>
+        {/* The bar's width is a ratio of two Rand figures, so it is the same
+            ratio in either currency and stays computed on the server. Only the
+            label converts. */}
+        <span className="caption"><Money zar={value} /></span>
       </div>
       <div className="bar-track" style={{ height: 18 }}>
         <div

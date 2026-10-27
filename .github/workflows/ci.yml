@@ -135,6 +135,36 @@ jobs:
       - name: Install (from the lockfile, no resolution)
         run: npm ci
 
+      # Money has one formatter. Every amount is stored in Rand and converted
+      # for display, so a screen that builds its own "R" + number renders a
+      # figure the currency toggle cannot reach: it would read R while every
+      # other figure on the page read $, and nothing would fail.
+      #
+      # modules/sick-leave/agentFallback.js is the one exception and is listed
+      # by name. It composes an agent answer, and the agents reason in the
+      # stored unit on purpose rather than being handed a rate to multiply by;
+      # the panel says so beside the answer.
+      - name: Money goes through one formatter
+        run: |
+          hits=$(grep -rnE "['\"]R['\"] *\+" --include='*.js' --include='*.jsx' \
+                   app components modules lib \
+                 | grep -v '^modules/sick-leave/agentFallback.js:' || true)
+          if [ -n "$hits" ]; then
+            echo "$hits"
+            echo "::error::a currency symbol is hardcoded outside lib/platform/currency.js"
+            exit 1
+          fi
+          # And the formatter itself must not use toLocaleString: its separator
+          # depends on the runtime's ICU data, which differs between Node and
+          # the browser, and this module renders on both.
+          # Matched as a call, not a mention: the comment in that file explains
+          # why it is not used, and a check that flags its own rationale is a
+          # check somebody adds an exemption to rather than reads.
+          if grep -nE '\.toLocaleString *\(' lib/platform/currency.js | grep -vE '^[0-9]+: *(//|\*)'; then
+            echo "::error::lib/platform/currency.js uses toLocaleString, which is not hydration safe"
+            exit 1
+          fi
+
       # The glob used to be modules/**/*.test.mjs, which without globstar
       # expands one level and silently skipped every test under lib/, including
       # the RBAC matrix. Name both roots and assert the count, so a test file
@@ -144,8 +174,8 @@ jobs:
           mapfile -t FILES < <(find lib modules -name '*.test.mjs' | sort)
           echo "collected ${#FILES[@]} test files:"
           printf '  %s\n' "${FILES[@]}"
-          if [ "${#FILES[@]}" -lt 12 ]; then
-            echo "expected at least 12 test files, found ${#FILES[@]}" >&2
+          if [ "${#FILES[@]}" -lt 13 ]; then
+            echo "expected at least 13 test files, found ${#FILES[@]}" >&2
             exit 1
           fi
           node --test "${FILES[@]}"
@@ -208,6 +238,29 @@ jobs:
               echo "::error::$path rendered NaN or undefined"
               fail=1
             fi
+            # Every shell screen carries the display-currency control, because
+            # it applies to every figure on every screen and lives in the shell
+            # header rather than per screen.
+            if ! grep -q 'ccy-btn' /tmp/page.html; then
+              echo "::error::$path rendered without the currency control"
+              fail=1
+            fi
+          done
+
+          # The server renders the stored unit. The chosen currency lives in
+          # browser storage, which the server cannot see, so a server render
+          # that was anything but Rand would mean a leaf read a choice the
+          # first client pass cannot reproduce: a hydration mismatch that looks
+          # identical on screen and silently stops the page hydrating.
+          #
+          # Asserted as a count rather than a presence, so a screen whose money
+          # stopped rendering at all fails here too.
+          for path in / /absence /absence/cohorts /absence/outcomes /absence/operations \
+                      /sick-leave /sick-leave/ops; do
+            curl -s -b /tmp/jar -o /tmp/page.html "http://127.0.0.1:3000$path"
+            n=$(grep -oE '>R[0-9]|>R-[0-9]' /tmp/page.html | wc -l)
+            echo "$path server-rendered Rand figures: $n"
+            [ "$n" -ge 1 ] || { echo "::error::$path server-rendered no Rand figure"; fail=1; }
           done
 
           # A module a tenant does not run must not be reachable, and must say
@@ -581,8 +634,8 @@ jobs:
           terraform test | tee tf-test.out
           runs=$(grep -c 'run "' tests/*.tftest.hcl | awk -F: '{s+=$2} END {print s}')
           echo "control tests declared: $runs"
-          [ "$runs" -ge 31 ] || {
-            echo "::error::$runs control test runs declared, expected at least 31. A control test was removed; say why in the diff and lower the floor deliberately."
+          [ "$runs" -ge 33 ] || {
+            echo "::error::$runs control test runs declared, expected at least 33. A control test was removed; say why in the diff and lower the floor deliberately."
             exit 1
           }
 

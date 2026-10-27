@@ -936,3 +936,43 @@ select.input {
 @media (max-width: 900px) {
   .shell-session-email { display: none; }
 }
+
+/* Display currency toggle, in the shell header. Sits beside the tenant chip
+   because it applies to every figure on every screen. */
+.ccy-toggle { display: inline-flex; align-items: center; gap: 2px; }
+.ccy-btn {
+  font-family: var(--mono);
+  letter-spacing: 0.08em;
+  font-size: 10px;
+  padding: 3px 8px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--ink-mute);
+  border-radius: 999px;
+  transition: background 0.12s, color 0.12s, border-color 0.12s;
+}
+.ccy-btn:hover { border-color: var(--ink-faint); color: var(--ink); }
+.ccy-btn.active { background: var(--ink); border-color: var(--ink); color: var(--cream); }
+/* The rate and its date, shown only when a converted figure is on screen. An
+   exchange rate with no date is a stale number pretending to be current. */
+.ccy-rate {
+  font-family: var(--mono);
+  letter-spacing: 0.06em;
+  font-size: 9.5px;
+  color: var(--ink-faint);
+  margin-left: 4px;
+  white-space: nowrap;
+}
+@media (max-width: 900px) { .ccy-rate { display: none; } }
+
+/* The conversion caveat at the foot of a screen that shows money. Sentence
+   case and readable, unlike .indicative, because this one is three sentences
+   and a reader is meant to get through it. Renders only in dollars. */
+.ccy-note {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid var(--line-soft);
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--ink-faint);
+}

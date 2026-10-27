@@ -1,4 +1,16 @@
-// Presentation helpers. All Rand output is indicative (see costModel.js).
+/*
+  Presentation helpers for everything that is not money.
+
+  Money is deliberately absent. This file used to export `rand` and
+  `randCompact`, which hardcoded the symbol, and every screen called them
+  directly. That is why the currency toggle took a file-by-file conversion
+  rather than one change: the unit was baked into sixteen render sites.
+
+  Money now goes through lib/platform/currency.js and the <Money> leaf, which
+  know the display currency. The two helpers are gone rather than deprecated,
+  so a new screen that reaches for them fails at import instead of quietly
+  rendering a figure the toggle cannot reach.
+*/
 
 // Deterministic thousands grouping. We do NOT use toLocaleString here: its
 // separator depends on the runtime's ICU data (Node vs the browser differ for
@@ -9,19 +21,6 @@ export function groupInt(value) {
   const n = Math.round(value);
   const sign = n < 0 ? "-" : "";
   return sign + Math.abs(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-}
-
-export function rand(value) {
-  if (value == null) return "n/a";
-  return "R" + groupInt(value);
-}
-
-export function randCompact(value) {
-  if (value == null) return "n/a";
-  const abs = Math.abs(value);
-  if (abs >= 1_000_000) return "R" + (value / 1_000_000).toFixed(1) + "m";
-  if (abs >= 1_000) return "R" + (value / 1_000).toFixed(0) + "k";
-  return "R" + Math.round(value);
 }
 
 export function pct(value, dp = 1) {

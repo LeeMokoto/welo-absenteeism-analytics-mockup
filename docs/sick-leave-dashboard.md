@@ -38,7 +38,7 @@ lib/sick-leave/
   agentMeta.js                   client-safe agent role/description/chips
   agentPrompts.js                server-only system prompts (verbatim)
   context.js                     builds the grounding object per screen
-  format.js                      Rand / percent / n<5 helpers
+  format.js                      percent / count / days / n<5 helpers (no money)
   sampleData.js                  GENERATED: meta + aggregates + light index
   sampleData.employees.js        GENERATED: full records (case view only)
   sampleData.events.js           GENERATED: spell history (case view only)
@@ -80,7 +80,9 @@ or colleague-comparison request.
 ## Compliance controls in the product
 
 Persistent non-dismissible sample-data banner; `MODELLED` (never `LIVE`) on the
-risk score; indicative labels on every Rand figure; `n<5` suppression on
+risk score; indicative labels on every money figure, and where a reader has
+switched the display to dollars, a note that the rate and its date are stacked
+on top of an already indicative figure; `n<5` suppression on
 chapter-cut aggregates and the concentration matrix; the human-in-the-loop line
 under every agent response; a governance note in the footer; and a visibly gated
 case view with a simulated audit log (the `allowedRoles` prop and `onRecordOpen`

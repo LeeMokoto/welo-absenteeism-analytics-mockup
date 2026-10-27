@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { CurrencyAgentNote } from "@/components/platform/Currency";
 import Markdown from "./Markdown";
 
 const HITL = "Generated from the sample figures on this screen. A human decides the action.";
@@ -92,6 +93,7 @@ export default function AgentPanel({ agent, roleTag, description, chips, getCont
             </button>
             <span className="caption">Reasons only over this screen's sample figures.</span>
           </div>
+          <CurrencyAgentNote />
 
           {(answer || error || loading) && (
             <div style={{ marginTop: 14 }}>

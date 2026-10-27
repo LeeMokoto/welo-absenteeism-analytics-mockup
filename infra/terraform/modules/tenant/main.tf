@@ -51,6 +51,11 @@ locals {
     WELO_MODULE_CONTROL_CENTRE = local.bool_env[tostring(var.modules.control_centre)]
     WELO_AGENT_MODEL           = var.agent_model
     SICK_LEAVE_AGENT_MODEL     = var.sick_leave_agent_model
+    # Display currency. Set together or the application uses neither: see the
+    # fx variable. Nothing is stored converted, so these affect presentation
+    # only and a wrong value misleads a reader rather than corrupting a figure.
+    WELO_FX_ZAR_PER_USD = tostring(var.fx.zar_per_usd)
+    WELO_FX_AS_OF       = var.fx.as_of
   }
 }
 

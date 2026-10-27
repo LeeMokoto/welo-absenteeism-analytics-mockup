@@ -242,6 +242,8 @@ run "the_manifest_carries_every_variable_the_application_reads" {
         "WELO_MODULE_ABSENCE",
         "WELO_MODULE_SICK_LEAVE",
         "WELO_MODULE_CONTROL_CENTRE",
+        "WELO_FX_ZAR_PER_USD",
+        "WELO_FX_AS_OF",
       ] : contains(keys(local.manifest_env), k)
     ])
     error_message = "The manifest env is missing a variable lib/platform/manifest.js reads. A tenant would fall back to a default instead of its configuration."
@@ -253,6 +255,62 @@ run "the_manifest_carries_every_variable_the_application_reads" {
     condition     = local.manifest_env["WELO_TENANT_DESCRIPTOR"] == "A multi-site industrial operation"
     error_message = "The tenant descriptor must reach the application manifest."
   }
+
+  # The rate and its date travel together or the application uses neither, so
+  # a manifest carrying one of the two would serve the default rate under a
+  # configured date. Both are asserted non-empty rather than only present.
+  assert {
+    condition     = local.manifest_env["WELO_FX_ZAR_PER_USD"] != "" && local.manifest_env["WELO_FX_AS_OF"] != ""
+    error_message = "The display rate and the date it was taken must both reach the manifest, or a converted figure carries a date that is not its own."
+  }
+}
+
+# A rate with no date is a stale number pretending to be current, and these
+# figures end up in a prospect's spreadsheet. The application refuses one; so
+# does the module, so a deployment cannot quietly serve the default rate under
+# a date somebody typed.
+run "a_rate_without_a_date_is_rejected" {
+  command = plan
+
+  module {
+    source = "./modules/tenant"
+  }
+
+  variables {
+    tenant_key    = "tenant1"
+    project_id    = "welo-test"
+    region        = "europe-west1"
+    bucket_prefix = "welo-test"
+    display_name  = "Test tenant"
+    fx = {
+      zar_per_usd = 17.2
+      as_of       = ""
+    }
+  }
+
+  expect_failures = [var.fx]
+}
+
+run "a_rate_that_is_not_positive_is_rejected" {
+  command = plan
+
+  module {
+    source = "./modules/tenant"
+  }
+
+  variables {
+    tenant_key    = "tenant1"
+    project_id    = "welo-test"
+    region        = "europe-west1"
+    bucket_prefix = "welo-test"
+    display_name  = "Test tenant"
+    fx = {
+      zar_per_usd = 0
+      as_of       = "2026-10-01"
+    }
+  }
+
+  expect_failures = [var.fx]
 }
 
 # The demo tenant ships sector neutral, because it is the tenant that goes to

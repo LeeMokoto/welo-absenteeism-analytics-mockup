@@ -3,6 +3,7 @@ import AppShell from "@/components/platform/AppShell";
 import { getManifest, getNavigation } from "@/lib/platform/manifest";
 import { getSession } from "@/lib/platform/session";
 import { visibleNavigation } from "@/lib/platform/roles";
+import { readRate } from "@/lib/platform/currency";
 
 /*
   Server layout: reads the tenant manifest and the session, and hands the shell
@@ -24,8 +25,12 @@ export default async function ShellLayout({ children }) {
 
   const navigation = visibleNavigation(getNavigation(manifest), session);
 
+  // The exchange rate is configuration, so it is read here where the
+  // environment is, and passed down rather than reached for in the client.
+  const rate = readRate(process.env);
+
   return (
-    <AppShell manifest={manifest} navigation={navigation} session={session}>
+    <AppShell manifest={manifest} navigation={navigation} session={session} rate={rate}>
       {children}
     </AppShell>
   );

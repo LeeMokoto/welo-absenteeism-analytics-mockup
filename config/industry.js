@@ -22,9 +22,15 @@
 // industrial block and tweak the title and copy.
 
 // Currency: the dashboard stores every amount in Rand and converts on the fly.
-// Update this rate as needed (Rand per 1 US dollar). Default currency is ZAR;
-// add ?currency=usd to a link, or use the ZAR/USD toggle in the header.
-window.WELO_FX = { zarPerUsd: 18.5 };
+// Default currency is ZAR; add ?currency=usd to a link, or use the ZAR/USD
+// toggle in the header.
+//
+// Update the rate AND its date together. The date is shown beside every
+// converted figure, and the dashboard refuses a rate with no date rather than
+// pairing a fresh rate with a stale date: these figures get screenshotted into
+// other people's decks, and a dollar figure carrying somebody else's date is
+// worse than one carrying none.
+window.WELO_FX = { zarPerUsd: 18.5, asOf: '2026-10-01' };
 
 window.WELO_PROFILES = {
   // The shipped default. Blue collar, sector-neutral: plants, a distribution

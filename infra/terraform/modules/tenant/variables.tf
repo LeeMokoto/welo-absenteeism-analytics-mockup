@@ -75,6 +75,40 @@ variable "synthetic" {
   default     = true
 }
 
+variable "fx" {
+  type = object({
+    zar_per_usd = number
+    as_of       = string
+  })
+  description = <<-EOT
+    The display exchange rate and the date it was taken
+    (WELO_FX_ZAR_PER_USD, WELO_FX_AS_OF).
+
+    Display only. Every amount is stored and computed in Rand; this converts
+    for a reader who has switched the dashboard to dollars, and the date is
+    shown beside the figures whenever it does.
+
+    Both or neither. The application refuses a rate that arrives without a
+    date, so a deployment that set only the rate would silently serve the
+    default instead and no one would know which rate they were looking at.
+    Typed as one object here so the two cannot be set apart.
+  EOT
+  default = {
+    zar_per_usd = 18.5
+    as_of       = "2026-10-01"
+  }
+  validation {
+    condition     = var.fx.zar_per_usd > 0
+    error_message = "fx.zar_per_usd must be a positive number of Rand per one US dollar."
+  }
+  validation {
+    # A date, and a real one. An undated rate is a stale number pretending to
+    # be current, and these figures end up in other people's decks.
+    condition     = can(formatdate("YYYY-MM-DD", "${var.fx.as_of}T00:00:00Z"))
+    error_message = "fx.as_of must be the date the rate was taken, as YYYY-MM-DD."
+  }
+}
+
 variable "suppression_threshold" {
   type        = number
   description = <<-EOT

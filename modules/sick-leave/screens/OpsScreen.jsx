@@ -6,7 +6,8 @@ import CoverGapHeatmap from "../components/CoverGapHeatmap";
 import AgentPanel from "../components/AgentPanel";
 import { AGENTS } from "@/modules/sick-leave/agentMeta";
 import { buildCoordinatorContext } from "@/modules/sick-leave/context";
-import { pct, num, randCompact, cell } from "@/modules/sick-leave/format";
+import { pct, num, cell } from "@/modules/sick-leave/format";
+import { CurrencyName, CurrencyNote, Money } from "@/components/platform/Currency";
 
 export default function OpsScreen({ aggregates, meta, agentsAvailable }) {
   const ops = aggregates.operations;
@@ -18,7 +19,11 @@ export default function OpsScreen({ aggregates, meta, agentsAvailable }) {
 
       <div className="grid grid-4">
         <Metric label="Cover gap" value={num(ops.totalGapShifts)} unit="shifts, next 4 weeks" />
-        <Metric label="Overtime backfill" value={randCompact(ops.overtimeBackfillCostRand)} unit="Rand, indicative" />
+        <Metric
+          label="Overtime backfill"
+          value={<Money zar={ops.overtimeBackfillCostRand} compact />}
+          unit={<><CurrencyName />, indicative</>}
+        />
         <Metric label="Return to work" value={num(ops.rtwCaseload)} unit="open cases" />
         <Metric
           label="Certification compliance"
@@ -27,7 +32,8 @@ export default function OpsScreen({ aggregates, meta, agentsAvailable }) {
           hover={`${num(cert.overall.missing)} qualifying spells missing a certificate.`}
         />
       </div>
-      <div className="indicative" style={{ marginTop: 10 }}>Rand figures indicative. Cover and overtime are modelled projections.</div>
+      <div className="indicative" style={{ marginTop: 10 }}>Cost figures indicative. Cover and overtime are modelled projections.</div>
+      <CurrencyNote />
 
       <div className="section grid grid-2">
         <div className="card">

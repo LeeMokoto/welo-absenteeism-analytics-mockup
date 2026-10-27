@@ -3,7 +3,8 @@
 import { useState } from "react";
 import SectionHeader from "@/modules/sick-leave/components/SectionHeader";
 import { portfolio } from "../data/portfolio";
-import { num, pct, randCompact } from "@/modules/sick-leave/format";
+import { num, pct } from "@/modules/sick-leave/format";
+import { CurrencyNote, Money } from "@/components/platform/Currency";
 import { suppressionLabel, suppressionNote, suppressionReason } from "../suppression";
 
 /*
@@ -89,8 +90,8 @@ export default function CohortsScreen() {
               <div className="cohort-stats">
                 <Stat label="Days / head / yr" value={c.absent_days_per_head_annual} />
                 <Stat label="Mean fatigue" value={c.mean_fatigue} />
-                <Stat label="Annual exposure" value={randCompact(c.cost_exposure_rand)} />
-                <Stat label="Addressable" value={randCompact(c.addressable_saving_rand)} />
+                <Stat label="Annual exposure" value={<Money zar={c.cost_exposure_rand} compact />} />
+                <Stat label="Addressable" value={<Money zar={c.addressable_saving_rand} compact />} />
               </div>
             </div>
           )
@@ -137,8 +138,8 @@ export default function CohortsScreen() {
                     </td>
                     <td>{c.absent_days_per_head_annual}</td>
                     <td>{num(c.predicted_absent_days_90d)}</td>
-                    <td>{randCompact(c.cost_exposure_rand)}</td>
-                    <td>{randCompact(c.addressable_saving_rand)}</td>
+                    <td><Money zar={c.cost_exposure_rand} compact /></td>
+                    <td><Money zar={c.addressable_saving_rand} compact /></td>
                     <td>{c.mean_fatigue}</td>
                   </tr>
                 )
@@ -146,8 +147,9 @@ export default function CohortsScreen() {
             </tbody>
           </table>
           <div className="indicative" style={{ marginTop: 10 }}>
-            Rand figures indicative. Risk is modelled, not live.
+            Cost figures indicative. Risk is modelled, not live.
           </div>
+          <CurrencyNote />
         </div>
       </div>
     </section>

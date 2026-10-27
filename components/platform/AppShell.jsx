@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { CurrencyProvider, CurrencyToggle } from "./Currency";
 
 /*
   The platform shell: a persistent frame around every module.
@@ -61,7 +62,7 @@ function NavLink({ item, active }) {
   );
 }
 
-export default function AppShell({ manifest, navigation, session, children }) {
+export default function AppShell({ manifest, navigation, session, rate, children }) {
   const pathname = usePathname();
 
   // Every screen is a real route, so active state is a path comparison and the
@@ -73,6 +74,7 @@ export default function AppShell({ manifest, navigation, session, children }) {
   const t = manifest.tenant;
 
   return (
+    <CurrencyProvider rate={rate}>
     <div className="shell">
       <header className="shell-header">
         <div className="shell-brand">
@@ -87,6 +89,10 @@ export default function AppShell({ manifest, navigation, session, children }) {
           {t.synthetic ? (
             <span className="shell-synthetic">Synthetic data</span>
           ) : null}
+          {/* Display currency. In the frame rather than on a screen, because
+              it applies to every figure on every screen and a per-screen
+              control would imply otherwise. */}
+          <CurrencyToggle />
           {session ? <SessionChip session={session} /> : null}
         </div>
       </header>
@@ -109,5 +115,6 @@ export default function AppShell({ manifest, navigation, session, children }) {
         <main className="shell-content">{children}</main>
       </div>
     </div>
+    </CurrencyProvider>
   );
 }
