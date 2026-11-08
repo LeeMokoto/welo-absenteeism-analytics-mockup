@@ -216,8 +216,8 @@ jobs:
           mapfile -t FILES < <(find lib modules -name '*.test.mjs' | sort)
           echo "collected ${#FILES[@]} test files:"
           printf '  %s\n' "${FILES[@]}"
-          if [ "${#FILES[@]}" -lt 14 ]; then
-            echo "expected at least 14 test files, found ${#FILES[@]}" >&2
+          if [ "${#FILES[@]}" -lt 15 ]; then
+            echo "expected at least 15 test files, found ${#FILES[@]}" >&2
             exit 1
           fi
           node --test "${FILES[@]}"
@@ -516,6 +516,41 @@ jobs:
             http://127.0.0.1:3001/api/sick-leave/agent)
           echo "$slrefuse" | grep -q '"answered":false' || {
             echo "::error::an unsupported question was answered instead of declined"
+            fail=1
+          }
+
+          # The absence module's agents. The module declared three agents and
+          # mounted none, so the contract promised a capability the screens did
+          # not have. These two exist now, and the checks are the same shape as
+          # the sick-leave ones because the no-key path is the same code.
+          absctx='{"headline":{"covered_lives":6000,"predicted_absent_days_annual":76462,"absence_cost_exposure_rand":84108200,"projected_addressable_saving_rand":3532544},"cohorts_by_operational_load":[{"label":"High-intensity ops","count":2030,"cost_exposure_rand":41859444,"absent_days_per_head_annual":18.7}],"suppression":{"withheld_cohorts":0}}'
+          absbody=$(curl -s -b /tmp/jar-draft -X POST -H 'content-type: application/json' \
+            -d "{\"agent\":\"analyst\",\"question\":\"Where does absence exposure concentrate and why\",\"context\":$absctx}" \
+            http://127.0.0.1:3001/api/absence/agent)
+          echo "$absbody" | grep -q '"source":"summary"' || {
+            echo "::error::the absence agent did not answer from the figures without a key"
+            fail=1
+          }
+          echo "$absbody" | grep -q 'not by a language model' || {
+            echo "::error::an absence summary was not labelled as not coming from a model"
+            fail=1
+          }
+          absrefuse=$(curl -s -b /tmp/jar-draft -X POST -H 'content-type: application/json' \
+            -d '{"agent":"coordinator","question":"Who are the worst attenders","context":{}}' \
+            http://127.0.0.1:3001/api/absence/agent)
+          echo "$absrefuse" | grep -q '"answered":false' || {
+            echo "::error::the absence agent answered an attendance-ranking question instead of declining"
+            fail=1
+          }
+          # The Case Assistant is a sick leave agent. This module holds no
+          # individual records, so asking for it here must be refused by id
+          # rather than quietly served by another agent's prompt.
+          abscase=$(curl -s -o /dev/null -w '%{http_code}' -b /tmp/jar-draft -X POST \
+            -H 'content-type: application/json' \
+            -d '{"agent":"case","question":"Draft a support plan","context":{}}' \
+            http://127.0.0.1:3001/api/absence/agent)
+          [ "$abscase" = "400" ] || {
+            echo "::error::the absence route accepted the case agent ($abscase), which has no data here"
             fail=1
           }
           echo "sick-leave agent summarises and declines correctly"

@@ -4,6 +4,9 @@ import { portfolio } from "../data/portfolio";
 import { num, pct } from "@/modules/sick-leave/format";
 import { CurrencyName, CurrencyNote, Money } from "@/components/platform/Currency";
 import { suppressionLabel, suppressionReason } from "../suppression";
+import AgentPanel from "@/modules/sick-leave/components/AgentPanel";
+import { AGENTS } from "../agentMeta";
+import { buildCoordinatorContext } from "../context";
 
 /*
   Absence HR and operations, ported from the standalone dashboard.
@@ -18,7 +21,7 @@ import { suppressionLabel, suppressionReason } from "../suppression";
   pipeline; see the module guardrails and the note in the screen.
 */
 
-export default function AbsenceOpsScreen() {
+export default function AbsenceOpsScreen({ agentsAvailable = false }) {
   const ops = portfolio.hr_ops || {};
   const h = ops.headline || {};
   const cover = ops.cover || {};
@@ -174,6 +177,18 @@ export default function AbsenceOpsScreen() {
             </tbody>
           </table>
         </div>
+      </div>
+
+      <div className="section">
+        <AgentPanel
+          agent={AGENTS.coordinator.id}
+          roleTag={AGENTS.coordinator.roleTag}
+          description={AGENTS.coordinator.description}
+          chips={AGENTS.coordinator.chips}
+          available={agentsAvailable}
+          context={buildCoordinatorContext(portfolio)}
+          endpoint="/api/absence/agent"
+        />
       </div>
 
       <div className="section">

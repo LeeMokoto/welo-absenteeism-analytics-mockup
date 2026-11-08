@@ -5,6 +5,9 @@ import { num, pct } from "@/modules/sick-leave/format";
 import { CurrencyName, CurrencyNote, Money } from "@/components/platform/Currency";
 import { suppressionLabel, suppressionReason } from "../suppression";
 import ChronicDisease from "../components/ChronicDisease";
+import AgentPanel from "@/modules/sick-leave/components/AgentPanel";
+import { AGENTS } from "../agentMeta";
+import { buildAnalystContext } from "../context";
 
 /*
   Absence portfolio, ported from the standalone dashboard into the shell.
@@ -18,7 +21,7 @@ const LENS_LABEL = Object.fromEntries(
   (portfolio.cohort_dimensions || []).map((d) => [d.key, d.label])
 );
 
-export default function AbsencePortfolioScreen({ lens = "cohort_load" }) {
+export default function AbsencePortfolioScreen({ lens = "cohort_load", agentsAvailable = false }) {
   const h = portfolio.headline || {};
   const threshold = portfolio.suppression_threshold ?? 5;
   const cohorts = (portfolio.cohorts || {})[lens] || [];
@@ -100,6 +103,21 @@ export default function AbsencePortfolioScreen({ lens = "cohort_load" }) {
         <ChronicDisease
           cohorts={(portfolio.cohorts || {}).cohort_load || []}
           threshold={threshold}
+        />
+      </div>
+
+      {/* The grounding is built here, on the server, and passed as a plain
+          object: this screen is a server component, so it cannot hand the
+          panel a function. It carries only the cohorts the reader can see. */}
+      <div className="section">
+        <AgentPanel
+          agent={AGENTS.analyst.id}
+          roleTag={AGENTS.analyst.roleTag}
+          description={AGENTS.analyst.description}
+          chips={AGENTS.analyst.chips}
+          available={agentsAvailable}
+          context={buildAnalystContext(portfolio)}
+          endpoint="/api/absence/agent"
         />
       </div>
 

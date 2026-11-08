@@ -11,10 +11,31 @@ const HITL = "Generated from the sample figures on this screen. A human decides 
 const SUMMARY_HITL =
   "Summarised from the sample figures on this screen by the dashboard, not by a language model. A human decides the action.";
 
-// One reusable agent card for all three agents. `getContext` returns the
-// compact grounding object assembled from the figures on screen; it is sent
-// with every question so the agent reasons only over what is visible.
-export default function AgentPanel({ agent, roleTag, description, chips, getContext, available }) {
+/*
+  One reusable agent card. The grounding assembled from the figures on screen
+  is sent with every question, so the agent reasons only over what is visible.
+
+  Two ways to supply it, because the two modules render differently. The sick
+  leave screens are client components with live state, so they pass
+  `getContext`, a function called at the moment the question is asked. The
+  absence screens are server components, and a function cannot cross that
+  boundary, so they pass `context` as a plain object built on the server. A
+  function prop sent from a server component fails at render, not at request
+  time, which is a confusing way to find out.
+
+  `endpoint` defaults to the sick leave route so existing call sites are
+  unchanged.
+*/
+export default function AgentPanel({
+  agent,
+  roleTag,
+  description,
+  chips,
+  getContext,
+  context,
+  available,
+  endpoint = "/api/sick-leave/agent",
+}) {
   const [question, setQuestion] = useState("");
   const [loading, setLoading] = useState(false);
   const [answer, setAnswer] = useState("");
@@ -32,10 +53,14 @@ export default function AgentPanel({ agent, roleTag, description, chips, getCont
     setAnswer("");
     setSource(null);
     try {
-      const res = await fetch("/api/sick-leave/agent", {
+      const res = await fetch(endpoint, {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ agent, question: text, context: getContext() }),
+        body: JSON.stringify({
+          agent,
+          question: text,
+          context: getContext ? getContext() : context,
+        }),
       });
       const data = await res.json();
       if (!res.ok) {

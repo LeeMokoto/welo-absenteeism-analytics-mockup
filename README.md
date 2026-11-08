@@ -221,6 +221,21 @@ metabolic + sleep/fatigue with a festive peak-season spike. Industrial, mining
 and generic keep the static markup. These tables are illustrative benchmarks, not model
 output.
 
+The absence module has two agents of its own, a Portfolio Analyst on the
+portfolio screen and a Cover and Roster Coordinator on HR and operations, at
+`/api/absence/agent`. They use the shared prompts in
+`model/welo_inference/agent_prompts.json` rather than the sick-leave-specific
+ones, which name entitlement burn and ICD-10 chapters that this module's data
+does not have. There is deliberately no Case Assistant here: the module's data
+carries no individual records, so an agent that reasons over one person has
+nothing to read.
+
+Their grounding is an allowlist, in `modules/absence/context.js`. A cohort
+below the suppression threshold is stripped before the payload exists, and
+absence frequency and Bradford scores are withheld entirely, because an agent
+given an attendance measure without the screen's copy around it reads it as a
+ranking of who is absent most often.
+
 The chronic-disease hotspots panel also exists in the platform shell, on the
 absence Portfolio screen, carrying the dashboard's shipped-default figures
 byte for byte so the two surfaces cannot quote different numbers at the same

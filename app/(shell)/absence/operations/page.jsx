@@ -8,5 +8,5 @@ export const dynamic = "force-dynamic";
 export default async function AbsenceOperationsPage() {
   await guard(PERMISSIONS.VIEW_COHORTS);
 
-  return <AbsenceOpsScreen />;
+  return <AbsenceOpsScreen agentsAvailable={Boolean(process.env.ANTHROPIC_API_KEY)} />;
 }
