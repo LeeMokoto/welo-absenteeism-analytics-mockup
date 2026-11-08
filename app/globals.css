@@ -512,6 +512,17 @@ select.input {
   color: var(--ink-faint);
   margin-top: 10px;
 }
+/* A model answer that hit its ceiling. Amber rather than red: the answer is
+   real and useful, it just stops early. */
+.agent-truncated {
+  margin-top: 10px;
+  padding: 9px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--medium-soft);
+  color: var(--medium);
+  font-size: 12.5px;
+  line-height: 1.5;
+}
 .agent-disabled {
   background: var(--cream-2);
   border: 1px dashed var(--line);

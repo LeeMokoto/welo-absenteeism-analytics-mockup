@@ -39,4 +39,7 @@ export function userContent(question, data) {
   );
 }
 
-export const MAX_TOKENS = 1500;
+// 16000, not 1500. Adaptive thinking spends this budget before any visible
+// text, so a low ceiling cuts the answer mid-sentence. See the note on
+// MAX_TOKENS in lib/platform/agentHandler.js.
+export const MAX_TOKENS = 16000;

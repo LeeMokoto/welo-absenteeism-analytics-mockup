@@ -44,6 +44,10 @@ export default function AgentPanel({
   // the figures on screen when no agent key is configured; a buyer has to be
   // able to tell the two apart, so it is tracked rather than inferred.
   const [source, setSource] = useState(null);
+  // Set when the model hit its token ceiling. A cut answer is labelled rather
+  // than left looking like a rendering fault, which is how it was first
+  // reported: the text stops and the box looks like it failed to grow.
+  const [truncated, setTruncated] = useState(false);
 
   async function ask(q) {
     const text = (q ?? question).trim();
@@ -52,6 +56,7 @@ export default function AgentPanel({
     setError("");
     setAnswer("");
     setSource(null);
+    setTruncated(false);
     try {
       const res = await fetch(endpoint, {
         method: "POST",
@@ -68,6 +73,7 @@ export default function AgentPanel({
       } else {
         setAnswer(data.text || "");
         setSource(data.source || null);
+        setTruncated(Boolean(data.truncated));
       }
     } catch {
       setError("Could not reach the agent service. Check your connection and try again.");
@@ -131,6 +137,12 @@ export default function AgentPanel({
               {answer && (
                 <div className="agent-response">
                   <Markdown text={answer} />
+                </div>
+              )}
+              {answer && truncated && (
+                <div className="agent-truncated" role="status">
+                  This answer reached the model&apos;s token limit and stops short. Ask a
+                  narrower question, or raise MAX_TOKENS for this deployment.
                 </div>
               )}
               {answer && (

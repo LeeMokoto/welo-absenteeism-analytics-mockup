@@ -167,6 +167,31 @@ export async function POST(request) {
         },
       ],
     });
+    /*
+      A draft that hit the token ceiling is refused, not returned.
+
+      Everywhere else a truncated answer is a readability problem. Here it is a
+      governance one: a plan whose last step stops mid-sentence still parses,
+      still passes validation on the steps that survived, and still reaches an
+      approver, who is being asked to accept a plan that was never finished.
+      Half a plan is not a plan, so this fails loudly instead.
+    */
+    if (message.stop_reason === "max_tokens") {
+      console.error(
+        "[control-centre playbook]",
+        JSON.stringify({ agent: "playbook", model: ABSENTEEISM_MODEL, stop_reason: "max_tokens" }),
+      );
+      return Response.json(
+        {
+          error:
+            "The draft reached the model's token limit and stopped part way through. A partly written plan is not returned, because it would reach an approver looking complete. Narrow the intervention, or raise MAX_TOKENS for this deployment.",
+          model: ABSENTEEISM_MODEL,
+          stop_reason: "max_tokens",
+        },
+        { status: 502 },
+      );
+    }
+
     text = (message.content || [])
       .filter((b) => b.type === "text")
       .map((b) => b.text)
