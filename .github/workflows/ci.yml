@@ -168,15 +168,20 @@ jobs:
       # figure the currency toggle cannot reach: it would read R while every
       # other figure on the page read $, and nothing would fail.
       #
-      # modules/sick-leave/agentFallback.js is the one exception and is listed
-      # by name. It composes an agent answer, and the agents reason in the
-      # stored unit on purpose rather than being handed a rate to multiply by;
-      # the panel says so beside the answer.
+      # The agent fallbacks are the exception, matched by filename rather than
+      # listed one by one. They compose an agent answer, and the agents reason
+      # in the stored unit on purpose rather than being handed a rate to
+      # multiply by; the panel says so beside the answer with CurrencyAgentNote.
+      #
+      # A rule rather than a list because a list grows: the absence module's
+      # fallback tripped this check the day it was written, for exactly the
+      # reason the sick-leave one was already exempt, and the next module would
+      # have done the same.
       - name: Money goes through one formatter
         run: |
           hits=$(grep -rnE "['\"]R['\"] *\+" --include='*.js' --include='*.jsx' \
                    app components modules lib \
-                 | grep -v '^modules/sick-leave/agentFallback.js:' || true)
+                 | grep -vE '^modules/[a-z-]+/agentFallback\.js:' || true)
           if [ -n "$hits" ]; then
             echo "$hits"
             echo "::error::a currency symbol is hardcoded outside lib/platform/currency.js"
