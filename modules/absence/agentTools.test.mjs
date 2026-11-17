@@ -1,0 +1,88 @@
+import { test } from "node:test";
+import assert from "node:assert/strict";
+
+import { toolsFor, draftRecommendation, readCover, readCohorts } from "./agentTools.js";
+import { runTool } from "../../lib/platform/agentTools.js";
+import { ROLES } from "../../lib/platform/roles.js";
+import { portfolio } from "./data/portfolio.js";
+
+/*
+  The absence module's tools, run through the platform's rules. These check the
+  wiring: which agent gets which tool, that the tools read the server's data,
+  and that what they return would pass the screen a real call goes through.
+*/
+
+const session = (role) => ({ email: `${role}@example.com`, role, permissions: ROLES[role].permissions });
+const ctx = (role, extra = {}) => ({ portfolio, session: session(role), agent: "coordinator", trace: [], drafts: [], ...extra });
+const use = (name, input = {}) => ({ type: "tool_use", id: "t1", name, input });
+
+const draft = {
+  kind: "roster_change",
+  title: "Cap consecutive shifts for high-intensity operations",
+  rationale: "The highest absence per head sits with the heaviest roster.",
+  target: [{ dimension: "cohort_load", cohort: "High-intensity ops" }],
+  predicted: { saving_rand: 250000, cost_rand: 40000, basis: "Scenario run on fewer consecutive shifts.", horizon_days: 90 },
+};
+
+test("only the coordinator can draft; the analyst reads", () => {
+  assert.ok(toolsFor("coordinator").some((t) => t.name === "draft_recommendation"));
+  assert.ok(!toolsFor("analyst").some((t) => t.name === "draft_recommendation"));
+  assert.deepEqual(toolsFor("case"), []);
+});
+
+test("no tool approves anything", () => {
+  for (const agent of ["analyst", "coordinator"]) {
+    for (const t of toolsFor(agent)) assert.ok(!/approve|decide|book|send|dispatch/.test(t.name), t.name);
+  }
+});
+
+test("every read tool's output passes the screen a live call goes through", () => {
+  for (const t of toolsFor("analyst")) {
+    const input = t.name === "read_cohorts" ? { dimension: "fatigue_band" } : {};
+    const r = runTool([t], use(t.name, input), ctx("analyst"));
+    assert.equal(r.is_error, undefined, `${t.name}: ${r.content}`);
+  }
+});
+
+test("tools read the server's data, not whatever the request carried", () => {
+  const r = runTool([readCover], use("read_cover"), ctx("analyst", { portfolio: undefined, body: { headline: { covered_lives: 1 } } }));
+  assert.equal(r.is_error, true, "a tool answered without server-side data");
+});
+
+test("attendance measures never come back from the cover tool", () => {
+  const r = runTool([readCover], use("read_cover"), ctx("analyst"));
+  const { frequency_measures, ...data } = JSON.parse(r.content);
+  assert.ok(!/bradford|freq_trigger/i.test(JSON.stringify(data)));
+  assert.match(frequency_measures, /withheld/i);
+});
+
+test("a protected dimension is not a cohort view the tool offers", () => {
+  const r = runTool([readCohorts], use("read_cohorts", { dimension: "age_band" }), ctx("analyst"));
+  assert.equal(r.is_error, true);
+});
+
+test("a role that may create gets a draft, recorded against its session", () => {
+  const c = ctx("prospect");
+  const r = runTool([draftRecommendation], use("draft_recommendation", draft), c);
+  assert.equal(r.is_error, undefined, r.content);
+  assert.equal(c.drafts.length, 1);
+  assert.equal(c.drafts[0].requested_by, "prospect@example.com");
+  assert.equal(c.drafts[0].data_version, portfolio.run_name);
+  assert.match(JSON.parse(r.content).next, /cannot approve/);
+});
+
+test("the approver role cannot draft, because approving is its whole job", () => {
+  // Approver holds no USE_AGENTS either, so even reads are refused for it.
+  const r = runTool([draftRecommendation], use("draft_recommendation", draft), ctx("approver"));
+  assert.equal(r.is_error, true);
+});
+
+test("an invalid draft comes back with the reasons, so the model can fix it", () => {
+  const bad = { ...draft, target: [{ dimension: "cohort_age", cohort: "Under 30" }], predicted: { ...draft.predicted, basis: "" } };
+  const c = ctx("prospect");
+  const r = runTool([draftRecommendation], use("draft_recommendation", bad), c);
+  assert.equal(r.is_error, true);
+  assert.match(r.content, /cannot be targeted/);
+  assert.match(r.content, /basis is required/);
+  assert.equal(c.drafts.length, 0);
+});

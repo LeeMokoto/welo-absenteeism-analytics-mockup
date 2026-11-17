@@ -24,6 +24,8 @@ import { createAgentHandler } from "@/lib/platform/agentHandler";
 import { AGENT_IDS, AGENTS } from "@/modules/absence/agentMeta";
 import { fallbackAnswer, refusal } from "@/modules/absence/agentFallback";
 import { systemPromptFor, ABSENTEEISM_MODEL } from "@/app/api/absenteeism/_prompts";
+import { toolsFor } from "@/modules/absence/agentTools";
+import { portfolio } from "@/modules/absence/data/portfolio";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -39,4 +41,14 @@ export const POST = createAgentHandler({
   model: ABSENTEEISM_MODEL,
   modelEnvVar: "WELO_AGENT_MODEL",
   scope: "absence agent",
+  /*
+    Tools read the module data imported above, on the server. The panel still
+    sends its grounding, which keeps the no-key fallback working, but with a
+    key the agent can look figures up from the platform's own copy and the
+    coordinator can draft a priced recommendation for a person to approve.
+    No recommendations are stored in this tenant yet, so the track record
+    starts empty and says so.
+  */
+  toolsFor,
+  toolContext: () => ({ portfolio, recommendations: [] }),
 });

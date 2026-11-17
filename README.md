@@ -157,6 +157,26 @@ The Case Assistant is wired into the Individual profile screen as the reference
 integration. Full architecture, environment variables, endpoints and cost are
 in [`model/welo_inference/AGENTS.md`](model/welo_inference/AGENTS.md).
 
+### Agents that look things up and draft actions (platform)
+
+In the Next.js platform, an agent can now call tools instead of answering in
+one shot from what the browser sent. This is the groundwork for agents that act
+rather than only explain, and it is agent-agnostic: whichever agents survive
+the redesign run on it.
+
+| Piece | File | What it holds |
+| --- | --- | --- |
+| Tool rules | [`lib/platform/agentTools.js`](lib/platform/agentTools.js) | Every tool names its permission, validates the model's input, and has its output screened: a person's identifier or a figure for a suppressed cohort withholds the whole result |
+| Tool-use loop | [`lib/platform/agentLoop.js`](lib/platform/agentLoop.js) | Runs tools until the agent answers, sends thinking blocks back intact, answers every tool call, and stops after six rounds with tools switched off for the last |
+| Recommendations | [`modules/control-centre/recommendations.js`](modules/control-centre/recommendations.js) | A priced, cohort-level action an agent drafts and a person decides. The requester cannot approve their own draft, a rejection needs a reason, and the track record says when it has too few cases to judge |
+| Absence tools | [`modules/absence/agentTools.js`](modules/absence/agentTools.js) | Read tools over the same allow-listed figures the screens show, plus `draft_recommendation` for the Cover Coordinator only. There is no tool that approves, books or sends |
+| Decisions | [`app/api/control-centre/recommendations/route.js`](app/api/control-centre/recommendations/route.js) | Approve, reject or close a recommendation, with the role checks run server side |
+
+Tools read the module data on the server, never the request body, so a
+tampered request cannot change what the agent is told. Routes that pass no
+tools answer exactly as before, and with no API key every agent still falls
+back to the built-in summaries.
+
 ## The model (`model/`)
 
 `model/` is the full absenteeism stack: a config-driven training pipeline
