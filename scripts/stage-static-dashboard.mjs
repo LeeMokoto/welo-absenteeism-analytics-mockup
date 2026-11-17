@@ -33,6 +33,7 @@ const FILES = [
   ["model/data/outputs/dashboard_feed.js", "model/data/outputs/dashboard_feed.js"],
   ["model/data/outputs/dashboard_feed.manufacturing.js", "model/data/outputs/dashboard_feed.manufacturing.js"],
   ["model/data/outputs/dashboard_feed.logistics.js", "model/data/outputs/dashboard_feed.logistics.js"],
+  ["model/data/outputs/dashboard_feed.hospitality.js", "model/data/outputs/dashboard_feed.hospitality.js"],
 ];
 
 rmSync(DEST, { recursive: true, force: true });
