@@ -8,9 +8,15 @@ population changes, not the model.
 The calibrations are illustrative, anchored to plausible South African
 sector norms (sedentary line/driving work carries higher BMI; logistics runs
 longer hours and worse sleep; manufacturing is lighter and more stable than
-deep-level heavy industry). They stay illustrative until real client data
-lands, and
+deep-level heavy industry; hospitality is younger, more female, short-tenure
+and works late closes and long runs of shifts). They stay illustrative until
+real client data lands, and
 every row is tagged with its sector source_dataset so it can be filtered out.
+
+Hospitality is the first profile outside heavy industry. Its knobs are
+directional, not sourced: the agreed calibration sources are an open decision
+(phase 0 of the hospitality plan), and the values here should be replaced, not
+defended, once they are agreed.
 """
 from __future__ import annotations
 import numpy as np
@@ -44,6 +50,20 @@ SECTOR_PROFILES = {
         activity_mean=1.8, workload_mean=210.0, workload_std=50.0,
         sleep_mean=6.1, overtime_scale=14.0, consec_lambda=8,
         bmi_mean=28.8, distance_scale=10.0, tenure_shape=2.0, tenure_scale=3.2,
+    )},
+    # Hotels, restaurants and contract catering. Younger and more evenly split
+    # by gender than heavy industry; tenure is short because churn is high;
+    # late closes cut sleep; six-day weeks lengthen runs of consecutive shifts;
+    # drinking runs heavier. Commutes are long because staff travel home late
+    # when transport is thin. Directional only: see the module docstring.
+    "hospitality": {**_BASE, **dict(
+        label="hospitality_sa", emp_base=400_000,
+        age_mean=31.0, age_std=8.5, gender_m=0.48,
+        smoking_p=[0.45, 0.15, 0.17, 0.23],
+        alcohol_p=[0.22, 0.38, 0.28, 0.12],
+        activity_mean=2.3, workload_mean=215.0, workload_std=55.0,
+        sleep_mean=6.0, overtime_scale=11.0, consec_lambda=8,
+        bmi_mean=26.4, distance_scale=9.0, tenure_shape=1.4, tenure_scale=2.0,
     )},
 }
 

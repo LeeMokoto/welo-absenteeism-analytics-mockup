@@ -1,4 +1,4 @@
-"""Build sector dashboard feeds (manufacturing, logistics).
+"""Build sector dashboard feeds (manufacturing, logistics, hospitality).
 
 Generates a sector-calibrated synthetic cohort, scores it with the SAME
 persisted model as the base cohort (one model, different populations), then runs the
@@ -24,6 +24,37 @@ import sector_cohorts
 import feed_enrich
 
 THRESHOLDS = {"low": 4, "medium": 16, "high": 40}  # from configs/demo.yaml
+
+# Sector costing, where it differs from heavy industry. Illustrative and
+# unsourced until the calibration sources are agreed (phase 0 of the
+# hospitality plan): a lower loaded day rate, cover bought from casual and
+# agency staff at a premium on that rate, and a higher share of absences that
+# must be covered, because a short kitchen or floor slows the whole service.
+# Sectors not listed use feed_enrich.DEFAULT_ECONOMICS and are unchanged.
+SECTOR_ECONOMICS = {
+    "hospitality": {
+        "day_rate_rand": 650.0,
+        "cover_premium_rand": 260.0,
+        "cover_share_by_cohort": {"High-intensity ops": 0.95, "Standard ops": 0.85, "Light duty": 0.50},
+    },
+}
+
+# Same benchmark share of exposure as welo_pipeline.export uses for the
+# headline saving, so only the day rate changes between sectors.
+HEADLINE_ADDRESSABLE_SHARE = 0.042
+
+
+def reprice_headline(feed: dict, day_rate: float) -> None:
+    """Restate the headline cost at a sector's own day rate.
+
+    welo_pipeline.export prices the headline at the heavy-industry rate. A
+    sector with its own rate has to restate it, or the portfolio screen would
+    show one rate in the headline and another in the cohorts underneath it.
+    """
+    h = feed["headline"]
+    exposure = round(h["predicted_absent_days_annual"] * day_rate, 0)
+    h["absence_cost_exposure_rand"] = exposure
+    h["projected_addressable_saving_rand"] = round(exposure * HEADLINE_ADDRESSABLE_SHARE, 0)
 MODELS_DIR = f"{ROOT}/models"
 
 # Reuse the trained model's global importance + metrics (model is unchanged).
@@ -39,10 +70,14 @@ def build_sector(sector: str) -> dict:
 
     explanations = {"global_importance": GLOBAL_IMPORTANCE, "per_row_reasons": {}}
     feed = build_dashboard_feed(pred, METRICS, explanations, run_name=f"welo_{sector}_v1")
+    economics = SECTOR_ECONOMICS.get(sector)
+    if economics:
+        reprice_headline(feed, economics["day_rate_rand"])
 
     # join predictions to cohort attributes for the cohort/individual views
     df = pred.merge(cohort, on="employee_id", how="left", suffixes=("", "_attr"))
-    feed, cohorts, individuals, n_hi, n_rest = feed_enrich.enrich(feed, df, sample_n=400, seed=7)
+    feed, cohorts, individuals, n_hi, n_rest = feed_enrich.enrich(
+        feed, df, sample_n=400, seed=7, economics=economics)
 
     out_json = f"{ROOT}/data/outputs/dashboard_feed.{sector}.json"
     json.dump(feed, open(out_json, "w"), indent=2, default=float)
@@ -69,6 +104,6 @@ def build_sector(sector: str) -> dict:
 
 
 if __name__ == "__main__":
-    for s in ["manufacturing", "logistics"]:
+    for s in ["manufacturing", "logistics", "hospitality"]:
         build_sector(s)
     print("\ndone.")

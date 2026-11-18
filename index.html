@@ -1325,6 +1325,7 @@ table { border-collapse: collapse; width: 100%; }
 [data-theme="generic"]       { --red:#0E7C86; --red-bright:#13929D; --red-deep:#0A5B62; --red-soft:#E1F1F2; --red-faint:#F1F9F9; }
 [data-theme="manufacturing"] { --red:#2457A7; --red-bright:#2E6BC7; --red-deep:#1B4585; --red-soft:#E5ECF6; --red-faint:#F2F6FB; }
 [data-theme="logistics"]     { --red:#4338CA; --red-bright:#5B4FD6; --red-deep:#352AA0; --red-soft:#EAE8FB; --red-faint:#F4F3FD; }
+[data-theme="hospitality"]   { --red:#8E3B6B; --red-bright:#A8487F; --red-deep:#6E2D53; --red-soft:#F3E6EE; --red-faint:#F9F3F7; }
 
 /* Trend-chart SVG uses hardcoded brand red; map it onto the themed accent
    (identical to red under the default industrial theme, which keeps the Welo
@@ -1486,8 +1487,8 @@ table { border-collapse: collapse; width: 100%; }
       <div class="card-watermark">03</div>
       <div class="metric-label">Absence cost exposure</div>
       <div class="metric-value"><span class="stat-rand" data-cur-sym>R</span> <span data-welo="metric:absence_cost_exposure_rand" data-zar="84108200" data-form="mag">84.1M</span></div>
-      <div class="metric-detail">annualised @ <span data-zar="1100" data-form="full">R 1,100</span>/day</div>
-      <div class="metric-sub" style="color: var(--ink-mute)">
+      <div class="metric-detail">annualised @ <span data-welo="metric:day_rate" data-zar="1100" data-form="full">R 1,100</span>/day</div>
+      <div class="metric-sub" style="color: var(--ink-mute)" data-welo="metric:annual_days_detail">
         76,500 days · 13/employee
       </div>
     </div>
@@ -2229,9 +2230,9 @@ table { border-collapse: collapse; width: 100%; }
     </div>
     <div class="metric-card">
       <div class="card-watermark">03</div>
-      <div class="metric-label">Overtime backfill cost · 90d</div>
+      <div class="metric-label" data-ind="hr-backfill-label">Overtime backfill cost · 90d</div>
       <div class="metric-value"><span class="stat-rand" data-cur-sym>R</span> <span data-welo="hr:backfill_cost" data-zar="17504200" data-form="mag">17.5M</span></div>
-      <div class="metric-detail">@ <span data-zar="1400" data-form="full">R 1,400</span> per cover-day</div>
+      <div class="metric-detail">@ <span data-welo="hr:cover_day_rate" data-zar="1400" data-form="full">R 1,400</span> per cover-day</div>
     </div>
     <div class="metric-card">
       <div class="card-watermark">04</div>
@@ -2246,7 +2247,7 @@ table { border-collapse: collapse; width: 100%; }
       <div class="panel-header">
         <div>
           <div class="panel-title">Cover gap &amp; overtime burden by cohort</div>
-          <div class="panel-sub">predicted shift cover gaps and the overtime spend to backfill them</div>
+          <div class="panel-sub" data-ind="hr-cover-sub">predicted shift cover gaps and the overtime spend to backfill them</div>
         </div>
         <span class="chip amber">Benchmark-anchored</span>
       </div>
@@ -2722,12 +2723,12 @@ table { border-collapse: collapse; width: 100%; }
 <script src="config/industry.js" onerror="window.WELO_PROFILES=null;"></script>
 <script src="config/agents.js" onerror="window.WeloAgents=null;"></script>
 <script>
-// Load the feed for the selected industry. Manufacturing and logistics have
-// their own sector-calibrated cohort; industrial, mining and generic share the
-// base feed, which is the one the model was actually fitted on.
+// Load the feed for the selected industry. Manufacturing, logistics and
+// hospitality have their own sector-calibrated cohort; industrial, mining and
+// generic share the base feed, which is the one the model was actually fitted on.
 (function () {
   var k = (new URLSearchParams(location.search).get('industry') || 'industrial').toLowerCase().replace(/[^a-z]/g, '');
-  var sector = { manufacturing: 1, logistics: 1 };
+  var sector = { manufacturing: 1, logistics: 1, hospitality: 1 };
   var file = sector[k] ? 'dashboard_feed.' + k + '.js' : 'dashboard_feed.js';
   document.write('<scr' + 'ipt src="model/data/outputs/' + file + '" onerror="window.WELO_FEED=null;"><\/scr' + 'ipt>');
 })();
@@ -3089,6 +3090,16 @@ window.addEventListener('load', () => {
   setText('[data-welo="metric:predicted_absent_days_90d"]', fmtInt(Math.round(h.predicted_absent_days_90d)));
   setZar('[data-welo="metric:absence_cost_exposure_rand"]', h.absence_cost_exposure_rand, 'mag');
   setZar('[data-welo="metric:projected_addressable_saving_rand"]', h.projected_addressable_saving_rand, 'mag');
+  // The day rate and the days behind the exposure come from the feed, so a
+  // sector priced at its own rate (hospitality) does not show the base rate,
+  // and a sector cohort shows its own days rather than the base cohort's.
+  if (h.predicted_absent_days_annual && h.covered_lives) {
+    const dayRate = (feed.hr_ops && feed.hr_ops.assumptions && feed.hr_ops.assumptions.day_rate_rand)
+      || Math.round(h.absence_cost_exposure_rand / h.predicted_absent_days_annual);
+    setZar('[data-welo="metric:day_rate"]', dayRate, 'full');
+    setText('[data-welo="metric:annual_days_detail"]',
+      `${fmtInt(Math.round(h.predicted_absent_days_annual))} days · ${Math.round(h.predicted_absent_days_annual / h.covered_lives)}/employee`);
+  }
 
   // Outcomes & ROI screen: drive the headline money and scale the illustrative
   // seasonality / driver splits to this cohort (base ratios = 1, so unchanged).
@@ -3589,6 +3600,12 @@ window.addEventListener('load', () => {
     setText('[data-welo="hr:absence_rate"]', (hh.absence_rate * 100).toFixed(1));
     setText('[data-welo="hr:cover_gap_days"]', fmtInt(Math.round(hh.cover_gap_days_90d)));
     setZar('[data-welo="hr:backfill_cost"]', hh.backfill_cost_rand_90d, 'mag');
+    // The per-day cover rate is the sector's, from the feed, so a hospitality
+    // feed priced at casual and agency rates does not show the overtime rate.
+    const ha = hr.assumptions || {};
+    if (ha.day_rate_rand != null && ha.cover_premium_rand != null) {
+      setZar('[data-welo="hr:cover_day_rate"]', ha.day_rate_rand + ha.cover_premium_rand, 'full');
+    }
     setText('[data-welo="hr:rtw_caseload"]', fmtInt(hh.rtw_caseload));
 
     const cov = hr.cover || {};
