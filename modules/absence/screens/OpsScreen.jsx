@@ -28,6 +28,7 @@ export default function AbsenceOpsScreen({ agentsAvailable = false }) {
   const freq = ops.frequency || {};
   const rtw = ops.return_to_work || {};
   const byCohort = ops.by_cohort || [];
+  const byDepartment = Array.isArray(ops.by_department) ? ops.by_department : null;
   const a = ops.assumptions || {};
 
   return (
@@ -134,50 +135,21 @@ export default function AbsenceOpsScreen({ agentsAvailable = false }) {
         </div>
       </div>
 
-      <div className="section">
-        <div className="card">
-          <div className="card-title">By operational cohort</div>
-          <p className="card-note">
-            Where the cover gap and overtime land. Cohorts under the threshold carry no figures.
-          </p>
-          <table className="data">
-            <thead>
-              <tr>
-                <th>Cohort</th>
-                <th>Covered</th>
-                <th>Cover gap, 90d</th>
-                <th>Backfill cost</th>
-                <th>Overtime / 14d</th>
-                <th>RTW caseload</th>
-                <th>Long leave gap</th>
-              </tr>
-            </thead>
-            <tbody>
-              {byCohort.map((c) =>
-                c.suppressed ? (
-                  <tr key={c.key}>
-                    <td><strong>{c.label}</strong></td>
-                    <td><span className="nlt5">{suppressionLabel(c)}</span></td>
-                    <td colSpan={5} className="caption">
-                      {suppressionReason(c)}
-                    </td>
-                  </tr>
-                ) : (
-                  <tr key={c.key}>
-                    <td><strong>{c.label}</strong></td>
-                    <td>{num(c.count)}</td>
-                    <td>{num(c.cover_gap_days_90d)}</td>
-                    <td><Money zar={c.backfill_cost_rand_90d} compact /></td>
-                    <td>{c.overtime_mean_14d} h</td>
-                    <td>{num(c.rtw_caseload)}</td>
-                    <td>{num(c.long_leave_gap)}</td>
-                  </tr>
-                )
-              )}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <CoverTable
+        title="By operational cohort"
+        note="Where the cover gap and overtime land. Cohorts under the threshold carry no figures."
+        rows={byCohort}
+      />
+
+      {/* Only a tenant whose data has departments has this table. Its labels
+          are the tenant's own department names, read from the data. */}
+      {byDepartment ? (
+        <CoverTable
+          title="By department"
+          note="The same figures by where people work. Cover is priced by how much each department must be covered when someone is off."
+          rows={byDepartment}
+        />
+      ) : null}
 
       <div className="section">
         <AgentPanel
@@ -214,6 +186,53 @@ function Stat({ label, value }) {
       <div className="caption">{label}</div>
       <div style={{ fontSize: 20, fontWeight: 600, letterSpacing: "-0.025em", marginTop: 2 }}>
         {value}
+      </div>
+    </div>
+  );
+}
+
+function CoverTable({ title, note, rows }) {
+  return (
+    <div className="section">
+      <div className="card">
+        <div className="card-title">{title}</div>
+        <p className="card-note">{note}</p>
+            <table className="data">
+              <thead>
+                <tr>
+                  <th>Cohort</th>
+                  <th>Covered</th>
+                  <th>Cover gap, 90d</th>
+                  <th>Backfill cost</th>
+                  <th>Overtime / 14d</th>
+                  <th>RTW caseload</th>
+                  <th>Long leave gap</th>
+                </tr>
+              </thead>
+              <tbody>
+                {rows.map((c) =>
+                  c.suppressed ? (
+                    <tr key={c.key}>
+                      <td><strong>{c.label}</strong></td>
+                      <td><span className="nlt5">{suppressionLabel(c)}</span></td>
+                      <td colSpan={5} className="caption">
+                        {suppressionReason(c)}
+                      </td>
+                    </tr>
+                  ) : (
+                    <tr key={c.key}>
+                      <td><strong>{c.label}</strong></td>
+                      <td>{num(c.count)}</td>
+                      <td>{num(c.cover_gap_days_90d)}</td>
+                      <td><Money zar={c.backfill_cost_rand_90d} compact /></td>
+                      <td>{c.overtime_mean_14d} h</td>
+                      <td>{num(c.rtw_caseload)}</td>
+                      <td>{num(c.long_leave_gap)}</td>
+                    </tr>
+                  )
+                )}
+              </tbody>
+            </table>
       </div>
     </div>
   );

@@ -114,11 +114,23 @@ def _absence_hours(base, fatigue, workload, rng):
     return np.where(rng.random(len(hours)) < 0.18, 0.0, hours)
 
 
-def build():
-    adapter = SyntheticWorkforceAdapter(
-        n_rows=N_ROWS, random_seed=SEED, cohort="sa_shift_workforce"
-    )
-    base_df = adapter.load().reset_index(drop=True)
+def build(sector=None):
+    """Build the series for the base workforce, or for a sector cohort.
+
+    A sector tenant (hospitality, say) needs its own series, or the control
+    centre would measure its interventions against the base workforce's
+    cohorts, and a grouping only the sector has, such as department, could not
+    be measured at all. The base output is unchanged and still written to
+    cohort_series.json; a sector's goes to cohort_series.<sector>.json.
+    """
+    if sector:
+        import sector_cohorts
+        base_df = sector_cohorts.generate_cohort(sector, n_rows=N_ROWS, random_seed=SEED).reset_index(drop=True)
+    else:
+        adapter = SyntheticWorkforceAdapter(
+            n_rows=N_ROWS, random_seed=SEED, cohort="sa_shift_workforce"
+        )
+        base_df = adapter.load().reset_index(drop=True)
 
     # --- Freeze cohort membership at baseline -------------------------------
     # add_cohort_columns needs a fatigue band, which the adapter does not emit.
@@ -142,7 +154,8 @@ def build():
     ).astype(str)
 
     frozen = feed_enrich.add_cohort_columns(base_df.copy())
-    cohort_cols = {d["key"]: frozen[d["key"]].to_numpy() for d in feed_enrich.DIMENSIONS}
+    dimensions = feed_enrich.dimensions_for(frozen)
+    cohort_cols = {d["key"]: frozen[d["key"]].to_numpy() for d in dimensions}
 
     # The static half of the absence process, computed once.
     bmi_z = (base_df["bmi"].to_numpy() - 27.4) / 4.6
@@ -222,7 +235,7 @@ def build():
 
     # --- Aggregate per frozen cohort per period -----------------------------
     series = {}
-    for dim in feed_enrich.DIMENSIONS:
+    for dim in dimensions:
         key = dim["key"]
         floor = dim.get("min_cohort", feed_enrich.SUPPRESSION_THRESHOLD)
         labels = [lab for lab in dim["order"] if (cohort_cols[key] == lab).any()]
@@ -297,7 +310,7 @@ def build():
         "series": series,
     }
 
-    path = f"{ROOT}/data/outputs/cohort_series.json"
+    path = f"{ROOT}/data/outputs/cohort_series{'.' + sector if sector else ''}.json"
     with open(path, "w") as fh:
         json.dump(out, fh, indent=2, default=float)
 
@@ -327,4 +340,8 @@ def build():
 
 
 if __name__ == "__main__":
-    build()
+    import sys
+
+    # python build_outcome_series.py               the base workforce
+    # python build_outcome_series.py hospitality   a sector cohort
+    build(sys.argv[1] if len(sys.argv) > 1 else None)

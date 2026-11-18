@@ -16,7 +16,21 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const SRC = join(ROOT, "model", "data", "outputs", "cohort_series.json");
+
+/*
+  Which tenant's data this build carries. WELO_TENANT_SECTOR names a sector
+  cohort (hospitality, say); left unset, the build carries the base workforce,
+  exactly as before. A tenant is a deployment, so the choice is made here, once,
+  rather than switched at runtime. A sector that is named but has no data fails
+  the build: a hospitality tenant quietly showing the base workforce under its
+  own name is the failure this guards against.
+*/
+const SECTOR = (process.env.WELO_TENANT_SECTOR || "").trim().toLowerCase();
+if (SECTOR && !/^[a-z]+$/.test(SECTOR)) {
+  console.error(`WELO_TENANT_SECTOR "${SECTOR}" is not a sector name.`);
+  process.exit(1);
+}
+const SRC = join(ROOT, "model", "data", "outputs", SECTOR ? `cohort_series.${SECTOR}.json` : "cohort_series.json");
 const DEST_DIR = join(ROOT, "modules", "control-centre", "data");
 const DEST = join(DEST_DIR, "series.js");
 
@@ -34,6 +48,10 @@ const KEEP = [
 ];
 
 if (!existsSync(SRC)) {
+  if (SECTOR) {
+    console.error(`build-control-centre-data: no series for sector "${SECTOR}" at ${SRC}. Run python model/build_outcome_series.py ${SECTOR}.`);
+    process.exit(1);
+  }
   console.warn(
     `build-control-centre-data: ${SRC} not found; run model/build_outcome_series.py. Leaving existing module data in place.`,
   );

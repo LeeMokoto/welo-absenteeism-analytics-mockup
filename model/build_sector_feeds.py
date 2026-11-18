@@ -36,6 +36,12 @@ SECTOR_ECONOMICS = {
         "day_rate_rand": 650.0,
         "cover_premium_rand": 260.0,
         "cover_share_by_cohort": {"High-intensity ops": 0.95, "Standard ops": 0.85, "Light duty": 0.50},
+        # A short kitchen or floor slows the whole service, so nearly every
+        # absence there is covered; support work can mostly wait a day.
+        "cover_share_by_department": {
+            "Kitchen": 0.95, "Front of house": 0.85, "Housekeeping": 0.80,
+            "Front office": 0.90, "Maintenance": 0.40, "Support and admin": 0.30,
+        },
     },
 }
 

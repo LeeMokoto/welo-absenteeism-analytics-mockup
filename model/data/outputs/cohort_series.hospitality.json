@@ -1,0 +1,2700 @@
+{
+  "schema_version": 2,
+  "periods": [
+    "2025-11-01",
+    "2025-12-01",
+    "2026-01-01",
+    "2026-02-01",
+    "2026-03-01",
+    "2026-04-01",
+    "2026-05-01",
+    "2026-06-01",
+    "2026-07-01",
+    "2026-08-01",
+    "2026-09-01",
+    "2026-10-01"
+  ],
+  "period_grain": "month",
+  "measure": "absent_days_per_head_annual",
+  "measure_source": "actual absence, not model prediction",
+  "membership": "frozen at the baseline period",
+  "suppression_threshold": 5,
+  "synthetic": true,
+  "simulation": {
+    "intervention_period": "2026-04-01",
+    "intervention_dimension": "cohort_load",
+    "intervention_cohort": "High-intensity ops",
+    "mechanism": "From the intervention period the targeted cohort's overtime falls by 28 percent and consecutive shifts are capped at 8. The absence that follows is whatever the data-generating process produces from those inputs. No outcome is written in by hand.",
+    "seasonality": "A winter multiplier is applied to every cohort for May to September, peaking at 1.30 in July. Infection-driven, so it moves absence without moving any model feature, which is why a before and after on the targeted cohort alone is misleading.",
+    "caveat": "On a client's data the mechanism is unknown. The platform reports an observed difference against comparable cohorts and does not claim a cause."
+  },
+  "series": {
+    "cohort_load": {
+      "label": "Operational load",
+      "protected": false,
+      "min_cohort": 5,
+      "cohorts": {
+        "High-intensity ops": {
+          "label": "High-intensity ops",
+          "count": 2036,
+          "membership": "frozen at baseline",
+          "suppressed": false,
+          "suppressed_below": null,
+          "periods": [
+            {
+              "period_start": "2025-11-01",
+              "data_as_of": "2025-11-01",
+              "count": 2036,
+              "absent_days_per_head_annual": 21.2,
+              "absent_days_total": 3596.8,
+              "mean_fatigue": 63.5
+            },
+            {
+              "period_start": "2025-12-01",
+              "data_as_of": "2025-12-01",
+              "count": 2036,
+              "absent_days_per_head_annual": 20.1,
+              "absent_days_total": 3412.0,
+              "mean_fatigue": 63.5
+            },
+            {
+              "period_start": "2026-01-01",
+              "data_as_of": "2026-01-01",
+              "count": 2036,
+              "absent_days_per_head_annual": 20.8,
+              "absent_days_total": 3522.5,
+              "mean_fatigue": 63.3
+            },
+            {
+              "period_start": "2026-02-01",
+              "data_as_of": "2026-02-01",
+              "count": 2036,
+              "absent_days_per_head_annual": 20.4,
+              "absent_days_total": 3465.8,
+              "mean_fatigue": 63.2
+            },
+            {
+              "period_start": "2026-03-01",
+              "data_as_of": "2026-03-01",
+              "count": 2036,
+              "absent_days_per_head_annual": 20.9,
+              "absent_days_total": 3538.6,
+              "mean_fatigue": 63.2
+            },
+            {
+              "period_start": "2026-04-01",
+              "data_as_of": "2026-04-01",
+              "count": 2036,
+              "absent_days_per_head_annual": 16.2,
+              "absent_days_total": 2746.8,
+              "mean_fatigue": 57.7
+            },
+            {
+              "period_start": "2026-05-01",
+              "data_as_of": "2026-05-01",
+              "count": 2036,
+              "absent_days_per_head_annual": 19.0,
+              "absent_days_total": 3229.1,
+              "mean_fatigue": 57.3
+            },
+            {
+              "period_start": "2026-06-01",
+              "data_as_of": "2026-06-01",
+              "count": 2036,
+              "absent_days_per_head_annual": 20.8,
+              "absent_days_total": 3521.1,
+              "mean_fatigue": 57.4
+            },
+            {
+              "period_start": "2026-07-01",
+              "data_as_of": "2026-07-01",
+              "count": 2036,
+              "absent_days_per_head_annual": 21.1,
+              "absent_days_total": 3576.1,
+              "mean_fatigue": 57.6
+            },
+            {
+              "period_start": "2026-08-01",
+              "data_as_of": "2026-08-01",
+              "count": 2036,
+              "absent_days_per_head_annual": 20.3,
+              "absent_days_total": 3439.1,
+              "mean_fatigue": 57.6
+            },
+            {
+              "period_start": "2026-09-01",
+              "data_as_of": "2026-09-01",
+              "count": 2036,
+              "absent_days_per_head_annual": 16.9,
+              "absent_days_total": 2872.9,
+              "mean_fatigue": 57.4
+            },
+            {
+              "period_start": "2026-10-01",
+              "data_as_of": "2026-10-01",
+              "count": 2036,
+              "absent_days_per_head_annual": 16.2,
+              "absent_days_total": 2745.8,
+              "mean_fatigue": 57.9
+            }
+          ]
+        },
+        "Standard ops": {
+          "label": "Standard ops",
+          "count": 1303,
+          "membership": "frozen at baseline",
+          "suppressed": false,
+          "suppressed_below": null,
+          "periods": [
+            {
+              "period_start": "2025-11-01",
+              "data_as_of": "2025-11-01",
+              "count": 1303,
+              "absent_days_per_head_annual": 11.8,
+              "absent_days_total": 1281.8,
+              "mean_fatigue": 53.5
+            },
+            {
+              "period_start": "2025-12-01",
+              "data_as_of": "2025-12-01",
+              "count": 1303,
+              "absent_days_per_head_annual": 11.4,
+              "absent_days_total": 1240.1,
+              "mean_fatigue": 53.5
+            },
+            {
+              "period_start": "2026-01-01",
+              "data_as_of": "2026-01-01",
+              "count": 1303,
+              "absent_days_per_head_annual": 10.9,
+              "absent_days_total": 1184.7,
+              "mean_fatigue": 53.2
+            },
+            {
+              "period_start": "2026-02-01",
+              "data_as_of": "2026-02-01",
+              "count": 1303,
+              "absent_days_per_head_annual": 11.0,
+              "absent_days_total": 1196.6,
+              "mean_fatigue": 53.3
+            },
+            {
+              "period_start": "2026-03-01",
+              "data_as_of": "2026-03-01",
+              "count": 1303,
+              "absent_days_per_head_annual": 11.5,
+              "absent_days_total": 1243.6,
+              "mean_fatigue": 53.5
+            },
+            {
+              "period_start": "2026-04-01",
+              "data_as_of": "2026-04-01",
+              "count": 1303,
+              "absent_days_per_head_annual": 11.2,
+              "absent_days_total": 1213.5,
+              "mean_fatigue": 53.2
+            },
+            {
+              "period_start": "2026-05-01",
+              "data_as_of": "2026-05-01",
+              "count": 1303,
+              "absent_days_per_head_annual": 12.3,
+              "absent_days_total": 1333.4,
+              "mean_fatigue": 53.5
+            },
+            {
+              "period_start": "2026-06-01",
+              "data_as_of": "2026-06-01",
+              "count": 1303,
+              "absent_days_per_head_annual": 13.7,
+              "absent_days_total": 1485.9,
+              "mean_fatigue": 53.5
+            },
+            {
+              "period_start": "2026-07-01",
+              "data_as_of": "2026-07-01",
+              "count": 1303,
+              "absent_days_per_head_annual": 14.8,
+              "absent_days_total": 1608.7,
+              "mean_fatigue": 53.1
+            },
+            {
+              "period_start": "2026-08-01",
+              "data_as_of": "2026-08-01",
+              "count": 1303,
+              "absent_days_per_head_annual": 13.6,
+              "absent_days_total": 1478.6,
+              "mean_fatigue": 53.4
+            },
+            {
+              "period_start": "2026-09-01",
+              "data_as_of": "2026-09-01",
+              "count": 1303,
+              "absent_days_per_head_annual": 11.9,
+              "absent_days_total": 1288.7,
+              "mean_fatigue": 53.6
+            },
+            {
+              "period_start": "2026-10-01",
+              "data_as_of": "2026-10-01",
+              "count": 1303,
+              "absent_days_per_head_annual": 11.4,
+              "absent_days_total": 1237.3,
+              "mean_fatigue": 53.5
+            }
+          ]
+        },
+        "Light duty": {
+          "label": "Light duty",
+          "count": 2461,
+          "membership": "frozen at baseline",
+          "suppressed": false,
+          "suppressed_below": null,
+          "periods": [
+            {
+              "period_start": "2025-11-01",
+              "data_as_of": "2025-11-01",
+              "count": 2461,
+              "absent_days_per_head_annual": 6.1,
+              "absent_days_total": 1255.7,
+              "mean_fatigue": 45.8
+            },
+            {
+              "period_start": "2025-12-01",
+              "data_as_of": "2025-12-01",
+              "count": 2461,
+              "absent_days_per_head_annual": 6.4,
+              "absent_days_total": 1322.6,
+              "mean_fatigue": 45.7
+            },
+            {
+              "period_start": "2026-01-01",
+              "data_as_of": "2026-01-01",
+              "count": 2461,
+              "absent_days_per_head_annual": 6.4,
+              "absent_days_total": 1317.9,
+              "mean_fatigue": 45.7
+            },
+            {
+              "period_start": "2026-02-01",
+              "data_as_of": "2026-02-01",
+              "count": 2461,
+              "absent_days_per_head_annual": 6.2,
+              "absent_days_total": 1272.2,
+              "mean_fatigue": 45.8
+            },
+            {
+              "period_start": "2026-03-01",
+              "data_as_of": "2026-03-01",
+              "count": 2461,
+              "absent_days_per_head_annual": 6.4,
+              "absent_days_total": 1304.0,
+              "mean_fatigue": 45.9
+            },
+            {
+              "period_start": "2026-04-01",
+              "data_as_of": "2026-04-01",
+              "count": 2461,
+              "absent_days_per_head_annual": 6.2,
+              "absent_days_total": 1276.4,
+              "mean_fatigue": 45.7
+            },
+            {
+              "period_start": "2026-05-01",
+              "data_as_of": "2026-05-01",
+              "count": 2461,
+              "absent_days_per_head_annual": 6.5,
+              "absent_days_total": 1332.7,
+              "mean_fatigue": 45.9
+            },
+            {
+              "period_start": "2026-06-01",
+              "data_as_of": "2026-06-01",
+              "count": 2461,
+              "absent_days_per_head_annual": 7.4,
+              "absent_days_total": 1510.9,
+              "mean_fatigue": 45.5
+            },
+            {
+              "period_start": "2026-07-01",
+              "data_as_of": "2026-07-01",
+              "count": 2461,
+              "absent_days_per_head_annual": 7.7,
+              "absent_days_total": 1585.7,
+              "mean_fatigue": 45.6
+            },
+            {
+              "period_start": "2026-08-01",
+              "data_as_of": "2026-08-01",
+              "count": 2461,
+              "absent_days_per_head_annual": 7.3,
+              "absent_days_total": 1504.4,
+              "mean_fatigue": 45.8
+            },
+            {
+              "period_start": "2026-09-01",
+              "data_as_of": "2026-09-01",
+              "count": 2461,
+              "absent_days_per_head_annual": 6.2,
+              "absent_days_total": 1274.3,
+              "mean_fatigue": 45.7
+            },
+            {
+              "period_start": "2026-10-01",
+              "data_as_of": "2026-10-01",
+              "count": 2461,
+              "absent_days_per_head_annual": 6.0,
+              "absent_days_total": 1234.7,
+              "mean_fatigue": 46.0
+            }
+          ]
+        }
+      }
+    },
+    "cohort_fatigue": {
+      "label": "Fatigue / burnout band",
+      "protected": false,
+      "min_cohort": 5,
+      "cohorts": {
+        "Critical": {
+          "label": "Critical",
+          "count": 671,
+          "membership": "frozen at baseline",
+          "suppressed": false,
+          "suppressed_below": null,
+          "periods": [
+            {
+              "period_start": "2025-11-01",
+              "data_as_of": "2025-11-01",
+              "count": 671,
+              "absent_days_per_head_annual": 32.0,
+              "absent_days_total": 1791.7,
+              "mean_fatigue": 73.5
+            },
+            {
+              "period_start": "2025-12-01",
+              "data_as_of": "2025-12-01",
+              "count": 671,
+              "absent_days_per_head_annual": 31.9,
+              "absent_days_total": 1785.0,
+              "mean_fatigue": 73.2
+            },
+            {
+              "period_start": "2026-01-01",
+              "data_as_of": "2026-01-01",
+              "count": 671,
+              "absent_days_per_head_annual": 32.2,
+              "absent_days_total": 1802.4,
+              "mean_fatigue": 73.1
+            },
+            {
+              "period_start": "2026-02-01",
+              "data_as_of": "2026-02-01",
+              "count": 671,
+              "absent_days_per_head_annual": 32.0,
+              "absent_days_total": 1791.2,
+              "mean_fatigue": 73.6
+            },
+            {
+              "period_start": "2026-03-01",
+              "data_as_of": "2026-03-01",
+              "count": 671,
+              "absent_days_per_head_annual": 32.9,
+              "absent_days_total": 1839.2,
+              "mean_fatigue": 73.4
+            },
+            {
+              "period_start": "2026-04-01",
+              "data_as_of": "2026-04-01",
+              "count": 671,
+              "absent_days_per_head_annual": 25.3,
+              "absent_days_total": 1414.5,
+              "mean_fatigue": 68.2
+            },
+            {
+              "period_start": "2026-05-01",
+              "data_as_of": "2026-05-01",
+              "count": 671,
+              "absent_days_per_head_annual": 31.7,
+              "absent_days_total": 1771.3,
+              "mean_fatigue": 67.9
+            },
+            {
+              "period_start": "2026-06-01",
+              "data_as_of": "2026-06-01",
+              "count": 671,
+              "absent_days_per_head_annual": 33.5,
+              "absent_days_total": 1873.7,
+              "mean_fatigue": 68.2
+            },
+            {
+              "period_start": "2026-07-01",
+              "data_as_of": "2026-07-01",
+              "count": 671,
+              "absent_days_per_head_annual": 33.1,
+              "absent_days_total": 1853.5,
+              "mean_fatigue": 67.9
+            },
+            {
+              "period_start": "2026-08-01",
+              "data_as_of": "2026-08-01",
+              "count": 671,
+              "absent_days_per_head_annual": 32.6,
+              "absent_days_total": 1824.1,
+              "mean_fatigue": 67.9
+            },
+            {
+              "period_start": "2026-09-01",
+              "data_as_of": "2026-09-01",
+              "count": 671,
+              "absent_days_per_head_annual": 27.5,
+              "absent_days_total": 1537.7,
+              "mean_fatigue": 68.2
+            },
+            {
+              "period_start": "2026-10-01",
+              "data_as_of": "2026-10-01",
+              "count": 671,
+              "absent_days_per_head_annual": 25.8,
+              "absent_days_total": 1442.3,
+              "mean_fatigue": 68.9
+            }
+          ]
+        },
+        "High": {
+          "label": "High",
+          "count": 2706,
+          "membership": "frozen at baseline",
+          "suppressed": false,
+          "suppressed_below": null,
+          "periods": [
+            {
+              "period_start": "2025-11-01",
+              "data_as_of": "2025-11-01",
+              "count": 2706,
+              "absent_days_per_head_annual": 14.2,
+              "absent_days_total": 3195.5,
+              "mean_fatigue": 57.9
+            },
+            {
+              "period_start": "2025-12-01",
+              "data_as_of": "2025-12-01",
+              "count": 2706,
+              "absent_days_per_head_annual": 13.6,
+              "absent_days_total": 3072.2,
+              "mean_fatigue": 57.6
+            },
+            {
+              "period_start": "2026-01-01",
+              "data_as_of": "2026-01-01",
+              "count": 2706,
+              "absent_days_per_head_annual": 13.6,
+              "absent_days_total": 3062.8,
+              "mean_fatigue": 57.5
+            },
+            {
+              "period_start": "2026-02-01",
+              "data_as_of": "2026-02-01",
+              "count": 2706,
+              "absent_days_per_head_annual": 13.5,
+              "absent_days_total": 3041.9,
+              "mean_fatigue": 57.5
+            },
+            {
+              "period_start": "2026-03-01",
+              "data_as_of": "2026-03-01",
+              "count": 2706,
+              "absent_days_per_head_annual": 13.9,
+              "absent_days_total": 3145.7,
+              "mean_fatigue": 57.7
+            },
+            {
+              "period_start": "2026-04-01",
+              "data_as_of": "2026-04-01",
+              "count": 2706,
+              "absent_days_per_head_annual": 12.3,
+              "absent_days_total": 2774.2,
+              "mean_fatigue": 55.1
+            },
+            {
+              "period_start": "2026-05-01",
+              "data_as_of": "2026-05-01",
+              "count": 2706,
+              "absent_days_per_head_annual": 13.2,
+              "absent_days_total": 2968.3,
+              "mean_fatigue": 55.0
+            },
+            {
+              "period_start": "2026-06-01",
+              "data_as_of": "2026-06-01",
+              "count": 2706,
+              "absent_days_per_head_annual": 14.9,
+              "absent_days_total": 3370.7,
+              "mean_fatigue": 55.1
+            },
+            {
+              "period_start": "2026-07-01",
+              "data_as_of": "2026-07-01",
+              "count": 2706,
+              "absent_days_per_head_annual": 15.6,
+              "absent_days_total": 3512.9,
+              "mean_fatigue": 54.9
+            },
+            {
+              "period_start": "2026-08-01",
+              "data_as_of": "2026-08-01",
+              "count": 2706,
+              "absent_days_per_head_annual": 15.0,
+              "absent_days_total": 3389.2,
+              "mean_fatigue": 55.3
+            },
+            {
+              "period_start": "2026-09-01",
+              "data_as_of": "2026-09-01",
+              "count": 2706,
+              "absent_days_per_head_annual": 12.5,
+              "absent_days_total": 2822.0,
+              "mean_fatigue": 55.0
+            },
+            {
+              "period_start": "2026-10-01",
+              "data_as_of": "2026-10-01",
+              "count": 2706,
+              "absent_days_per_head_annual": 12.1,
+              "absent_days_total": 2735.2,
+              "mean_fatigue": 55.2
+            }
+          ]
+        },
+        "Moderate": {
+          "label": "Moderate",
+          "count": 2259,
+          "membership": "frozen at baseline",
+          "suppressed": false,
+          "suppressed_below": null,
+          "periods": [
+            {
+              "period_start": "2025-11-01",
+              "data_as_of": "2025-11-01",
+              "count": 2259,
+              "absent_days_per_head_annual": 5.9,
+              "absent_days_total": 1117.4,
+              "mean_fatigue": 44.3
+            },
+            {
+              "period_start": "2025-12-01",
+              "data_as_of": "2025-12-01",
+              "count": 2259,
+              "absent_days_per_head_annual": 5.8,
+              "absent_days_total": 1090.9,
+              "mean_fatigue": 44.6
+            },
+            {
+              "period_start": "2026-01-01",
+              "data_as_of": "2026-01-01",
+              "count": 2259,
+              "absent_days_per_head_annual": 6.0,
+              "absent_days_total": 1127.1,
+              "mean_fatigue": 44.5
+            },
+            {
+              "period_start": "2026-02-01",
+              "data_as_of": "2026-02-01",
+              "count": 2259,
+              "absent_days_per_head_annual": 5.7,
+              "absent_days_total": 1069.9,
+              "mean_fatigue": 44.3
+            },
+            {
+              "period_start": "2026-03-01",
+              "data_as_of": "2026-03-01",
+              "count": 2259,
+              "absent_days_per_head_annual": 5.7,
+              "absent_days_total": 1071.5,
+              "mean_fatigue": 44.3
+            },
+            {
+              "period_start": "2026-04-01",
+              "data_as_of": "2026-04-01",
+              "count": 2259,
+              "absent_days_per_head_annual": 5.4,
+              "absent_days_total": 1015.2,
+              "mean_fatigue": 43.7
+            },
+            {
+              "period_start": "2026-05-01",
+              "data_as_of": "2026-05-01",
+              "count": 2259,
+              "absent_days_per_head_annual": 6.0,
+              "absent_days_total": 1124.6,
+              "mean_fatigue": 44.0
+            },
+            {
+              "period_start": "2026-06-01",
+              "data_as_of": "2026-06-01",
+              "count": 2259,
+              "absent_days_per_head_annual": 6.6,
+              "absent_days_total": 1236.8,
+              "mean_fatigue": 43.5
+            },
+            {
+              "period_start": "2026-07-01",
+              "data_as_of": "2026-07-01",
+              "count": 2259,
+              "absent_days_per_head_annual": 7.2,
+              "absent_days_total": 1364.7,
+              "mean_fatigue": 43.8
+            },
+            {
+              "period_start": "2026-08-01",
+              "data_as_of": "2026-08-01",
+              "count": 2259,
+              "absent_days_per_head_annual": 6.3,
+              "absent_days_total": 1179.7,
+              "mean_fatigue": 43.8
+            },
+            {
+              "period_start": "2026-09-01",
+              "data_as_of": "2026-09-01",
+              "count": 2259,
+              "absent_days_per_head_annual": 5.6,
+              "absent_days_total": 1046.2,
+              "mean_fatigue": 43.9
+            },
+            {
+              "period_start": "2026-10-01",
+              "data_as_of": "2026-10-01",
+              "count": 2259,
+              "absent_days_per_head_annual": 5.4,
+              "absent_days_total": 1010.9,
+              "mean_fatigue": 44.1
+            }
+          ]
+        },
+        "Low": {
+          "label": "Low",
+          "count": 164,
+          "membership": "frozen at baseline",
+          "suppressed": false,
+          "suppressed_below": null,
+          "periods": [
+            {
+              "period_start": "2025-11-01",
+              "data_as_of": "2025-11-01",
+              "count": 164,
+              "absent_days_per_head_annual": 2.2,
+              "absent_days_total": 29.7,
+              "mean_fatigue": 34.3
+            },
+            {
+              "period_start": "2025-12-01",
+              "data_as_of": "2025-12-01",
+              "count": 164,
+              "absent_days_per_head_annual": 2.0,
+              "absent_days_total": 26.7,
+              "mean_fatigue": 34.3
+            },
+            {
+              "period_start": "2026-01-01",
+              "data_as_of": "2026-01-01",
+              "count": 164,
+              "absent_days_per_head_annual": 2.4,
+              "absent_days_total": 32.8,
+              "mean_fatigue": 33.8
+            },
+            {
+              "period_start": "2026-02-01",
+              "data_as_of": "2026-02-01",
+              "count": 164,
+              "absent_days_per_head_annual": 2.3,
+              "absent_days_total": 31.5,
+              "mean_fatigue": 34.5
+            },
+            {
+              "period_start": "2026-03-01",
+              "data_as_of": "2026-03-01",
+              "count": 164,
+              "absent_days_per_head_annual": 2.2,
+              "absent_days_total": 29.8,
+              "mean_fatigue": 35.0
+            },
+            {
+              "period_start": "2026-04-01",
+              "data_as_of": "2026-04-01",
+              "count": 164,
+              "absent_days_per_head_annual": 2.4,
+              "absent_days_total": 32.8,
+              "mean_fatigue": 34.2
+            },
+            {
+              "period_start": "2026-05-01",
+              "data_as_of": "2026-05-01",
+              "count": 164,
+              "absent_days_per_head_annual": 2.3,
+              "absent_days_total": 30.9,
+              "mean_fatigue": 33.6
+            },
+            {
+              "period_start": "2026-06-01",
+              "data_as_of": "2026-06-01",
+              "count": 164,
+              "absent_days_per_head_annual": 2.7,
+              "absent_days_total": 36.7,
+              "mean_fatigue": 33.0
+            },
+            {
+              "period_start": "2026-07-01",
+              "data_as_of": "2026-07-01",
+              "count": 164,
+              "absent_days_per_head_annual": 2.9,
+              "absent_days_total": 39.4,
+              "mean_fatigue": 34.2
+            },
+            {
+              "period_start": "2026-08-01",
+              "data_as_of": "2026-08-01",
+              "count": 164,
+              "absent_days_per_head_annual": 2.1,
+              "absent_days_total": 29.1,
+              "mean_fatigue": 33.1
+            },
+            {
+              "period_start": "2026-09-01",
+              "data_as_of": "2026-09-01",
+              "count": 164,
+              "absent_days_per_head_annual": 2.2,
+              "absent_days_total": 30.0,
+              "mean_fatigue": 33.5
+            },
+            {
+              "period_start": "2026-10-01",
+              "data_as_of": "2026-10-01",
+              "count": 164,
+              "absent_days_per_head_annual": 2.1,
+              "absent_days_total": 29.3,
+              "mean_fatigue": 32.9
+            }
+          ]
+        }
+      }
+    },
+    "cohort_age": {
+      "label": "Age band",
+      "protected": true,
+      "min_cohort": 10,
+      "cohorts": {
+        "Under 30": {
+          "label": "Under 30",
+          "count": 2538,
+          "membership": "frozen at baseline",
+          "suppressed": false,
+          "suppressed_below": null,
+          "periods": [
+            {
+              "period_start": "2025-11-01",
+              "data_as_of": "2025-11-01",
+              "count": 2538,
+              "absent_days_per_head_annual": 10.0,
+              "absent_days_total": 2114.5,
+              "mean_fatigue": 53.8
+            },
+            {
+              "period_start": "2025-12-01",
+              "data_as_of": "2025-12-01",
+              "count": 2538,
+              "absent_days_per_head_annual": 9.4,
+              "absent_days_total": 1981.8,
+              "mean_fatigue": 53.6
+            },
+            {
+              "period_start": "2026-01-01",
+              "data_as_of": "2026-01-01",
+              "count": 2538,
+              "absent_days_per_head_annual": 10.0,
+              "absent_days_total": 2109.8,
+              "mean_fatigue": 53.6
+            },
+            {
+              "period_start": "2026-02-01",
+              "data_as_of": "2026-02-01",
+              "count": 2538,
+              "absent_days_per_head_annual": 9.3,
+              "absent_days_total": 1976.3,
+              "mean_fatigue": 53.7
+            },
+            {
+              "period_start": "2026-03-01",
+              "data_as_of": "2026-03-01",
+              "count": 2538,
+              "absent_days_per_head_annual": 10.2,
+              "absent_days_total": 2156.3,
+              "mean_fatigue": 53.6
+            },
+            {
+              "period_start": "2026-04-01",
+              "data_as_of": "2026-04-01",
+              "count": 2538,
+              "absent_days_per_head_annual": 8.4,
+              "absent_days_total": 1775.5,
+              "mean_fatigue": 51.8
+            },
+            {
+              "period_start": "2026-05-01",
+              "data_as_of": "2026-05-01",
+              "count": 2538,
+              "absent_days_per_head_annual": 9.6,
+              "absent_days_total": 2027.1,
+              "mean_fatigue": 51.6
+            },
+            {
+              "period_start": "2026-06-01",
+              "data_as_of": "2026-06-01",
+              "count": 2538,
+              "absent_days_per_head_annual": 10.1,
+              "absent_days_total": 2126.8,
+              "mean_fatigue": 51.5
+            },
+            {
+              "period_start": "2026-07-01",
+              "data_as_of": "2026-07-01",
+              "count": 2538,
+              "absent_days_per_head_annual": 11.2,
+              "absent_days_total": 2368.4,
+              "mean_fatigue": 51.7
+            },
+            {
+              "period_start": "2026-08-01",
+              "data_as_of": "2026-08-01",
+              "count": 2538,
+              "absent_days_per_head_annual": 10.0,
+              "absent_days_total": 2104.8,
+              "mean_fatigue": 51.7
+            },
+            {
+              "period_start": "2026-09-01",
+              "data_as_of": "2026-09-01",
+              "count": 2538,
+              "absent_days_per_head_annual": 8.9,
+              "absent_days_total": 1891.2,
+              "mean_fatigue": 51.5
+            },
+            {
+              "period_start": "2026-10-01",
+              "data_as_of": "2026-10-01",
+              "count": 2538,
+              "absent_days_per_head_annual": 8.0,
+              "absent_days_total": 1693.4,
+              "mean_fatigue": 51.8
+            }
+          ]
+        },
+        "30-39": {
+          "label": "30-39",
+          "count": 2362,
+          "membership": "frozen at baseline",
+          "suppressed": false,
+          "suppressed_below": null,
+          "periods": [
+            {
+              "period_start": "2025-11-01",
+              "data_as_of": "2025-11-01",
+              "count": 2362,
+              "absent_days_per_head_annual": 14.3,
+              "absent_days_total": 2816.7,
+              "mean_fatigue": 53.9
+            },
+            {
+              "period_start": "2025-12-01",
+              "data_as_of": "2025-12-01",
+              "count": 2362,
+              "absent_days_per_head_annual": 13.4,
+              "absent_days_total": 2634.5,
+              "mean_fatigue": 53.9
+            },
+            {
+              "period_start": "2026-01-01",
+              "data_as_of": "2026-01-01",
+              "count": 2362,
+              "absent_days_per_head_annual": 13.7,
+              "absent_days_total": 2688.8,
+              "mean_fatigue": 53.8
+            },
+            {
+              "period_start": "2026-02-01",
+              "data_as_of": "2026-02-01",
+              "count": 2362,
+              "absent_days_per_head_annual": 13.7,
+              "absent_days_total": 2688.8,
+              "mean_fatigue": 53.6
+            },
+            {
+              "period_start": "2026-03-01",
+              "data_as_of": "2026-03-01",
+              "count": 2362,
+              "absent_days_per_head_annual": 13.5,
+              "absent_days_total": 2657.7,
+              "mean_fatigue": 53.8
+            },
+            {
+              "period_start": "2026-04-01",
+              "data_as_of": "2026-04-01",
+              "count": 2362,
+              "absent_days_per_head_annual": 11.9,
+              "absent_days_total": 2335.6,
+              "mean_fatigue": 51.6
+            },
+            {
+              "period_start": "2026-05-01",
+              "data_as_of": "2026-05-01",
+              "count": 2362,
+              "absent_days_per_head_annual": 12.9,
+              "absent_days_total": 2542.4,
+              "mean_fatigue": 51.5
+            },
+            {
+              "period_start": "2026-06-01",
+              "data_as_of": "2026-06-01",
+              "count": 2362,
+              "absent_days_per_head_annual": 15.1,
+              "absent_days_total": 2975.8,
+              "mean_fatigue": 51.4
+            },
+            {
+              "period_start": "2026-07-01",
+              "data_as_of": "2026-07-01",
+              "count": 2362,
+              "absent_days_per_head_annual": 15.1,
+              "absent_days_total": 2978.1,
+              "mean_fatigue": 51.4
+            },
+            {
+              "period_start": "2026-08-01",
+              "data_as_of": "2026-08-01",
+              "count": 2362,
+              "absent_days_per_head_annual": 14.7,
+              "absent_days_total": 2889.6,
+              "mean_fatigue": 51.6
+            },
+            {
+              "period_start": "2026-09-01",
+              "data_as_of": "2026-09-01",
+              "count": 2362,
+              "absent_days_per_head_annual": 12.0,
+              "absent_days_total": 2362.9,
+              "mean_fatigue": 51.7
+            },
+            {
+              "period_start": "2026-10-01",
+              "data_as_of": "2026-10-01",
+              "count": 2362,
+              "absent_days_per_head_annual": 12.0,
+              "absent_days_total": 2356.2,
+              "mean_fatigue": 51.9
+            }
+          ]
+        },
+        "40-49": {
+          "label": "40-49",
+          "count": 817,
+          "membership": "frozen at baseline",
+          "suppressed": false,
+          "suppressed_below": null,
+          "periods": [
+            {
+              "period_start": "2025-11-01",
+              "data_as_of": "2025-11-01",
+              "count": 817,
+              "absent_days_per_head_annual": 15.8,
+              "absent_days_total": 1074.4,
+              "mean_fatigue": 53.3
+            },
+            {
+              "period_start": "2025-12-01",
+              "data_as_of": "2025-12-01",
+              "count": 817,
+              "absent_days_per_head_annual": 17.3,
+              "absent_days_total": 1180.4,
+              "mean_fatigue": 53.5
+            },
+            {
+              "period_start": "2026-01-01",
+              "data_as_of": "2026-01-01",
+              "count": 817,
+              "absent_days_per_head_annual": 16.1,
+              "absent_days_total": 1095.2,
+              "mean_fatigue": 53.0
+            },
+            {
+              "period_start": "2026-02-01",
+              "data_as_of": "2026-02-01",
+              "count": 817,
+              "absent_days_per_head_annual": 17.0,
+              "absent_days_total": 1155.7,
+              "mean_fatigue": 53.3
+            },
+            {
+              "period_start": "2026-03-01",
+              "data_as_of": "2026-03-01",
+              "count": 817,
+              "absent_days_per_head_annual": 16.5,
+              "absent_days_total": 1125.1,
+              "mean_fatigue": 53.6
+            },
+            {
+              "period_start": "2026-04-01",
+              "data_as_of": "2026-04-01",
+              "count": 817,
+              "absent_days_per_head_annual": 14.7,
+              "absent_days_total": 997.5,
+              "mean_fatigue": 51.3
+            },
+            {
+              "period_start": "2026-05-01",
+              "data_as_of": "2026-05-01",
+              "count": 817,
+              "absent_days_per_head_annual": 17.6,
+              "absent_days_total": 1196.5,
+              "mean_fatigue": 51.9
+            },
+            {
+              "period_start": "2026-06-01",
+              "data_as_of": "2026-06-01",
+              "count": 817,
+              "absent_days_per_head_annual": 17.9,
+              "absent_days_total": 1220.5,
+              "mean_fatigue": 51.7
+            },
+            {
+              "period_start": "2026-07-01",
+              "data_as_of": "2026-07-01",
+              "count": 817,
+              "absent_days_per_head_annual": 19.1,
+              "absent_days_total": 1303.2,
+              "mean_fatigue": 51.3
+            },
+            {
+              "period_start": "2026-08-01",
+              "data_as_of": "2026-08-01",
+              "count": 817,
+              "absent_days_per_head_annual": 18.4,
+              "absent_days_total": 1255.4,
+              "mean_fatigue": 51.7
+            },
+            {
+              "period_start": "2026-09-01",
+              "data_as_of": "2026-09-01",
+              "count": 817,
+              "absent_days_per_head_annual": 15.3,
+              "absent_days_total": 1044.6,
+              "mean_fatigue": 51.4
+            },
+            {
+              "period_start": "2026-10-01",
+              "data_as_of": "2026-10-01",
+              "count": 817,
+              "absent_days_per_head_annual": 14.9,
+              "absent_days_total": 1012.7,
+              "mean_fatigue": 51.5
+            }
+          ]
+        },
+        "50+": {
+          "label": "50+",
+          "count": 83,
+          "membership": "frozen at baseline",
+          "suppressed": false,
+          "suppressed_below": null,
+          "periods": [
+            {
+              "period_start": "2025-11-01",
+              "data_as_of": "2025-11-01",
+              "count": 83,
+              "absent_days_per_head_annual": 18.6,
+              "absent_days_total": 128.8,
+              "mean_fatigue": 51.5
+            },
+            {
+              "period_start": "2025-12-01",
+              "data_as_of": "2025-12-01",
+              "count": 83,
+              "absent_days_per_head_annual": 25.8,
+              "absent_days_total": 178.1,
+              "mean_fatigue": 53.0
+            },
+            {
+              "period_start": "2026-01-01",
+              "data_as_of": "2026-01-01",
+              "count": 83,
+              "absent_days_per_head_annual": 19.0,
+              "absent_days_total": 131.3,
+              "mean_fatigue": 53.2
+            },
+            {
+              "period_start": "2026-02-01",
+              "data_as_of": "2026-02-01",
+              "count": 83,
+              "absent_days_per_head_annual": 16.5,
+              "absent_days_total": 113.9,
+              "mean_fatigue": 53.1
+            },
+            {
+              "period_start": "2026-03-01",
+              "data_as_of": "2026-03-01",
+              "count": 83,
+              "absent_days_per_head_annual": 21.3,
+              "absent_days_total": 147.2,
+              "mean_fatigue": 53.2
+            },
+            {
+              "period_start": "2026-04-01",
+              "data_as_of": "2026-04-01",
+              "count": 83,
+              "absent_days_per_head_annual": 18.5,
+              "absent_days_total": 128.1,
+              "mean_fatigue": 50.6
+            },
+            {
+              "period_start": "2026-05-01",
+              "data_as_of": "2026-05-01",
+              "count": 83,
+              "absent_days_per_head_annual": 18.7,
+              "absent_days_total": 129.1,
+              "mean_fatigue": 50.7
+            },
+            {
+              "period_start": "2026-06-01",
+              "data_as_of": "2026-06-01",
+              "count": 83,
+              "absent_days_per_head_annual": 28.2,
+              "absent_days_total": 194.7,
+              "mean_fatigue": 51.4
+            },
+            {
+              "period_start": "2026-07-01",
+              "data_as_of": "2026-07-01",
+              "count": 83,
+              "absent_days_per_head_annual": 17.5,
+              "absent_days_total": 120.8,
+              "mean_fatigue": 50.5
+            },
+            {
+              "period_start": "2026-08-01",
+              "data_as_of": "2026-08-01",
+              "count": 83,
+              "absent_days_per_head_annual": 24.9,
+              "absent_days_total": 172.3,
+              "mean_fatigue": 51.9
+            },
+            {
+              "period_start": "2026-09-01",
+              "data_as_of": "2026-09-01",
+              "count": 83,
+              "absent_days_per_head_annual": 19.8,
+              "absent_days_total": 137.2,
+              "mean_fatigue": 52.2
+            },
+            {
+              "period_start": "2026-10-01",
+              "data_as_of": "2026-10-01",
+              "count": 83,
+              "absent_days_per_head_annual": 22.5,
+              "absent_days_total": 155.5,
+              "mean_fatigue": 52.2
+            }
+          ]
+        }
+      }
+    },
+    "cohort_tenure": {
+      "label": "Tenure band",
+      "protected": false,
+      "min_cohort": 5,
+      "cohorts": {
+        "New (<2y)": {
+          "label": "New (<2y)",
+          "count": 2658,
+          "membership": "frozen at baseline",
+          "suppressed": false,
+          "suppressed_below": null,
+          "periods": [
+            {
+              "period_start": "2025-11-01",
+              "data_as_of": "2025-11-01",
+              "count": 2658,
+              "absent_days_per_head_annual": 12.4,
+              "absent_days_total": 2744.2,
+              "mean_fatigue": 53.9
+            },
+            {
+              "period_start": "2025-12-01",
+              "data_as_of": "2025-12-01",
+              "count": 2658,
+              "absent_days_per_head_annual": 12.0,
+              "absent_days_total": 2668.2,
+              "mean_fatigue": 53.7
+            },
+            {
+              "period_start": "2026-01-01",
+              "data_as_of": "2026-01-01",
+              "count": 2658,
+              "absent_days_per_head_annual": 12.3,
+              "absent_days_total": 2714.4,
+              "mean_fatigue": 53.5
+            },
+            {
+              "period_start": "2026-02-01",
+              "data_as_of": "2026-02-01",
+              "count": 2658,
+              "absent_days_per_head_annual": 11.9,
+              "absent_days_total": 2634.2,
+              "mean_fatigue": 53.6
+            },
+            {
+              "period_start": "2026-03-01",
+              "data_as_of": "2026-03-01",
+              "count": 2658,
+              "absent_days_per_head_annual": 12.5,
+              "absent_days_total": 2768.2,
+              "mean_fatigue": 53.7
+            },
+            {
+              "period_start": "2026-04-01",
+              "data_as_of": "2026-04-01",
+              "count": 2658,
+              "absent_days_per_head_annual": 10.7,
+              "absent_days_total": 2362.1,
+              "mean_fatigue": 51.7
+            },
+            {
+              "period_start": "2026-05-01",
+              "data_as_of": "2026-05-01",
+              "count": 2658,
+              "absent_days_per_head_annual": 12.0,
+              "absent_days_total": 2659.4,
+              "mean_fatigue": 51.8
+            },
+            {
+              "period_start": "2026-06-01",
+              "data_as_of": "2026-06-01",
+              "count": 2658,
+              "absent_days_per_head_annual": 13.4,
+              "absent_days_total": 2967.5,
+              "mean_fatigue": 51.7
+            },
+            {
+              "period_start": "2026-07-01",
+              "data_as_of": "2026-07-01",
+              "count": 2658,
+              "absent_days_per_head_annual": 14.0,
+              "absent_days_total": 3091.0,
+              "mean_fatigue": 51.8
+            },
+            {
+              "period_start": "2026-08-01",
+              "data_as_of": "2026-08-01",
+              "count": 2658,
+              "absent_days_per_head_annual": 13.0,
+              "absent_days_total": 2877.4,
+              "mean_fatigue": 51.7
+            },
+            {
+              "period_start": "2026-09-01",
+              "data_as_of": "2026-09-01",
+              "count": 2658,
+              "absent_days_per_head_annual": 11.4,
+              "absent_days_total": 2517.1,
+              "mean_fatigue": 51.6
+            },
+            {
+              "period_start": "2026-10-01",
+              "data_as_of": "2026-10-01",
+              "count": 2658,
+              "absent_days_per_head_annual": 10.6,
+              "absent_days_total": 2358.9,
+              "mean_fatigue": 51.9
+            }
+          ]
+        },
+        "Established (2-5y)": {
+          "label": "Established (2-5y)",
+          "count": 2229,
+          "membership": "frozen at baseline",
+          "suppressed": false,
+          "suppressed_below": null,
+          "periods": [
+            {
+              "period_start": "2025-11-01",
+              "data_as_of": "2025-11-01",
+              "count": 2229,
+              "absent_days_per_head_annual": 12.5,
+              "absent_days_total": 2323.3,
+              "mean_fatigue": 53.4
+            },
+            {
+              "period_start": "2025-12-01",
+              "data_as_of": "2025-12-01",
+              "count": 2229,
+              "absent_days_per_head_annual": 12.4,
+              "absent_days_total": 2295.2,
+              "mean_fatigue": 53.6
+            },
+            {
+              "period_start": "2026-01-01",
+              "data_as_of": "2026-01-01",
+              "count": 2229,
+              "absent_days_per_head_annual": 12.3,
+              "absent_days_total": 2287.2,
+              "mean_fatigue": 53.6
+            },
+            {
+              "period_start": "2026-02-01",
+              "data_as_of": "2026-02-01",
+              "count": 2229,
+              "absent_days_per_head_annual": 12.4,
+              "absent_days_total": 2308.1,
+              "mean_fatigue": 53.5
+            },
+            {
+              "period_start": "2026-03-01",
+              "data_as_of": "2026-03-01",
+              "count": 2229,
+              "absent_days_per_head_annual": 12.6,
+              "absent_days_total": 2335.7,
+              "mean_fatigue": 53.6
+            },
+            {
+              "period_start": "2026-04-01",
+              "data_as_of": "2026-04-01",
+              "count": 2229,
+              "absent_days_per_head_annual": 10.9,
+              "absent_days_total": 2017.6,
+              "mean_fatigue": 51.4
+            },
+            {
+              "period_start": "2026-05-01",
+              "data_as_of": "2026-05-01",
+              "count": 2229,
+              "absent_days_per_head_annual": 12.2,
+              "absent_days_total": 2263.2,
+              "mean_fatigue": 51.3
+            },
+            {
+              "period_start": "2026-06-01",
+              "data_as_of": "2026-06-01",
+              "count": 2229,
+              "absent_days_per_head_annual": 13.2,
+              "absent_days_total": 2456.6,
+              "mean_fatigue": 51.1
+            },
+            {
+              "period_start": "2026-07-01",
+              "data_as_of": "2026-07-01",
+              "count": 2229,
+              "absent_days_per_head_annual": 13.8,
+              "absent_days_total": 2571.1,
+              "mean_fatigue": 51.3
+            },
+            {
+              "period_start": "2026-08-01",
+              "data_as_of": "2026-08-01",
+              "count": 2229,
+              "absent_days_per_head_annual": 13.0,
+              "absent_days_total": 2407.9,
+              "mean_fatigue": 51.4
+            },
+            {
+              "period_start": "2026-09-01",
+              "data_as_of": "2026-09-01",
+              "count": 2229,
+              "absent_days_per_head_annual": 11.0,
+              "absent_days_total": 2046.4,
+              "mean_fatigue": 51.4
+            },
+            {
+              "period_start": "2026-10-01",
+              "data_as_of": "2026-10-01",
+              "count": 2229,
+              "absent_days_per_head_annual": 10.7,
+              "absent_days_total": 1992.1,
+              "mean_fatigue": 51.8
+            }
+          ]
+        },
+        "Experienced (5-10y)": {
+          "label": "Experienced (5-10y)",
+          "count": 804,
+          "membership": "frozen at baseline",
+          "suppressed": false,
+          "suppressed_below": null,
+          "periods": [
+            {
+              "period_start": "2025-11-01",
+              "data_as_of": "2025-11-01",
+              "count": 804,
+              "absent_days_per_head_annual": 14.2,
+              "absent_days_total": 953.1,
+              "mean_fatigue": 54.2
+            },
+            {
+              "period_start": "2025-12-01",
+              "data_as_of": "2025-12-01",
+              "count": 804,
+              "absent_days_per_head_annual": 13.5,
+              "absent_days_total": 907.3,
+              "mean_fatigue": 53.8
+            },
+            {
+              "period_start": "2026-01-01",
+              "data_as_of": "2026-01-01",
+              "count": 804,
+              "absent_days_per_head_annual": 13.6,
+              "absent_days_total": 909.6,
+              "mean_fatigue": 54.1
+            },
+            {
+              "period_start": "2026-02-01",
+              "data_as_of": "2026-02-01",
+              "count": 804,
+              "absent_days_per_head_annual": 13.5,
+              "absent_days_total": 904.5,
+              "mean_fatigue": 53.8
+            },
+            {
+              "period_start": "2026-03-01",
+              "data_as_of": "2026-03-01",
+              "count": 804,
+              "absent_days_per_head_annual": 13.3,
+              "absent_days_total": 891.1,
+              "mean_fatigue": 54.2
+            },
+            {
+              "period_start": "2026-04-01",
+              "data_as_of": "2026-04-01",
+              "count": 804,
+              "absent_days_per_head_annual": 11.2,
+              "absent_days_total": 748.3,
+              "mean_fatigue": 52.2
+            },
+            {
+              "period_start": "2026-05-01",
+              "data_as_of": "2026-05-01",
+              "count": 804,
+              "absent_days_per_head_annual": 12.7,
+              "absent_days_total": 854.2,
+              "mean_fatigue": 51.8
+            },
+            {
+              "period_start": "2026-06-01",
+              "data_as_of": "2026-06-01",
+              "count": 804,
+              "absent_days_per_head_annual": 14.5,
+              "absent_days_total": 972.6,
+              "mean_fatigue": 51.8
+            },
+            {
+              "period_start": "2026-07-01",
+              "data_as_of": "2026-07-01",
+              "count": 804,
+              "absent_days_per_head_annual": 14.8,
+              "absent_days_total": 990.3,
+              "mean_fatigue": 51.5
+            },
+            {
+              "period_start": "2026-08-01",
+              "data_as_of": "2026-08-01",
+              "count": 804,
+              "absent_days_per_head_annual": 15.3,
+              "absent_days_total": 1023.0,
+              "mean_fatigue": 52.0
+            },
+            {
+              "period_start": "2026-09-01",
+              "data_as_of": "2026-09-01",
+              "count": 804,
+              "absent_days_per_head_annual": 11.7,
+              "absent_days_total": 782.7,
+              "mean_fatigue": 51.9
+            },
+            {
+              "period_start": "2026-10-01",
+              "data_as_of": "2026-10-01",
+              "count": 804,
+              "absent_days_per_head_annual": 11.4,
+              "absent_days_total": 763.5,
+              "mean_fatigue": 51.6
+            }
+          ]
+        },
+        "Veteran (10y+)": {
+          "label": "Veteran (10y+)",
+          "count": 109,
+          "membership": "frozen at baseline",
+          "suppressed": false,
+          "suppressed_below": null,
+          "periods": [
+            {
+              "period_start": "2025-11-01",
+              "data_as_of": "2025-11-01",
+              "count": 109,
+              "absent_days_per_head_annual": 12.5,
+              "absent_days_total": 113.8,
+              "mean_fatigue": 52.8
+            },
+            {
+              "period_start": "2025-12-01",
+              "data_as_of": "2025-12-01",
+              "count": 109,
+              "absent_days_per_head_annual": 11.5,
+              "absent_days_total": 104.0,
+              "mean_fatigue": 53.6
+            },
+            {
+              "period_start": "2026-01-01",
+              "data_as_of": "2026-01-01",
+              "count": 109,
+              "absent_days_per_head_annual": 12.5,
+              "absent_days_total": 113.8,
+              "mean_fatigue": 52.7
+            },
+            {
+              "period_start": "2026-02-01",
+              "data_as_of": "2026-02-01",
+              "count": 109,
+              "absent_days_per_head_annual": 9.7,
+              "absent_days_total": 87.7,
+              "mean_fatigue": 53.6
+            },
+            {
+              "period_start": "2026-03-01",
+              "data_as_of": "2026-03-01",
+              "count": 109,
+              "absent_days_per_head_annual": 10.0,
+              "absent_days_total": 91.2,
+              "mean_fatigue": 52.6
+            },
+            {
+              "period_start": "2026-04-01",
+              "data_as_of": "2026-04-01",
+              "count": 109,
+              "absent_days_per_head_annual": 12.0,
+              "absent_days_total": 108.7,
+              "mean_fatigue": 51.2
+            },
+            {
+              "period_start": "2026-05-01",
+              "data_as_of": "2026-05-01",
+              "count": 109,
+              "absent_days_per_head_annual": 13.0,
+              "absent_days_total": 118.3,
+              "mean_fatigue": 51.2
+            },
+            {
+              "period_start": "2026-06-01",
+              "data_as_of": "2026-06-01",
+              "count": 109,
+              "absent_days_per_head_annual": 13.3,
+              "absent_days_total": 121.2,
+              "mean_fatigue": 51.6
+            },
+            {
+              "period_start": "2026-07-01",
+              "data_as_of": "2026-07-01",
+              "count": 109,
+              "absent_days_per_head_annual": 13.0,
+              "absent_days_total": 118.1,
+              "mean_fatigue": 48.9
+            },
+            {
+              "period_start": "2026-08-01",
+              "data_as_of": "2026-08-01",
+              "count": 109,
+              "absent_days_per_head_annual": 12.5,
+              "absent_days_total": 113.9,
+              "mean_fatigue": 51.1
+            },
+            {
+              "period_start": "2026-09-01",
+              "data_as_of": "2026-09-01",
+              "count": 109,
+              "absent_days_per_head_annual": 9.9,
+              "absent_days_total": 89.7,
+              "mean_fatigue": 51.4
+            },
+            {
+              "period_start": "2026-10-01",
+              "data_as_of": "2026-10-01",
+              "count": 109,
+              "absent_days_per_head_annual": 11.4,
+              "absent_days_total": 103.3,
+              "mean_fatigue": 51.8
+            }
+          ]
+        }
+      }
+    },
+    "cohort_lifestyle": {
+      "label": "Lifestyle risk",
+      "protected": false,
+      "min_cohort": 5,
+      "cohorts": {
+        "Smoker + drinker": {
+          "label": "Smoker + drinker",
+          "count": 916,
+          "membership": "frozen at baseline",
+          "suppressed": false,
+          "suppressed_below": null,
+          "periods": [
+            {
+              "period_start": "2025-11-01",
+              "data_as_of": "2025-11-01",
+              "count": 916,
+              "absent_days_per_head_annual": 27.1,
+              "absent_days_total": 2067.8,
+              "mean_fatigue": 53.3
+            },
+            {
+              "period_start": "2025-12-01",
+              "data_as_of": "2025-12-01",
+              "count": 916,
+              "absent_days_per_head_annual": 27.6,
+              "absent_days_total": 2104.8,
+              "mean_fatigue": 53.1
+            },
+            {
+              "period_start": "2026-01-01",
+              "data_as_of": "2026-01-01",
+              "count": 916,
+              "absent_days_per_head_annual": 28.8,
+              "absent_days_total": 2199.8,
+              "mean_fatigue": 53.2
+            },
+            {
+              "period_start": "2026-02-01",
+              "data_as_of": "2026-02-01",
+              "count": 916,
+              "absent_days_per_head_annual": 28.1,
+              "absent_days_total": 2144.9,
+              "mean_fatigue": 53.2
+            },
+            {
+              "period_start": "2026-03-01",
+              "data_as_of": "2026-03-01",
+              "count": 916,
+              "absent_days_per_head_annual": 28.5,
+              "absent_days_total": 2173.7,
+              "mean_fatigue": 53.3
+            },
+            {
+              "period_start": "2026-04-01",
+              "data_as_of": "2026-04-01",
+              "count": 916,
+              "absent_days_per_head_annual": 23.6,
+              "absent_days_total": 1803.6,
+              "mean_fatigue": 51.1
+            },
+            {
+              "period_start": "2026-05-01",
+              "data_as_of": "2026-05-01",
+              "count": 916,
+              "absent_days_per_head_annual": 27.5,
+              "absent_days_total": 2100.0,
+              "mean_fatigue": 51.6
+            },
+            {
+              "period_start": "2026-06-01",
+              "data_as_of": "2026-06-01",
+              "count": 916,
+              "absent_days_per_head_annual": 31.0,
+              "absent_days_total": 2368.4,
+              "mean_fatigue": 51.2
+            },
+            {
+              "period_start": "2026-07-01",
+              "data_as_of": "2026-07-01",
+              "count": 916,
+              "absent_days_per_head_annual": 31.9,
+              "absent_days_total": 2438.5,
+              "mean_fatigue": 51.0
+            },
+            {
+              "period_start": "2026-08-01",
+              "data_as_of": "2026-08-01",
+              "count": 916,
+              "absent_days_per_head_annual": 29.9,
+              "absent_days_total": 2282.1,
+              "mean_fatigue": 50.9
+            },
+            {
+              "period_start": "2026-09-01",
+              "data_as_of": "2026-09-01",
+              "count": 916,
+              "absent_days_per_head_annual": 25.5,
+              "absent_days_total": 1944.9,
+              "mean_fatigue": 51.4
+            },
+            {
+              "period_start": "2026-10-01",
+              "data_as_of": "2026-10-01",
+              "count": 916,
+              "absent_days_per_head_annual": 24.4,
+              "absent_days_total": 1864.7,
+              "mean_fatigue": 51.3
+            }
+          ]
+        },
+        "Smoker": {
+          "label": "Smoker",
+          "count": 1420,
+          "membership": "frozen at baseline",
+          "suppressed": false,
+          "suppressed_below": null,
+          "periods": [
+            {
+              "period_start": "2025-11-01",
+              "data_as_of": "2025-11-01",
+              "count": 1420,
+              "absent_days_per_head_annual": 15.4,
+              "absent_days_total": 1825.4,
+              "mean_fatigue": 54.0
+            },
+            {
+              "period_start": "2025-12-01",
+              "data_as_of": "2025-12-01",
+              "count": 1420,
+              "absent_days_per_head_annual": 14.0,
+              "absent_days_total": 1660.5,
+              "mean_fatigue": 53.7
+            },
+            {
+              "period_start": "2026-01-01",
+              "data_as_of": "2026-01-01",
+              "count": 1420,
+              "absent_days_per_head_annual": 15.1,
+              "absent_days_total": 1789.9,
+              "mean_fatigue": 53.8
+            },
+            {
+              "period_start": "2026-02-01",
+              "data_as_of": "2026-02-01",
+              "count": 1420,
+              "absent_days_per_head_annual": 13.5,
+              "absent_days_total": 1599.9,
+              "mean_fatigue": 53.7
+            },
+            {
+              "period_start": "2026-03-01",
+              "data_as_of": "2026-03-01",
+              "count": 1420,
+              "absent_days_per_head_annual": 14.4,
+              "absent_days_total": 1700.7,
+              "mean_fatigue": 53.4
+            },
+            {
+              "period_start": "2026-04-01",
+              "data_as_of": "2026-04-01",
+              "count": 1420,
+              "absent_days_per_head_annual": 12.6,
+              "absent_days_total": 1495.9,
+              "mean_fatigue": 51.7
+            },
+            {
+              "period_start": "2026-05-01",
+              "data_as_of": "2026-05-01",
+              "count": 1420,
+              "absent_days_per_head_annual": 13.9,
+              "absent_days_total": 1647.7,
+              "mean_fatigue": 51.6
+            },
+            {
+              "period_start": "2026-06-01",
+              "data_as_of": "2026-06-01",
+              "count": 1420,
+              "absent_days_per_head_annual": 15.8,
+              "absent_days_total": 1867.3,
+              "mean_fatigue": 51.5
+            },
+            {
+              "period_start": "2026-07-01",
+              "data_as_of": "2026-07-01",
+              "count": 1420,
+              "absent_days_per_head_annual": 16.5,
+              "absent_days_total": 1950.2,
+              "mean_fatigue": 51.6
+            },
+            {
+              "period_start": "2026-08-01",
+              "data_as_of": "2026-08-01",
+              "count": 1420,
+              "absent_days_per_head_annual": 14.9,
+              "absent_days_total": 1764.4,
+              "mean_fatigue": 51.7
+            },
+            {
+              "period_start": "2026-09-01",
+              "data_as_of": "2026-09-01",
+              "count": 1420,
+              "absent_days_per_head_annual": 12.9,
+              "absent_days_total": 1527.0,
+              "mean_fatigue": 51.7
+            },
+            {
+              "period_start": "2026-10-01",
+              "data_as_of": "2026-10-01",
+              "count": 1420,
+              "absent_days_per_head_annual": 12.1,
+              "absent_days_total": 1431.1,
+              "mean_fatigue": 52.0
+            }
+          ]
+        },
+        "Regular drinker": {
+          "label": "Regular drinker",
+          "count": 1370,
+          "membership": "frozen at baseline",
+          "suppressed": false,
+          "suppressed_below": null,
+          "periods": [
+            {
+              "period_start": "2025-11-01",
+              "data_as_of": "2025-11-01",
+              "count": 1370,
+              "absent_days_per_head_annual": 10.8,
+              "absent_days_total": 1237.5,
+              "mean_fatigue": 53.7
+            },
+            {
+              "period_start": "2025-12-01",
+              "data_as_of": "2025-12-01",
+              "count": 1370,
+              "absent_days_per_head_annual": 10.8,
+              "absent_days_total": 1233.5,
+              "mean_fatigue": 53.8
+            },
+            {
+              "period_start": "2026-01-01",
+              "data_as_of": "2026-01-01",
+              "count": 1370,
+              "absent_days_per_head_annual": 9.7,
+              "absent_days_total": 1107.5,
+              "mean_fatigue": 53.7
+            },
+            {
+              "period_start": "2026-02-01",
+              "data_as_of": "2026-02-01",
+              "count": 1370,
+              "absent_days_per_head_annual": 10.7,
+              "absent_days_total": 1219.1,
+              "mean_fatigue": 53.4
+            },
+            {
+              "period_start": "2026-03-01",
+              "data_as_of": "2026-03-01",
+              "count": 1370,
+              "absent_days_per_head_annual": 10.7,
+              "absent_days_total": 1220.6,
+              "mean_fatigue": 54.1
+            },
+            {
+              "period_start": "2026-04-01",
+              "data_as_of": "2026-04-01",
+              "count": 1370,
+              "absent_days_per_head_annual": 9.9,
+              "absent_days_total": 1129.9,
+              "mean_fatigue": 51.9
+            },
+            {
+              "period_start": "2026-05-01",
+              "data_as_of": "2026-05-01",
+              "count": 1370,
+              "absent_days_per_head_annual": 11.1,
+              "absent_days_total": 1262.6,
+              "mean_fatigue": 51.9
+            },
+            {
+              "period_start": "2026-06-01",
+              "data_as_of": "2026-06-01",
+              "count": 1370,
+              "absent_days_per_head_annual": 11.5,
+              "absent_days_total": 1311.2,
+              "mean_fatigue": 51.6
+            },
+            {
+              "period_start": "2026-07-01",
+              "data_as_of": "2026-07-01",
+              "count": 1370,
+              "absent_days_per_head_annual": 11.3,
+              "absent_days_total": 1294.0,
+              "mean_fatigue": 51.5
+            },
+            {
+              "period_start": "2026-08-01",
+              "data_as_of": "2026-08-01",
+              "count": 1370,
+              "absent_days_per_head_annual": 12.2,
+              "absent_days_total": 1388.3,
+              "mean_fatigue": 52.0
+            },
+            {
+              "period_start": "2026-09-01",
+              "data_as_of": "2026-09-01",
+              "count": 1370,
+              "absent_days_per_head_annual": 9.7,
+              "absent_days_total": 1108.8,
+              "mean_fatigue": 51.7
+            },
+            {
+              "period_start": "2026-10-01",
+              "data_as_of": "2026-10-01",
+              "count": 1370,
+              "absent_days_per_head_annual": 9.8,
+              "absent_days_total": 1114.9,
+              "mean_fatigue": 52.0
+            }
+          ]
+        },
+        "Low lifestyle risk": {
+          "label": "Low lifestyle risk",
+          "count": 2094,
+          "membership": "frozen at baseline",
+          "suppressed": false,
+          "suppressed_below": null,
+          "periods": [
+            {
+              "period_start": "2025-11-01",
+              "data_as_of": "2025-11-01",
+              "count": 2094,
+              "absent_days_per_head_annual": 5.8,
+              "absent_days_total": 1003.6,
+              "mean_fatigue": 53.9
+            },
+            {
+              "period_start": "2025-12-01",
+              "data_as_of": "2025-12-01",
+              "count": 2094,
+              "absent_days_per_head_annual": 5.6,
+              "absent_days_total": 975.9,
+              "mean_fatigue": 53.9
+            },
+            {
+              "period_start": "2026-01-01",
+              "data_as_of": "2026-01-01",
+              "count": 2094,
+              "absent_days_per_head_annual": 5.3,
+              "absent_days_total": 928.0,
+              "mean_fatigue": 53.5
+            },
+            {
+              "period_start": "2026-02-01",
+              "data_as_of": "2026-02-01",
+              "count": 2094,
+              "absent_days_per_head_annual": 5.6,
+              "absent_days_total": 970.6,
+              "mean_fatigue": 53.8
+            },
+            {
+              "period_start": "2026-03-01",
+              "data_as_of": "2026-03-01",
+              "count": 2094,
+              "absent_days_per_head_annual": 5.7,
+              "absent_days_total": 991.1,
+              "mean_fatigue": 53.7
+            },
+            {
+              "period_start": "2026-04-01",
+              "data_as_of": "2026-04-01",
+              "count": 2094,
+              "absent_days_per_head_annual": 4.6,
+              "absent_days_total": 807.4,
+              "mean_fatigue": 51.6
+            },
+            {
+              "period_start": "2026-05-01",
+              "data_as_of": "2026-05-01",
+              "count": 2094,
+              "absent_days_per_head_annual": 5.1,
+              "absent_days_total": 884.9,
+              "mean_fatigue": 51.4
+            },
+            {
+              "period_start": "2026-06-01",
+              "data_as_of": "2026-06-01",
+              "count": 2094,
+              "absent_days_per_head_annual": 5.6,
+              "absent_days_total": 971.1,
+              "mean_fatigue": 51.5
+            },
+            {
+              "period_start": "2026-07-01",
+              "data_as_of": "2026-07-01",
+              "count": 2094,
+              "absent_days_per_head_annual": 6.2,
+              "absent_days_total": 1087.7,
+              "mean_fatigue": 51.7
+            },
+            {
+              "period_start": "2026-08-01",
+              "data_as_of": "2026-08-01",
+              "count": 2094,
+              "absent_days_per_head_annual": 5.7,
+              "absent_days_total": 987.4,
+              "mean_fatigue": 51.7
+            },
+            {
+              "period_start": "2026-09-01",
+              "data_as_of": "2026-09-01",
+              "count": 2094,
+              "absent_days_per_head_annual": 4.9,
+              "absent_days_total": 855.1,
+              "mean_fatigue": 51.5
+            },
+            {
+              "period_start": "2026-10-01",
+              "data_as_of": "2026-10-01",
+              "count": 2094,
+              "absent_days_per_head_annual": 4.6,
+              "absent_days_total": 807.2,
+              "mean_fatigue": 51.9
+            }
+          ]
+        }
+      }
+    },
+    "cohort_department": {
+      "label": "Department",
+      "protected": false,
+      "min_cohort": 5,
+      "cohorts": {
+        "Front of house": {
+          "label": "Front of house",
+          "count": 1730,
+          "membership": "frozen at baseline",
+          "suppressed": false,
+          "suppressed_below": null,
+          "periods": [
+            {
+              "period_start": "2025-11-01",
+              "data_as_of": "2025-11-01",
+              "count": 1730,
+              "absent_days_per_head_annual": 11.7,
+              "absent_days_total": 1693.4,
+              "mean_fatigue": 55.1
+            },
+            {
+              "period_start": "2025-12-01",
+              "data_as_of": "2025-12-01",
+              "count": 1730,
+              "absent_days_per_head_annual": 11.8,
+              "absent_days_total": 1698.2,
+              "mean_fatigue": 54.9
+            },
+            {
+              "period_start": "2026-01-01",
+              "data_as_of": "2026-01-01",
+              "count": 1730,
+              "absent_days_per_head_annual": 12.4,
+              "absent_days_total": 1785.7,
+              "mean_fatigue": 54.8
+            },
+            {
+              "period_start": "2026-02-01",
+              "data_as_of": "2026-02-01",
+              "count": 1730,
+              "absent_days_per_head_annual": 11.4,
+              "absent_days_total": 1650.4,
+              "mean_fatigue": 54.6
+            },
+            {
+              "period_start": "2026-03-01",
+              "data_as_of": "2026-03-01",
+              "count": 1730,
+              "absent_days_per_head_annual": 12.7,
+              "absent_days_total": 1830.1,
+              "mean_fatigue": 55.0
+            },
+            {
+              "period_start": "2026-04-01",
+              "data_as_of": "2026-04-01",
+              "count": 1730,
+              "absent_days_per_head_annual": 10.7,
+              "absent_days_total": 1538.2,
+              "mean_fatigue": 53.0
+            },
+            {
+              "period_start": "2026-05-01",
+              "data_as_of": "2026-05-01",
+              "count": 1730,
+              "absent_days_per_head_annual": 11.8,
+              "absent_days_total": 1702.6,
+              "mean_fatigue": 52.8
+            },
+            {
+              "period_start": "2026-06-01",
+              "data_as_of": "2026-06-01",
+              "count": 1730,
+              "absent_days_per_head_annual": 12.8,
+              "absent_days_total": 1842.7,
+              "mean_fatigue": 53.1
+            },
+            {
+              "period_start": "2026-07-01",
+              "data_as_of": "2026-07-01",
+              "count": 1730,
+              "absent_days_per_head_annual": 13.2,
+              "absent_days_total": 1898.6,
+              "mean_fatigue": 52.9
+            },
+            {
+              "period_start": "2026-08-01",
+              "data_as_of": "2026-08-01",
+              "count": 1730,
+              "absent_days_per_head_annual": 13.1,
+              "absent_days_total": 1882.9,
+              "mean_fatigue": 52.8
+            },
+            {
+              "period_start": "2026-09-01",
+              "data_as_of": "2026-09-01",
+              "count": 1730,
+              "absent_days_per_head_annual": 10.7,
+              "absent_days_total": 1543.2,
+              "mean_fatigue": 52.7
+            },
+            {
+              "period_start": "2026-10-01",
+              "data_as_of": "2026-10-01",
+              "count": 1730,
+              "absent_days_per_head_annual": 10.7,
+              "absent_days_total": 1544.7,
+              "mean_fatigue": 53.0
+            }
+          ]
+        },
+        "Kitchen": {
+          "label": "Kitchen",
+          "count": 1481,
+          "membership": "frozen at baseline",
+          "suppressed": false,
+          "suppressed_below": null,
+          "periods": [
+            {
+              "period_start": "2025-11-01",
+              "data_as_of": "2025-11-01",
+              "count": 1481,
+              "absent_days_per_head_annual": 18.3,
+              "absent_days_total": 2252.6,
+              "mean_fatigue": 59.1
+            },
+            {
+              "period_start": "2025-12-01",
+              "data_as_of": "2025-12-01",
+              "count": 1481,
+              "absent_days_per_head_annual": 16.9,
+              "absent_days_total": 2088.8,
+              "mean_fatigue": 58.6
+            },
+            {
+              "period_start": "2026-01-01",
+              "data_as_of": "2026-01-01",
+              "count": 1481,
+              "absent_days_per_head_annual": 17.4,
+              "absent_days_total": 2149.6,
+              "mean_fatigue": 58.5
+            },
+            {
+              "period_start": "2026-02-01",
+              "data_as_of": "2026-02-01",
+              "count": 1481,
+              "absent_days_per_head_annual": 16.9,
+              "absent_days_total": 2082.2,
+              "mean_fatigue": 58.6
+            },
+            {
+              "period_start": "2026-03-01",
+              "data_as_of": "2026-03-01",
+              "count": 1481,
+              "absent_days_per_head_annual": 17.4,
+              "absent_days_total": 2153.0,
+              "mean_fatigue": 59.0
+            },
+            {
+              "period_start": "2026-04-01",
+              "data_as_of": "2026-04-01",
+              "count": 1481,
+              "absent_days_per_head_annual": 14.5,
+              "absent_days_total": 1783.9,
+              "mean_fatigue": 55.6
+            },
+            {
+              "period_start": "2026-05-01",
+              "data_as_of": "2026-05-01",
+              "count": 1481,
+              "absent_days_per_head_annual": 16.6,
+              "absent_days_total": 2048.5,
+              "mean_fatigue": 55.4
+            },
+            {
+              "period_start": "2026-06-01",
+              "data_as_of": "2026-06-01",
+              "count": 1481,
+              "absent_days_per_head_annual": 18.4,
+              "absent_days_total": 2273.0,
+              "mean_fatigue": 55.3
+            },
+            {
+              "period_start": "2026-07-01",
+              "data_as_of": "2026-07-01",
+              "count": 1481,
+              "absent_days_per_head_annual": 18.8,
+              "absent_days_total": 2320.1,
+              "mean_fatigue": 55.3
+            },
+            {
+              "period_start": "2026-08-01",
+              "data_as_of": "2026-08-01",
+              "count": 1481,
+              "absent_days_per_head_annual": 18.4,
+              "absent_days_total": 2275.2,
+              "mean_fatigue": 55.7
+            },
+            {
+              "period_start": "2026-09-01",
+              "data_as_of": "2026-09-01",
+              "count": 1481,
+              "absent_days_per_head_annual": 15.5,
+              "absent_days_total": 1907.8,
+              "mean_fatigue": 55.5
+            },
+            {
+              "period_start": "2026-10-01",
+              "data_as_of": "2026-10-01",
+              "count": 1481,
+              "absent_days_per_head_annual": 14.0,
+              "absent_days_total": 1732.3,
+              "mean_fatigue": 56.1
+            }
+          ]
+        },
+        "Housekeeping": {
+          "label": "Housekeeping",
+          "count": 1303,
+          "membership": "frozen at baseline",
+          "suppressed": false,
+          "suppressed_below": null,
+          "periods": [
+            {
+              "period_start": "2025-11-01",
+              "data_as_of": "2025-11-01",
+              "count": 1303,
+              "absent_days_per_head_annual": 12.3,
+              "absent_days_total": 1330.3,
+              "mean_fatigue": 50.9
+            },
+            {
+              "period_start": "2025-12-01",
+              "data_as_of": "2025-12-01",
+              "count": 1303,
+              "absent_days_per_head_annual": 11.7,
+              "absent_days_total": 1274.1,
+              "mean_fatigue": 51.2
+            },
+            {
+              "period_start": "2026-01-01",
+              "data_as_of": "2026-01-01",
+              "count": 1303,
+              "absent_days_per_head_annual": 11.3,
+              "absent_days_total": 1226.2,
+              "mean_fatigue": 51.1
+            },
+            {
+              "period_start": "2026-02-01",
+              "data_as_of": "2026-02-01",
+              "count": 1303,
+              "absent_days_per_head_annual": 12.8,
+              "absent_days_total": 1389.7,
+              "mean_fatigue": 51.1
+            },
+            {
+              "period_start": "2026-03-01",
+              "data_as_of": "2026-03-01",
+              "count": 1303,
+              "absent_days_per_head_annual": 11.1,
+              "absent_days_total": 1210.2,
+              "mean_fatigue": 51.0
+            },
+            {
+              "period_start": "2026-04-01",
+              "data_as_of": "2026-04-01",
+              "count": 1303,
+              "absent_days_per_head_annual": 10.2,
+              "absent_days_total": 1105.7,
+              "mean_fatigue": 49.4
+            },
+            {
+              "period_start": "2026-05-01",
+              "data_as_of": "2026-05-01",
+              "count": 1303,
+              "absent_days_per_head_annual": 11.1,
+              "absent_days_total": 1207.1,
+              "mean_fatigue": 49.4
+            },
+            {
+              "period_start": "2026-06-01",
+              "data_as_of": "2026-06-01",
+              "count": 1303,
+              "absent_days_per_head_annual": 12.8,
+              "absent_days_total": 1395.1,
+              "mean_fatigue": 49.1
+            },
+            {
+              "period_start": "2026-07-01",
+              "data_as_of": "2026-07-01",
+              "count": 1303,
+              "absent_days_per_head_annual": 14.0,
+              "absent_days_total": 1517.4,
+              "mean_fatigue": 49.3
+            },
+            {
+              "period_start": "2026-08-01",
+              "data_as_of": "2026-08-01",
+              "count": 1303,
+              "absent_days_per_head_annual": 12.7,
+              "absent_days_total": 1376.0,
+              "mean_fatigue": 49.4
+            },
+            {
+              "period_start": "2026-09-01",
+              "data_as_of": "2026-09-01",
+              "count": 1303,
+              "absent_days_per_head_annual": 10.5,
+              "absent_days_total": 1143.5,
+              "mean_fatigue": 49.4
+            },
+            {
+              "period_start": "2026-10-01",
+              "data_as_of": "2026-10-01",
+              "count": 1303,
+              "absent_days_per_head_annual": 10.5,
+              "absent_days_total": 1141.9,
+              "mean_fatigue": 49.1
+            }
+          ]
+        },
+        "Front office": {
+          "label": "Front office",
+          "count": 570,
+          "membership": "frozen at baseline",
+          "suppressed": false,
+          "suppressed_below": null,
+          "periods": [
+            {
+              "period_start": "2025-11-01",
+              "data_as_of": "2025-11-01",
+              "count": 570,
+              "absent_days_per_head_annual": 9.6,
+              "absent_days_total": 458.0,
+              "mean_fatigue": 51.6
+            },
+            {
+              "period_start": "2025-12-01",
+              "data_as_of": "2025-12-01",
+              "count": 570,
+              "absent_days_per_head_annual": 10.6,
+              "absent_days_total": 505.2,
+              "mean_fatigue": 51.3
+            },
+            {
+              "period_start": "2026-01-01",
+              "data_as_of": "2026-01-01",
+              "count": 570,
+              "absent_days_per_head_annual": 9.1,
+              "absent_days_total": 432.9,
+              "mean_fatigue": 51.2
+            },
+            {
+              "period_start": "2026-02-01",
+              "data_as_of": "2026-02-01",
+              "count": 570,
+              "absent_days_per_head_annual": 9.1,
+              "absent_days_total": 429.9,
+              "mean_fatigue": 51.5
+            },
+            {
+              "period_start": "2026-03-01",
+              "data_as_of": "2026-03-01",
+              "count": 570,
+              "absent_days_per_head_annual": 9.7,
+              "absent_days_total": 459.0,
+              "mean_fatigue": 50.8
+            },
+            {
+              "period_start": "2026-04-01",
+              "data_as_of": "2026-04-01",
+              "count": 570,
+              "absent_days_per_head_annual": 8.3,
+              "absent_days_total": 392.3,
+              "mean_fatigue": 49.7
+            },
+            {
+              "period_start": "2026-05-01",
+              "data_as_of": "2026-05-01",
+              "count": 570,
+              "absent_days_per_head_annual": 10.8,
+              "absent_days_total": 514.7,
+              "mean_fatigue": 50.0
+            },
+            {
+              "period_start": "2026-06-01",
+              "data_as_of": "2026-06-01",
+              "count": 570,
+              "absent_days_per_head_annual": 11.6,
+              "absent_days_total": 548.8,
+              "mean_fatigue": 49.6
+            },
+            {
+              "period_start": "2026-07-01",
+              "data_as_of": "2026-07-01",
+              "count": 570,
+              "absent_days_per_head_annual": 12.1,
+              "absent_days_total": 573.0,
+              "mean_fatigue": 49.7
+            },
+            {
+              "period_start": "2026-08-01",
+              "data_as_of": "2026-08-01",
+              "count": 570,
+              "absent_days_per_head_annual": 9.3,
+              "absent_days_total": 443.4,
+              "mean_fatigue": 50.1
+            },
+            {
+              "period_start": "2026-09-01",
+              "data_as_of": "2026-09-01",
+              "count": 570,
+              "absent_days_per_head_annual": 9.6,
+              "absent_days_total": 456.3,
+              "mean_fatigue": 49.8
+            },
+            {
+              "period_start": "2026-10-01",
+              "data_as_of": "2026-10-01",
+              "count": 570,
+              "absent_days_per_head_annual": 9.3,
+              "absent_days_total": 442.9,
+              "mean_fatigue": 50.4
+            }
+          ]
+        },
+        "Support and admin": {
+          "label": "Support and admin",
+          "count": 428,
+          "membership": "frozen at baseline",
+          "suppressed": false,
+          "suppressed_below": null,
+          "periods": [
+            {
+              "period_start": "2025-11-01",
+              "data_as_of": "2025-11-01",
+              "count": 428,
+              "absent_days_per_head_annual": 5.4,
+              "absent_days_total": 191.1,
+              "mean_fatigue": 43.2
+            },
+            {
+              "period_start": "2025-12-01",
+              "data_as_of": "2025-12-01",
+              "count": 428,
+              "absent_days_per_head_annual": 5.7,
+              "absent_days_total": 202.9,
+              "mean_fatigue": 44.0
+            },
+            {
+              "period_start": "2026-01-01",
+              "data_as_of": "2026-01-01",
+              "count": 428,
+              "absent_days_per_head_annual": 5.8,
+              "absent_days_total": 207.9,
+              "mean_fatigue": 43.6
+            },
+            {
+              "period_start": "2026-02-01",
+              "data_as_of": "2026-02-01",
+              "count": 428,
+              "absent_days_per_head_annual": 5.0,
+              "absent_days_total": 179.0,
+              "mean_fatigue": 43.6
+            },
+            {
+              "period_start": "2026-03-01",
+              "data_as_of": "2026-03-01",
+              "count": 428,
+              "absent_days_per_head_annual": 5.6,
+              "absent_days_total": 201.0,
+              "mean_fatigue": 43.8
+            },
+            {
+              "period_start": "2026-04-01",
+              "data_as_of": "2026-04-01",
+              "count": 428,
+              "absent_days_per_head_annual": 5.6,
+              "absent_days_total": 198.2,
+              "mean_fatigue": 42.8
+            },
+            {
+              "period_start": "2026-05-01",
+              "data_as_of": "2026-05-01",
+              "count": 428,
+              "absent_days_per_head_annual": 6.0,
+              "absent_days_total": 213.7,
+              "mean_fatigue": 43.0
+            },
+            {
+              "period_start": "2026-06-01",
+              "data_as_of": "2026-06-01",
+              "count": 428,
+              "absent_days_per_head_annual": 6.6,
+              "absent_days_total": 233.9,
+              "mean_fatigue": 42.8
+            },
+            {
+              "period_start": "2026-07-01",
+              "data_as_of": "2026-07-01",
+              "count": 428,
+              "absent_days_per_head_annual": 6.1,
+              "absent_days_total": 216.7,
+              "mean_fatigue": 43.1
+            },
+            {
+              "period_start": "2026-08-01",
+              "data_as_of": "2026-08-01",
+              "count": 428,
+              "absent_days_per_head_annual": 6.3,
+              "absent_days_total": 226.1,
+              "mean_fatigue": 43.0
+            },
+            {
+              "period_start": "2026-09-01",
+              "data_as_of": "2026-09-01",
+              "count": 428,
+              "absent_days_per_head_annual": 5.5,
+              "absent_days_total": 195.6,
+              "mean_fatigue": 43.2
+            },
+            {
+              "period_start": "2026-10-01",
+              "data_as_of": "2026-10-01",
+              "count": 428,
+              "absent_days_per_head_annual": 4.9,
+              "absent_days_total": 175.4,
+              "mean_fatigue": 43.0
+            }
+          ]
+        },
+        "Maintenance": {
+          "label": "Maintenance",
+          "count": 288,
+          "membership": "frozen at baseline",
+          "suppressed": false,
+          "suppressed_below": null,
+          "periods": [
+            {
+              "period_start": "2025-11-01",
+              "data_as_of": "2025-11-01",
+              "count": 288,
+              "absent_days_per_head_annual": 8.7,
+              "absent_days_total": 208.8,
+              "mean_fatigue": 51.1
+            },
+            {
+              "period_start": "2025-12-01",
+              "data_as_of": "2025-12-01",
+              "count": 288,
+              "absent_days_per_head_annual": 8.6,
+              "absent_days_total": 205.6,
+              "mean_fatigue": 51.6
+            },
+            {
+              "period_start": "2026-01-01",
+              "data_as_of": "2026-01-01",
+              "count": 288,
+              "absent_days_per_head_annual": 9.3,
+              "absent_days_total": 222.8,
+              "mean_fatigue": 51.7
+            },
+            {
+              "period_start": "2026-02-01",
+              "data_as_of": "2026-02-01",
+              "count": 288,
+              "absent_days_per_head_annual": 8.5,
+              "absent_days_total": 203.4,
+              "mean_fatigue": 51.7
+            },
+            {
+              "period_start": "2026-03-01",
+              "data_as_of": "2026-03-01",
+              "count": 288,
+              "absent_days_per_head_annual": 9.7,
+              "absent_days_total": 233.0,
+              "mean_fatigue": 51.5
+            },
+            {
+              "period_start": "2026-04-01",
+              "data_as_of": "2026-04-01",
+              "count": 288,
+              "absent_days_per_head_annual": 9.1,
+              "absent_days_total": 218.4,
+              "mean_fatigue": 49.7
+            },
+            {
+              "period_start": "2026-05-01",
+              "data_as_of": "2026-05-01",
+              "count": 288,
+              "absent_days_per_head_annual": 8.7,
+              "absent_days_total": 208.6,
+              "mean_fatigue": 50.1
+            },
+            {
+              "period_start": "2026-06-01",
+              "data_as_of": "2026-06-01",
+              "count": 288,
+              "absent_days_per_head_annual": 9.3,
+              "absent_days_total": 224.3,
+              "mean_fatigue": 49.5
+            },
+            {
+              "period_start": "2026-07-01",
+              "data_as_of": "2026-07-01",
+              "count": 288,
+              "absent_days_per_head_annual": 10.2,
+              "absent_days_total": 244.8,
+              "mean_fatigue": 50.1
+            },
+            {
+              "period_start": "2026-08-01",
+              "data_as_of": "2026-08-01",
+              "count": 288,
+              "absent_days_per_head_annual": 9.1,
+              "absent_days_total": 218.4,
+              "mean_fatigue": 50.0
+            },
+            {
+              "period_start": "2026-09-01",
+              "data_as_of": "2026-09-01",
+              "count": 288,
+              "absent_days_per_head_annual": 7.9,
+              "absent_days_total": 189.5,
+              "mean_fatigue": 50.2
+            },
+            {
+              "period_start": "2026-10-01",
+              "data_as_of": "2026-10-01",
+              "count": 288,
+              "absent_days_per_head_annual": 7.5,
+              "absent_days_total": 180.5,
+              "mean_fatigue": 50.4
+            }
+          ]
+        }
+      }
+    }
+  }
+}

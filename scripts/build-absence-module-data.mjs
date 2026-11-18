@@ -15,7 +15,21 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const SRC = join(ROOT, "model", "data", "outputs", "dashboard_feed.json");
+
+/*
+  Which tenant's data this build carries. WELO_TENANT_SECTOR names a sector
+  cohort (hospitality, say); left unset, the build carries the base workforce,
+  exactly as before. A tenant is a deployment, so the choice is made here, once,
+  rather than switched at runtime. A sector that is named but has no data fails
+  the build: a hospitality tenant quietly showing the base workforce under its
+  own name is the failure this guards against.
+*/
+const SECTOR = (process.env.WELO_TENANT_SECTOR || "").trim().toLowerCase();
+if (SECTOR && !/^[a-z]+$/.test(SECTOR)) {
+  console.error(`WELO_TENANT_SECTOR "${SECTOR}" is not a sector name.`);
+  process.exit(1);
+}
+const SRC = join(ROOT, "model", "data", "outputs", SECTOR ? `dashboard_feed.${SECTOR}.json` : "dashboard_feed.json");
 const DEST_DIR = join(ROOT, "modules", "absence", "data");
 const DEST = join(DEST_DIR, "portfolio.js");
 
@@ -37,6 +51,10 @@ const KEEP = [
 ];
 
 if (!existsSync(SRC)) {
+  if (SECTOR) {
+    console.error(`build-absence-data: no feed for sector "${SECTOR}" at ${SRC}. Run python model/build_sector_feeds.py.`);
+    process.exit(1);
+  }
   console.warn(`build-absence-data: ${SRC} not found; leaving existing module data in place.`);
   process.exit(0);
 }
@@ -63,5 +81,5 @@ writeFileSync(
 
 const kb = (JSON.stringify(out).length / 1024).toFixed(0);
 console.log(
-  `build-absence-data: wrote modules/absence/data/portfolio.js (${kb} KB, ${Object.keys(out).length} sections, no individual records).`
+  `build-absence-data: wrote modules/absence/data/portfolio.js for ${SECTOR || "the base workforce"} (${kb} KB, ${Object.keys(out).length} sections, no individual records).`
 );

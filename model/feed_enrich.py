@@ -127,6 +127,25 @@ DIMENSIONS = [
      "blurb": "Smoking and alcohol load; together the top SHAP driver of predicted absence."},
 ]
 
+# A grouping that exists only when the tenant's data carries it. Its labels are
+# the tenant's own words, read from the data, so no sector's vocabulary is
+# written into this file or the platform.
+DEPARTMENT_DIMENSION = {
+    "key": "cohort_department", "label": "Department",
+    "blurb": "Where people work, in the tenant's own department names. Comes from the tenant's data rather than the model.",
+}
+
+
+def dimensions_for(df):
+    """The groupings this cohort supports: the standard five, plus department
+    when the data has one, ordered largest department first."""
+    dims = list(DIMENSIONS)
+    if "department" in df.columns:
+        order = df["department"].value_counts().index.tolist()
+        dims.append({**DEPARTMENT_DIMENSION, "order": order})
+    return dims
+
+
 FEAT = {
     "fatigue_burnout_score":            ("Fatigue / burnout elevated", False),
     "workload_index_current":           ("Workload index elevated", False),
@@ -168,6 +187,8 @@ def add_cohort_columns(df):
         "Smoker + drinker",
         np.where(df["smoking_status"].isin(["Daily", "Occasional"]), "Smoker",
         np.where(df["alcohol_frequency"].isin(["Regularly", "Heavy"]), "Regular drinker", "Low lifestyle risk")))
+    if "department" in df.columns:
+        df["cohort_department"] = df["department"].astype(str)
     return df
 
 
@@ -205,7 +226,7 @@ def compute_cohorts(df, economics=None):
     return {
         d["key"]: cohort_rows(d["key"], d["order"],
                               d.get("min_cohort", SUPPRESSION_THRESHOLD))
-        for d in DIMENSIONS
+        for d in dimensions_for(df)
     }
 
 
@@ -267,7 +288,13 @@ def compute_hr_ops(df, economics=None):
     cover_day_cost = econ["day_rate_rand"] + econ["cover_premium_rand"]
     hr = df.copy()
     hr["annual_days"] = hr["predicted_absent_days_monthly"] * 12
-    hr["cover_share"] = hr["cohort_load"].map(econ["cover_share_by_cohort"]).fillna(0.5)
+    # A sector that knows which departments must be covered prices cover by
+    # department; otherwise by operational load, as heavy industry does.
+    by_dept = econ.get("cover_share_by_department") if "department" in hr.columns else None
+    if by_dept:
+        hr["cover_share"] = hr["department"].map(by_dept).fillna(0.5)
+    else:
+        hr["cover_share"] = hr["cohort_load"].map(econ["cover_share_by_cohort"]).fillna(0.5)
     hr["cover_gap_90d"] = hr["predicted_absent_days_90d"] * hr["cover_share"]
     hr["spells_est"] = (hr["annual_days"] / SPELL_LEN).round().clip(lower=0).astype(int)
     hr.loc[(hr["annual_days"] > 0) & (hr["spells_est"] < 1), "spells_est"] = 1
@@ -290,16 +317,21 @@ def compute_hr_ops(df, economics=None):
     repeat_absence = int(((hr["spells_est"] >= 4) & hr["predicted_risk_band"].isin(["Critical", "High"])).sum())
     bf_counts = hr["bf_band"].value_counts().reindex(["Formal", "Review", "Watch", "Low"]).fillna(0).astype(int)
 
-    by_cohort = []
-    for label in ["High-intensity ops", "Standard ops", "Light duty"]:
-        sub = hr[hr["cohort_load"] == label]
-        if not len(sub):
-            continue
-        if len(sub) < SUPPRESSION_THRESHOLD:
-            by_cohort.append(suppressed_row(label, len(sub)))
-            continue
+    def cover_rows(column, labels):
+        rows = []
+        for label in labels:
+            sub = hr[hr[column] == label]
+            if not len(sub):
+                continue
+            if len(sub) < SUPPRESSION_THRESHOLD:
+                rows.append(suppressed_row(label, len(sub)))
+                continue
+            rows.append(cover_row(label, sub))
+        return rows
+
+    def cover_row(label, sub):
         cg = float(sub["cover_gap_90d"].sum())
-        by_cohort.append({
+        return {
             "key": label, "label": label, "count": int(len(sub)),
             "cover_gap_days_90d": round(cg, 0),
             "backfill_cost_rand_90d": round(cg * cover_day_cost, 0),
@@ -308,7 +340,9 @@ def compute_hr_ops(df, economics=None):
             "long_leave_gap": int((sub["days_since_last_leave"] > LEAVE_GAP_DAYS).sum()),
             "freq_trigger": int((sub["spells_est"] >= 4).sum()),
             "mean_bradford": round(float(sub["bradford"].mean()), 0),
-        })
+        }
+
+    by_cohort = cover_rows("cohort_load", ["High-intensity ops", "Standard ops", "Light duty"])
 
     return {
         "assumptions": {
@@ -316,6 +350,7 @@ def compute_hr_ops(df, economics=None):
             "cover_premium_rand": econ["cover_premium_rand"],
             "cover_share_by_cohort": econ["cover_share_by_cohort"],
             "spell_length_days": SPELL_LEN, "leave_gap_days": LEAVE_GAP_DAYS,
+            **({"cover_share_by_department": by_dept} if by_dept else {}),
         },
         "headline": {
             "covered_lives": n_hr,
@@ -352,6 +387,11 @@ def compute_hr_ops(df, economics=None):
         # Same exposure as the cohort tables: hr_ops.by_cohort sits beside a
         # published covered-lives total on the same screen.
         "by_cohort": apply_complementary_suppression(by_cohort),
+        # Cover by department, for a tenant whose data has departments. Left
+        # out entirely otherwise, so other feeds keep their shape.
+        **({"by_department": apply_complementary_suppression(
+            cover_rows("department", hr["department"].value_counts().index.tolist()))}
+           if "department" in hr.columns else {}),
     }
 
 
@@ -381,7 +421,7 @@ def enrich(feed, df, sample_n=400, seed=7, synthetic=True, economics=None):
         {"key": d["key"], "label": d["label"], "blurb": d["blurb"],
          "protected": bool(d.get("protected")),
          "min_cohort": d.get("min_cohort", SUPPRESSION_THRESHOLD)}
-        for d in DIMENSIONS
+        for d in dimensions_for(df)
     ]
     feed["cohorts"] = cohorts
     feed["individuals"] = individuals
