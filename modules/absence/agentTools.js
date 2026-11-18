@@ -18,6 +18,7 @@ import { PERMISSIONS } from "../../lib/platform/roles.js";
 import { buildAnalystContext, buildCoordinatorContext } from "./context.js";
 import { buildRecommendation, KIND_KEYS, MAX_HORIZON_DAYS, trackRecord } from "../control-centre/recommendations.js";
 import { TARGETABLE_BY_DEFAULT } from "../control-centre/targeting.js";
+import { GRAINS, demandView, hasDemand } from "./demand.js";
 
 /*
   Each readable grouping, with the dimension key a recommendation targets it
@@ -161,7 +162,44 @@ export const draftRecommendation = defineTool({
   },
 });
 
-const READ_TOOLS = [readPortfolio, readCohorts, readCover, readTrackRecord];
+/*
+  Where absence lands on busy periods. The Planner needs this to time a cover
+  booking or a roster change; the figures are the same ones the Demand and
+  cover screen shows, and the benchmark caveat travels with them.
+*/
+export const readDemand = defineTool({
+  name: "read_demand",
+  description:
+    "Demand set against expected absence for one timescale (year, month, week or day), for the whole workforce or one department: each period's demand as a share of its peak, the expected share of staff off, and the pressure points where both are high. Demand is a benchmark pattern until the tenant's trading data is connected.",
+  permission: PERMISSIONS.USE_AGENTS,
+  input_schema: {
+    type: "object",
+    properties: {
+      grain: { type: "string", enum: GRAINS },
+      department: { type: "string", description: "A department name from read_cohorts, or leave out for the whole workforce." },
+    },
+    required: ["grain"],
+    additionalProperties: false,
+  },
+  run: ({ grain, department }, ctx) => {
+    const portfolio = portfolioOf(ctx);
+    if (!hasDemand(portfolio)) {
+      return { grain, available: false, note: "This tenant has no demand data yet." };
+    }
+    const view = demandView(portfolio.demand, grain, department || null);
+    if (!view) {
+      return { grain, department: department || null, available: false, note: "No such department in this tenant's demand data." };
+    }
+    return {
+      available: true,
+      basis: portfolio.demand.measure,
+      pressure_rule: portfolio.demand.pressure_rule,
+      ...view,
+    };
+  },
+});
+
+const READ_TOOLS = [readPortfolio, readCohorts, readCover, readTrackRecord, readDemand];
 
 /*
   `canDraft` is whether this tenant has somewhere to put a draft: the control

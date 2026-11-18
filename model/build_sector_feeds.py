@@ -22,6 +22,7 @@ from welo_pipeline.score import score
 from welo_pipeline.export import build_dashboard_feed
 import sector_cohorts
 import feed_enrich
+import demand
 
 THRESHOLDS = {"low": 4, "medium": 16, "high": 40}  # from configs/demo.yaml
 
@@ -41,6 +42,41 @@ SECTOR_ECONOMICS = {
         "cover_share_by_department": {
             "Kitchen": 0.95, "Front of house": 0.85, "Housekeeping": 0.80,
             "Front office": 0.90, "Maintenance": 0.40, "Support and admin": 0.30,
+        },
+    },
+}
+
+# Demand patterns, for a sector whose tenants have departments. Benchmark
+# shapes until a client's trading data is connected; see demand.py. Kitchen and
+# front of house follow the meal services, so they take the default day shape;
+# housekeeping peaks on turnarounds after checkout, front office on check-in and
+# check-out, maintenance and support on office hours.
+SECTOR_DEMAND = {
+    "hospitality": {
+        "measure_label": "Covers, occupied rooms and service volume",
+        "source": "Benchmark pattern for the sector, not the tenant's data",
+        "pattern": {
+            "default": {
+                "year": [95, 70, 78, 88, 65, 68, 82, 66, 75, 78, 85, 100],
+                "month": [72, 62, 60, 64, 72, 98, 90],
+                "week": [50, 55, 62, 70, 92, 100, 80],
+                "day": [55, 70, 40, 90, 50, 45, 85, 100, 60],
+            },
+            "by_department": {
+                "Housekeeping": {"week": [85, 60, 62, 65, 75, 90, 100], "day": [20, 45, 95, 100, 85, 50, 20, 10, 5]},
+                "Front office": {"day": [60, 90, 70, 55, 85, 95, 70, 50, 30]},
+                "Maintenance": {"week": [90, 100, 100, 95, 90, 40, 30], "day": [30, 70, 90, 85, 80, 60, 30, 20, 15]},
+                "Support and admin": {"week": [95, 100, 100, 98, 90, 20, 10], "day": [10, 80, 100, 95, 90, 70, 15, 5, 5]},
+            },
+        },
+        # How expected absence moves through each timescale, around the
+        # department's own rate: winter illness and the post-festive January,
+        # the payday weekend, Monday, and early starts after late closes.
+        "absence_multiplier": {
+            "year": [1.10, 0.92, 0.94, 0.98, 1.00, 1.12, 1.15, 1.08, 0.95, 0.93, 0.96, 1.08],
+            "month": [1.08, 0.97, 0.95, 0.96, 0.99, 1.10, 1.06],
+            "week": [1.20, 0.95, 0.92, 0.96, 1.04, 1.06, 1.00],
+            "day": [1.15, 1.05, 0.95, 0.97, 0.95, 1.00, 1.03, 1.06, 1.04],
         },
     },
 }
@@ -84,6 +120,10 @@ def build_sector(sector: str) -> dict:
     df = pred.merge(cohort, on="employee_id", how="left", suffixes=("", "_attr"))
     feed, cohorts, individuals, n_hi, n_rest = feed_enrich.enrich(
         feed, df, sample_n=400, seed=7, economics=economics)
+    if sector in SECTOR_DEMAND:
+        block = demand.build(feed, SECTOR_DEMAND[sector])
+        if block:
+            feed["demand"] = block
 
     out_json = f"{ROOT}/data/outputs/dashboard_feed.{sector}.json"
     json.dump(feed, open(out_json, "w"), indent=2, default=float)

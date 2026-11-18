@@ -93,6 +93,15 @@ department, and a department table on the operations screen. Feeds without one
 are unchanged. Department is targetable by default, because it is where people
 work, which is what a roster or cover action is aimed at.
 
+The hospitality tenant also has a **Demand and cover** screen
+(`/absence/demand`): how busy each department is across a year, a month, a week
+and a day, beside how much of its staff is expected to be off, with the pressure
+points where both are high. Demand is a benchmark pattern for the sector until a
+client's till, booking or occupancy data is connected, and the screen says so.
+The patterns live in `SECTOR_DEMAND` in `model/build_sector_feeds.py` and the
+logic in [`model/demand.py`](model/demand.py). The Planner reads the same
+figures through the `read_demand` tool.
+
 To rebuild the hospitality data: `python model/build_sector_feeds.py` and
 `python model/build_outcome_series.py hospitality`.
 

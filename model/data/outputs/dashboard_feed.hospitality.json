@@ -51425,5 +51425,1077 @@
         "mean_bradford": 988.0
       }
     ]
+  },
+  "demand": {
+    "measure": {
+      "label": "Covers, occupied rooms and service volume",
+      "source": "Benchmark pattern for the sector, not the tenant's data",
+      "indicative": true,
+      "note": "Demand is a benchmark pattern for the sector until the tenant's own trading data is connected. Expected absence is the model's rate for each department, spread across the calendar by a seasonal pattern. Both are illustrative."
+    },
+    "pressure_rule": {
+      "demand_share_of_peak_at_least": 0.8,
+      "absence_above": "the department's own yearly average"
+    },
+    "labels": {
+      "year": [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec"
+      ],
+      "month": [
+        "1-5",
+        "6-10",
+        "11-15",
+        "16-20",
+        "21-24",
+        "25-28",
+        "29-31"
+      ],
+      "week": [
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat",
+        "Sun"
+      ],
+      "day": [
+        "06h",
+        "08h",
+        "10h",
+        "12h",
+        "14h",
+        "16h",
+        "18h",
+        "20h",
+        "22h"
+      ]
+    },
+    "grain_labels": {
+      "year": "Month of the year",
+      "month": "Days of the month",
+      "week": "Day of the week",
+      "day": "Time of day"
+    },
+    "overall": {
+      "absence_rate_annual": 0.0533,
+      "grains": {
+        "year": {
+          "demand": [
+            0.95,
+            0.7,
+            0.78,
+            0.88,
+            0.65,
+            0.68,
+            0.82,
+            0.66,
+            0.75,
+            0.78,
+            0.85,
+            1.0
+          ],
+          "absence_rate": [
+            0.0586,
+            0.049,
+            0.0501,
+            0.0522,
+            0.0533,
+            0.0596,
+            0.0612,
+            0.0575,
+            0.0506,
+            0.0495,
+            0.0511,
+            0.0575
+          ],
+          "pressure": [
+            true,
+            false,
+            false,
+            false,
+            false,
+            false,
+            true,
+            false,
+            false,
+            false,
+            false,
+            true
+          ]
+        },
+        "month": {
+          "demand": [
+            0.735,
+            0.633,
+            0.612,
+            0.653,
+            0.735,
+            1.0,
+            0.918
+          ],
+          "absence_rate": [
+            0.0575,
+            0.0517,
+            0.0506,
+            0.0511,
+            0.0527,
+            0.0586,
+            0.0564
+          ],
+          "pressure": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            true,
+            true
+          ]
+        },
+        "week": {
+          "demand": [
+            0.5,
+            0.55,
+            0.62,
+            0.7,
+            0.92,
+            1.0,
+            0.8
+          ],
+          "absence_rate": [
+            0.0639,
+            0.0506,
+            0.049,
+            0.0511,
+            0.0554,
+            0.0564,
+            0.0533
+          ],
+          "pressure": [
+            false,
+            false,
+            false,
+            false,
+            true,
+            true,
+            false
+          ]
+        },
+        "day": {
+          "demand": [
+            0.55,
+            0.7,
+            0.4,
+            0.9,
+            0.5,
+            0.45,
+            0.85,
+            1.0,
+            0.6
+          ],
+          "absence_rate": [
+            0.0612,
+            0.0559,
+            0.0506,
+            0.0517,
+            0.0506,
+            0.0533,
+            0.0549,
+            0.0564,
+            0.0554
+          ],
+          "pressure": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            true,
+            true,
+            false
+          ]
+        }
+      }
+    },
+    "departments": [
+      {
+        "label": "Front of house",
+        "count": 1783,
+        "absence_rate_annual": 0.053,
+        "grains": {
+          "year": {
+            "demand": [
+              0.95,
+              0.7,
+              0.78,
+              0.88,
+              0.65,
+              0.68,
+              0.82,
+              0.66,
+              0.75,
+              0.78,
+              0.85,
+              1.0
+            ],
+            "absence_rate": [
+              0.0583,
+              0.0488,
+              0.0499,
+              0.052,
+              0.053,
+              0.0594,
+              0.061,
+              0.0573,
+              0.0504,
+              0.0493,
+              0.0509,
+              0.0573
+            ],
+            "pressure": [
+              true,
+              false,
+              false,
+              false,
+              false,
+              false,
+              true,
+              false,
+              false,
+              false,
+              false,
+              true
+            ]
+          },
+          "month": {
+            "demand": [
+              0.735,
+              0.633,
+              0.612,
+              0.653,
+              0.735,
+              1.0,
+              0.918
+            ],
+            "absence_rate": [
+              0.0573,
+              0.0515,
+              0.0504,
+              0.0509,
+              0.0525,
+              0.0583,
+              0.0562
+            ],
+            "pressure": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              true,
+              true
+            ]
+          },
+          "week": {
+            "demand": [
+              0.5,
+              0.55,
+              0.62,
+              0.7,
+              0.92,
+              1.0,
+              0.8
+            ],
+            "absence_rate": [
+              0.0637,
+              0.0504,
+              0.0488,
+              0.0509,
+              0.0552,
+              0.0562,
+              0.053
+            ],
+            "pressure": [
+              false,
+              false,
+              false,
+              false,
+              true,
+              true,
+              false
+            ]
+          },
+          "day": {
+            "demand": [
+              0.55,
+              0.7,
+              0.4,
+              0.9,
+              0.5,
+              0.45,
+              0.85,
+              1.0,
+              0.6
+            ],
+            "absence_rate": [
+              0.061,
+              0.0557,
+              0.0504,
+              0.0515,
+              0.0504,
+              0.053,
+              0.0546,
+              0.0562,
+              0.0552
+            ],
+            "pressure": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              true,
+              true,
+              false
+            ]
+          }
+        }
+      },
+      {
+        "label": "Kitchen",
+        "count": 1540,
+        "absence_rate_annual": 0.0674,
+        "grains": {
+          "year": {
+            "demand": [
+              0.95,
+              0.7,
+              0.78,
+              0.88,
+              0.65,
+              0.68,
+              0.82,
+              0.66,
+              0.75,
+              0.78,
+              0.85,
+              1.0
+            ],
+            "absence_rate": [
+              0.0741,
+              0.062,
+              0.0633,
+              0.066,
+              0.0674,
+              0.0755,
+              0.0775,
+              0.0728,
+              0.064,
+              0.0627,
+              0.0647,
+              0.0728
+            ],
+            "pressure": [
+              true,
+              false,
+              false,
+              false,
+              false,
+              false,
+              true,
+              false,
+              false,
+              false,
+              false,
+              true
+            ]
+          },
+          "month": {
+            "demand": [
+              0.735,
+              0.633,
+              0.612,
+              0.653,
+              0.735,
+              1.0,
+              0.918
+            ],
+            "absence_rate": [
+              0.0728,
+              0.0654,
+              0.064,
+              0.0647,
+              0.0667,
+              0.0741,
+              0.0714
+            ],
+            "pressure": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              true,
+              true
+            ]
+          },
+          "week": {
+            "demand": [
+              0.5,
+              0.55,
+              0.62,
+              0.7,
+              0.92,
+              1.0,
+              0.8
+            ],
+            "absence_rate": [
+              0.0809,
+              0.064,
+              0.062,
+              0.0647,
+              0.0701,
+              0.0714,
+              0.0674
+            ],
+            "pressure": [
+              false,
+              false,
+              false,
+              false,
+              true,
+              true,
+              false
+            ]
+          },
+          "day": {
+            "demand": [
+              0.55,
+              0.7,
+              0.4,
+              0.9,
+              0.5,
+              0.45,
+              0.85,
+              1.0,
+              0.6
+            ],
+            "absence_rate": [
+              0.0775,
+              0.0708,
+              0.064,
+              0.0654,
+              0.064,
+              0.0674,
+              0.0694,
+              0.0714,
+              0.0701
+            ],
+            "pressure": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              true,
+              true,
+              false
+            ]
+          }
+        }
+      },
+      {
+        "label": "Housekeeping",
+        "count": 1355,
+        "absence_rate_annual": 0.0496,
+        "grains": {
+          "year": {
+            "demand": [
+              0.95,
+              0.7,
+              0.78,
+              0.88,
+              0.65,
+              0.68,
+              0.82,
+              0.66,
+              0.75,
+              0.78,
+              0.85,
+              1.0
+            ],
+            "absence_rate": [
+              0.0545,
+              0.0456,
+              0.0466,
+              0.0486,
+              0.0496,
+              0.0555,
+              0.057,
+              0.0535,
+              0.0471,
+              0.0461,
+              0.0476,
+              0.0535
+            ],
+            "pressure": [
+              true,
+              false,
+              false,
+              false,
+              false,
+              false,
+              true,
+              false,
+              false,
+              false,
+              false,
+              true
+            ]
+          },
+          "month": {
+            "demand": [
+              0.735,
+              0.633,
+              0.612,
+              0.653,
+              0.735,
+              1.0,
+              0.918
+            ],
+            "absence_rate": [
+              0.0535,
+              0.0481,
+              0.0471,
+              0.0476,
+              0.0491,
+              0.0545,
+              0.0525
+            ],
+            "pressure": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              true,
+              true
+            ]
+          },
+          "week": {
+            "demand": [
+              0.85,
+              0.6,
+              0.62,
+              0.65,
+              0.75,
+              0.9,
+              1.0
+            ],
+            "absence_rate": [
+              0.0595,
+              0.0471,
+              0.0456,
+              0.0476,
+              0.0515,
+              0.0525,
+              0.0496
+            ],
+            "pressure": [
+              true,
+              false,
+              false,
+              false,
+              false,
+              true,
+              false
+            ]
+          },
+          "day": {
+            "demand": [
+              0.2,
+              0.45,
+              0.95,
+              1.0,
+              0.85,
+              0.5,
+              0.2,
+              0.1,
+              0.05
+            ],
+            "absence_rate": [
+              0.057,
+              0.052,
+              0.0471,
+              0.0481,
+              0.0471,
+              0.0496,
+              0.0511,
+              0.0525,
+              0.0515
+            ],
+            "pressure": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ]
+          }
+        }
+      },
+      {
+        "label": "Front office",
+        "count": 581,
+        "absence_rate_annual": 0.0443,
+        "grains": {
+          "year": {
+            "demand": [
+              0.95,
+              0.7,
+              0.78,
+              0.88,
+              0.65,
+              0.68,
+              0.82,
+              0.66,
+              0.75,
+              0.78,
+              0.85,
+              1.0
+            ],
+            "absence_rate": [
+              0.0488,
+              0.0408,
+              0.0417,
+              0.0435,
+              0.0443,
+              0.0497,
+              0.051,
+              0.0479,
+              0.0421,
+              0.0412,
+              0.0426,
+              0.0479
+            ],
+            "pressure": [
+              true,
+              false,
+              false,
+              false,
+              false,
+              false,
+              true,
+              false,
+              false,
+              false,
+              false,
+              true
+            ]
+          },
+          "month": {
+            "demand": [
+              0.735,
+              0.633,
+              0.612,
+              0.653,
+              0.735,
+              1.0,
+              0.918
+            ],
+            "absence_rate": [
+              0.0479,
+              0.043,
+              0.0421,
+              0.0426,
+              0.0439,
+              0.0488,
+              0.047
+            ],
+            "pressure": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              true,
+              true
+            ]
+          },
+          "week": {
+            "demand": [
+              0.5,
+              0.55,
+              0.62,
+              0.7,
+              0.92,
+              1.0,
+              0.8
+            ],
+            "absence_rate": [
+              0.0532,
+              0.0421,
+              0.0408,
+              0.0426,
+              0.0461,
+              0.047,
+              0.0443
+            ],
+            "pressure": [
+              false,
+              false,
+              false,
+              false,
+              true,
+              true,
+              false
+            ]
+          },
+          "day": {
+            "demand": [
+              0.632,
+              0.947,
+              0.737,
+              0.579,
+              0.895,
+              1.0,
+              0.737,
+              0.526,
+              0.316
+            ],
+            "absence_rate": [
+              0.051,
+              0.0466,
+              0.0421,
+              0.043,
+              0.0421,
+              0.0443,
+              0.0457,
+              0.047,
+              0.0461
+            ],
+            "pressure": [
+              false,
+              true,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ]
+          }
+        }
+      },
+      {
+        "label": "Support and admin",
+        "count": 444,
+        "absence_rate_annual": 0.0304,
+        "grains": {
+          "year": {
+            "demand": [
+              0.95,
+              0.7,
+              0.78,
+              0.88,
+              0.65,
+              0.68,
+              0.82,
+              0.66,
+              0.75,
+              0.78,
+              0.85,
+              1.0
+            ],
+            "absence_rate": [
+              0.0335,
+              0.028,
+              0.0286,
+              0.0298,
+              0.0304,
+              0.0341,
+              0.035,
+              0.0329,
+              0.0289,
+              0.0283,
+              0.0292,
+              0.0329
+            ],
+            "pressure": [
+              true,
+              false,
+              false,
+              false,
+              false,
+              false,
+              true,
+              false,
+              false,
+              false,
+              false,
+              true
+            ]
+          },
+          "month": {
+            "demand": [
+              0.735,
+              0.633,
+              0.612,
+              0.653,
+              0.735,
+              1.0,
+              0.918
+            ],
+            "absence_rate": [
+              0.0329,
+              0.0295,
+              0.0289,
+              0.0292,
+              0.0301,
+              0.0335,
+              0.0323
+            ],
+            "pressure": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              true,
+              true
+            ]
+          },
+          "week": {
+            "demand": [
+              0.95,
+              1.0,
+              1.0,
+              0.98,
+              0.9,
+              0.2,
+              0.1
+            ],
+            "absence_rate": [
+              0.0365,
+              0.0289,
+              0.028,
+              0.0292,
+              0.0317,
+              0.0323,
+              0.0304
+            ],
+            "pressure": [
+              true,
+              false,
+              false,
+              false,
+              true,
+              false,
+              false
+            ]
+          },
+          "day": {
+            "demand": [
+              0.1,
+              0.8,
+              1.0,
+              0.95,
+              0.9,
+              0.7,
+              0.15,
+              0.05,
+              0.05
+            ],
+            "absence_rate": [
+              0.035,
+              0.032,
+              0.0289,
+              0.0295,
+              0.0289,
+              0.0304,
+              0.0313,
+              0.0323,
+              0.0317
+            ],
+            "pressure": [
+              false,
+              true,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ]
+          }
+        }
+      },
+      {
+        "label": "Maintenance",
+        "count": 297,
+        "absence_rate_annual": 0.0496,
+        "grains": {
+          "year": {
+            "demand": [
+              0.95,
+              0.7,
+              0.78,
+              0.88,
+              0.65,
+              0.68,
+              0.82,
+              0.66,
+              0.75,
+              0.78,
+              0.85,
+              1.0
+            ],
+            "absence_rate": [
+              0.0545,
+              0.0456,
+              0.0466,
+              0.0486,
+              0.0496,
+              0.0555,
+              0.057,
+              0.0535,
+              0.0471,
+              0.0461,
+              0.0476,
+              0.0535
+            ],
+            "pressure": [
+              true,
+              false,
+              false,
+              false,
+              false,
+              false,
+              true,
+              false,
+              false,
+              false,
+              false,
+              true
+            ]
+          },
+          "month": {
+            "demand": [
+              0.735,
+              0.633,
+              0.612,
+              0.653,
+              0.735,
+              1.0,
+              0.918
+            ],
+            "absence_rate": [
+              0.0535,
+              0.0481,
+              0.0471,
+              0.0476,
+              0.0491,
+              0.0545,
+              0.0525
+            ],
+            "pressure": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              true,
+              true
+            ]
+          },
+          "week": {
+            "demand": [
+              0.9,
+              1.0,
+              1.0,
+              0.95,
+              0.9,
+              0.4,
+              0.3
+            ],
+            "absence_rate": [
+              0.0595,
+              0.0471,
+              0.0456,
+              0.0476,
+              0.0515,
+              0.0525,
+              0.0496
+            ],
+            "pressure": [
+              true,
+              false,
+              false,
+              false,
+              true,
+              false,
+              false
+            ]
+          },
+          "day": {
+            "demand": [
+              0.333,
+              0.778,
+              1.0,
+              0.944,
+              0.889,
+              0.667,
+              0.333,
+              0.222,
+              0.167
+            ],
+            "absence_rate": [
+              0.057,
+              0.052,
+              0.0471,
+              0.0481,
+              0.0471,
+              0.0496,
+              0.0511,
+              0.0525,
+              0.0515
+            ],
+            "pressure": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ]
+          }
+        }
+      }
+    ],
+    "withheld_departments": 0
   }
 }

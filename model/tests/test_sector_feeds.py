@@ -197,3 +197,44 @@ def test_hospitality_series_carries_departments():
     series = json.loads(path.read_text())["series"]
     assert "cohort_department" in series
     assert "Kitchen" in series["cohort_department"]["cohorts"]
+
+
+# 5. Demand -------------------------------------------------------------------
+
+import demand  # noqa: E402
+
+
+def test_demand_appears_only_for_a_tenant_with_departments(hospitality_feed):
+    assert "demand" in hospitality_feed
+    for sector in ["manufacturing", "logistics"]:
+        assert "demand" not in _feed(sector)
+
+
+def test_demand_departments_match_the_reported_departments(hospitality_feed):
+    reported = [r["label"] for r in hospitality_feed["cohorts"]["cohort_department"] if not r.get("suppressed")]
+    assert [d["label"] for d in hospitality_feed["demand"]["departments"]] == reported
+
+
+def test_a_suppressed_department_is_left_out_of_demand():
+    feed = {"cohorts": {"cohort_department": [
+        {"label": "A", "count": 400, "absent_days_per_head_annual": 12.0},
+        {"label": "B", "count": None, "suppressed": True},
+    ]}}
+    from build_sector_feeds import SECTOR_DEMAND
+    block = demand.build(feed, SECTOR_DEMAND["hospitality"])
+    assert [d["label"] for d in block["departments"]] == ["A"]
+    assert block["withheld_departments"] == 1
+
+
+def test_a_period_exactly_at_the_average_is_not_pressure(hospitality_feed):
+    # Sunday's multiplier is exactly one; rounding once tipped it into pressure.
+    week = hospitality_feed["demand"]["overall"]["grains"]["week"]
+    sunday = hospitality_feed["demand"]["labels"]["week"].index("Sun")
+    assert week["pressure"][sunday] is False
+
+
+def test_a_pattern_of_the_wrong_length_is_refused():
+    from build_sector_feeds import SECTOR_DEMAND
+    broken = {**SECTOR_DEMAND["hospitality"], "absence_multiplier": {**SECTOR_DEMAND["hospitality"]["absence_multiplier"], "week": [1.0] * 6}}
+    with pytest.raises(ValueError, match="week"):
+        demand.build({"cohorts": {"cohort_department": [{"label": "A", "count": 10, "absent_days_per_head_annual": 5}]}}, broken)

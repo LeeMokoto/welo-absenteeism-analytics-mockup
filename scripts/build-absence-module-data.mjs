@@ -46,6 +46,9 @@ const KEEP = [
   "cohorts",
   "covered_cohort",
   "hr_ops",
+  // Demand set against expected absence, by department. Only a sector tenant
+  // with departments has one; see model/demand.py.
+  "demand",
   "model_metrics",
   "data_provenance",
 ];
