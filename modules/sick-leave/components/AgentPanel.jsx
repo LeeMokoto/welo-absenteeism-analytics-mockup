@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { CurrencyAgentNote } from "@/components/platform/Currency";
+import Link from "next/link";
+import { CurrencyAgentNote, Money } from "@/components/platform/Currency";
+import { saveDrafts } from "@/modules/control-centre/recommendationStore";
 import Markdown from "./Markdown";
 
 const HITL = "Generated from the sample figures on this screen. A human decides the action.";
@@ -48,6 +50,11 @@ export default function AgentPanel({
   // than left looking like a rendering fault, which is how it was first
   // reported: the text stops and the box looks like it failed to grow.
   const [truncated, setTruncated] = useState(false);
+  // What the agent looked up, and anything it drafted. Shown so a reader can
+  // see an answer was built from the platform's figures, and so a draft is
+  // never mistaken for something already done.
+  const [lookups, setLookups] = useState([]);
+  const [drafted, setDrafted] = useState({ saved: [], refused: [] });
 
   async function ask(q) {
     const text = (q ?? question).trim();
@@ -57,6 +64,8 @@ export default function AgentPanel({
     setAnswer("");
     setSource(null);
     setTruncated(false);
+    setLookups([]);
+    setDrafted({ saved: [], refused: [] });
     try {
       const res = await fetch(endpoint, {
         method: "POST",
@@ -74,6 +83,12 @@ export default function AgentPanel({
         setAnswer(data.text || "");
         setSource(data.source || null);
         setTruncated(Boolean(data.truncated));
+        setLookups(Array.isArray(data.tool_calls) ? data.tool_calls : []);
+        if (Array.isArray(data.drafts) && data.drafts.length) {
+          // Checked again by the store: the drafts crossed the network.
+          const { saved, refused } = saveDrafts(data.drafts);
+          setDrafted({ saved, refused });
+        }
       }
     } catch {
       setError("Could not reach the agent service. Check your connection and try again.");
@@ -143,6 +158,32 @@ export default function AgentPanel({
                 <div className="agent-truncated" role="status">
                   This answer reached the model&apos;s token limit and stops short. Ask a
                   narrower question, or raise MAX_TOKENS for this deployment.
+                </div>
+              )}
+              {answer && lookups.length > 0 && (
+                <div className="caption" style={{ marginTop: 8 }}>
+                  Looked up: {lookups.map((t) => t.tool + (t.ok ? "" : " (refused)")).join(", ")}
+                </div>
+              )}
+              {drafted.saved.length > 0 && (
+                <div className="card cream" style={{ marginTop: 10 }}>
+                  <div className="caption">Drafted for a decision, not yet approved</div>
+                  <ul style={{ margin: "6px 0 0", paddingLeft: 18 }}>
+                    {drafted.saved.map((d) => (
+                      <li key={d.id} className="card-note" style={{ marginBottom: 4 }}>
+                        {d.title}: nets <Money zar={d.predicted.net_rand} /> over {d.predicted.horizon_days} days
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="caption" style={{ marginTop: 6 }}>
+                    Saved in this browser. <Link href="/control-centre/proposals">Review in Proposals</Link>
+                  </div>
+                </div>
+              )}
+              {drafted.refused.length > 0 && (
+                <div className="indicative" style={{ marginTop: 8 }}>
+                  {drafted.refused.length} draft{drafted.refused.length === 1 ? " was" : "s were"} not saved:{" "}
+                  {drafted.refused.map((r) => r.reason).join(" ")}
                 </div>
               )}
               {answer && (

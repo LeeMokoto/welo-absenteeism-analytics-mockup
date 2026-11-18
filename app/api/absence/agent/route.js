@@ -26,6 +26,7 @@ import { fallbackAnswer, refusal } from "@/modules/absence/agentFallback";
 import { systemPromptFor, ABSENTEEISM_MODEL } from "@/app/api/absenteeism/_prompts";
 import { toolsFor } from "@/modules/absence/agentTools";
 import { portfolio } from "@/modules/absence/data/portfolio";
+import { getManifest } from "@/lib/platform/manifest";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -49,6 +50,6 @@ export const POST = createAgentHandler({
     No recommendations are stored in this tenant yet, so the track record
     starts empty and says so.
   */
-  toolsFor,
+  toolsFor: (agent) => toolsFor(agent, { canDraft: getManifest().modules.controlCentre }),
   toolContext: () => ({ portfolio, recommendations: [] }),
 });

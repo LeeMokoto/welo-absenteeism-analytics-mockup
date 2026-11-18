@@ -193,6 +193,13 @@ the redesign run on it.
 | Recommendations | [`modules/control-centre/recommendations.js`](modules/control-centre/recommendations.js) | A priced, cohort-level action an agent drafts and a person decides. The requester cannot approve their own draft, a rejection needs a reason, and the track record says when it has too few cases to judge |
 | Absence tools | [`modules/absence/agentTools.js`](modules/absence/agentTools.js) | Read tools over the same allow-listed figures the screens show, plus `draft_recommendation` for the Cover Coordinator only. There is no tool that approves, books or sends |
 | Decisions | [`app/api/control-centre/recommendations/route.js`](app/api/control-centre/recommendations/route.js) | Approve, reject or close a recommendation, with the role checks run server side |
+| Proposals screen | [`modules/control-centre/screens/ProposalsScreen.jsx`](modules/control-centre/screens/ProposalsScreen.jsx) | `/control-centre/proposals`: each proposal priced as saving, cost and net, the decision with its reason, the outcome once the horizon has passed, and the track record. Amounts follow the ZAR / USD toggle, and an outcome typed in dollars is stored in Rand |
+| Proposals store | [`modules/control-centre/recommendationStore.js`](modules/control-centre/recommendationStore.js) | Browser-local, like playbooks. A draft cannot arrive decided, a status only moves forward one step, and the prediction cannot be edited after drafting. Five labelled examples show the full cycle with no agent key |
+
+When the Cover Coordinator drafts something, the agent panel lists it as
+"drafted for a decision, not yet approved" and saves it to Proposals. The panel
+also shows which tools the answer was built from. Drafting is only offered when
+the control centre is on for the tenant, so a draft always has somewhere to go.
 
 Tools read the module data on the server, never the request body, so a
 tampered request cannot change what the agent is told. Routes that pass no

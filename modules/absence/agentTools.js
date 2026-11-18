@@ -141,8 +141,13 @@ export const draftRecommendation = defineTool({
 
 const READ_TOOLS = [readPortfolio, readCohorts, readCover, readTrackRecord];
 
-export function toolsFor(agent) {
-  if (agent === "coordinator") return [...READ_TOOLS, draftRecommendation];
+/*
+  `canDraft` is whether this tenant has somewhere to put a draft: the control
+  centre. With it off, the coordinator still reads and advises, and the model is
+  never offered a tool whose output would go nowhere.
+*/
+export function toolsFor(agent, { canDraft = true } = {}) {
+  if (agent === "coordinator") return canDraft ? [...READ_TOOLS, draftRecommendation] : READ_TOOLS;
   if (agent === "analyst") return READ_TOOLS;
   return [];
 }
