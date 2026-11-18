@@ -17,11 +17,19 @@ import { defineTool } from "../../lib/platform/agentTools.js";
 import { PERMISSIONS } from "../../lib/platform/roles.js";
 import { buildAnalystContext, buildCoordinatorContext } from "./context.js";
 import { buildRecommendation, KIND_KEYS, MAX_HORIZON_DAYS, trackRecord } from "../control-centre/recommendations.js";
+import { TARGETABLE_BY_DEFAULT } from "../control-centre/targeting.js";
 
+/*
+  Each readable grouping, with the dimension key a recommendation targets it
+  by. The reading names and the targeting keys differ, and in the first live
+  run the model drafted against the reading name ("operational_load") and was
+  refused. read_cohorts now hands back the key to use, or says the grouping
+  cannot be targeted, so a draft starts from the right word.
+*/
 const COHORT_VIEWS = {
-  operational_load: "cohorts_by_operational_load",
-  fatigue_band: "cohorts_by_fatigue_band",
-  lifestyle_risk: "cohorts_by_lifestyle_risk",
+  operational_load: { view: "cohorts_by_operational_load", target: "cohort_load" },
+  fatigue_band: { view: "cohorts_by_fatigue_band", target: "cohort_fatigue" },
+  lifestyle_risk: { view: "cohorts_by_lifestyle_risk", target: "cohort_lifestyle" },
 };
 
 function portfolioOf(ctx) {
@@ -62,7 +70,17 @@ export const readCohorts = defineTool({
   },
   run: ({ dimension }, ctx) => {
     const a = buildAnalystContext(portfolioOf(ctx));
-    return { dimension, suppression: a.suppression, cohorts: a[COHORT_VIEWS[dimension]] };
+    const { view, target } = COHORT_VIEWS[dimension];
+    const targetable = TARGETABLE_BY_DEFAULT.includes(target);
+    return {
+      dimension,
+      target_dimension: targetable ? target : null,
+      targeting: targetable
+        ? `To target one of these cohorts in draft_recommendation, use dimension "${target}" and the cohort label.`
+        : "These cohorts can be read but not targeted by a recommendation.",
+      suppression: a.suppression,
+      cohorts: a[view],
+    };
   },
 });
 
@@ -95,7 +113,7 @@ export const draftRecommendation = defineTool({
       rationale: { type: "string" },
       target: {
         type: "array",
-        description: "One or two cohorts, each { dimension, cohort }, e.g. { dimension: 'cohort_load', cohort: 'High-intensity ops' }.",
+        description: `One or two cohorts, each { dimension, cohort }. dimension is one of: ${TARGETABLE_BY_DEFAULT.join(", ")} (read_cohorts returns the one to use as target_dimension). e.g. { dimension: 'cohort_load', cohort: 'High-intensity ops' }.`,
         items: {
           type: "object",
           properties: { dimension: { type: "string" }, cohort: { type: "string" } },

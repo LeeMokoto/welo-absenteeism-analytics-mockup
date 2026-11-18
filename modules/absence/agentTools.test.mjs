@@ -86,3 +86,20 @@ test("an invalid draft comes back with the reasons, so the model can fix it", ()
   assert.match(r.content, /basis is required/);
   assert.equal(c.drafts.length, 0);
 });
+
+test("read_cohorts hands back the key a draft targets with, so the model does not guess it", () => {
+  const load = JSON.parse(runTool([readCohorts], use("read_cohorts", { dimension: "operational_load" }), ctx("analyst")).content);
+  assert.equal(load.target_dimension, "cohort_load");
+  const lifestyle = JSON.parse(runTool([readCohorts], use("read_cohorts", { dimension: "lifestyle_risk" }), ctx("analyst")).content);
+  assert.equal(lifestyle.target_dimension, null, "lifestyle risk is readable but not targetable by default");
+  assert.match(lifestyle.targeting, /not targeted/);
+});
+
+test("a draft built from read_cohorts' key passes, where the reading name was refused live", () => {
+  const load = JSON.parse(runTool([readCohorts], use("read_cohorts", { dimension: "operational_load" }), ctx("analyst")).content);
+  const c = ctx("prospect");
+  const ok = runTool([draftRecommendation], use("draft_recommendation", { ...draft, target: [{ dimension: load.target_dimension, cohort: "High-intensity ops" }] }), c);
+  assert.equal(ok.is_error, undefined, ok.content);
+  const refused = runTool([draftRecommendation], use("draft_recommendation", { ...draft, target: [{ dimension: "operational_load", cohort: "High-intensity ops" }] }), ctx("prospect"));
+  assert.equal(refused.is_error, true);
+});
