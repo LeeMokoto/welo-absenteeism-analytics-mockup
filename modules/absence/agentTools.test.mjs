@@ -103,3 +103,29 @@ test("a draft built from read_cohorts' key passes, where the reading name was re
   const refused = runTool([draftRecommendation], use("draft_recommendation", { ...draft, target: [{ dimension: "operational_load", cohort: "High-intensity ops" }] }), ctx("prospect"));
   assert.equal(refused.is_error, true);
 });
+
+test("a tenant with no departments says so rather than returning an empty grouping as if it were data", () => {
+  const r = JSON.parse(runTool([readCohorts], use("read_cohorts", { dimension: "department" }), ctx("analyst")).content);
+  assert.equal(r.target_dimension, null);
+  assert.match(r.targeting, /no such grouping/);
+});
+
+test("a tenant with departments gets them, with the key a draft targets them by", () => {
+  const withDepartments = {
+    ...portfolio,
+    cohort_dimensions: [...portfolio.cohort_dimensions, { key: "cohort_department", label: "Department", protected: false, min_cohort: 5 }],
+    cohorts: {
+      ...portfolio.cohorts,
+      cohort_department: [
+        { key: "Dept A", label: "Dept A", count: 900, predicted_absent_days_annual: 9000, cost_exposure_rand: 5850000, addressable_saving_rand: 1, absent_days_per_head_annual: 10, high_or_critical_share: 0.1, mean_fatigue: 60 },
+        { key: "Dept B", label: "Dept B", count: null, suppressed: true },
+      ],
+    },
+  };
+  const c = { ...ctx("prospect"), portfolio: withDepartments };
+  const r = JSON.parse(runTool([readCohorts], use("read_cohorts", { dimension: "department" }), c).content);
+  assert.equal(r.target_dimension, "cohort_department");
+  assert.deepEqual(r.cohorts.map((x) => x.label), ["Dept A"], "the suppressed department is left out");
+  const drafted = runTool([draftRecommendation], use("draft_recommendation", { ...draft, target: [{ dimension: "cohort_department", cohort: "Dept A" }] }), c);
+  assert.equal(drafted.is_error, undefined, drafted.content);
+});

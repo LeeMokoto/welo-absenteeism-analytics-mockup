@@ -45,7 +45,12 @@ export const NEVER_TARGETABLE = {
 // still not a default targeting dimension: an intervention record saying a
 // cohort was selected for being drinkers is a durable statement about people's
 // private conduct. A tenant that wants it has to say so.
-export const TARGETABLE_BY_DEFAULT = ["cohort_load", "cohort_fatigue", "cohort_tenure"];
+//
+// Department is targetable where a tenant's data has one: it is where people
+// work, which is exactly what a roster or cover action is aimed at. A tenant
+// whose data has no departments simply has nothing under that key, and a target
+// naming it is refused as unreported like any other missing dimension.
+export const TARGETABLE_BY_DEFAULT = ["cohort_load", "cohort_fatigue", "cohort_tenure", "cohort_department"];
 
 export const MAX_TARGET_DIMENSIONS = 2;
 

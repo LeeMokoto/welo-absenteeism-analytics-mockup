@@ -30,6 +30,7 @@ const COHORT_VIEWS = {
   operational_load: { view: "cohorts_by_operational_load", target: "cohort_load" },
   fatigue_band: { view: "cohorts_by_fatigue_band", target: "cohort_fatigue" },
   lifestyle_risk: { view: "cohorts_by_lifestyle_risk", target: "cohort_lifestyle" },
+  department: { view: "cohorts_by_department", target: "cohort_department" },
 };
 
 function portfolioOf(ctx) {
@@ -71,6 +72,9 @@ export const readCohorts = defineTool({
   run: ({ dimension }, ctx) => {
     const a = buildAnalystContext(portfolioOf(ctx));
     const { view, target } = COHORT_VIEWS[dimension];
+    if (!Array.isArray(a[view])) {
+      return { dimension, target_dimension: null, targeting: "This tenant's data has no such grouping.", cohorts: [] };
+    }
     const targetable = TARGETABLE_BY_DEFAULT.includes(target);
     return {
       dimension,
@@ -87,7 +91,7 @@ export const readCohorts = defineTool({
 export const readCover = defineTool({
   name: "read_cover",
   description:
-    "Operational cover figures: predicted cover-gap days and cover cost over 90 days, overtime load, return-to-work caseload, by operational-load cohort, with the day rate and cover assumptions they rest on. Attendance-frequency measures are not available.",
+    "Operational cover figures: predicted cover-gap days and cover cost over 90 days, overtime load, return-to-work caseload, by operational-load cohort and, where the tenant has them, by department, with the day rate and cover assumptions they rest on. Attendance-frequency measures are not available.",
   permission: PERMISSIONS.USE_AGENTS,
   run: (_input, ctx) => buildCoordinatorContext(portfolioOf(ctx)),
 });

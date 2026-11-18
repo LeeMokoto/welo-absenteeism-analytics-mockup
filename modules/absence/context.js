@@ -83,6 +83,9 @@ export function buildAnalystContext(portfolio) {
   const cohorts = reportable((portfolio.cohorts || {}).cohort_load, COHORT_FIELDS);
   const fatigue = reportable((portfolio.cohorts || {}).cohort_fatigue, COHORT_FIELDS);
   const lifestyle = reportable((portfolio.cohorts || {}).cohort_lifestyle, COHORT_FIELDS);
+  // Only a tenant whose data has departments has this grouping.
+  const department = reportable((portfolio.cohorts || {}).cohort_department, COHORT_FIELDS);
+  const hasDepartments = Array.isArray((portfolio.cohorts || {}).cohort_department);
 
   return {
     note:
@@ -91,7 +94,7 @@ export function buildAnalystContext(portfolio) {
     suppression: {
       threshold: portfolio.suppression_threshold ?? 5,
       rule: "Cohorts below the threshold carry no figures and are not included here.",
-      withheld_cohorts: cohorts.withheld + fatigue.withheld + lifestyle.withheld,
+      withheld_cohorts: cohorts.withheld + fatigue.withheld + lifestyle.withheld + department.withheld,
     },
     headline: {
       covered_lives: h.covered_lives,
@@ -106,6 +109,7 @@ export function buildAnalystContext(portfolio) {
     cohorts_by_operational_load: cohorts.shown,
     cohorts_by_fatigue_band: fatigue.shown,
     cohorts_by_lifestyle_risk: lifestyle.shown,
+    ...(hasDepartments ? { cohorts_by_department: department.shown } : {}),
     // The saving is a benchmark applied to the high-risk band, not an outcome.
     // The agent is told that here as well as in its prompt, because a figure
     // and its caveat should travel together.
@@ -117,6 +121,7 @@ export function buildAnalystContext(portfolio) {
 export function buildCoordinatorContext(portfolio) {
   const ops = portfolio.hr_ops || {};
   const byCohort = reportable(ops.by_cohort, OPS_COHORT_FIELDS);
+  const byDepartment = reportable(ops.by_department, OPS_COHORT_FIELDS);
 
   return {
     note:
@@ -124,7 +129,7 @@ export function buildCoordinatorContext(portfolio) {
       "this payload contains no individual records.",
     suppression: {
       threshold: portfolio.suppression_threshold ?? 5,
-      withheld_cohorts: byCohort.withheld,
+      withheld_cohorts: byCohort.withheld + byDepartment.withheld,
     },
     // ops.headline carries freq_trigger_count, which is the same attendance
     // measure, so the headline is named out field by field too.
@@ -138,6 +143,7 @@ export function buildCoordinatorContext(portfolio) {
     cover: ops.cover,
     return_to_work: ops.return_to_work,
     by_cohort: byCohort.shown,
+    ...(Array.isArray(ops.by_department) ? { by_department: byDepartment.shown } : {}),
     assumptions: ops.assumptions,
     /*
       Absence frequency and the Bradford index are deliberately not sent.

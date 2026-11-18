@@ -64,6 +64,18 @@ SECTOR_PROFILES = {
         activity_mean=2.3, workload_mean=215.0, workload_std=55.0,
         sleep_mean=6.0, overtime_scale=11.0, consec_lambda=8,
         bmi_mean=26.4, distance_scale=9.0, tenure_shape=1.4, tenure_scale=2.0,
+        # Where each person works, and how that shifts their working pattern.
+        # Kitchens run hot, long and short of sleep; the floor closes late;
+        # housekeeping is heavy but ends earlier; support works office hours.
+        # Directional, like every hospitality knob here.
+        departments=[
+            {"label": "Kitchen", "share": 0.26, "workload": 25.0, "sleep": -0.3, "overtime": 1.3, "consec": 1},
+            {"label": "Front of house", "share": 0.30, "workload": 5.0, "sleep": -0.4, "overtime": 1.1, "consec": 0},
+            {"label": "Housekeeping", "share": 0.22, "workload": 15.0, "sleep": 0.1, "overtime": 0.8, "consec": 0},
+            {"label": "Front office", "share": 0.10, "workload": -10.0, "sleep": -0.1, "overtime": 0.9, "consec": 0},
+            {"label": "Maintenance", "share": 0.05, "workload": 0.0, "sleep": 0.0, "overtime": 1.0, "consec": 0},
+            {"label": "Support and admin", "share": 0.07, "workload": -30.0, "sleep": 0.3, "overtime": 0.6, "consec": -2},
+        ],
     )},
 }
 
@@ -97,6 +109,24 @@ def generate_cohort(sector: str, n_rows: int = 6000, random_seed: int = 7) -> pd
     overtime_14d = np.clip(rng.gamma(shape=1.6, scale=p["overtime_scale"], size=n), 0, 90).round(1)
     consecutive_shifts = rng.poisson(lam=p["consec_lambda"], size=n).clip(0, 21).astype(int)
     days_since_leave = np.clip(rng.gamma(shape=2.0, scale=55, size=n), 0, 365).round().astype(int)
+
+    # Departments, for a sector that has them. Drawn from their own random
+    # stream after every base draw, so a sector without departments produces
+    # exactly the cohort it did before this existed.
+    department = None
+    if p.get("departments"):
+        spec = p["departments"]
+        drng = np.random.default_rng(random_seed + 1009)
+        idx = drng.choice(len(spec), size=n, p=[d["share"] for d in spec])
+        department = np.array([spec[i]["label"] for i in idx])
+
+        def shift(key, default):
+            return np.array([spec[i].get(key, default) for i in idx])
+
+        workload = np.clip(workload + shift("workload", 0.0), 80, 380).round(2)
+        sleep_hours = np.clip(sleep_hours + shift("sleep", 0.0), 3.5, 10.0).round(2)
+        overtime_14d = np.clip(overtime_14d * shift("overtime", 1.0), 0, 90).round(1)
+        consecutive_shifts = np.clip(consecutive_shifts + shift("consec", 0), 0, 21).astype(int)
 
     # Fatigue composite and absence DGP: identical to the base generator.
     sleep_deficit = np.clip(6.5 - sleep_hours, 0, None)
@@ -141,4 +171,6 @@ def generate_cohort(sector: str, n_rows: int = 6000, random_seed: int = 7) -> pd
         "perceived_stress_score": perceived_stress, "absence_duration_hours": absence_hours,
         "source_dataset": f"synthetic_{p['label']}",
     })
+    if department is not None:
+        df["department"] = department
     return df

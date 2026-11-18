@@ -141,3 +141,59 @@ def test_cover_cost_uses_casual_and_agency_rates(hospitality_feed):
 
 def test_hospitality_feed_is_marked_synthetic(hospitality_feed):
     assert hospitality_feed["synthetic"] is True
+
+
+# 4. Departments -------------------------------------------------------------
+
+def test_hospitality_has_departments_and_heavy_industry_does_not(hospitality, manufacturing):
+    assert "department" in hospitality.columns
+    assert "department" not in manufacturing.columns
+    shares = hospitality["department"].value_counts(normalize=True)
+    assert set(shares.index) == {"Kitchen", "Front of house", "Housekeeping", "Front office", "Maintenance", "Support and admin"}
+    assert shares.min() > 0.03
+
+
+def test_departments_do_not_disturb_the_base_draws(hospitality):
+    # Departments come from their own random stream, so the draws they do not
+    # shift (age, tenure, BMI) are the ones a cohort without them would get.
+    profile = dict(sector_cohorts.SECTOR_PROFILES["hospitality"])
+    profile.pop("departments")
+    sector_cohorts.SECTOR_PROFILES["_hospitality_without_departments"] = profile
+    try:
+        plain = sector_cohorts.generate_cohort("_hospitality_without_departments", n_rows=6000, random_seed=7)
+    finally:
+        del sector_cohorts.SECTOR_PROFILES["_hospitality_without_departments"]
+    for col in ["age", "tenure_years", "bmi", "smoking_status"]:
+        assert plain[col].equals(hospitality[col]), col
+
+
+def test_kitchen_runs_hotter_than_support(hospitality):
+    by = hospitality.groupby("department")
+    assert by["workload_index_current"].mean()["Kitchen"] > by["workload_index_current"].mean()["Support and admin"]
+    assert by["sleep_hours_avg_7d"].mean()["Kitchen"] < by["sleep_hours_avg_7d"].mean()["Support and admin"]
+
+
+def test_department_grouping_appears_only_where_the_data_has_it(hospitality_feed):
+    keys = [d["key"] for d in hospitality_feed["cohort_dimensions"]]
+    assert keys[-1] == "cohort_department"
+    for sector in ["manufacturing", "logistics"]:
+        assert "cohort_department" not in [d["key"] for d in _feed(sector)["cohort_dimensions"]]
+        assert "by_department" not in _feed(sector)["hr_ops"]
+
+
+def test_cover_is_priced_by_department_in_hospitality(hospitality_feed):
+    hr = hospitality_feed["hr_ops"]
+    assert hr["assumptions"]["cover_share_by_department"]["Kitchen"] == 0.95
+    labels = [r["label"] for r in hr["by_department"]]
+    assert "Kitchen" in labels
+    total = sum(r["cover_gap_days_90d"] for r in hr["by_department"] if not r.get("suppressed"))
+    assert total == pytest.approx(hr["headline"]["cover_gap_days_90d"], rel=0.01)
+
+
+def test_hospitality_series_carries_departments():
+    path = OUTPUTS / "cohort_series.hospitality.json"
+    if not path.exists():
+        pytest.skip("hospitality series not built; run python build_outcome_series.py hospitality")
+    series = json.loads(path.read_text())["series"]
+    assert "cohort_department" in series
+    assert "Kitchen" in series["cohort_department"]["cohorts"]

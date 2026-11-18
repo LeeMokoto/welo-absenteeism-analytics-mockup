@@ -69,6 +69,33 @@ benchmark for that reason. One more caveat: the model learned its relationships
 from industrial data, where absence rises with age. In hospitality, younger
 staff may well take more short absences, which the model would understate.
 
+### Hospitality as a platform tenant
+
+The platform can run as a hospitality tenant: the agents, Proposals and the
+control centre then work on the hospitality cohort, with **departments**
+(Kitchen, Front of house, Housekeeping, Front office, Maintenance, Support and
+admin) as a grouping you can report on and target. A tenant is a deployment, so
+it is chosen at build time:
+
+| Setting | Value | Why |
+| --- | --- | --- |
+| `WELO_TENANT_SECTOR` | `hospitality` | Builds the absence module and the control centre's outcome series from the hospitality cohort. The build fails if the sector's data is missing, rather than showing the base workforce under a hospitality name |
+| `WELO_MODULE_SICK_LEAVE` | `0` | The sick-leave module's sample data is industrial (plants, depots, warehouses) and has no hospitality version yet |
+| `ANTHROPIC_API_KEY` | your key | Same as any tenant |
+
+The tenant name defaults to "Demo Hospitality Group"; `WELO_TENANT_NAME` and
+`WELO_TENANT_DESCRIPTOR` still override it. On Vercel, the simplest route is a
+second project on the same repository with these environment variables.
+
+Departments come from the data, not the code: a feed whose cohort has a
+`department` column gets a `cohort_department` grouping, cover priced by
+department, and a department table on the operations screen. Feeds without one
+are unchanged. Department is targetable by default, because it is where people
+work, which is what a roster or cover action is aimed at.
+
+To rebuild the hospitality data: `python model/build_sector_feeds.py` and
+`python model/build_outcome_series.py hospitality`.
+
 ### Currency
 
 Amounts are stored in Rand and converted on the fly. A **ZAR / USD** toggle in
