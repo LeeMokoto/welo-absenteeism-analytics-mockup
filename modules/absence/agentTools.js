@@ -19,6 +19,8 @@ import { buildAnalystContext, buildCoordinatorContext } from "./context.js";
 import { buildRecommendation, KIND_KEYS, MAX_HORIZON_DAYS, trackRecord } from "../control-centre/recommendations.js";
 import { TARGETABLE_BY_DEFAULT } from "../control-centre/targeting.js";
 import { GRAINS, demandView, hasDemand } from "./demand.js";
+import { checkRoster } from "./roster.js";
+import { rosterGroups, sampleRoster } from "./sampleRoster.js";
 
 /*
   Each readable grouping, with the dimension key a recommendation targets it
@@ -199,7 +201,44 @@ export const readDemand = defineTool({
   },
 });
 
-const READ_TOOLS = [readPortfolio, readCohorts, readCover, readTrackRecord, readDemand];
+/*
+  The roster on file, checked against the rest and fatigue rules. In this demo
+  tenant that is an example roster generated from its own departments, and the
+  tool says so; a client's uploaded roster replaces it. Counts by department
+  only: the check never returns a staff reference, so neither does this.
+*/
+export const checkRosterTool = defineTool({
+  name: "check_roster",
+  description:
+    "Check the roster on file against legal rest minimums (12-hour daily rest, 36-hour weekly rest, 45-hour ordinary week) and fatigue policy (late close then early open, split shifts, runs of late finishes, short-notice changes). Returns, by department, how many shifts and what share of staff break each rule. In this demo the roster is an example generated for the tenant.",
+  permission: PERMISSIONS.USE_AGENTS,
+  input_schema: {
+    type: "object",
+    properties: {
+      department: { type: "string", description: "One department's figures only, or leave out for all." },
+    },
+    additionalProperties: false,
+  },
+  run: ({ department } = {}, ctx) => {
+    const portfolio = portfolioOf(ctx);
+    const result = checkRoster(sampleRoster(rosterGroups(portfolio)));
+    const by = department ? result.by_department.filter((d) => d.label === department) : result.by_department;
+    if (department && !by.length) {
+      return { available: false, note: "No such department on the roster." };
+    }
+    return {
+      available: true,
+      roster: "Example roster generated for this demo tenant: four weeks, synthetic staff references. A client's own roster replaces it.",
+      rules: result.rules,
+      total: department ? undefined : result.total,
+      by_department: by,
+      withheld_departments: result.withheld_departments,
+      note: result.note,
+    };
+  },
+});
+
+const READ_TOOLS = [readPortfolio, readCohorts, readCover, readTrackRecord, readDemand, checkRosterTool];
 
 /*
   `canDraft` is whether this tenant has somewhere to put a draft: the control

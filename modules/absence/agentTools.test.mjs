@@ -135,3 +135,13 @@ test("read_demand says plainly when a tenant has no demand data", () => {
   assert.equal(r.available, false);
   assert.match(r.note, /no demand data/);
 });
+
+test("check_roster returns counts by department, never a staff reference, and says the roster is an example", () => {
+  const r = runTool(toolsFor("analyst"), use("check_roster", {}), ctx("analyst"));
+  assert.equal(r.is_error, undefined, r.content);
+  assert.ok(!/"S\d{4}"/.test(r.content));
+  const out = JSON.parse(r.content);
+  assert.equal(out.available, true);
+  assert.match(out.roster, /Example roster/);
+  assert.ok(out.by_department.length > 0);
+});

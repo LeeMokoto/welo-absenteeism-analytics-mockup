@@ -102,6 +102,24 @@ The patterns live in `SECTOR_DEMAND` in `model/build_sector_feeds.py` and the
 logic in [`model/demand.py`](model/demand.py). The Planner reads the same
 figures through the `read_demand` tool.
 
+And a **Roster check** screen (`/absence/roster`). It applies the same rules to
+everyone on a roster and counts, by department, the people with a shift that
+breaks one. The rules come in two kinds:
+
+- **Legal minimums,** citing their sources: a 12-hour daily rest and a 36-hour
+  weekly rest (BCEA s15 and Sectoral Determination 14, cl 17), and a 45-hour
+  ordinary week. A breach is a flag to check against any written agreements,
+  not a finding and not legal advice.
+- **Fatigue policy:** a late close then an early open, split shifts, runs of
+  late finishes, and changes at short notice.
+
+The demo checks an example roster generated from the tenant's own departments.
+A roster loaded as CSV is read in the browser and never sent anywhere. A
+roster with a column that identifies people (name, email, ID number) is
+refused, and no staff reference ever comes back from the check. The Planner
+reads the same counts through `check_roster`. Rules:
+[`modules/absence/roster.js`](modules/absence/roster.js).
+
 To rebuild the hospitality data: `python model/build_sector_feeds.py` and
 `python model/build_outcome_series.py hospitality`.
 
