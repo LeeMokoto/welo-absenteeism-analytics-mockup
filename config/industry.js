@@ -6,6 +6,7 @@
 //   index.html?industry=mining
 //   index.html?industry=manufacturing
 //   index.html?industry=logistics
+//   index.html?industry=hospitality
 //   index.html?industry=generic     -> cross-industry, no sector wording
 //
 // The default is `industrial`: sector-neutral blue collar wording that fits any
@@ -187,6 +188,72 @@ window.WELO_PROFILES.logistics = {
         { name: "Fatigue &amp; sleep management", width: 76, frac: 0.24 },
         { name: "Musculoskeletal / ergonomics", width: 58, frac: 0.18 },
         { name: "Cardiovascular management", width: 50, frac: 0.16 },
+      ],
+    },
+  },
+};
+// Hospitality: hotels, restaurants and contract catering. The first profile
+// outside heavy industry, so more of the framing changes: cover comes from
+// casual and agency staff rather than overtime, weekends are worked, and the
+// peaks are trading peaks (festive season, Easter, the July holidays) layered
+// on the winter illness band. Its cohort, day rate and cover shares are
+// directional and unsourced until the calibration sources are agreed, which is
+// why the copy below says "illustrative" rather than quoting a benchmark.
+window.WELO_PROFILES.hospitality = {
+  title: "Welo · Absenteeism Intelligence · Hospitality",
+  copy: {
+    "metric-covered-detail": "scored hospitality cohort",
+    "individuals-disclaimer": "IDs are synthetic hospitality-cohort records, not real people.",
+    "chronic-sub": "% screened positive by operational-load cohort · illustrative until hospitality screening benchmarks are agreed",
+    "hr-absence-detail": "annualised · illustrative hospitality cohort, benchmark to be agreed",
+    "hr-backfill-label": "Casual and agency cover cost · 90d",
+    "hr-cover-sub": "predicted shift cover gaps and the casual and agency spend to fill them",
+    "roi-sub": "Projected impact across a 6,000-life hospitality cohort · illustrative calibration on model output.",
+  },
+  benchmarks: {
+    drivers: {
+      note: "Kitchens and housekeeping skew musculoskeletal and injury · late closes and long runs of shifts drive the fatigue and mental health load",
+      rows: [
+        { label: "Musculoskeletal", icon: "ic-bone", v: [29, 24, 17, 24] },
+        { label: "Fatigue &amp; mental", icon: "ic-mind", v: [24, 19, 14, 20] },
+        { label: "Respiratory &amp; gastro", icon: "ic-lungs", v: [17, 19, 18, 18] },
+        { label: "Injury · burns, cuts, slips", icon: "ic-dots", v: [16, 13, 8, 13] },
+        { label: "Metabolic", icon: "ic-metabolic", v: [8, 12, 14, 11] },
+        { label: "Cardiovascular", icon: "ic-heart", v: [6, 8, 9, 8] },
+      ],
+    },
+    chronic: {
+      note: "A younger workforce carries less metabolic burden · mental health and alcohol load sit higher than in heavy industry",
+      rows: [
+        { label: "Depression / anxiety screen+", icon: "ic-mind", v: [24, 20, 17, 21] },
+        { label: "Musculoskeletal disorder", icon: "ic-bone", v: [22, 18, 12, 18] },
+        { label: "Obesity · WHtR &gt; 0.6", icon: "ic-gauge", v: [18, 21, 24, 21] },
+        { label: "Hypertension", icon: "ic-heart", v: [14, 15, 17, 15] },
+        { label: "Pre-diabetes", icon: "ic-droplet", v: [10, 12, 14, 12] },
+        { label: "Type 2 diabetes", icon: "ic-droplet-fill", v: [5, 6, 8, 6] },
+      ],
+    },
+    seasonality: {
+      subCalendar: "52-week projection · festive, Easter and July trading peaks layered on the winter respiratory band",
+      chipCalendar: "Trading peaks + winter",
+      noteCalendar: "December is the year's high point and the July holidays land on top of winter flu · weekends are worked, so absence does not fall away on Saturday and Sunday",
+      subQuarter: "quarterly absent days · the festive peak and the winter holidays carry the year",
+      chipQuarter: "Festive Q4",
+      quarters: [
+        { label: "Q1 · post-festive", base: 20000, height: 98 },
+        { label: "Q2 · autumn", base: 16400, height: 80 },
+        { label: "Q3 · winter holidays", base: 19600, height: 96 },
+        { label: "Q4 · festive peak", base: 20500, height: 100 },
+      ],
+      calendar: { monday: 1.2, friday: 1.0, sat: 0.6, sun: 0.5, winter: [22, 35, 0.9], shoulder: [21, 36, 0.4], jan: [0, 2, 0.6], extra: [[13, 15, 0.6], [48, 52, 1.1]] },
+    },
+    roi: {
+      sub: "projected · illustrative benchmark applied per category",
+      drivers: [
+        { name: "Fatigue &amp; roster design", width: 92, frac: 0.30 },
+        { name: "Musculoskeletal / manual handling", width: 76, frac: 0.24 },
+        { name: "Mental health &amp; EAP", width: 60, frac: 0.19 },
+        { name: "Injury prevention", width: 44, frac: 0.14 },
       ],
     },
   },

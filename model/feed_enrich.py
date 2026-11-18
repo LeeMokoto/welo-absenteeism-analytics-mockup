@@ -18,6 +18,23 @@ COVER_SHARE = {"High-intensity ops": 0.90, "Standard ops": 0.70, "Light duty": 0
 SPELL_LEN = 4.0
 LEAVE_GAP_DAYS = 180
 
+# How absence is costed and covered. Heavy industry pays a loaded day rate and
+# backfills with overtime; hospitality pays less per day and covers with casual
+# and agency staff, and almost every frontline absence has to be covered or the
+# service runs short. A sector feed passes its own block; anything it leaves
+# out falls back to these values, so the base feed and the heavy-industry
+# sectors are unchanged by the parameter existing.
+DEFAULT_ECONOMICS = {
+    "day_rate_rand": RAND_PER_DAY,
+    "cover_premium_rand": COVER_PREMIUM,
+    "cover_share_by_cohort": COVER_SHARE,
+}
+
+
+def resolve_economics(economics=None):
+    """Merge a sector's economics over the defaults."""
+    return {**DEFAULT_ECONOMICS, **(economics or {})}
+
 # Small-cell suppression. A cohort with fewer than this many people carries no
 # figures into the feed at all: the label is kept so the view can render n<5,
 # but every measure is withheld. Suppressing here rather than in the browser
@@ -154,7 +171,9 @@ def add_cohort_columns(df):
     return df
 
 
-def compute_cohorts(df):
+def compute_cohorts(df, economics=None):
+    rate = resolve_economics(economics)["day_rate_rand"]
+
     def cohort_rows(dim_key, order, min_cohort=SUPPRESSION_THRESHOLD):
         rows = []
         g = df.groupby(dim_key, observed=True)
@@ -173,8 +192,8 @@ def compute_cohorts(df):
                 "key": label, "label": label, "count": n,
                 "predicted_absent_days_90d": round(days90, 0),
                 "predicted_absent_days_annual": round(days_annual, 0),
-                "cost_exposure_rand": round(days_annual * RAND_PER_DAY, 0),
-                "addressable_saving_rand": round(days90 * RAND_PER_DAY * ADDRESSABLE, 0),
+                "cost_exposure_rand": round(days_annual * rate, 0),
+                "addressable_saving_rand": round(days90 * rate * ADDRESSABLE, 0),
                 "absent_days_per_head_annual": round(days_annual / max(1, n), 1),
                 "high_or_critical_count": hi,
                 "high_or_critical_share": round(hi / max(1, n), 4),
@@ -243,10 +262,12 @@ def compute_individuals(df, shap_by_row, sample_n=400, seed=7):
     return [make_individual(r, stats, shap_by_row) for _, r in keep.iterrows()], len(hi), len(rest)
 
 
-def compute_hr_ops(df):
+def compute_hr_ops(df, economics=None):
+    econ = resolve_economics(economics)
+    cover_day_cost = econ["day_rate_rand"] + econ["cover_premium_rand"]
     hr = df.copy()
     hr["annual_days"] = hr["predicted_absent_days_monthly"] * 12
-    hr["cover_share"] = hr["cohort_load"].map(COVER_SHARE).fillna(0.5)
+    hr["cover_share"] = hr["cohort_load"].map(econ["cover_share_by_cohort"]).fillna(0.5)
     hr["cover_gap_90d"] = hr["predicted_absent_days_90d"] * hr["cover_share"]
     hr["spells_est"] = (hr["annual_days"] / SPELL_LEN).round().clip(lower=0).astype(int)
     hr.loc[(hr["annual_days"] > 0) & (hr["spells_est"] < 1), "spells_est"] = 1
@@ -262,7 +283,7 @@ def compute_hr_ops(df):
     n_hr = len(hr)
     annual_days_total = float(hr["annual_days"].sum())
     cover_gap_90d = float(hr["cover_gap_90d"].sum())
-    backfill_cost_90d = cover_gap_90d * (RAND_PER_DAY + COVER_PREMIUM)
+    backfill_cost_90d = cover_gap_90d * cover_day_cost
     freq_trigger = int((hr["spells_est"] >= 4).sum())
     rtw_caseload = int(hr["predicted_risk_band"].isin(["Critical", "High"]).sum())
     long_leave_gap = int((hr["days_since_last_leave"] > LEAVE_GAP_DAYS).sum())
@@ -281,7 +302,7 @@ def compute_hr_ops(df):
         by_cohort.append({
             "key": label, "label": label, "count": int(len(sub)),
             "cover_gap_days_90d": round(cg, 0),
-            "backfill_cost_rand_90d": round(cg * (RAND_PER_DAY + COVER_PREMIUM), 0),
+            "backfill_cost_rand_90d": round(cg * cover_day_cost, 0),
             "overtime_mean_14d": round(float(sub["overtime_hours_14d"].mean()), 1),
             "rtw_caseload": int(sub["predicted_risk_band"].isin(["Critical", "High"]).sum()),
             "long_leave_gap": int((sub["days_since_last_leave"] > LEAVE_GAP_DAYS).sum()),
@@ -291,8 +312,9 @@ def compute_hr_ops(df):
 
     return {
         "assumptions": {
-            "work_days_per_year": WORK_DAYS_YR, "day_rate_rand": RAND_PER_DAY,
-            "cover_premium_rand": COVER_PREMIUM, "cover_share_by_cohort": COVER_SHARE,
+            "work_days_per_year": WORK_DAYS_YR, "day_rate_rand": econ["day_rate_rand"],
+            "cover_premium_rand": econ["cover_premium_rand"],
+            "cover_share_by_cohort": econ["cover_share_by_cohort"],
             "spell_length_days": SPELL_LEN, "leave_gap_days": LEAVE_GAP_DAYS,
         },
         "headline": {
@@ -333,7 +355,7 @@ def compute_hr_ops(df):
     }
 
 
-def enrich(feed, df, sample_n=400, seed=7, synthetic=True):
+def enrich(feed, df, sample_n=400, seed=7, synthetic=True, economics=None):
     """Add cohort_dimensions/cohorts/individuals/covered_cohort/hr_ops to feed.
 
     ``synthetic`` marks the tenant whose data this is. It defaults to True
@@ -341,10 +363,13 @@ def enrich(feed, df, sample_n=400, seed=7, synthetic=True):
     feed builder passes False. The dashboard reads it to decide whether to show
     the synthetic-data label, so the label follows the data rather than the
     build, and cannot be forgotten when the demo is redeployed.
+
+    ``economics`` is the sector's costing and cover block (see
+    DEFAULT_ECONOMICS). Left out, the heavy-industry defaults apply.
     """
     add_cohort_columns(df)
     shap_by_row = {r["row_id"]: r.get("top_reasons", []) for r in feed.get("intervention_queue", [])}
-    cohorts = compute_cohorts(df)
+    cohorts = compute_cohorts(df, economics)
     individuals, n_hi, n_rest = compute_individuals(df, shap_by_row, sample_n=sample_n, seed=seed)
     feed["synthetic"] = bool(synthetic)
     feed["suppression_threshold"] = SUPPRESSION_THRESHOLD
@@ -365,5 +390,5 @@ def enrich(feed, df, sample_n=400, seed=7, synthetic=True):
         "predicted_absent_days_90d": round(float(df["predicted_absent_days_90d"].sum()), 0),
         "high_or_critical_count": int(df["predicted_risk_band"].isin(["Critical", "High"]).sum()),
     }
-    feed["hr_ops"] = compute_hr_ops(df)
+    feed["hr_ops"] = compute_hr_ops(df, economics)
     return feed, cohorts, individuals, n_hi, n_rest
