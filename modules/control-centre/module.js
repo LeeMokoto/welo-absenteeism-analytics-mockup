@@ -23,8 +23,9 @@ export const controlCentreModule = {
     { href: "/control-centre/playbooks", label: "Playbooks" },
     { href: "/control-centre/alerts", label: "Alert rules" },
     { href: "/control-centre/briefing", label: "Briefing" },
+    { href: "/control-centre/proposals", label: "Proposals" },
   ],
-  agents: ["playbook"],
+  agents: ["playbook", "coordinator"],
   guardrails: [
     "Every record refers to a cohort. No record carries an employee key, and the store strips individual fields rather than trusting its callers.",
     "Targeting is stricter than reporting: at most two dimensions, never a protected attribute, never condition data.",
@@ -47,6 +48,8 @@ export const controlCentreModule = {
     "The individual and refused-language screens run again when a task is sent, not only when the playbook was written, because the text can have been edited in between.",
     "A step sends once. Two tasks for one step means somebody does the work twice, so the store refuses a duplicate as well as the interface.",
     "A task goes to a queue, never to a named person, and nothing actually leaves this tenant: the record, the response and the confirmation all say so.",
+    "An agent's proposal is priced and cohort-level, and it is only ever a draft. No agent tool approves, books or sends; the person who asked for a draft cannot approve it, a rejection carries its reason, and the prediction cannot be edited after drafting, so the track record compares what was promised with what was delivered.",
+    "The proposals track record leads with whether there are enough closed cases to judge, uses the median rather than the mean so one large booking cannot carry it, and records a loss as a negative saving rather than dropping it.",
     "The briefing composes what the other screens publish and reaches into nothing richer, so it cannot say more than they do. It leads with what needs a person, carries the outcome caveat in full because it gets forwarded, and names how many cohorts a rule could not evaluate.",
   ],
 };
