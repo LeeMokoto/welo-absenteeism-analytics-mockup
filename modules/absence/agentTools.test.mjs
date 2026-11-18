@@ -38,7 +38,7 @@ test("no tool approves anything", () => {
 
 test("every read tool's output passes the screen a live call goes through", () => {
   for (const t of toolsFor("analyst")) {
-    const input = t.name === "read_cohorts" ? { dimension: "fatigue_band" } : {};
+    const input = { read_cohorts: { dimension: "fatigue_band" }, read_demand: { grain: "week" } }[t.name] || {};
     const r = runTool([t], use(t.name, input), ctx("analyst"));
     assert.equal(r.is_error, undefined, `${t.name}: ${r.content}`);
   }
@@ -128,4 +128,10 @@ test("a tenant with departments gets them, with the key a draft targets them by"
   assert.deepEqual(r.cohorts.map((x) => x.label), ["Dept A"], "the suppressed department is left out");
   const drafted = runTool([draftRecommendation], use("draft_recommendation", { ...draft, target: [{ dimension: "cohort_department", cohort: "Dept A" }] }), c);
   assert.equal(drafted.is_error, undefined, drafted.content);
+});
+
+test("read_demand says plainly when a tenant has no demand data", () => {
+  const r = JSON.parse(runTool(toolsFor("analyst"), use("read_demand", { grain: "week" }), ctx("analyst")).content);
+  assert.equal(r.available, false);
+  assert.match(r.note, /no demand data/);
 });

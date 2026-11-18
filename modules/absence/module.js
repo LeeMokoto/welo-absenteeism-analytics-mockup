@@ -22,6 +22,7 @@ export const absenceModule = {
     { href: "/absence/cohorts", label: "Cohorts" },
     { href: "/absence/outcomes", label: "Outcomes and ROI" },
     { href: "/absence/operations", label: "HR and operations" },
+    { href: "/absence/demand", label: "Demand and cover" },
   ],
   /*
     Two, not three. The Case Assistant is a sick leave agent because that
