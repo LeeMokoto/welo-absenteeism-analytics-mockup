@@ -269,8 +269,45 @@ artifacts (`models/`), and the cached dashboard feed (`data/outputs/`). See
 service, and the Cloud Run deployment.
 
 Model performance (cross-validated, from `model/reports/model_metrics.json`):
-regression CV R² ≈ 0.40 / MAE ≈ 6.0 hours; classification CV ROC-AUC (macro OvR)
-≈ 0.84.
+regression CV R² ≈ 0.39 / MAE ≈ 6.2 hours; classification CV ROC-AUC (macro OvR)
+≈ 0.85.
+
+### Roster patterns in the model
+
+The model sees how people were rostered, not only how long they worked. Four
+features cover the last 28 days, and they are the same patterns the roster
+check flags, so a manager who fixes a flagged roster moves exactly these inputs:
+
+| Feature | What it counts | Roster check rule |
+| --- | --- | --- |
+| `short_rest_count_28d` | Gaps under 12 hours between shifts | Daily rest |
+| `late_finish_share_28d` | Share of shifts ending at or after 22:00 | Late runs, late then early |
+| `split_shifts_28d` | Days worked as two blocks with a 2-hour gap or more | Split shifts |
+| `short_notice_changes_28d` | Shift changes made with under 48 hours notice | Short notice |
+
+Each has a what-if lever (`short_rest_delta`, `late_finish_pct`,
+`split_shifts_delta`, `short_notice_pct`), so the scenario engine can price a
+roster fix the same way it prices an overtime cut. The definitions and effect
+sizes live in one place, [`model/welo_pipeline/roster.py`](model/welo_pipeline/roster.py),
+shared by the generators, the series builder and the feature pipeline.
+
+Three things keep this honest:
+
+- **Directional, not sourced.** The synthetic data says a short rest adds a
+  little fatigue; it does not say how much it adds in any real workforce. Real
+  roster history replaces the effect sizes.
+- **Calibration held.** Effects are measured against a reference roster (the
+  typical heavy-industry pattern), so the base cohort's average fatigue is
+  unchanged and model accuracy is the same as before.
+- **Missing roster data is neutral.** An extract without roster columns sits at
+  the reference roster and contributes nothing, so the model falls back to the
+  hours-based picture rather than inventing a roster story.
+
+Sectors and hospitality departments carry their own patterns in
+`model/sector_cohorts.py`: hospitality rosters are worse than the reference
+(late closes, split service shifts, changes when bookings move), manufacturing
+better, and within hospitality the kitchen and front of house sit well above
+housekeeping and support.
 
 ## Regenerating the dashboard feed
 
@@ -309,6 +346,19 @@ drivers there.
 cd model
 pip install numpy pandas pyyaml scikit-learn joblib
 python build_sector_feeds.py
+```
+
+After retraining, rebuild every committed output in this order, because each
+step reads the one before it:
+
+```bash
+cd model
+python -m welo_pipeline --config configs/demo.yaml
+python build_cohort_feed.py
+python build_sector_feeds.py
+python build_outcome_series.py
+python build_outcome_series.py hospitality
+python export_synthetic_extract.py
 ```
 
 The sector calibrations in `sector_cohorts.py` are illustrative, anchored to

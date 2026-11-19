@@ -53,6 +53,7 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, ROOT)
 
 import feed_enrich  # noqa: E402
+from welo_pipeline import roster  # noqa: E402
 from welo_pipeline.adapters.synthetic import SyntheticWorkforceAdapter  # noqa: E402
 
 N_ROWS = 5800
@@ -81,12 +82,13 @@ HOURS_PER_DAY = 8.0
 WORK_DAYS_PER_MONTH = 21.7
 
 
-def _fatigue(sleep, overtime, shifts, leave_gap, workload, noise):
+def _fatigue(sleep, overtime, shifts, leave_gap, workload, noise, roster_contrib=0.0):
     """The adapter's fatigue composite, which is what generated the absence the
     model was fitted on. Reproduced rather than imported because it is inline in
     the adapter's `load`; `test_outcome_series.py` asserts that period zero with
     no drift reproduces the adapter's own baseline, so the two cannot drift
-    apart silently."""
+    apart silently. `roster_contrib` is the roster patterns' share, computed
+    once from the baseline roster because the series holds rosters steady."""
     sleep_deficit = np.clip(6.5 - sleep, 0, None)
     return np.clip(
         18.0
@@ -95,6 +97,7 @@ def _fatigue(sleep, overtime, shifts, leave_gap, workload, noise):
         + np.minimum(shifts / 14.0 * 15.0, 15.0)
         + np.minimum(leave_gap / 180.0 * 15.0, 15.0)
         + np.clip((workload - 240) / 5.0, 0, 20)
+        + roster_contrib
         + noise,
         0,
         100,
@@ -136,6 +139,9 @@ def build(sector=None):
     # add_cohort_columns needs a fatigue band, which the adapter does not emit.
     # Derive it here with the pipeline's own edges so the bands line up with
     # what the dashboard shows.
+    roster0 = roster.fatigue_contribution(
+        *(base_df[name].to_numpy() for name in roster.ROSTER_FEATURES)
+    )
     rng0 = np.random.default_rng(SEED)
     fatigue0 = _fatigue(
         base_df["sleep_hours_avg_7d"].to_numpy(),
@@ -144,6 +150,7 @@ def build(sector=None):
         base_df["days_since_last_leave"].to_numpy(),
         base_df["workload_index_current"].to_numpy(),
         rng0.normal(0, 6.0, len(base_df)),
+        roster0,
     )
     base_df["fatigue_burnout_score"] = fatigue0.round(1)
     base_df["fatigue_band"] = pd.cut(
@@ -217,7 +224,7 @@ def build(sector=None):
             shifts = np.where(targeted, np.minimum(shifts, 8), shifts)
 
         fatigue = _fatigue(
-            sleep, overtime, shifts, leave_gap, workload, rng.normal(0, 6.0, len(base_df))
+            sleep, overtime, shifts, leave_gap, workload, rng.normal(0, 6.0, len(base_df)), roster0
         )
         hours = _absence_hours(static, fatigue, workload, rng)
         # Winter sits on top of the model's world, because infection is not in

@@ -42,6 +42,10 @@ _HUMAN_NAME = {
     "num__overtime_hours_14d": "Overtime hours (14d)",
     "num__consecutive_shifts_worked": "Consecutive shifts worked",
     "num__days_since_last_leave": "Days since last leave",
+    "num__short_rest_count_28d": "Short rests between shifts (28d)",
+    "num__late_finish_share_28d": "Late finishes (share of shifts, 28d)",
+    "num__split_shifts_28d": "Split shifts (28d)",
+    "num__short_notice_changes_28d": "Short-notice shift changes (28d)",
     "num__perceived_stress_score": "Perceived stress (PSS-10)",
 }
 

@@ -53,6 +53,26 @@ LEVERS: Dict[str, Dict[str, Any]] = {
         "field": "days_since_last_leave", "kind": "set", "min": 0.0, "max": 365.0,
         "label": "Cap days since last leave at", "clamp": (0.0, 365.0),
     },
+    # Roster levers: the patterns the roster check flags. A manager who fixes a
+    # flagged roster moves these, so the engine can price the fix. A delta of
+    # -12 on short rests or split shifts removes them all, because the clamp
+    # stops at zero.
+    "short_rest_delta": {
+        "field": "short_rest_count_28d", "kind": "delta", "min": -12.0, "max": 12.0,
+        "label": "Short rests between shifts (28d)", "clamp": (0.0, 12.0),
+    },
+    "late_finish_pct": {
+        "field": "late_finish_share_28d", "kind": "pct", "min": -100.0, "max": 100.0,
+        "label": "Late finishes (share of shifts)", "clamp": (0.0, 1.0),
+    },
+    "split_shifts_delta": {
+        "field": "split_shifts_28d", "kind": "delta", "min": -12.0, "max": 12.0,
+        "label": "Split shifts (28d)", "clamp": (0.0, 12.0),
+    },
+    "short_notice_pct": {
+        "field": "short_notice_changes_28d", "kind": "pct", "min": -100.0, "max": 100.0,
+        "label": "Short-notice shift changes (28d)", "clamp": (0.0, 10.0),
+    },
 }
 
 
@@ -68,6 +88,8 @@ _REQUIRED_RAW = (
     "weight_kg", "smoking_status", "alcohol_frequency", "physical_activity_days_per_week",
     "workload_index_current", "sleep_hours_avg_7d", "overtime_hours_14d",
     "consecutive_shifts_worked", "days_since_last_leave", "perceived_stress_score",
+    "short_rest_count_28d", "late_finish_share_28d", "split_shifts_28d",
+    "short_notice_changes_28d",
 )
 
 

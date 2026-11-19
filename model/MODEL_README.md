@@ -70,7 +70,7 @@ A minimal scoring request looks like this:
 ```bash
 curl -X POST http://localhost:8080/score \
   -H 'Content-Type: application/json' \
-  -d '{"employees": [{"age": 41, "bmi": 28.4, "workload_index_current": 260, "sleep_hours_avg_7d": 5.8, "overtime_hours_14d": 32, "consecutive_shifts_worked": 11}]}'
+  -d '{"employees": [{"age": 41, "bmi": 28.4, "workload_index_current": 260, "sleep_hours_avg_7d": 5.8, "overtime_hours_14d": 32, "consecutive_shifts_worked": 11, "short_rest_count_28d": 4, "late_finish_share_28d": 0.4}]}'
 ```
 
 The response contains the predicted absent hours, the projected days over the configured horizon, the risk band, the fatigue and burnout score and band, and the per-band probabilities. Pass `"include_reasons": true` (or call `/score/explain`) to get the top SHAP-derived drivers alongside each prediction.
@@ -107,6 +107,8 @@ To wire the same payload into the Next.js dashboard under `welo-nextjs/`, fetch 
 The repository contains three CSV exports used for the demo (`welo_export.csv`, `welo_full_export.csv`, and `welo_full_export_2.csv`) plus the synthetic industrial workforce cohort, which is generated in code. Every synthetic row is tagged with `source_dataset = "synthetic_industrial_v1"` so it can be filtered out the moment real client data lands.
 
 On the calibration anchor, precisely: the synthetic adapter is calibrated to published South African mining-cohort epidemiology (hypertension around 26 percent, type 2 diabetes around 13 percent, mean BMI near 27) and to the workload and shift assumptions the dashboard makes, because that is the best-documented published source for a South African frontline workforce on a shift roster. The demo presents the cohort as an industrial workforce, which is a reasonable stand-in across heavy industry, but the anchor is what it is and this is the place that says so. No client data was used, and none ever was.
+
+The synthetic cohort also carries four roster pattern features over the last 28 days: short rests between shifts (under 12 hours), the share of shifts ending at or after 22:00, split shifts, and shift changes made at under 48 hours notice. They are defined once in `welo_pipeline/roster.py` and drawn from their own random stream, so every other synthetic value is unchanged. Their fatigue effect is measured against a reference roster, which keeps the base cohort's average fatigue where it was, and a missing roster value sits at that reference, so an extract without roster columns scores exactly as it would have before. The effect sizes are directional, like the rest of the synthetic process, and are the first thing real roster history should replace. Each feature has a what-if lever, listed by `GET /scenario/levers`.
 
 The UCI subset is small (about 200 rows). It is enough to demonstrate the pipeline end to end, but the headline numbers in the demo are driven by the synthetic cohort. None of the synthetic data is presented as a real client outcome on the dashboard.
 
