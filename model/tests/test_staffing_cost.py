@@ -188,23 +188,27 @@ def test_it_holds_on_histories_it_was_never_tuned_on(feed):
     assert inside >= 2
 
 
-def test_matching_on_measured_demand_would_have_understated_it(history):
+def test_matching_on_measured_demand_would_have_understated_it(feed):
     """Why comparators are picked on planned demand: measured demand is noisy,
     and picking on it favours over-measured services, which look less
-    productive and shrink the estimated loss."""
-    _, services = history
+    productive and shrink the estimated loss. The size of the effect depends
+    on how much demand varies, so this compares the two across histories
+    rather than on one."""
     revenue_depts = CONFIG["revenue_departments"]
-    honest, draws, _, _ = staffing_cost.estimate(services, revenue_depts)
-    noisy = services.copy()
-    noisy["planned"] = noisy["demand"]
-    naive, naive_draws, _, _ = staffing_cost.estimate(noisy, revenue_depts)
-    truth_h = honest["true_loss"].sum()
-    truth_n = naive["true_loss"].sum()
-    assert abs(np.median(draws.sum(axis=0)) / truth_h - 1) < abs(np.median(naive_draws.sum(axis=0)) / truth_n - 1)
-    assert np.median(naive_draws.sum(axis=0)) / truth_n < 0.97
+    planned, measured = [], []
+    for seed in (11, 23, 37):
+        _, services = staffing_cost.generate_history(feed, CONFIG, DEMAND, ECONOMICS, seed=seed)
+        honest, draws, _, _ = staffing_cost.estimate(services, revenue_depts)
+        planned.append(np.median(draws.sum(axis=0)) / honest["true_loss"].sum())
+        noisy = services.copy()
+        noisy["planned"] = noisy["demand"]
+        naive, naive_draws, _, _ = staffing_cost.estimate(noisy, revenue_depts)
+        measured.append(np.median(naive_draws.sum(axis=0)) / naive["true_loss"].sum())
+    assert np.mean(measured) < np.mean(planned) - 0.01
+    assert abs(np.mean(planned) - 1) < abs(np.mean(measured) - 1)
 
 
 def test_most_short_services_find_comparators(block):
     m = block["method"]
     total = m["matched_short_services"] + m["unmatched_short_services"]
-    assert m["unmatched_short_services"] / total < 0.10
+    assert m["unmatched_short_services"] / total < 0.05

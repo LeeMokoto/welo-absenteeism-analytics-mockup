@@ -126,7 +126,8 @@ def _simulate_shifts(start, days, config, demand_config, rates, economics, size,
     cover_share = economics["cover_share_by_department"]
     n_props = len(size)
     total_heads = sum(r["count"] for r in rates.values())
-    frames = []
+    cols = {k: [] for k in ["property", "day", "date", "weekend", "department", "shift",
+                            "scheduled", "absent", "covered"]}
     for dept, shifts in config["department_shifts"].items():
         if dept not in rates:
             continue
@@ -137,21 +138,25 @@ def _simulate_shifts(start, days, config, demand_config, rates, economics, size,
                 "week", [1] * 7), dtype=float))[cal["dates"].dayofweek.to_numpy()]
         p_off = np.clip(rates[dept]["rate"] * rate_scale * cal["absence"], 0, 0.5)
         heads_share = rates[dept]["count"] / total_heads
-        for p in range(n_props):
-            heads = config["staff_per_property"] * size[p] * heads_share
-            budget = heads * SHIFTS_PER_HEAD_PER_DAY
-            for shift, share in shifts.items():
-                sched = np.maximum(1, np.round(budget * share * expected)).astype(int)
-                absent = rng.binomial(sched, p_off)
-                covered = rng.binomial(absent, cover_share.get(dept, 0.8))
-                frames.append(pd.DataFrame({
-                    "property": p, "day": np.arange(days), "date": cal["dates"],
-                    "weekend": cal["weekend"], "department": dept, "shift": shift,
-                    "scheduled": sched, "absent": absent, "covered": covered,
-                    "short": absent - covered,
-                    "cover_spend": covered * covered_rate,
-                }))
-    out = pd.concat(frames, ignore_index=True)
+        # Every property at once: a (properties x days) grid per shift.
+        budget = config["staff_per_property"] * np.asarray(size) * heads_share * SHIFTS_PER_HEAD_PER_DAY
+        for shift, share in shifts.items():
+            sched = np.maximum(1, np.round(np.outer(budget * share, expected))).astype(int)
+            absent = rng.binomial(sched, np.broadcast_to(p_off, sched.shape))
+            covered = rng.binomial(absent, cover_share.get(dept, 0.8))
+            n = sched.size
+            cols["property"].append(np.repeat(np.arange(n_props), days))
+            cols["day"].append(np.tile(np.arange(days), n_props))
+            cols["date"].append(np.tile(cal["dates"].to_numpy(), n_props))
+            cols["weekend"].append(np.tile(cal["weekend"], n_props))
+            cols["department"].append(np.full(n, dept, dtype=object))
+            cols["shift"].append(np.full(n, shift, dtype=object))
+            cols["scheduled"].append(sched.ravel())
+            cols["absent"].append(absent.ravel())
+            cols["covered"].append(covered.ravel())
+    out = pd.DataFrame({k: np.concatenate(v) for k, v in cols.items()})
+    out["short"] = out["absent"] - out["covered"]
+    out["cover_spend"] = out["covered"] * covered_rate
     out["month"] = out["date"].dt.strftime("%Y-%m")
     return out
 
@@ -226,7 +231,8 @@ def _comparators(services):
     measured demand. Picking comparators by measured demand favours the ones
     whose demand was over-measured, which makes them look less productive and
     understates the loss: on synthetic data, where the truth is known, that
-    selection effect alone cost about 7% of it.
+    selection effect alone cost 2% to 7% of it, depending on how much demand
+    varies from one service to the next.
     """
     full_all = services[services["full"]]
     position = pd.Series(np.arange(len(full_all)), index=full_all.index)
@@ -399,6 +405,8 @@ def build(feed, config, demand_config, economics):
                 row["indicator"] = {
                     "label": ind["label"],
                     "value": int(round(sd["short"].sum() * ind["per_short_shift"])),
+                    "per_short_shift": ind["per_short_shift"],
+                    "basis": ind.get("basis"),
                     "unpriced": True,
                 }
         by_department.append(row)

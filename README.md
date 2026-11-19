@@ -138,20 +138,26 @@ the model's rates (allowing them to be off by about 10%), simulated 400 times,
 each run priced with one draw of the revenue lost per short shift.
 
 The history is synthetic until a client's attendance, trading and agency
-invoice data is connected: 24 months for eight properties, about 76,000 shifts.
+invoice data is connected: 24 months for 20 properties, about 190,000 shifts.
+The shape of the group is inferred from published norms, cited beside each
+value in `SECTOR_STAFFING`: four-star properties of about 250 rooms at 1.2
+staff per room, food and beverage at about 40% of rooms revenue (R42m a
+property, from 2025 four-star rates and occupancy), breakfast strong and lunch
+the weakest service, and 14 to 18 rooms per room attendant shift.
 Because it is generated, the true loss is known, and the screen shows how close
 the method came. Two things that check caught are now part of the method:
 
 - **Comparators are matched on planned demand, not measured demand.** Picking
   them on noisy measured demand favours services whose demand was
   over-measured, which look less productive; that alone understated the loss
-  by about 7%.
+  by 2% to 7%, depending on how much demand varies.
 - **The range is a shared-weight bootstrap.** Short services near each other
   lean on the same comparators, so their errors move together. Resampling each
   one separately gave a range far too narrow for a total. Across ten fresh
-  histories the truth now falls inside the 80% range eight times.
+  histories the truth now falls inside the 80% range eight times, and the
+  estimate averages 100.2% of it.
 
-About 5% of short services find too few comparators and are left out, so the
+About 3% of short services find too few comparators and are left out, so the
 estimate is a floor. Nothing is keyed by person: the history holds shifts and
 services, never staff. Both agents read the figures through
 `read_staffing_cost`, which returns every estimate as a range. Method:

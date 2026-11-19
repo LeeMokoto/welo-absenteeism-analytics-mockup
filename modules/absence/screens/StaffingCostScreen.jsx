@@ -278,7 +278,7 @@ export default function StaffingCostScreen({ block }) {
                     {d.priced ? (
                       <MoneyRange r={d.lost_revenue_rand} />
                     ) : d.indicator ? (
-                      <span>
+                      <span title={d.indicator.basis || undefined}>
                         {num(d.indicator.value)} {d.indicator.label.toLowerCase()}{" "}
                         <span className="caption">(not priced)</span>
                       </span>
