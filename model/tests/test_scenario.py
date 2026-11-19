@@ -119,3 +119,53 @@ def test_levers_spec_shape():
     assert {"overtime_pct", "sleep_delta", "leave_gap_cap"} <= names
     for s in spec:
         assert {"name", "label", "kind", "min", "max"} <= set(s)
+
+
+# --- The day rate is the tenant's ----------------------------------------------
+
+def test_savings_are_priced_at_the_rate_passed_in():
+    """A hospitality day costs R650, not R1,100. Pricing a hospitality
+    scenario at the industrial rate overstated every rand saving by 69%."""
+    base = scenario.run_scenario(fake_score_fn, INDIVIDUALS, {"overtime_pct": -50})
+    hosp = scenario.run_scenario(fake_score_fn, INDIVIDUALS, {"overtime_pct": -50},
+                                 day_rate_rand=650.0)
+    assert hosp["day_rate_rand"] == 650.0
+    assert hosp["delta"]["predicted_absent_days_90d"] == base["delta"]["predicted_absent_days_90d"]
+    assert hosp["delta"]["cost_saved_rand_annual"] == pytest.approx(
+        base["delta"]["cost_saved_rand_annual"] * 650.0 / 1100.0, abs=1
+    )
+    assert hosp["baseline"]["cost_exposure_rand"] == pytest.approx(
+        hosp["baseline"]["predicted_absent_days_annual"] * 650.0, rel=1e-3
+    )
+
+
+def test_without_a_rate_the_default_applies():
+    r = scenario.run_scenario(fake_score_fn, INDIVIDUALS, {"overtime_pct": -50})
+    assert r["day_rate_rand"] == scenario.RAND_PER_DAY
+
+
+def test_the_rate_is_read_from_the_feed():
+    feed = {"hr_ops": {"assumptions": {"day_rate_rand": 650.0}}}
+    assert scenario.day_rate_from_feed(feed) == 650.0
+
+
+@pytest.mark.parametrize("feed", [None, {}, {"hr_ops": {}}, {"hr_ops": {"assumptions": {}}},
+                                  {"hr_ops": {"assumptions": {"day_rate_rand": 0}}},
+                                  {"hr_ops": {"assumptions": {"day_rate_rand": "n/a"}}}])
+def test_a_feed_without_a_usable_rate_falls_back(feed):
+    assert scenario.day_rate_from_feed(feed) == scenario.RAND_PER_DAY
+
+
+@pytest.mark.parametrize("name", ["hospitality", "manufacturing", "logistics"])
+def test_every_committed_feed_records_the_rate_its_headline_uses(name):
+    """The scenario reads the rate from the feed, so the feed's recorded rate
+    must be the one its own headline was priced at."""
+    import json
+    from pathlib import Path
+    path = Path(__file__).resolve().parents[1] / "data" / "outputs" / f"dashboard_feed.{name}.json"
+    feed = json.loads(path.read_text())
+    h = feed["headline"]
+    rate = scenario.day_rate_from_feed(feed)
+    assert h["absence_cost_exposure_rand"] == pytest.approx(
+        h["predicted_absent_days_annual"] * rate, rel=0.01
+    )
