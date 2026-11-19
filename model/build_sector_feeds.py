@@ -8,21 +8,25 @@ since the model itself is unchanged; SHAP per-row reasons are omitted for the
 sector cohorts, so the dashboard shows indicative drivers there.
 """
 from __future__ import annotations
-import os, sys, json
+
+import json
+import os
+import sys
 import warnings
+
 warnings.filterwarnings("ignore")
-import numpy as np
 import pandas as pd
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, ROOT)
 
+import demand
+import feed_enrich
+import sector_cohorts
+import staffing_cost
+from welo_pipeline.export import build_dashboard_feed
 from welo_pipeline.features import build_features
 from welo_pipeline.score import score
-from welo_pipeline.export import build_dashboard_feed
-import sector_cohorts
-import feed_enrich
-import demand
 
 THRESHOLDS = {"low": 4, "medium": 16, "high": 40}  # from configs/demo.yaml
 
@@ -81,6 +85,52 @@ SECTOR_DEMAND = {
     },
 }
 
+# The staffing cost history, for a sector whose departments earn revenue by
+# service. Synthetic until a client's attendance, trading and agency invoice
+# data is connected; see staffing_cost.py. Group revenue, property count and
+# the shape of each department's shifts are illustrative. `loss_elasticity`
+# is how the synthetic history makes short services lose revenue; the method
+# that estimates the loss never sees it, which is what lets the history check
+# the method.
+SECTOR_STAFFING = {
+    "hospitality": {
+        "properties": 8,
+        "staff_per_property": 750,
+        "history_end": "2026-10-31",
+        "months": 24,
+        "revenue_label": "Food and beverage revenue",
+        "revenue_per_property_annual_rand": 95_000_000,
+        "price_growth_annual": 0.06,
+        "loss_elasticity": 1.6,
+        "services": [
+            {"label": "Breakfast", "revenue_share": 0.18},
+            {"label": "Lunch", "revenue_share": 0.32},
+            {"label": "Dinner", "revenue_share": 0.50},
+        ],
+        # Departments whose staffing shows up in what a service takes.
+        "revenue_departments": ["Kitchen", "Front of house"],
+        # Departments rostered to guest demand; the rest keep their weekly rhythm.
+        "seasonal_departments": ["Kitchen", "Front of house", "Housekeeping", "Front office"],
+        # Each department's shifts, as shares of its daily rostered shifts.
+        "department_shifts": {
+            "Kitchen": {"Breakfast": 0.24, "Lunch": 0.33, "Dinner": 0.43},
+            "Front of house": {"Breakfast": 0.22, "Lunch": 0.33, "Dinner": 0.45},
+            "Housekeeping": {"Morning": 0.75, "Afternoon": 0.25},
+            "Front office": {"Morning": 0.40, "Evening": 0.40, "Night": 0.20},
+            "Maintenance": {"Day": 1.0},
+            "Support and admin": {"Day": 1.0},
+        },
+        # What a short shift does where it does not show up in revenue. Counted,
+        # never priced.
+        "indicators": {
+            "Housekeeping": {"label": "Rooms turned late", "per_short_shift": 14},
+            "Front office": {"label": "Front desk shifts run short", "per_short_shift": 1},
+            "Maintenance": {"label": "Jobs deferred", "per_short_shift": 6},
+            "Support and admin": {"label": "Admin shifts run short", "per_short_shift": 1},
+        },
+    },
+}
+
 # Same benchmark share of exposure as welo_pipeline.export uses for the
 # headline saving, so only the day rate changes between sectors.
 HEADLINE_ADDRESSABLE_SHARE = 0.042
@@ -124,6 +174,10 @@ def build_sector(sector: str) -> dict:
         block = demand.build(feed, SECTOR_DEMAND[sector])
         if block:
             feed["demand"] = block
+    if sector in SECTOR_STAFFING and sector in SECTOR_DEMAND:
+        block = staffing_cost.build(feed, SECTOR_STAFFING[sector], SECTOR_DEMAND[sector], economics)
+        if block:
+            feed["staffing_cost"] = block
 
     out_json = f"{ROOT}/data/outputs/dashboard_feed.{sector}.json"
     json.dump(feed, open(out_json, "w"), indent=2, default=float)
