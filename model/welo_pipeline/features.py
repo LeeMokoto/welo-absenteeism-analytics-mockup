@@ -19,6 +19,8 @@ from typing import List, Tuple
 import numpy as np
 import pandas as pd
 
+from . import roster
+
 
 CATEGORICAL_FEATURES = [
     "gender",
@@ -48,6 +50,10 @@ NUMERIC_FEATURES = [
     "overtime_hours_14d",
     "consecutive_shifts_worked",
     "days_since_last_leave",
+    "short_rest_count_28d",
+    "late_finish_share_28d",
+    "split_shifts_28d",
+    "short_notice_changes_28d",
     "perceived_stress_score",
     "smoker_alcohol_load",
     "inactivity_score",
@@ -95,8 +101,9 @@ def _derive_fatigue_score(out: pd.DataFrame) -> pd.Series:
     leave_gap = _col("days_since_last_leave")
     workload = _col("workload_index_current")
     pss = _col("perceived_stress_score")
+    rostered = {name: _col(name) for name in roster.ROSTER_FEATURES}
 
-    inputs = pd.concat([sleep, overtime, shifts, leave_gap, workload, pss], axis=1)
+    inputs = pd.concat([sleep, overtime, shifts, leave_gap, workload, pss, *rostered.values()], axis=1)
     has_any_input = inputs.notna().any(axis=1)
 
     sleep_deficit = (6.5 - sleep.fillna(6.5)).clip(lower=0) * 6.5
@@ -105,8 +112,18 @@ def _derive_fatigue_score(out: pd.DataFrame) -> pd.Series:
     leave_contrib = (leave_gap.fillna(0) / 180.0 * 15.0).clip(upper=15.0)
     workload_contrib = ((workload.fillna(220) - 240) / 5.0).clip(lower=0, upper=20)
     pss_contrib = (pss.fillna(15) - 13).clip(lower=0) * 0.9
+    # A missing roster value sits at the reference roster, which adds nothing.
+    roster_contrib = pd.Series(
+        roster.fatigue_contribution(
+            *(rostered[name].fillna(roster.REFERENCE[name]).astype(float) for name in roster.ROSTER_FEATURES)
+        ),
+        index=out.index,
+    )
 
-    score = 18.0 + sleep_deficit + overtime_contrib + shift_contrib + leave_contrib + workload_contrib + pss_contrib
+    score = (
+        18.0 + sleep_deficit + overtime_contrib + shift_contrib + leave_contrib
+        + workload_contrib + pss_contrib + roster_contrib
+    )
     score = score.clip(lower=0, upper=100).round(1)
     return score.where(has_any_input, other=pd.NA)
 

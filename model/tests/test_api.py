@@ -70,6 +70,26 @@ def test_scenario_happy_path(client):
     assert body["cached"] is False
 
 
+@pytest.mark.parametrize("lever,value", [
+    ("short_rest_delta", -12),
+    ("late_finish_pct", -50),
+    ("split_shifts_delta", -12),
+    ("short_notice_pct", -50),
+])
+def test_a_roster_fix_prices_a_saving_on_the_real_model(client, lever, value):
+    """The point of the roster features: fixing what the roster check flags
+    moves the model, so the engine can put a number on the fix."""
+    r = client.post("/scenario", json={"adjustments": {lever: value}})
+    assert r.status_code == 200
+    assert r.json()["delta"]["predicted_absent_days_90d"] > 0
+
+
+def test_a_worse_roster_costs_more_on_the_real_model(client):
+    r = client.post("/scenario", json={"adjustments": {"short_rest_delta": 4}})
+    assert r.status_code == 200
+    assert r.json()["delta"]["predicted_absent_days_90d"] < 0
+
+
 def test_scenario_is_cached_on_repeat(client):
     payload = {"adjustments": {"sleep_delta": 0.5}, "dimension": None, "cohort": None}
     first = client.post("/scenario", json=payload).json()

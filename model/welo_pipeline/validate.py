@@ -32,6 +32,10 @@ PLAUSIBILITY_RULES = {
     "overtime_hours_14d": (0, 120),
     "consecutive_shifts_worked": (0, 28),
     "days_since_last_leave": (0, 730),
+    "short_rest_count_28d": (0, 28),
+    "late_finish_share_28d": (0, 1),
+    "split_shifts_28d": (0, 28),
+    "short_notice_changes_28d": (0, 28),
     "perceived_stress_score": (0, 40),
 }
 

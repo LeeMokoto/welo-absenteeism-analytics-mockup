@@ -29,6 +29,7 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 
+from .. import roster
 from .base import BaseAdapter
 
 
@@ -98,6 +99,17 @@ class SyntheticWorkforceAdapter(BaseAdapter):
         consecutive_shifts = rng.poisson(lam=7, size=n).clip(0, 21).astype(int)
         days_since_leave = np.clip(rng.gamma(shape=2.0, scale=55, size=n), 0, 365).round().astype(int)
 
+        # How people were rostered, not just how long they worked: short rests,
+        # late finishes, split shifts and short-notice changes. Drawn from their
+        # own stream so every draw above and below is what it was before.
+        rostered = roster.draw(self.seed, overtime_14d)
+        roster_contrib = roster.fatigue_contribution(
+            rostered["short_rest_count_28d"],
+            rostered["late_finish_share_28d"],
+            rostered["split_shifts_28d"],
+            rostered["short_notice_changes_28d"],
+        )
+
         sleep_deficit = np.clip(6.5 - sleep_hours, 0, None)
         overtime_contrib = np.minimum(overtime_14d / 40.0 * 25.0, 25.0)
         shift_contrib = np.minimum(consecutive_shifts / 14.0 * 15.0, 15.0)
@@ -111,6 +123,7 @@ class SyntheticWorkforceAdapter(BaseAdapter):
             + shift_contrib
             + leave_contrib
             + workload_contrib
+            + roster_contrib
             + fatigue_noise,
             0,
             100,
@@ -173,6 +186,7 @@ class SyntheticWorkforceAdapter(BaseAdapter):
                 "overtime_hours_14d": overtime_14d,
                 "consecutive_shifts_worked": consecutive_shifts,
                 "days_since_last_leave": days_since_leave,
+                **rostered,
                 "perceived_stress_score": perceived_stress,
                 "absence_duration_hours": absence_hours,
                 "source_dataset": f"synthetic_industrial_v1__{self.cohort}",

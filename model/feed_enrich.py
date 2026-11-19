@@ -151,6 +151,10 @@ FEAT = {
     "workload_index_current":           ("Workload index elevated", False),
     "overtime_hours_14d":               ("Overtime hours (14d)", False),
     "consecutive_shifts_worked":        ("Consecutive shifts", False),
+    "short_rest_count_28d":             ("Short rests between shifts", False),
+    "late_finish_share_28d":            ("Late finishes", False),
+    "split_shifts_28d":                 ("Split shifts", False),
+    "short_notice_changes_28d":         ("Short-notice changes", False),
     "bmi":                              ("BMI", False),
     "physical_activity_days_per_week":  ("Low physical activity", True),
     "distance_from_work_km":            ("Commute distance", False),
@@ -162,7 +166,17 @@ ATTR_COLS = ["age", "gender", "tenure_years", "bmi", "smoking_status",
              "workload_index_current", "overtime_hours_14d",
              "consecutive_shifts_worked", "sleep_hours_avg_7d",
              "days_since_last_leave", "distance_from_work_km",
-             "perceived_stress_score", "number_of_dependents"]
+             "perceived_stress_score", "number_of_dependents",
+             "short_rest_count_28d", "late_finish_share_28d",
+             "split_shifts_28d", "short_notice_changes_28d"]
+
+
+# A share runs from 0 to 1, so one decimal place would throw most of it away.
+_TWO_PLACES = {"late_finish_share_28d"}
+
+
+def _places(col):
+    return 2 if col in _TWO_PLACES else 1
 
 
 def _band(series, edges, labels):
@@ -243,7 +257,7 @@ def drivers_for(row, stats):
             z = -z
         if z > 0.4:
             sev = "high" if z > 1.2 else ("medium" if z > 0.75 else "low")
-            out.append((z, {"label": label, "severity": sev, "value": round(float(row[col]), 1)}))
+            out.append((z, {"label": label, "severity": sev, "value": round(float(row[col]), _places(col))}))
     out.sort(key=lambda t: -t[0])
     return [o[1] for o in out[:3]]
 
@@ -265,7 +279,7 @@ def make_individual(row, stats, shap_by_row):
             "Low": round(float(row["prob_low"]), 3),
         },
         "cohorts": {d["key"]: row[d["key"]] for d in DIMENSIONS},
-        "attrs": {c: (round(float(row[c]), 1) if isinstance(row[c], (int, float, np.floating, np.integer)) else row[c]) for c in ATTR_COLS},
+        "attrs": {c: (round(float(row[c]), _places(c)) if isinstance(row[c], (int, float, np.floating, np.integer)) else row[c]) for c in ATTR_COLS},
         "drivers": drivers_for(row, stats),
     }
     sh = shap_by_row.get(int(row["row_id"]))

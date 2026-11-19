@@ -39,7 +39,7 @@ SERIES_PATH = ROOT / "data" / "outputs" / "cohort_series.json"
 def test_canonical_schema_carries_the_time_axis_first():
     assert CANONICAL_COLUMNS[0] == "period_start"
     assert CANONICAL_COLUMNS[1] == "data_as_of"
-    assert len(CANONICAL_COLUMNS) == 25
+    assert len(CANONICAL_COLUMNS) == 29
 
 
 def test_the_required_columns_are_the_ones_that_cannot_be_imputed():

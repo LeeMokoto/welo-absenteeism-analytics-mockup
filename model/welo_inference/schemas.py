@@ -47,6 +47,18 @@ class EmployeeInput(BaseModel):
     overtime_hours_14d: Optional[float] = None
     consecutive_shifts_worked: Optional[int] = None
     days_since_last_leave: Optional[int] = None
+    short_rest_count_28d: Optional[int] = Field(
+        default=None, description="Gaps under 12 hours between shifts, last 28 days"
+    )
+    late_finish_share_28d: Optional[float] = Field(
+        default=None, description="Share of shifts ending at or after 22:00, last 28 days (0 to 1)"
+    )
+    split_shifts_28d: Optional[int] = Field(
+        default=None, description="Days worked as two blocks with a 2-hour gap or more, last 28 days"
+    )
+    short_notice_changes_28d: Optional[int] = Field(
+        default=None, description="Shift changes made with under 48 hours notice, last 28 days"
+    )
     perceived_stress_score: Optional[int] = Field(default=None, description="PSS-10 (0 to 40)")
 
 

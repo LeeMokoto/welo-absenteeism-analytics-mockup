@@ -22,6 +22,12 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 
+from welo_pipeline import roster
+
+# The roster knobs, which roster.draw reads. Departments carry additive shifts
+# under the same names.
+ROSTER_KNOBS = tuple(roster.BASE_PROFILE)
+
 # Baseline knobs match welo_pipeline.adapters.synthetic (the base cohort).
 _BASE = dict(
     age_mean=38.0, age_std=9.0, gender_m=0.82,
@@ -30,6 +36,7 @@ _BASE = dict(
     activity_mean=2.1, workload_mean=220.0, workload_std=45.0,
     sleep_mean=6.4, overtime_scale=12.0, consec_lambda=7,
     bmi_mean=27.4, distance_scale=8.0, tenure_shape=2.2, tenure_scale=3.4,
+    **roster.BASE_PROFILE,
 )
 
 SECTOR_PROFILES = {
@@ -41,6 +48,8 @@ SECTOR_PROFILES = {
         activity_mean=2.4, workload_mean=200.0, workload_std=40.0,
         sleep_mean=6.6, overtime_scale=10.0, consec_lambda=6,
         bmi_mean=28.2, distance_scale=7.0, tenure_shape=2.6, tenure_scale=3.6,
+        # Fixed shift cycles, planned well ahead: few short rests or changes.
+        short_rest_base=0.7, late_share_mean=0.15, split_rate=0.3, short_notice_rate=0.8,
     )},
     "logistics": {**_BASE, **dict(
         label="logistics_sa", emp_base=300_000,
@@ -50,6 +59,8 @@ SECTOR_PROFILES = {
         activity_mean=1.8, workload_mean=210.0, workload_std=50.0,
         sleep_mean=6.1, overtime_scale=14.0, consec_lambda=8,
         bmi_mean=28.8, distance_scale=10.0, tenure_shape=2.0, tenure_scale=3.2,
+        # Night runs and routes that change with the load.
+        short_rest_base=1.3, late_share_mean=0.30, split_rate=0.3, short_notice_rate=1.4,
     )},
     # Hotels, restaurants and contract catering. Younger and more evenly split
     # by gender than heavy industry; tenure is short because churn is high;
@@ -64,17 +75,27 @@ SECTOR_PROFILES = {
         activity_mean=2.3, workload_mean=215.0, workload_std=55.0,
         sleep_mean=6.0, overtime_scale=11.0, consec_lambda=8,
         bmi_mean=26.4, distance_scale=9.0, tenure_shape=1.4, tenure_scale=2.0,
+        # Rosters built week to week around bookings: late closes followed by
+        # early opens, split shifts across lunch and dinner service, and
+        # changes when the bookings move.
+        short_rest_base=1.4, late_share_mean=0.38, split_rate=1.2, short_notice_rate=1.8,
         # Where each person works, and how that shifts their working pattern.
         # Kitchens run hot, long and short of sleep; the floor closes late;
         # housekeeping is heavy but ends earlier; support works office hours.
         # Directional, like every hospitality knob here.
         departments=[
-            {"label": "Kitchen", "share": 0.26, "workload": 25.0, "sleep": -0.3, "overtime": 1.3, "consec": 1},
-            {"label": "Front of house", "share": 0.30, "workload": 5.0, "sleep": -0.4, "overtime": 1.1, "consec": 0},
-            {"label": "Housekeeping", "share": 0.22, "workload": 15.0, "sleep": 0.1, "overtime": 0.8, "consec": 0},
-            {"label": "Front office", "share": 0.10, "workload": -10.0, "sleep": -0.1, "overtime": 0.9, "consec": 0},
-            {"label": "Maintenance", "share": 0.05, "workload": 0.0, "sleep": 0.0, "overtime": 1.0, "consec": 0},
-            {"label": "Support and admin", "share": 0.07, "workload": -30.0, "sleep": 0.3, "overtime": 0.6, "consec": -2},
+            {"label": "Kitchen", "share": 0.26, "workload": 25.0, "sleep": -0.3, "overtime": 1.3, "consec": 1,
+             "short_rest_base": 0.5, "late_share_mean": 0.12, "split_rate": 0.8, "short_notice_rate": 0.2},
+            {"label": "Front of house", "share": 0.30, "workload": 5.0, "sleep": -0.4, "overtime": 1.1, "consec": 0,
+             "short_rest_base": 0.3, "late_share_mean": 0.15, "split_rate": 0.6, "short_notice_rate": 0.4},
+            {"label": "Housekeeping", "share": 0.22, "workload": 15.0, "sleep": 0.1, "overtime": 0.8, "consec": 0,
+             "short_rest_base": -0.4, "late_share_mean": -0.25, "split_rate": -0.4, "short_notice_rate": 0.0},
+            {"label": "Front office", "share": 0.10, "workload": -10.0, "sleep": -0.1, "overtime": 0.9, "consec": 0,
+             "short_rest_base": 0.0, "late_share_mean": 0.02, "split_rate": -0.6, "short_notice_rate": -0.3},
+            {"label": "Maintenance", "share": 0.05, "workload": 0.0, "sleep": 0.0, "overtime": 1.0, "consec": 0,
+             "short_rest_base": -0.2, "late_share_mean": -0.15, "split_rate": -0.8, "short_notice_rate": 0.2},
+            {"label": "Support and admin", "share": 0.07, "workload": -30.0, "sleep": 0.3, "overtime": 0.6, "consec": -2,
+             "short_rest_base": -0.8, "late_share_mean": -0.33, "split_rate": -1.0, "short_notice_rate": -1.0},
         ],
     )},
 }
@@ -127,6 +148,16 @@ def generate_cohort(sector: str, n_rows: int = 6000, random_seed: int = 7) -> pd
         sleep_hours = np.clip(sleep_hours + shift("sleep", 0.0), 3.5, 10.0).round(2)
         overtime_14d = np.clip(overtime_14d * shift("overtime", 1.0), 0, 90).round(1)
         consecutive_shifts = np.clip(consecutive_shifts + shift("consec", 0), 0, 21).astype(int)
+        roster_shifts = {k: shift(k, 0.0) for k in ROSTER_KNOBS}
+    else:
+        roster_shifts = {}
+
+    # Roster patterns: their own stream again, drawn after departments, so
+    # nothing above moves.
+    rostered = roster.draw(
+        random_seed, overtime_14d, profile={k: p[k] for k in ROSTER_KNOBS}, shifts=roster_shifts
+    )
+    roster_contrib = roster.fatigue_contribution(*(rostered[k] for k in roster.ROSTER_FEATURES))
 
     # Fatigue composite and absence DGP: identical to the base generator.
     sleep_deficit = np.clip(6.5 - sleep_hours, 0, None)
@@ -136,7 +167,7 @@ def generate_cohort(sector: str, n_rows: int = 6000, random_seed: int = 7) -> pd
     workload_contrib = np.clip((workload - 240) / 5.0, 0, 20)
     fatigue_noise = rng.normal(0, 6.0, n)
     fatigue = np.clip(18.0 + sleep_deficit * 6.5 + overtime_contrib + shift_contrib
-                      + leave_contrib + workload_contrib + fatigue_noise, 0, 100).round(1)
+                      + leave_contrib + workload_contrib + roster_contrib + fatigue_noise, 0, 100).round(1)
 
     pss_noise = rng.normal(0, 4.0, n)
     perceived_stress = np.clip(8 + 0.28 * fatigue + pss_noise, 0, 40).round().astype(int)
@@ -168,6 +199,7 @@ def generate_cohort(sector: str, n_rows: int = 6000, random_seed: int = 7) -> pd
         "physical_activity_days_per_week": activity, "workload_index_current": workload,
         "sleep_hours_avg_7d": sleep_hours, "overtime_hours_14d": overtime_14d,
         "consecutive_shifts_worked": consecutive_shifts, "days_since_last_leave": days_since_leave,
+        **rostered,
         "perceived_stress_score": perceived_stress, "absence_duration_hours": absence_hours,
         "source_dataset": f"synthetic_{p['label']}",
     })

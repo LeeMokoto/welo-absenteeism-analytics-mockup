@@ -1,11 +1,13 @@
 {
   "n_rows": 6000,
-  "n_cols": 24,
+  "n_cols": 30,
   "rows_per_source": {
     "synthetic_industrial_v1__sa_shift_workforce": 5800,
     "uci_absenteeism": 200
   },
   "missingness_pct": {
+    "period_start": 0.0,
+    "data_as_of": 0.0,
     "employee_id": 0.0,
     "age": 0.0,
     "gender": 3.33,
@@ -26,6 +28,10 @@
     "overtime_hours_14d": 3.33,
     "consecutive_shifts_worked": 3.33,
     "days_since_last_leave": 3.33,
+    "short_rest_count_28d": 3.33,
+    "late_finish_share_28d": 3.33,
+    "split_shifts_28d": 3.33,
+    "short_notice_changes_28d": 3.33,
     "perceived_stress_score": 3.33,
     "absence_duration_hours": 0.0,
     "source_dataset": 0.0,
@@ -44,15 +50,19 @@
     "overtime_hours_14d": 0.0,
     "consecutive_shifts_worked": 0.0,
     "days_since_last_leave": 0.0,
+    "short_rest_count_28d": 0.0,
+    "late_finish_share_28d": 0.0,
+    "split_shifts_28d": 0.0,
+    "short_notice_changes_28d": 0.0,
     "perceived_stress_score": 0.0
   },
   "target_summary": {
     "n_non_null": 6000,
-    "mean": 8.42,
+    "mean": 8.56,
     "median": 3.0,
     "max": 120.0,
-    "zero_share_pct": 20.5,
-    "p95": 34.0
+    "zero_share_pct": 20.75,
+    "p95": 35.0
   },
   "warnings": []
 }
