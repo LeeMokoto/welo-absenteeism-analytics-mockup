@@ -49,6 +49,9 @@ const KEEP = [
   // Demand set against expected absence, by department. Only a sector tenant
   // with departments has one; see model/demand.py.
   "demand",
+  // What short staffing has cost and puts at risk, by month, department and
+  // service. Built from shifts, with no person in it; see model/staffing_cost.py.
+  "staffing_cost",
   "model_metrics",
   "data_provenance",
 ];

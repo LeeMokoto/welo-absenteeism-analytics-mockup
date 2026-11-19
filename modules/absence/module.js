@@ -23,6 +23,7 @@ export const absenceModule = {
     { href: "/absence/outcomes", label: "Outcomes and ROI" },
     { href: "/absence/operations", label: "HR and operations" },
     { href: "/absence/demand", label: "Demand and cover" },
+    { href: "/absence/cost", label: "Cost of short staffing" },
     { href: "/absence/roster", label: "Roster check" },
   ],
   /*

@@ -68061,5 +68061,737 @@ window.WELO_FEED = {
       }
     ],
     "withheld_departments": 0
+  },
+  "staffing_cost": {
+    "measure": {
+      "revenue_label": "Food and beverage revenue",
+      "indicative": true,
+      "source": "Synthetic trading and attendance history, generated for this tenant",
+      "note": "The history is synthetic until the tenant's attendance, trading and agency invoice data is connected. Cover spend is what cover cost. Lost revenue is an estimate, shown as a range: each short-staffed service is compared with fully staffed services like it. Departments whose short shifts do not show up in revenue are counted, not priced."
+    },
+    "method": {
+      "match_on": [
+        "property",
+        "service",
+        "weekday or weekend"
+      ],
+      "window_days": 90,
+      "demand_tolerance": 0.1,
+      "min_matches": 5,
+      "range_percentiles": [
+        10,
+        90
+      ],
+      "unmatched_short_services": 291,
+      "matched_short_services": 10652
+    },
+    "assumptions": {
+      "cover_rate_per_shift_rand": 910.0,
+      "day_rate_rand": 650.0,
+      "cover_premium_rand": 260.0,
+      "cover_share_by_department": {
+        "Front of house": 0.85,
+        "Kitchen": 0.95,
+        "Housekeeping": 0.8,
+        "Front office": 0.9,
+        "Support and admin": 0.3,
+        "Maintenance": 0.4
+      },
+      "properties": 20,
+      "revenue_departments": [
+        "Kitchen",
+        "Front of house"
+      ]
+    },
+    "window": {
+      "start": "2024-11",
+      "end": "2026-10",
+      "months": 24
+    },
+    "history": [
+      {
+        "month": "2024-11",
+        "cover_spend_rand": 6337240.0,
+        "lost_revenue_rand": {
+          "low": 1883979.0,
+          "mid": 2039810.0,
+          "high": 2176845.0
+        },
+        "short_shifts": 1271,
+        "covered_shifts": 6964,
+        "scheduled_shifts": 125085
+      },
+      {
+        "month": "2024-12",
+        "cover_spend_rand": 8537620.0,
+        "lost_revenue_rand": {
+          "low": 1976035.0,
+          "mid": 2134230.0,
+          "high": 2292542.0
+        },
+        "short_shifts": 1677,
+        "covered_shifts": 9382,
+        "scheduled_shifts": 147401
+      },
+      {
+        "month": "2025-01",
+        "cover_spend_rand": 8322860.0,
+        "lost_revenue_rand": {
+          "low": 2257019.0,
+          "mid": 2407065.0,
+          "high": 2580993.0
+        },
+        "short_shifts": 1615,
+        "covered_shifts": 9146,
+        "scheduled_shifts": 142616
+      },
+      {
+        "month": "2025-02",
+        "cover_spend_rand": 4477200.0,
+        "lost_revenue_rand": {
+          "low": 983980.0,
+          "mid": 1077941.0,
+          "high": 1170397.0
+        },
+        "short_shifts": 966,
+        "covered_shifts": 4920,
+        "scheduled_shifts": 95728
+      },
+      {
+        "month": "2025-03",
+        "cover_spend_rand": 5903170.0,
+        "lost_revenue_rand": {
+          "low": 1289325.0,
+          "mid": 1437996.0,
+          "high": 1549634.0
+        },
+        "short_shifts": 1233,
+        "covered_shifts": 6487,
+        "scheduled_shifts": 119718
+      },
+      {
+        "month": "2025-04",
+        "cover_spend_rand": 6619340.0,
+        "lost_revenue_rand": {
+          "low": 1711445.0,
+          "mid": 1829044.0,
+          "high": 1941171.0
+        },
+        "short_shifts": 1361,
+        "covered_shifts": 7274,
+        "scheduled_shifts": 126611
+      },
+      {
+        "month": "2025-05",
+        "cover_spend_rand": 5365360.0,
+        "lost_revenue_rand": {
+          "low": 1153224.0,
+          "mid": 1266713.0,
+          "high": 1352998.0
+        },
+        "short_shifts": 1162,
+        "covered_shifts": 5896,
+        "scheduled_shifts": 103297
+      },
+      {
+        "month": "2025-06",
+        "cover_spend_rand": 5885880.0,
+        "lost_revenue_rand": {
+          "low": 1282081.0,
+          "mid": 1387783.0,
+          "high": 1487069.0
+        },
+        "short_shifts": 1244,
+        "covered_shifts": 6468,
+        "scheduled_shifts": 101653
+      },
+      {
+        "month": "2025-07",
+        "cover_spend_rand": 7386470.0,
+        "lost_revenue_rand": {
+          "low": 1653268.0,
+          "mid": 1786050.0,
+          "high": 1920055.0
+        },
+        "short_shifts": 1509,
+        "covered_shifts": 8117,
+        "scheduled_shifts": 123678
+      },
+      {
+        "month": "2025-08",
+        "cover_spend_rand": 5935930.0,
+        "lost_revenue_rand": {
+          "low": 1244745.0,
+          "mid": 1353863.0,
+          "high": 1452443.0
+        },
+        "short_shifts": 1202,
+        "covered_shifts": 6523,
+        "scheduled_shifts": 104594
+      },
+      {
+        "month": "2025-09",
+        "cover_spend_rand": 5489120.0,
+        "lost_revenue_rand": {
+          "low": 1292799.0,
+          "mid": 1416083.0,
+          "high": 1511014.0
+        },
+        "short_shifts": 1159,
+        "covered_shifts": 6032,
+        "scheduled_shifts": 109897
+      },
+      {
+        "month": "2025-10",
+        "cover_spend_rand": 5784870.0,
+        "lost_revenue_rand": {
+          "low": 1629738.0,
+          "mid": 1760415.0,
+          "high": 1878341.0
+        },
+        "short_shifts": 1148,
+        "covered_shifts": 6357,
+        "scheduled_shifts": 119885
+      },
+      {
+        "month": "2025-11",
+        "cover_spend_rand": 6295380.0,
+        "lost_revenue_rand": {
+          "low": 2004540.0,
+          "mid": 2131017.0,
+          "high": 2273265.0
+        },
+        "short_shifts": 1248,
+        "covered_shifts": 6918,
+        "scheduled_shifts": 124829
+      },
+      {
+        "month": "2025-12",
+        "cover_spend_rand": 8399300.0,
+        "lost_revenue_rand": {
+          "low": 2496908.0,
+          "mid": 2659945.0,
+          "high": 2828977.0
+        },
+        "short_shifts": 1659,
+        "covered_shifts": 9230,
+        "scheduled_shifts": 146745
+      },
+      {
+        "month": "2026-01",
+        "cover_spend_rand": 8454810.0,
+        "lost_revenue_rand": {
+          "low": 3168018.0,
+          "mid": 3373655.0,
+          "high": 3574350.0
+        },
+        "short_shifts": 1681,
+        "covered_shifts": 9291,
+        "scheduled_shifts": 143933
+      },
+      {
+        "month": "2026-02",
+        "cover_spend_rand": 4585490.0,
+        "lost_revenue_rand": {
+          "low": 1146501.0,
+          "mid": 1243965.0,
+          "high": 1349599.0
+        },
+        "short_shifts": 956,
+        "covered_shifts": 5039,
+        "scheduled_shifts": 96194
+      },
+      {
+        "month": "2026-03",
+        "cover_spend_rand": 5832190.0,
+        "lost_revenue_rand": {
+          "low": 1789516.0,
+          "mid": 1908273.0,
+          "high": 2048367.0
+        },
+        "short_shifts": 1252,
+        "covered_shifts": 6409,
+        "scheduled_shifts": 118367
+      },
+      {
+        "month": "2026-04",
+        "cover_spend_rand": 6474650.0,
+        "lost_revenue_rand": {
+          "low": 1784480.0,
+          "mid": 1928097.0,
+          "high": 2089948.0
+        },
+        "short_shifts": 1321,
+        "covered_shifts": 7115,
+        "scheduled_shifts": 127022
+      },
+      {
+        "month": "2026-05",
+        "cover_spend_rand": 5404490.0,
+        "lost_revenue_rand": {
+          "low": 1503460.0,
+          "mid": 1608854.0,
+          "high": 1739006.0
+        },
+        "short_shifts": 1122,
+        "covered_shifts": 5939,
+        "scheduled_shifts": 103258
+      },
+      {
+        "month": "2026-06",
+        "cover_spend_rand": 5799430.0,
+        "lost_revenue_rand": {
+          "low": 1527875.0,
+          "mid": 1638337.0,
+          "high": 1757051.0
+        },
+        "short_shifts": 1289,
+        "covered_shifts": 6373,
+        "scheduled_shifts": 101074
+      },
+      {
+        "month": "2026-07",
+        "cover_spend_rand": 7676760.0,
+        "lost_revenue_rand": {
+          "low": 2313801.0,
+          "mid": 2465404.0,
+          "high": 2620795.0
+        },
+        "short_shifts": 1577,
+        "covered_shifts": 8436,
+        "scheduled_shifts": 125209
+      },
+      {
+        "month": "2026-08",
+        "cover_spend_rand": 5717530.0,
+        "lost_revenue_rand": {
+          "low": 1249802.0,
+          "mid": 1368352.0,
+          "high": 1509874.0
+        },
+        "short_shifts": 1226,
+        "covered_shifts": 6283,
+        "scheduled_shifts": 103531
+      },
+      {
+        "month": "2026-09",
+        "cover_spend_rand": 5351710.0,
+        "lost_revenue_rand": {
+          "low": 1416049.0,
+          "mid": 1539774.0,
+          "high": 1657543.0
+        },
+        "short_shifts": 1174,
+        "covered_shifts": 5881,
+        "scheduled_shifts": 110084
+      },
+      {
+        "month": "2026-10",
+        "cover_spend_rand": 5960500.0,
+        "lost_revenue_rand": {
+          "low": 1873916.0,
+          "mid": 2011827.0,
+          "high": 2134193.0
+        },
+        "short_shifts": 1245,
+        "covered_shifts": 6550,
+        "scheduled_shifts": 120886
+      }
+    ],
+    "last_12_months": {
+      "months": [
+        "2025-11",
+        "2026-10"
+      ],
+      "cover_spend_rand": 75952240.0,
+      "lost_revenue_rand": {
+        "low": 23346970.0,
+        "mid": 23890535.0,
+        "high": 24502907.0
+      },
+      "total_rand": {
+        "low": 99299210.0,
+        "mid": 99842775.0,
+        "high": 100455147.0
+      }
+    },
+    "by_department": [
+      {
+        "label": "Kitchen",
+        "scheduled_shifts": 363669,
+        "short_shifts": 1706,
+        "covered_shifts": 32451,
+        "cover_spend_rand": 29530410.0,
+        "priced": true,
+        "lost_revenue_rand": {
+          "low": 6123997.0,
+          "mid": 6347405.0,
+          "high": 6598981.0
+        },
+        "lost_revenue_per_short_shift_rand": {
+          "low": 3619.0,
+          "mid": 3709.0,
+          "high": 3822.0
+        }
+      },
+      {
+        "label": "Front of house",
+        "scheduled_shifts": 421193,
+        "short_shifts": 4978,
+        "covered_shifts": 27454,
+        "cover_spend_rand": 24983140.0,
+        "priced": true,
+        "lost_revenue_rand": {
+          "low": 17085953.0,
+          "mid": 17542208.0,
+          "high": 18059323.0
+        },
+        "lost_revenue_per_short_shift_rand": {
+          "low": 3299.0,
+          "mid": 3360.0,
+          "high": 3429.0
+        }
+      },
+      {
+        "label": "Housekeeping",
+        "scheduled_shifts": 319638,
+        "short_shifts": 3463,
+        "covered_shifts": 13670,
+        "cover_spend_rand": 12439700.0,
+        "priced": false,
+        "indicator": {
+          "label": "Rooms turned late",
+          "value": 51945,
+          "per_short_shift": 15,
+          "basis": "A room attendant cleans 14 to 18 rooms a shift",
+          "unpriced": true
+        }
+      },
+      {
+        "label": "Front office",
+        "scheduled_shifts": 137257,
+        "short_shifts": 770,
+        "covered_shifts": 7187,
+        "cover_spend_rand": 6540170.0,
+        "priced": false,
+        "indicator": {
+          "label": "Front desk shifts run short",
+          "value": 770,
+          "per_short_shift": 1,
+          "basis": "One per short shift",
+          "unpriced": true
+        }
+      },
+      {
+        "label": "Maintenance",
+        "scheduled_shifts": 71811,
+        "short_shifts": 2504,
+        "covered_shifts": 1728,
+        "cover_spend_rand": 1572480.0,
+        "priced": false,
+        "indicator": {
+          "label": "Jobs deferred",
+          "value": 15024,
+          "per_short_shift": 6,
+          "basis": "An inference: no published norm for jobs per technician shift",
+          "unpriced": true
+        }
+      },
+      {
+        "label": "Support and admin",
+        "scheduled_shifts": 107564,
+        "short_shifts": 2329,
+        "covered_shifts": 974,
+        "cover_spend_rand": 886340.0,
+        "priced": false,
+        "indicator": {
+          "label": "Admin shifts run short",
+          "value": 2329,
+          "per_short_shift": 1,
+          "basis": "One per short shift",
+          "unpriced": true
+        }
+      }
+    ],
+    "by_service": [
+      {
+        "label": "Breakfast",
+        "services": 7300,
+        "short_services": 1688,
+        "short_share": 0.2312,
+        "lost_revenue_rand": {
+          "low": 8361845.0,
+          "mid": 8664699.0,
+          "high": 8937039.0
+        }
+      },
+      {
+        "label": "Lunch",
+        "services": 7300,
+        "short_services": 1304,
+        "short_share": 0.1786,
+        "lost_revenue_rand": {
+          "low": 4501132.0,
+          "mid": 4635281.0,
+          "high": 4763788.0
+        }
+      },
+      {
+        "label": "Dinner",
+        "services": 7300,
+        "short_services": 2444,
+        "short_share": 0.3348,
+        "lost_revenue_rand": {
+          "low": 10145017.0,
+          "mid": 10614493.0,
+          "high": 11089577.0
+        }
+      }
+    ],
+    "forecast": {
+      "start": "2026-11-01",
+      "end": "2027-01-29",
+      "days": 90,
+      "months": [
+        {
+          "month": "2026-11",
+          "days": 30,
+          "short_shifts": {
+            "low": 1094.0,
+            "mid": 1260.0,
+            "high": 1441.0
+          },
+          "cover_spend_rand": {
+            "low": 5445713.0,
+            "mid": 6261710.0,
+            "high": 7090083.0
+          },
+          "lost_revenue_rand": {
+            "low": 1617958.0,
+            "mid": 1856235.0,
+            "high": 2132246.0
+          },
+          "value_at_risk_rand": {
+            "low": 7132398.0,
+            "mid": 8110576.0,
+            "high": 9183454.0
+          }
+        },
+        {
+          "month": "2026-12",
+          "days": 31,
+          "short_shifts": {
+            "low": 1432.0,
+            "mid": 1641.0,
+            "high": 1860.0
+          },
+          "cover_spend_rand": {
+            "low": 7358533.0,
+            "mid": 8464820.0,
+            "high": 9659559.0
+          },
+          "lost_revenue_rand": {
+            "low": 2195988.0,
+            "mid": 2530012.0,
+            "high": 2912493.0
+          },
+          "value_at_risk_rand": {
+            "low": 9551985.0,
+            "mid": 10977847.0,
+            "high": 12493596.0
+          }
+        },
+        {
+          "month": "2027-01",
+          "days": 29,
+          "short_shifts": {
+            "low": 1303.0,
+            "mid": 1504.0,
+            "high": 1717.0
+          },
+          "cover_spend_rand": {
+            "low": 6629350.0,
+            "mid": 7659015.0,
+            "high": 8687861.0
+          },
+          "lost_revenue_rand": {
+            "low": 1975392.0,
+            "mid": 2293219.0,
+            "high": 2635583.0
+          },
+          "value_at_risk_rand": {
+            "low": 8645455.0,
+            "mid": 9954018.0,
+            "high": 11288665.0
+          }
+        }
+      ],
+      "total": {
+        "short_shifts": {
+          "low": 3849.0,
+          "mid": 4405.0,
+          "high": 5035.0
+        },
+        "cover_spend_rand": {
+          "low": 19474728.0,
+          "mid": 22358700.0,
+          "high": 25306736.0
+        },
+        "lost_revenue_rand": {
+          "low": 5830304.0,
+          "mid": 6688885.0,
+          "high": 7675917.0
+        },
+        "value_at_risk_rand": {
+          "low": 25365648.0,
+          "mid": 29008457.0,
+          "high": 32905339.0
+        }
+      },
+      "by_department": [
+        {
+          "label": "Kitchen",
+          "priced": true,
+          "short_shifts": {
+            "low": 438.0,
+            "mid": 508.0,
+            "high": 574.0
+          },
+          "cover_spend_rand": {
+            "low": 7579299.0,
+            "mid": 8710520.0,
+            "high": 9927736.0
+          },
+          "lost_revenue_rand": {
+            "low": 1623289.0,
+            "mid": 1873869.0,
+            "high": 2156660.0
+          },
+          "value_at_risk_rand": {
+            "low": 9245981.0,
+            "mid": 10598244.0,
+            "high": 12025037.0
+          }
+        },
+        {
+          "label": "Front of house",
+          "priced": true,
+          "short_shifts": {
+            "low": 1249.0,
+            "mid": 1436.0,
+            "high": 1633.0
+          },
+          "cover_spend_rand": {
+            "low": 6424145.0,
+            "mid": 7431060.0,
+            "high": 8371181.0
+          },
+          "lost_revenue_rand": {
+            "low": 4176321.0,
+            "mid": 4817410.0,
+            "high": 5518117.0
+          },
+          "value_at_risk_rand": {
+            "low": 10680937.0,
+            "mid": 12231780.0,
+            "high": 13845653.0
+          }
+        },
+        {
+          "label": "Housekeeping",
+          "priced": false,
+          "short_shifts": {
+            "low": 889.0,
+            "mid": 1026.0,
+            "high": 1162.0
+          },
+          "cover_spend_rand": {
+            "low": 3249610.0,
+            "mid": 3739190.0,
+            "high": 4256980.0
+          },
+          "lost_revenue_rand": null,
+          "value_at_risk_rand": {
+            "low": 3249610.0,
+            "mid": 3739190.0,
+            "high": 4256980.0
+          }
+        },
+        {
+          "label": "Front office",
+          "priced": false,
+          "short_shifts": {
+            "low": 197.0,
+            "mid": 229.0,
+            "high": 266.0
+          },
+          "cover_spend_rand": {
+            "low": 1657929.0,
+            "mid": 1893710.0,
+            "high": 2139501.0
+          },
+          "lost_revenue_rand": null,
+          "value_at_risk_rand": {
+            "low": 1657929.0,
+            "mid": 1893710.0,
+            "high": 2139501.0
+          }
+        },
+        {
+          "label": "Maintenance",
+          "priced": false,
+          "short_shifts": {
+            "low": 538.0,
+            "mid": 633.0,
+            "high": 725.0
+          },
+          "cover_spend_rand": {
+            "low": 329420.0,
+            "mid": 382200.0,
+            "high": 437710.0
+          },
+          "lost_revenue_rand": null,
+          "value_at_risk_rand": {
+            "low": 329420.0,
+            "mid": 382200.0,
+            "high": 437710.0
+          }
+        },
+        {
+          "label": "Support and admin",
+          "priced": false,
+          "short_shifts": {
+            "low": 508.0,
+            "mid": 586.0,
+            "high": 665.0
+          },
+          "cover_spend_rand": {
+            "low": 191100.0,
+            "mid": 227045.0,
+            "high": 266721.0
+          },
+          "lost_revenue_rand": null,
+          "value_at_risk_rand": {
+            "low": 191100.0,
+            "mid": 227045.0,
+            "high": 266721.0
+          }
+        }
+      ],
+      "basis": "Shifts rostered to the demand pattern, absences at the model's rate for each department (allowing the rate to be off by about 10%), simulated 400 times; each run's short shifts priced with one draw of the revenue lost per short shift from the history."
+    },
+    "validation": {
+      "synthetic_only": true,
+      "note": "The history is generated, so the true loss is known. This is how close the method came; on a client's data there is no true loss to compare with, and this check is not shown.",
+      "true_lost_revenue_rand": 43931534.0,
+      "estimated_lost_revenue_rand": {
+        "low": 43084941.0,
+        "mid": 43750156.0,
+        "high": 44534138.0
+      },
+      "recovered_share": 0.996,
+      "months_true_within_range": 15,
+      "months": 24
+    }
   }
 };

@@ -19,6 +19,7 @@ import { buildAnalystContext, buildCoordinatorContext } from "./context.js";
 import { buildRecommendation, KIND_KEYS, MAX_HORIZON_DAYS, trackRecord } from "../control-centre/recommendations.js";
 import { TARGETABLE_BY_DEFAULT } from "../control-centre/targeting.js";
 import { GRAINS, demandView, hasDemand } from "./demand.js";
+import { departmentView, hasStaffingCost, summary } from "./staffingCost.js";
 import { checkRoster } from "./roster.js";
 import { rosterGroups, sampleRoster } from "./sampleRoster.js";
 
@@ -202,6 +203,46 @@ export const readDemand = defineTool({
 });
 
 /*
+  What short staffing has cost and what the next 90 days put at risk. The
+  headline, or one department. Cover spend is what was paid; lost revenue is
+  an estimate and comes back as a range, with the method and its caveat, so
+  the agent cannot quote a point figure as if it were a record. Amounts are
+  in Rand.
+*/
+export const readStaffingCost = defineTool({
+  name: "read_staffing_cost",
+  description:
+    "What short staffing has cost and what the next 90 days put at risk, in Rand: cover spend over the last 12 months (what cover cost), lost revenue (an estimate from comparing short-staffed services with fully staffed ones like them, always a low, mid and high range), value at risk for the next 90 days, and what an uncovered shift lost against what cover costs. For the whole group, or one department. Departments whose short shifts do not show in revenue are counted, not priced.",
+  permission: PERMISSIONS.USE_AGENTS,
+  input_schema: {
+    type: "object",
+    properties: {
+      department: { type: "string", description: "A department name from read_cohorts, or leave out for the whole group." },
+    },
+    additionalProperties: false,
+  },
+  run: ({ department } = {}, ctx) => {
+    const portfolio = portfolioOf(ctx);
+    if (!hasStaffingCost(portfolio)) {
+      return { available: false, note: "This tenant has no staffing cost data yet." };
+    }
+    const block = portfolio.staffing_cost;
+    const basis = {
+      note: block.measure.note,
+      indicative: block.measure.indicative,
+      method: block.method,
+      range: "low and high are the 10th and 90th percentiles; mid is the median",
+    };
+    if (department) {
+      const view = departmentView(block, department);
+      if (!view) return { available: false, department, note: "No such department in this tenant's staffing cost data." };
+      return { available: true, basis, department: view };
+    }
+    return { available: true, basis, ...summary(block) };
+  },
+});
+
+/*
   The roster on file, checked against the rest and fatigue rules. In this demo
   tenant that is an example roster generated from its own departments, and the
   tool says so; a client's uploaded roster replaces it. Counts by department
@@ -238,7 +279,15 @@ export const checkRosterTool = defineTool({
   },
 });
 
-const READ_TOOLS = [readPortfolio, readCohorts, readCover, readTrackRecord, readDemand, checkRosterTool];
+const READ_TOOLS = [
+  readPortfolio,
+  readCohorts,
+  readCover,
+  readTrackRecord,
+  readDemand,
+  readStaffingCost,
+  checkRosterTool,
+];
 
 /*
   `canDraft` is whether this tenant has somewhere to put a draft: the control

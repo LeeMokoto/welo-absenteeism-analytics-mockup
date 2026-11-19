@@ -8,21 +8,25 @@ since the model itself is unchanged; SHAP per-row reasons are omitted for the
 sector cohorts, so the dashboard shows indicative drivers there.
 """
 from __future__ import annotations
-import os, sys, json
+
+import json
+import os
+import sys
 import warnings
+
 warnings.filterwarnings("ignore")
-import numpy as np
 import pandas as pd
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, ROOT)
 
+import demand
+import feed_enrich
+import sector_cohorts
+import staffing_cost
+from welo_pipeline.export import build_dashboard_feed
 from welo_pipeline.features import build_features
 from welo_pipeline.score import score
-from welo_pipeline.export import build_dashboard_feed
-import sector_cohorts
-import feed_enrich
-import demand
 
 THRESHOLDS = {"low": 4, "medium": 16, "high": 40}  # from configs/demo.yaml
 
@@ -81,6 +85,77 @@ SECTOR_DEMAND = {
     },
 }
 
+# The staffing cost history, for a sector whose departments earn revenue by
+# service. Synthetic until a client's attendance, trading and agency invoice
+# data is connected; see staffing_cost.py. The shape of the group is inferred
+# from published norms, cited beside each value, not from any client:
+#
+# - Property size: mid-scale full-service hotels run about 1.0 to 1.5 staff per
+#   room, so 300 staff is a four-star of about 250 rooms at 1.2 per room. The
+#   cohort's 6,000 staff make 20 such properties.
+# - Food and beverage revenue: the national four-star average room rate was
+#   about R1,780 at about 64% occupancy in 2025 (BDO, from STR), so rooms earn
+#   about R104m a year at 250 rooms. Full-service F&B runs at roughly 40% of
+#   rooms revenue (about 28% of total revenue), so R42m.
+# - Price growth: income per room night sold rose about 5% year on year in late
+#   2025 (Stats SA P6410).
+# - Revenue by service: breakfast is strong because in-house guests are
+#   captive, lunch is the weakest service in hotel restaurants, dinner the
+#   largest. Shifts follow the same split.
+# - Housekeeping: a room attendant cleans 14 to 18 rooms a shift, so a short
+#   housekeeping shift leaves about 15 rooms late.
+# - Maintenance: no published norm was found for jobs per technician shift;
+#   six is an inference, labelled as such where it is shown.
+#
+# `loss_elasticity` is how the synthetic history makes short services lose
+# revenue. The method that estimates the loss never sees it, which is what lets
+# the history check the method.
+SECTOR_STAFFING = {
+    "hospitality": {
+        "properties": 20,
+        "staff_per_property": 300,
+        "history_end": "2026-10-31",
+        "months": 24,
+        "revenue_label": "Food and beverage revenue",
+        "revenue_per_property_annual_rand": 42_000_000,
+        "price_growth_annual": 0.05,
+        "loss_elasticity": 1.6,
+        "services": [
+            {"label": "Breakfast", "revenue_share": 0.35},
+            {"label": "Lunch", "revenue_share": 0.20},
+            {"label": "Dinner", "revenue_share": 0.45},
+        ],
+        # Departments whose staffing shows up in what a service takes.
+        "revenue_departments": ["Kitchen", "Front of house"],
+        # Departments rostered to guest demand; the rest keep their weekly rhythm.
+        "seasonal_departments": ["Kitchen", "Front of house", "Housekeeping", "Front office"],
+        # Each department's shifts, as shares of its daily rostered shifts.
+        # Kitchen and floor follow revenue by service; rooms are cleaned between
+        # mid-morning check-out and mid-afternoon check-in; the front desk runs
+        # around the clock with a lean night audit.
+        "department_shifts": {
+            "Kitchen": {"Breakfast": 0.32, "Lunch": 0.23, "Dinner": 0.45},
+            "Front of house": {"Breakfast": 0.30, "Lunch": 0.22, "Dinner": 0.48},
+            "Housekeeping": {"Morning": 0.80, "Afternoon": 0.20},
+            "Front office": {"Morning": 0.40, "Evening": 0.40, "Night": 0.20},
+            "Maintenance": {"Day": 1.0},
+            "Support and admin": {"Day": 1.0},
+        },
+        # What a short shift does where it does not show up in revenue. Counted,
+        # never priced. `basis` travels to the screen.
+        "indicators": {
+            "Housekeeping": {"label": "Rooms turned late", "per_short_shift": 15,
+                             "basis": "A room attendant cleans 14 to 18 rooms a shift"},
+            "Front office": {"label": "Front desk shifts run short", "per_short_shift": 1,
+                             "basis": "One per short shift"},
+            "Maintenance": {"label": "Jobs deferred", "per_short_shift": 6,
+                            "basis": "An inference: no published norm for jobs per technician shift"},
+            "Support and admin": {"label": "Admin shifts run short", "per_short_shift": 1,
+                                  "basis": "One per short shift"},
+        },
+    },
+}
+
 # Same benchmark share of exposure as welo_pipeline.export uses for the
 # headline saving, so only the day rate changes between sectors.
 HEADLINE_ADDRESSABLE_SHARE = 0.042
@@ -124,6 +199,10 @@ def build_sector(sector: str) -> dict:
         block = demand.build(feed, SECTOR_DEMAND[sector])
         if block:
             feed["demand"] = block
+    if sector in SECTOR_STAFFING and sector in SECTOR_DEMAND:
+        block = staffing_cost.build(feed, SECTOR_STAFFING[sector], SECTOR_DEMAND[sector], economics)
+        if block:
+            feed["staffing_cost"] = block
 
     out_json = f"{ROOT}/data/outputs/dashboard_feed.{sector}.json"
     json.dump(feed, open(out_json, "w"), indent=2, default=float)
