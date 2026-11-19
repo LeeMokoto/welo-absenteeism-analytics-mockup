@@ -129,3 +129,28 @@ def test_metrics_endpoint_counts_scenario_and_http(client):
     assert set(body) >= {"http", "agents", "scenario", "governance", "totals"}
     assert body["scenario"]["calls"] >= 1
     assert any(k.startswith("POST /scenario") for k in body["http"])
+
+
+def test_a_scenario_is_priced_at_the_feeds_day_rate(client):
+    """A tenant's scenario savings use its own day rate: the hospitality feed
+    is priced at R650 a day, so its savings must be too."""
+    import json
+
+    svc = client.app.state.service
+    cache = client.app.state.scenario_cache
+    original = svc.dashboard_feed
+    hospitality = json.loads(
+        (MODEL_DIR / "data" / "outputs" / "dashboard_feed.hospitality.json").read_text()
+    )
+    try:
+        svc.dashboard_feed = hospitality
+        cache.clear()
+        r = client.post("/scenario", json={"adjustments": {"late_finish_pct": -50}})
+    finally:
+        svc.dashboard_feed = original
+        cache.clear()
+    assert r.status_code == 200
+    body = r.json()
+    assert body["day_rate_rand"] == 650.0
+    base = body["baseline"]
+    assert base["cost_exposure_rand"] == pytest.approx(base["predicted_absent_days_annual"] * 650.0, rel=1e-4)

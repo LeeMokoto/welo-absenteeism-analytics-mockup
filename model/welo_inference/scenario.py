@@ -17,10 +17,22 @@ from __future__ import annotations
 
 from typing import Any, Callable, Dict, List, Optional
 
-# Cost model, kept identical to the feed builder so scenario numbers line up
-# with the rest of the dashboard.
+# Cost model. The day rate is the tenant's: each feed records the rate it was
+# priced at (hr_ops.assumptions.day_rate_rand), and a scenario must use the
+# same one or its savings disagree with every other number on the dashboard.
+# A hospitality day costs R650, not the industrial R1,100. This default only
+# applies to a feed that predates the field.
 RAND_PER_DAY = 1100.0
 ADDRESSABLE = 0.20
+
+
+def day_rate_from_feed(feed: Optional[Dict[str, Any]]) -> float:
+    """The day rate a feed was priced at, or the default if it does not say."""
+    try:
+        rate = float(((feed or {}).get("hr_ops") or {}).get("assumptions", {})["day_rate_rand"])
+    except (KeyError, TypeError, ValueError):
+        return RAND_PER_DAY
+    return rate if rate > 0 else RAND_PER_DAY
 
 # The levers a scenario may pull. Each is bounded so a demo cannot ask the model
 # for a physically silly population (negative overtime, 20 hours of sleep). The
@@ -160,7 +172,7 @@ def _select(individuals: List[Dict[str, Any]], dimension: Optional[str],
     return picked
 
 
-def _aggregate(scores: List[Dict[str, Any]]) -> Dict[str, Any]:
+def _aggregate(scores: List[Dict[str, Any]], day_rate: float) -> Dict[str, Any]:
     n = len(scores)
     days90 = sum(float(s["predicted_absent_days_90d"]) for s in scores)
     days_annual = sum(float(s["predicted_absent_days_monthly"]) * 12.0 for s in scores)
@@ -172,7 +184,7 @@ def _aggregate(scores: List[Dict[str, Any]]) -> Dict[str, Any]:
         "covered_lives": n,
         "predicted_absent_days_90d": round(days90, 0),
         "predicted_absent_days_annual": round(days_annual, 0),
-        "cost_exposure_rand": round(days_annual * RAND_PER_DAY, 0),
+        "cost_exposure_rand": round(days_annual * day_rate, 0),
         "high_or_critical_count": hi_crit,
         "high_or_critical_share": round(hi_crit / n, 4) if n else 0.0,
         "mean_fatigue": mean_fatigue,
@@ -185,13 +197,17 @@ def run_scenario(
     adjustments: Dict[str, float],
     dimension: Optional[str] = None,
     cohort: Optional[str] = None,
+    day_rate_rand: Optional[float] = None,
 ) -> Dict[str, Any]:
     """Re-score a cohort before and after the adjustments.
 
     ``score_fn`` takes a list of employee dicts and returns the model's per-row
     scores (this is InferenceService.score bound by the caller). Both baseline
     and scenario are re-scored through it so the delta is apples to apples.
+    ``day_rate_rand`` prices the days; pass the feed's own rate
+    (day_rate_from_feed) so the rand figures match the dashboard.
     """
+    day_rate = float(day_rate_rand) if day_rate_rand and day_rate_rand > 0 else RAND_PER_DAY
     if not adjustments:
         raise ScenarioError("No adjustments supplied.")
     picked = _select(individuals, dimension, cohort)
@@ -199,15 +215,16 @@ def run_scenario(
     base_emps = [_pad(r.get("attrs") or {}) for r in picked]
     scen_emps = [_pad(apply_adjustments(r.get("attrs") or {}, adjustments)) for r in picked]
 
-    base = _aggregate(score_fn(base_emps))
-    scen = _aggregate(score_fn(scen_emps))
+    base = _aggregate(score_fn(base_emps), day_rate)
+    scen = _aggregate(score_fn(scen_emps), day_rate)
 
     days_saved_90d = round(base["predicted_absent_days_90d"] - scen["predicted_absent_days_90d"], 0)
     annual_days_saved = base["predicted_absent_days_annual"] - scen["predicted_absent_days_annual"]
-    cost_saved = round(annual_days_saved * RAND_PER_DAY, 0)
+    cost_saved = round(annual_days_saved * day_rate, 0)
     return {
         "cohort": {"dimension": dimension, "cohort": cohort, "covered_lives": base["covered_lives"]},
         "adjustments": adjustments,
+        "day_rate_rand": day_rate,
         "baseline": base,
         "scenario": scen,
         "delta": {

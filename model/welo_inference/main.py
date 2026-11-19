@@ -400,7 +400,8 @@ def run_scenario(request: Request, payload: ScenarioRequest) -> Dict[str, Any]:
 
     try:
         result = scenario_engine.run_scenario(
-            score_fn, individuals, payload.adjustments, payload.dimension, payload.cohort
+            score_fn, individuals, payload.adjustments, payload.dimension, payload.cohort,
+            day_rate_rand=scenario_engine.day_rate_from_feed(svc.dashboard_feed),
         )
     except scenario_engine.ScenarioError as exc:
         metrics.record_scenario((time.perf_counter() - start) * 1000, cached=False, error=True)
