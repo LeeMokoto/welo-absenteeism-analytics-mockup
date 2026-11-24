@@ -1,7 +1,7 @@
 import ProposalsScreen from "@/modules/control-centre/screens/ProposalsScreen";
 import { guard } from "@/lib/platform/guard";
 import { PERMISSIONS, can } from "@/lib/platform/roles";
-import { portfolio } from "@/modules/absence/data/portfolio";
+import { getPortfolio } from "@/lib/platform/tenantContext";
 
 export const metadata = { title: "Proposals | Control centre | Welo" };
 export const dynamic = "force-dynamic";
@@ -17,6 +17,7 @@ export const dynamic = "force-dynamic";
   the horizon again with its own clock when the outcome is sent.
 */
 export default async function ProposalsPage() {
+  const portfolio = await getPortfolio();
   const session = await guard(PERMISSIONS.CONTROL_VIEW);
 
   return (

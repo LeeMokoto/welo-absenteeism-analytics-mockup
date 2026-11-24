@@ -1,9 +1,7 @@
 import BriefingScreen from "@/modules/control-centre/screens/BriefingScreen";
-import { getManifest } from "@/lib/platform/manifest";
-import { portfolio } from "@/modules/absence/data/portfolio";
-import { cohortSeries } from "@/modules/control-centre/data/series";
 import { guard } from "@/lib/platform/guard";
 import { PERMISSIONS } from "@/lib/platform/roles";
+import { getCohortSeries, getPortfolio, getTenantManifest } from "@/lib/platform/tenantContext";
 
 export const metadata = { title: "Briefing | Control centre | Welo" };
 export const dynamic = "force-dynamic";
@@ -18,9 +16,11 @@ export const dynamic = "force-dynamic";
   browser it happened to open in.
 */
 export default async function BriefingPage() {
+  const portfolio = await getPortfolio();
+  const cohortSeries = await getCohortSeries();
   await guard(PERMISSIONS.CONTROL_VIEW);
 
-  const manifest = getManifest();
+  const manifest = await getTenantManifest();
   return (
     <BriefingScreen
       dimensions={portfolio.cohort_dimensions || []}

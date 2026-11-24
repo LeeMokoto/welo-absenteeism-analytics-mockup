@@ -1,9 +1,15 @@
+import { notFound } from "next/navigation";
 import ModuleTabs from "@/components/platform/ModuleTabs";
 import absenceModule from "@/modules/absence/module";
+import { getTenantManifest } from "@/lib/platform/tenantContext";
 
 // Module layout: the header and screen tabs shared by every absence screen,
 // taken from the module definition so the tabs and the sidebar cannot disagree.
-export default function AbsenceLayout({ children }) {
+export default async function AbsenceLayout({ children }) {
+  // Gated here, like the control centre, for a tenant without the module.
+  const manifest = await getTenantManifest();
+  if (!manifest.modules.absence) notFound();
+
   return (
     <div className="page">
       <header style={{ paddingTop: 36, maxWidth: 720 }}>

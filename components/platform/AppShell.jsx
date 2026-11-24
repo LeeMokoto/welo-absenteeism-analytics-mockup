@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { CurrencyProvider, CurrencyToggle } from "./Currency";
+import TenantSwitch from "./TenantSwitch";
+import { setTenantScope } from "@/lib/platform/tenantScope";
 
 /*
   The platform shell: a persistent frame around every module.
@@ -62,7 +64,7 @@ function NavLink({ item, active }) {
   );
 }
 
-export default function AppShell({ manifest, navigation, session, rate, children }) {
+export default function AppShell({ manifest, navigation, session, rate, tenants = [], modulePaths = {}, children }) {
   const pathname = usePathname();
 
   // Every screen is a real route, so active state is a path comparison and the
@@ -72,6 +74,8 @@ export default function AppShell({ manifest, navigation, session, rate, children
   const isActive = (href) => pathname === href;
 
   const t = manifest.tenant;
+  // Before any screen renders, so browser-held drafts are read per tenant.
+  setTenantScope(t.key);
 
   return (
     <CurrencyProvider rate={rate}>
@@ -89,6 +93,7 @@ export default function AppShell({ manifest, navigation, session, rate, children
           {t.synthetic ? (
             <span className="shell-synthetic">Synthetic data</span>
           ) : null}
+          {t.switchable ? <TenantSwitch current={t.key} tenants={tenants} modulePaths={modulePaths} /> : null}
           {/* Display currency. In the frame rather than on a screen, because
               it applies to every figure on every screen and a per-screen
               control would imply otherwise. */}

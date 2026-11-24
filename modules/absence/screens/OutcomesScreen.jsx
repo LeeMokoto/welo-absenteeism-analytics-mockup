@@ -1,6 +1,5 @@
 import SectionHeader from "@/modules/sick-leave/components/SectionHeader";
 import Metric from "@/modules/sick-leave/components/Metric";
-import { portfolio } from "../data/portfolio";
 import { num, pct } from "@/modules/sick-leave/format";
 import { CurrencyName, CurrencyNote, Money } from "@/components/platform/Currency";
 import { suppressionLabel, suppressionReason, visibleTotals } from "../suppression";
@@ -29,7 +28,7 @@ import { suppressionLabel, suppressionReason, visibleTotals } from "../suppressi
      that falls below its baseline.
 */
 
-export default function AbsenceOutcomesScreen() {
+export default function AbsenceOutcomesScreen({ portfolio }) {
   const h = portfolio.headline || {};
   const metrics = portfolio.model_metrics || {};
   const reg = metrics.regression || {};

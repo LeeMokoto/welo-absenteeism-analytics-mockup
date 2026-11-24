@@ -20,6 +20,8 @@
   Replacing this with Cloud SQL should change this file and nothing above it.
 */
 
+import { storageKey } from "../../lib/platform/tenantScope.js";
+
 export const STORE_KIND = "mock";
 
 // Where a walkthrough's own records live. Browser-local on purpose: no server
@@ -284,7 +286,7 @@ function readLocal() {
   // normal outcome rather than an error.
   if (typeof window === "undefined") return [];
   try {
-    const raw = window.localStorage.getItem(LOCAL_KEY);
+    const raw = window.localStorage.getItem(storageKey(LOCAL_KEY));
     const parsed = raw ? JSON.parse(raw) : [];
     return Array.isArray(parsed) ? parsed.map((r) => ({ ...r, source: "local" })) : [];
   } catch {
@@ -295,7 +297,7 @@ function readLocal() {
 function writeLocal(records) {
   if (typeof window === "undefined") return false;
   try {
-    window.localStorage.setItem(LOCAL_KEY, JSON.stringify(records));
+    window.localStorage.setItem(storageKey(LOCAL_KEY), JSON.stringify(records));
     return true;
   } catch {
     return false;
@@ -313,7 +315,7 @@ const LOCAL_PLAYBOOKS_KEY = "welo.control-centre.playbooks.v1";
 function readLocalPlaybooks() {
   if (typeof window === "undefined") return [];
   try {
-    const raw = window.localStorage.getItem(LOCAL_PLAYBOOKS_KEY);
+    const raw = window.localStorage.getItem(storageKey(LOCAL_PLAYBOOKS_KEY));
     const parsed = raw ? JSON.parse(raw) : [];
     return Array.isArray(parsed) ? parsed.map((p) => ({ ...p, source: "local" })) : [];
   } catch {
@@ -324,7 +326,7 @@ function readLocalPlaybooks() {
 function writeLocalPlaybooks(records) {
   if (typeof window === "undefined") return false;
   try {
-    window.localStorage.setItem(LOCAL_PLAYBOOKS_KEY, JSON.stringify(records));
+    window.localStorage.setItem(storageKey(LOCAL_PLAYBOOKS_KEY), JSON.stringify(records));
     return true;
   } catch {
     return false;
@@ -348,7 +350,7 @@ const LOCAL_DECISIONS_KEY = "welo.control-centre.playbook-decisions.v1";
 function readLocalDecisions() {
   if (typeof window === "undefined") return {};
   try {
-    const raw = window.localStorage.getItem(LOCAL_DECISIONS_KEY);
+    const raw = window.localStorage.getItem(storageKey(LOCAL_DECISIONS_KEY));
     const parsed = raw ? JSON.parse(raw) : {};
     return parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed : {};
   } catch {
@@ -359,7 +361,7 @@ function readLocalDecisions() {
 function writeLocalDecisions(map) {
   if (typeof window === "undefined") return false;
   try {
-    window.localStorage.setItem(LOCAL_DECISIONS_KEY, JSON.stringify(map));
+    window.localStorage.setItem(storageKey(LOCAL_DECISIONS_KEY), JSON.stringify(map));
     return true;
   } catch {
     return false;
@@ -386,7 +388,7 @@ export function listPlaybooks() {
 export function clearLocalDecisions() {
   if (typeof window === "undefined") return;
   try {
-    window.localStorage.removeItem(LOCAL_DECISIONS_KEY);
+    window.localStorage.removeItem(storageKey(LOCAL_DECISIONS_KEY));
   } catch {
     /* nothing to clear */
   }
@@ -562,7 +564,7 @@ export function clearLocalTasks() {
 export function clearLocalPlaybooks() {
   if (typeof window === "undefined") return;
   try {
-    window.localStorage.removeItem(LOCAL_PLAYBOOKS_KEY);
+    window.localStorage.removeItem(storageKey(LOCAL_PLAYBOOKS_KEY));
   } catch {
     /* nothing to clear */
   }
@@ -591,7 +593,7 @@ export function createIntervention(record) {
 export function clearLocal() {
   if (typeof window === "undefined") return;
   try {
-    window.localStorage.removeItem(LOCAL_KEY);
+    window.localStorage.removeItem(storageKey(LOCAL_KEY));
   } catch {
     /* nothing to clear */
   }

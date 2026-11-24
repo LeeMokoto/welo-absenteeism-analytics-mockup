@@ -1,8 +1,7 @@
-import { getManifest } from "@/lib/platform/manifest";
 import InterventionsScreen from "@/modules/control-centre/screens/InterventionsScreen";
-import { portfolio } from "@/modules/absence/data/portfolio";
 import { guard } from "@/lib/platform/guard";
 import { PERMISSIONS, can } from "@/lib/platform/roles";
+import { getCohortSeries, getPortfolio, getTenantManifest } from "@/lib/platform/tenantContext";
 
 export const metadata = { title: "Interventions | Control centre | Welo" };
 export const dynamic = "force-dynamic";
@@ -14,15 +13,17 @@ export const dynamic = "force-dynamic";
   of its own. The module gate is in the layout.
 */
 export default async function InterventionsPage() {
+  const portfolio = await getPortfolio();
   // Reading the register and adding to it are different permissions. The page
   // needs the first; the create form needs the second, and the API refuses a
   // write without it, so hiding the button is a courtesy rather than the
   // control.
   const session = await guard(PERMISSIONS.CONTROL_VIEW);
 
-  const manifest = getManifest();
+  const manifest = await getTenantManifest();
   return (
     <InterventionsScreen
+      series={await getCohortSeries()}
       dimensions={portfolio.cohort_dimensions || []}
       cohorts={portfolio.cohorts || {}}
       suppressionThreshold={manifest.suppressionThreshold}

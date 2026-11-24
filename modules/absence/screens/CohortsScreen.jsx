@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import SectionHeader from "@/modules/sick-leave/components/SectionHeader";
-import { portfolio } from "../data/portfolio";
 import { num, pct } from "@/modules/sick-leave/format";
 import { CurrencyNote, Money } from "@/components/platform/Currency";
 import { suppressionLabel, suppressionNote, suppressionReason } from "../suppression";
@@ -25,7 +24,7 @@ const BANDS = ["Critical", "High", "Medium", "Low"];
 const concLevel = (s) =>
   s >= 0.2 ? "critical" : s >= 0.12 ? "high" : s >= 0.07 ? "medium" : "low";
 
-export default function CohortsScreen() {
+export default function CohortsScreen({ portfolio }) {
   const dimensions = portfolio.cohort_dimensions || [];
   const [lens, setLens] = useState(dimensions[0]?.key || "cohort_load");
   const dim = dimensions.find((d) => d.key === lens) || {};

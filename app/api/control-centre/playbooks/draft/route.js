@@ -22,13 +22,12 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { requirePermission } from "@/lib/platform/session";
 import { PERMISSIONS, can } from "@/lib/platform/roles";
-import { getManifest } from "@/lib/platform/manifest";
 import { canSaveIntervention } from "@/modules/control-centre/targeting";
 import { parseDraft, validatePlaybook } from "@/modules/control-centre/playbooks";
 import { FALLBACK_NOTICE, fallbackDraft } from "@/modules/control-centre/draftFallback";
-import { portfolio } from "@/modules/absence/data/portfolio";
 import { systemPromptFor, ABSENTEEISM_MODEL, MAX_TOKENS } from "@/app/api/absenteeism/_prompts";
 import { agentFailureLog, explainAgentFailure } from "@/lib/platform/agentErrors";
+import { getPortfolio, getTenantManifest } from "@/lib/platform/tenantContext";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -40,7 +39,7 @@ export const dynamic = "force-dynamic";
   name, because it is not given one, which is a stronger control than asking it
   not to.
 */
-function groundingFor(intervention) {
+function groundingFor(intervention, portfolio, suppressionThreshold) {
   const cohorts = portfolio.cohorts || {};
   const dimensions = portfolio.cohort_dimensions || [];
 
@@ -65,12 +64,13 @@ function groundingFor(intervention) {
       status: intervention.status || "Proposed",
     },
     targeted_cohorts: targeted,
-    suppression_threshold: getManifest().suppressionThreshold,
+    suppression_threshold: suppressionThreshold,
     note: "Cohort aggregates only. No individual records exist in this payload.",
   };
 }
 
 export async function POST(request) {
+  const portfolio = await getPortfolio();
   const { session, allowed } = await requirePermission(PERMISSIONS.USE_AGENTS);
   if (!allowed) {
     return Response.json({ error: "This role may not use the agents." }, { status: 403 });
@@ -100,7 +100,7 @@ export async function POST(request) {
     caller-supplied whatever its history. If it would be refused at save, it is
     refused as a drafting basis too, which keeps one rule in one place.
   */
-  const manifest = getManifest();
+  const manifest = await getTenantManifest();
   const targetCheck = canSaveIntervention(intervention.target, {
     dimensions: portfolio.cohort_dimensions || [],
     cohorts: portfolio.cohorts || {},
@@ -162,7 +162,7 @@ export async function POST(request) {
           role: "user",
           content:
             "DATA (the intervention and the cohort figures behind it):\n```json\n" +
-            JSON.stringify(groundingFor(intervention), null, 2) +
+            JSON.stringify(groundingFor(intervention, portfolio, manifest.suppressionThreshold), null, 2) +
             "\n```\n\nREQUEST:\nDraft the playbook for this intervention.",
         },
       ],
