@@ -1,8 +1,8 @@
 import DemandScreen from "@/modules/absence/screens/DemandScreen";
 import { guard } from "@/lib/platform/guard";
 import { PERMISSIONS } from "@/lib/platform/roles";
-import { portfolio } from "@/modules/absence/data/portfolio";
 import { hasDemand } from "@/modules/absence/demand";
+import { getPortfolio } from "@/lib/platform/tenantContext";
 
 export const metadata = { title: "Demand and cover | Absence analytics | Welo" };
 export const dynamic = "force-dynamic";
@@ -13,6 +13,7 @@ export const dynamic = "force-dynamic";
   model. A tenant without departments gets the screen's empty state.
 */
 export default async function AbsenceDemandPage() {
+  const portfolio = await getPortfolio();
   await guard(PERMISSIONS.VIEW_COHORTS);
   return <DemandScreen demand={hasDemand(portfolio) ? portfolio.demand : null} />;
 }

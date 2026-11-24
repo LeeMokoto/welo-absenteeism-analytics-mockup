@@ -1,8 +1,8 @@
 import StaffingCostScreen from "@/modules/absence/screens/StaffingCostScreen";
 import { guard } from "@/lib/platform/guard";
 import { PERMISSIONS } from "@/lib/platform/roles";
-import { portfolio } from "@/modules/absence/data/portfolio";
 import { hasStaffingCost } from "@/modules/absence/staffingCost";
+import { getPortfolio } from "@/lib/platform/tenantContext";
 
 export const metadata = { title: "Cost of short staffing | Absence analytics | Welo" };
 export const dynamic = "force-dynamic";
@@ -14,6 +14,7 @@ export const dynamic = "force-dynamic";
   state.
 */
 export default async function AbsenceStaffingCostPage() {
+  const portfolio = await getPortfolio();
   await guard(PERMISSIONS.VIEW_COHORTS);
   return <StaffingCostScreen block={hasStaffingCost(portfolio) ? portfolio.staffing_cost : null} />;
 }

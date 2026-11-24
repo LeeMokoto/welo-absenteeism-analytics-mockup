@@ -1,6 +1,5 @@
 import SectionHeader from "@/modules/sick-leave/components/SectionHeader";
 import Metric from "@/modules/sick-leave/components/Metric";
-import { portfolio } from "../data/portfolio";
 import { num, pct } from "@/modules/sick-leave/format";
 import { CurrencyName, CurrencyNote, Money } from "@/components/platform/Currency";
 import { suppressionLabel, suppressionReason } from "../suppression";
@@ -17,11 +16,10 @@ import { buildAnalystContext } from "../context";
   cohort the pipeline withheld.
 */
 
-const LENS_LABEL = Object.fromEntries(
-  (portfolio.cohort_dimensions || []).map((d) => [d.key, d.label])
-);
-
-export default function AbsencePortfolioScreen({ lens = "cohort_load", agentsAvailable = false }) {
+export default function AbsencePortfolioScreen({ portfolio, lens = "cohort_load", agentsAvailable = false }) {
+  const LENS_LABEL = Object.fromEntries(
+    (portfolio.cohort_dimensions || []).map((d) => [d.key, d.label])
+  );
   const h = portfolio.headline || {};
   const threshold = portfolio.suppression_threshold ?? 5;
   const cohorts = (portfolio.cohorts || {})[lens] || [];

@@ -16,7 +16,6 @@ import {
   seeded,
 } from "../store";
 import { blockers, measureOutcome, summarise } from "../outcomes";
-import { cohortSeries } from "../data/series";
 
 /*
   Interventions register.
@@ -33,6 +32,9 @@ import { cohortSeries } from "../data/series";
 */
 
 export default function InterventionsScreen({
+  // The tenant's monthly cohort series, from the page. A client component, so
+  // it is handed one tenant's series rather than importing every tenant's.
+  series = null,
   dimensions,
   cohorts,
   suppressionThreshold,
@@ -119,7 +121,7 @@ export default function InterventionsScreen({
 
         <div className="section grid grid-2">
           {records.map((r) => (
-            <InterventionCard key={r.id} record={r} dimensions={dimensions} />
+            <InterventionCard key={r.id} record={r} dimensions={dimensions} series={series} />
           ))}
         </div>
       </div>
@@ -157,7 +159,7 @@ export default function InterventionsScreen({
   );
 }
 
-function InterventionCard({ record, dimensions }) {
+function InterventionCard({ record, dimensions, series }) {
   const label = (key) => (dimensions || []).find((d) => d.key === key)?.label || key;
   return (
     <div className="card">
@@ -190,7 +192,7 @@ function InterventionCard({ record, dimensions }) {
           figures used to be two hand-written numbers, which meant the one
           screen making a claim about whether the product works was the one
           screen with no measurement behind it. */}
-      <Outcome record={record} />
+      <Outcome record={record} series={series} />
 
       {record.source === "local" ? (
         <div className="indicative" style={{ marginTop: 10 }}>
@@ -398,9 +400,9 @@ function Field({ label, value, onChange, placeholder }) {
   "no outcome yet" for an intervention whose comparators were never frozen
   teaches the reader to wait for a number that is never coming.
 */
-function Outcome({ record }) {
-  const why = blockers(record, cohortSeries);
-  const outcome = why.length ? null : measureOutcome(record, cohortSeries);
+function Outcome({ record, series }) {
+  const why = blockers(record, series);
+  const outcome = why.length ? null : measureOutcome(record, series);
   const said = summarise(outcome);
 
   if (!said) {

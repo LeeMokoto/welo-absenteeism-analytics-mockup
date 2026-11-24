@@ -74,18 +74,37 @@ staff may well take more short absences, which the model would understate.
 The platform can run as a hospitality tenant: the agents, Proposals and the
 control centre then work on the hospitality cohort, with **departments**
 (Kitchen, Front of house, Housekeeping, Front office, Maintenance, Support and
-admin) as a grouping you can report on and target. A tenant is a deployment, so
-it is chosen at build time:
+admin) as a grouping you can report on and target.
 
-| Setting | Value | Why |
+**On the demo, switch tenants in the header.** A synthetic demo that does not
+pin a sector carries both demo groups, and the header offers
+**Industrial | Hospitality** next to the currency toggle. The choice is a
+cookie the server reads on every request, so every screen, every agent lookup
+and every API route works on the group named in the header. Switching reloads
+the page, and drafts held in the browser (interventions, playbooks, proposals)
+are kept per group. The hospitality group has no sick-leave module, so its
+links are gone and its URLs answer 404; switching from a sick-leave screen
+lands on the overview. The rules are in
+[`lib/platform/tenants.js`](lib/platform/tenants.js).
+
+**A real deployment is one tenant, and the switch never appears there.** It is
+hidden, and the cookie ignored, whenever any of these holds:
+
+| Setting | Value | Effect |
 | --- | --- | --- |
-| `WELO_TENANT_SECTOR` | `hospitality` | Builds the absence module and the control centre's outcome series from the hospitality cohort. The build fails if the sector's data is missing, rather than showing the base workforce under a hospitality name |
-| `WELO_MODULE_SICK_LEAVE` | `0` | The sick-leave module's sample data is industrial (plants, depots, warehouses) and has no hospitality version yet |
-| `ANTHROPIC_API_KEY` | your key | Same as any tenant |
+| `WELO_TENANT_SECTOR` | a sector, e.g. `hospitality` | Pins the deployment to that sector. The build carries its data alone, and fails if that data is missing rather than showing the base workforce under a hospitality name |
+| `WELO_TENANT_SYNTHETIC` | `0` | Real data. The build carries the base workforce alone |
+| `WELO_TENANT_SWITCH` | `0` | A demo that should show one group only |
 
-The tenant name defaults to "Demo Hospitality Group"; `WELO_TENANT_NAME` and
-`WELO_TENANT_DESCRIPTOR` still override it. On Vercel, the simplest route is a
-second project on the same repository with these environment variables.
+No browser ever receives two groups' figures: every tenant's data stays on the
+server, and screens that run in the browser get their one group's data as
+props. A test fails if a client component imports tenant data.
+
+A hospitality tenant drops the sick-leave module by default, because its sample
+data is industrial (plants, depots, warehouses); `WELO_MODULE_SICK_LEAVE` still
+overrides that. `WELO_TENANT_NAME` and `WELO_TENANT_DESCRIPTOR` still put a
+prospect's name on a pinned deployment, but not on one that switches, where a
+single name would sit on top of two different groups.
 
 Departments come from the data, not the code: a feed whose cohort has a
 `department` column gets a `cohort_department` grouping, cover priced by

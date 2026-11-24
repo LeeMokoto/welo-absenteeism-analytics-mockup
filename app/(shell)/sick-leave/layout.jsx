@@ -1,8 +1,9 @@
+import { notFound } from "next/navigation";
 import GovernanceNote from "@/modules/sick-leave/components/GovernanceNote";
 import ModuleTabs from "@/components/platform/ModuleTabs";
 import { meta } from "@/modules/sick-leave/data/sampleData";
 import { num } from "@/modules/sick-leave/format";
-import { getManifest } from "@/lib/platform/manifest";
+import { getTenantManifest } from "@/lib/platform/tenantContext";
 
 // Module layout: the header and screen tabs shared by every sick-leave screen.
 // The tabs are links to real routes, mirroring the sidebar, so a screen can be
@@ -13,8 +14,12 @@ const SCREENS = [
   { href: "/sick-leave/ops", label: "HR and operations" },
 ];
 
-export default function SickLeaveLayout({ children }) {
-  const tenant = getManifest().tenant;
+export default async function SickLeaveLayout({ children }) {
+  // Gated here, like the control centre, so no sick-leave screen opens for a
+  // tenant that does not carry the module, whichever way it was reached.
+  const manifest = await getTenantManifest();
+  if (!manifest.modules.sickLeave) notFound();
+  const tenant = manifest.tenant;
 
   return (
     <div className="page">

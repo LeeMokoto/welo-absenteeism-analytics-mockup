@@ -24,7 +24,7 @@ import { requirePermission } from "@/lib/platform/session";
 import { PERMISSIONS, can } from "@/lib/platform/roles";
 import { carriesIndividual } from "@/modules/control-centre/store";
 import { validateRecommendation, decide, closeWithActual } from "@/modules/control-centre/recommendations";
-import { portfolio } from "@/modules/absence/data/portfolio";
+import { getPortfolio } from "@/lib/platform/tenantContext";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -32,6 +32,7 @@ export const dynamic = "force-dynamic";
 const bad = (error, status = 400) => Response.json({ error }, { status });
 
 export async function POST(request) {
+  const portfolio = await getPortfolio();
   let body;
   try {
     body = await request.json();

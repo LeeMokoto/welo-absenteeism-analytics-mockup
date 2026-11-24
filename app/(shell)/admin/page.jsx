@@ -1,6 +1,6 @@
-import { getManifest } from "@/lib/platform/manifest";
 import { guard } from "@/lib/platform/guard";
 import { PERMISSIONS } from "@/lib/platform/roles";
+import { getTenantManifest } from "@/lib/platform/tenantContext";
 
 export const metadata = { title: "Tenant and modules | Welo" };
 export const dynamic = "force-dynamic";
@@ -17,7 +17,7 @@ export const dynamic = "force-dynamic";
 export default async function AdminPage() {
   await guard(PERMISSIONS.VIEW_ADMIN);
 
-  const manifest = getManifest();
+  const manifest = await getTenantManifest();
   const t = manifest.tenant;
   const modules = [
     ["Absence analytics", manifest.modules.absence, "WELO_MODULE_ABSENCE"],

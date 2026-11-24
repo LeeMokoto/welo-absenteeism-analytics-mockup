@@ -27,16 +27,16 @@
 
 import { requirePermission } from "@/lib/platform/session";
 import { PERMISSIONS, can } from "@/lib/platform/roles";
-import { getManifest } from "@/lib/platform/manifest";
 import { blockers, buildTask, stepKey } from "@/modules/control-centre/tasks";
 import { canSaveIntervention } from "@/modules/control-centre/targeting";
 import { carriesIndividual } from "@/modules/control-centre/store";
-import { portfolio } from "@/modules/absence/data/portfolio";
+import { getPortfolio, getTenantManifest } from "@/lib/platform/tenantContext";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function POST(request) {
+  const portfolio = await getPortfolio();
   const { session, allowed } = await requirePermission(PERMISSIONS.CONTROL_CREATE);
   if (!allowed) {
     return Response.json(
@@ -96,7 +96,7 @@ export async function POST(request) {
     under the threshold, and a task naming it would put a sub-threshold cohort
     into somebody's work queue.
   */
-  const manifest = getManifest();
+  const manifest = await getTenantManifest();
   const targetCheck = canSaveIntervention(intervention.target, {
     dimensions: portfolio.cohort_dimensions || [],
     cohorts: portfolio.cohorts || {},

@@ -25,13 +25,14 @@
 
 import { buildRecommendation, closeWithActual, decide } from "./recommendations.js";
 import { carriesIndividual } from "./store.js";
+import { storageKey } from "../../lib/platform/tenantScope.js";
 
 const LOCAL_KEY = "welo.control-centre.recommendations.v1";
 
 function readLocal() {
   if (typeof window === "undefined") return [];
   try {
-    const raw = window.localStorage.getItem(LOCAL_KEY);
+    const raw = window.localStorage.getItem(storageKey(LOCAL_KEY));
     const parsed = raw ? JSON.parse(raw) : [];
     return Array.isArray(parsed) ? parsed : [];
   } catch {
@@ -42,7 +43,7 @@ function readLocal() {
 function writeLocal(records) {
   if (typeof window === "undefined") return false;
   try {
-    window.localStorage.setItem(LOCAL_KEY, JSON.stringify(records));
+    window.localStorage.setItem(storageKey(LOCAL_KEY), JSON.stringify(records));
     return true;
   } catch {
     return false;
@@ -273,7 +274,7 @@ export function applyUpdate(current, updated) {
 export function clearLocalRecommendations() {
   if (typeof window === "undefined") return;
   try {
-    window.localStorage.removeItem(LOCAL_KEY);
+    window.localStorage.removeItem(storageKey(LOCAL_KEY));
   } catch {
     /* nothing to clear */
   }

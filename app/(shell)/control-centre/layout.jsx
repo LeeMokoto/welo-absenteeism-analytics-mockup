@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import ModuleTabs from "@/components/platform/ModuleTabs";
-import { getManifest } from "@/lib/platform/manifest";
 import controlCentreModule from "@/modules/control-centre/module";
+import { getTenantManifest } from "@/lib/platform/tenantContext";
 
 /*
   Control centre layout.
@@ -11,8 +11,8 @@ import controlCentreModule from "@/modules/control-centre/module";
   test for the actions store and the outbound task integration gets a 404 on
   every screen in the module, including ones written later.
 */
-export default function ControlCentreLayout({ children }) {
-  const manifest = getManifest();
+export default async function ControlCentreLayout({ children }) {
+  const manifest = await getTenantManifest();
   if (!manifest.modules.controlCentre) notFound();
 
   return (

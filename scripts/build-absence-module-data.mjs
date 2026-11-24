@@ -13,25 +13,40 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { pinnedSector, tenantsToBuild } from "../lib/platform/tenants.js";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 
 /*
-  Which tenant's data this build carries. WELO_TENANT_SECTOR names a sector
-  cohort (hospitality, say); left unset, the build carries the base workforce,
-  exactly as before. A tenant is a deployment, so the choice is made here, once,
-  rather than switched at runtime. A sector that is named but has no data fails
-  the build: a hospitality tenant quietly showing the base workforce under its
-  own name is the failure this guards against.
+  Which tenants' data this build carries (lib/platform/tenants.js).
+
+  - A deployment that names its sector (WELO_TENANT_SECTOR) carries that
+    sector alone. A sector that is named but has no data fails the build: a
+    hospitality tenant quietly showing the base workforce under its own name
+    is the failure this guards against.
+  - A synthetic demo that does not pin a sector carries every demo tenant, so
+    the tenant switch has something to switch to. A demo sector with no feed
+    is left out with a warning, and the switch simply does not offer it.
+  - Anything else carries the base workforce.
+
+  Every tenant's data is written to one server module. Pages and API routes
+  pick a tenant per request on the server; no client component imports this
+  file, which a test checks, so a browser only ever receives one tenant.
 */
-const SECTOR = (process.env.WELO_TENANT_SECTOR || "").trim().toLowerCase();
-if (SECTOR && !/^[a-z]+$/.test(SECTOR)) {
-  console.error(`WELO_TENANT_SECTOR "${SECTOR}" is not a sector name.`);
-  process.exit(1);
+const TENANTS = tenantsToBuild(process.env);
+for (const t of TENANTS) {
+  if (t.sector && !/^[a-z]+$/.test(t.sector)) {
+    console.error(`WELO_TENANT_SECTOR "${t.sector}" is not a sector name.`);
+    process.exit(1);
+  }
 }
-const SRC = join(ROOT, "model", "data", "outputs", SECTOR ? `dashboard_feed.${SECTOR}.json` : "dashboard_feed.json");
-const DEST_DIR = join(ROOT, "modules", "absence", "data");
-const DEST = join(DEST_DIR, "portfolio.js");
+const PINNED = Boolean(pinnedSector(process.env));
+const feedPath = (sector) =>
+  join(ROOT, "model", "data", "outputs", sector ? `dashboard_feed.${sector}.json` : "dashboard_feed.json");
+// WELO_ABSENCE_DATA_OUT redirects the output, so tests can run the build
+// without rewriting the module the rest of the suite is reading.
+const DEST = process.env.WELO_ABSENCE_DATA_OUT || join(ROOT, "modules", "absence", "data", "portfolio.js");
+const DEST_DIR = dirname(DEST);
 
 // Aggregate sections only. `individuals` and `intervention_queue` are per
 // person and are deliberately not carried into this module's screen data.
@@ -56,36 +71,56 @@ const KEEP = [
   "data_provenance",
 ];
 
-if (!existsSync(SRC)) {
-  if (SECTOR) {
-    console.error(`build-absence-data: no feed for sector "${SECTOR}" at ${SRC}. Run python model/build_sector_feeds.py.`);
-    process.exit(1);
+function build(feed) {
+  const out = {};
+  for (const k of KEEP) if (k in feed) out[k] = feed[k];
+  // Defensive: never let a per-person section through, whatever the feed gains.
+  for (const banned of ["individuals", "intervention_queue"]) {
+    if (banned in out) delete out[banned];
   }
-  console.warn(`build-absence-data: ${SRC} not found; leaving existing module data in place.`);
+  return out;
+}
+
+const portfolios = {};
+for (const t of TENANTS) {
+  const src = feedPath(t.sector);
+  if (!existsSync(src)) {
+    if (PINNED) {
+      console.error(`build-absence-data: no feed for sector "${t.sector}" at ${src}. Run python model/build_sector_feeds.py.`);
+      process.exit(1);
+    }
+    console.warn(`build-absence-data: no feed for ${t.key} at ${src}; the build will not carry it.`);
+    continue;
+  }
+  portfolios[t.key] = build(JSON.parse(readFileSync(src, "utf8")));
+}
+
+const keys = Object.keys(portfolios);
+if (!keys.length) {
+  console.warn("build-absence-data: no feeds found; leaving existing module data in place.");
   process.exit(0);
 }
-
-const feed = JSON.parse(readFileSync(SRC, "utf8"));
-const out = {};
-for (const k of KEEP) if (k in feed) out[k] = feed[k];
-
-// Defensive: never let a per-person section through, whatever the feed gains.
-for (const banned of ["individuals", "intervention_queue"]) {
-  if (banned in out) delete out[banned];
-}
+const DEFAULT_TENANT = keys.includes(TENANTS[0].key) ? TENANTS[0].key : keys[0];
 
 mkdirSync(DEST_DIR, { recursive: true });
 writeFileSync(
   DEST,
   "/*\n  GENERATED FILE. Do not edit by hand.\n" +
-    "  Produced by scripts/build-absence-module-data.mjs from the pipeline feed.\n" +
-    "  Cohort-level aggregates only: no individual records.\n*/\n" +
-    "export const portfolio = " +
-    JSON.stringify(out) +
-    ";\n"
+    "  Produced by scripts/build-absence-module-data.mjs from the pipeline feeds.\n" +
+    "  Cohort-level aggregates only: no individual records. Server-side only:\n" +
+    "  pages read one tenant through lib/platform/tenantContext.js.\n*/\n" +
+    `export const DEFAULT_TENANT = ${JSON.stringify(DEFAULT_TENANT)};\n` +
+    "export const portfolios = " +
+    JSON.stringify(portfolios) +
+    ";\n" +
+    "// The default tenant, for tests and scripts that run outside a request.\n" +
+    "export const portfolio = portfolios[DEFAULT_TENANT];\n"
 );
 
-const kb = (JSON.stringify(out).length / 1024).toFixed(0);
-console.log(
-  `build-absence-data: wrote modules/absence/data/portfolio.js for ${SECTOR || "the base workforce"} (${kb} KB, ${Object.keys(out).length} sections, no individual records).`
-);
+for (const k of keys) {
+  const kb = (JSON.stringify(portfolios[k]).length / 1024).toFixed(0);
+  console.log(
+    `build-absence-data: ${k} (${kb} KB, ${Object.keys(portfolios[k]).length} sections, no individual records).`
+  );
+}
+console.log(`build-absence-data: wrote modules/absence/data/portfolio.js with ${keys.join(", ")}; default ${DEFAULT_TENANT}.`);

@@ -1,10 +1,10 @@
 import Link from "next/link";
-import { getManifest } from "@/lib/platform/manifest";
 import { aggregates as sickLeave, meta as sickLeaveMeta } from "@/modules/sick-leave/data/sampleData";
 import { num, pct } from "@/modules/sick-leave/format";
 import { CurrencyNote, Money } from "@/components/platform/Currency";
 import { guard } from "@/lib/platform/guard";
 import { PERMISSIONS } from "@/lib/platform/roles";
+import { getTenantManifest } from "@/lib/platform/tenantContext";
 
 export const metadata = {
   title: "Overview | Welo Workforce Health Platform",
@@ -16,7 +16,7 @@ export const metadata = {
 export default async function Overview() {
   await guard(PERMISSIONS.VIEW_OVERVIEW);
 
-  const manifest = getManifest();
+  const manifest = await getTenantManifest();
   const m = manifest.modules;
   const sl = sickLeave.headline;
 
