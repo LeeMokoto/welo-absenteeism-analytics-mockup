@@ -294,3 +294,51 @@ test("the as-of date is taken from the caller, so one render reads the same for 
   // Which also moves the waiting figure, deliberately.
   assert.equal(b.decisions.playbooks_awaiting_approval[0].waiting_days, 89);
 });
+
+test("the Monday briefing counts proposals and outcomes to record as decisions, and leads with them", async () => {
+  const { buildBriefing, headline } = await import("./briefing.js");
+  const drafted = { id: "p1", status: "Drafted", title: "Standby cover", horizon: "month", created: "2026-11-10", predicted: { net_rand: 100 } };
+  const measured = {
+    ok: true,
+    proposal: { id: "p2", title: "Roster fix" },
+    cohort: { cohort: "Kitchen" },
+    predicted_saving_rand: 1000,
+    measured_saving_rand: { low: 500, mid: 600, high: 700 },
+    delivered_share: 0.6,
+    shortfall_rand: 400,
+  };
+  const b = buildBriefing({
+    proposals: [drafted, { id: "p2", status: "Approved", created: "2026-03-01", predicted: { horizon_days: 30 } }],
+    measurements: [measured],
+    triggers: [{ fired: true, label: "Weekly", reason: "Roster goes out Thursday", horizon: "week" }, { fired: false, label: "Monthly" }],
+    asOf: "2026-11-24",
+  });
+  assert.equal(b.decisions.proposals_awaiting_decision.length, 1);
+  assert.equal(b.decisions.outcomes_awaiting_record.length, 1);
+  assert.equal(b.decisions.count, 2);
+  assert.equal(b.risk.triggers_fired.length, 1);
+  assert.equal(b.proposals.running, 0, "the finished proposal is not running");
+  assert.match(b.proposals.caveat, /not a proven cause/);
+  assert.match(headline(b), /^2 things waiting on a person/);
+  assert.match(headline(b), /1 planning trigger due/);
+});
+
+test("the briefing paragraph without a key is built from the briefing and says it is not a model", async () => {
+  const { fallbackAnswer, NOT_A_MODEL } = await import("../absence/agentFallback.js");
+  const text = fallbackAnswer("analyst", "Write this week's briefing paragraph", {
+    briefing: {
+      headline: "2 things waiting on a person.",
+      waiting_on_a_person: {
+        proposals: [{ title: "Standby cover" }],
+        outcomes_to_record: [{ title: "Roster fix", measured_saving_rand: { low: 500, mid: 600, high: 700 }, delivered_share: 0.6, shortfall_rand: 400 }],
+      },
+      risk_ahead: { value_at_risk_90d: { low: 10, mid: 20, high: 30 }, by_department: [{ label: "Kitchen", value_at_risk_rand: { low: 1, mid: 2, high: 3 } }], triggers_fired: [{ label: "Weekly" }] },
+      track_record: { summary: "1 closed so far." },
+      caveat: "An observed difference, not a proven cause.",
+    },
+  });
+  assert.ok(text.startsWith(NOT_A_MODEL));
+  assert.match(text, /60% of its prediction, short by R400/);
+  assert.match(text, /most of it in Kitchen/);
+  assert.match(text, /not a proven cause/);
+});

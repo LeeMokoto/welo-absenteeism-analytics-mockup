@@ -177,6 +177,28 @@ a shortfall plainly. The base series is unchanged.
 A **reviewer_shortfall** eval checks that a live Reviewer says the proposal
 fell short, with the measured figures, and does not dress it as a success.
 
+### The Monday briefing
+
+The control centre's briefing is now the **Monday briefing**, for the week it
+opens in. It keeps the briefing's rules (decisions first, cohort level,
+caveats carried in full, nothing sent anywhere) and adds:
+
+- **Waiting on a person:** proposals awaiting a decision, and finished
+  proposals whose outcome is not yet recorded, with what the Reviewer measured
+  against what was predicted and any shortfall.
+- **Risk ahead:** the Planner's triggers that are due, and the next 90 days'
+  value at risk by department. Property is not a reporting dimension in the
+  data yet, so the briefing goes by department, and says so.
+- **One written paragraph,** asked of the Analyst from the briefing's own
+  figures and labelled as written by an agent. Without a key, the same
+  paragraph is assembled from the figures and says it is not a model.
+- **Activity:** proposals running and closed, with the track record's own
+  sentence about whether there are enough to judge.
+
+Proposals and their measurements are worked out in the browser from the
+tenant's examples and its own records, with the same fixed code the Reviewer
+uses, so the briefing cannot say more than the Proposals screen does.
+
 Departments come from the data, not the code: a feed whose cohort has a
 `department` column gets a `cohort_department` grouping, cover priced by
 department, and a department table on the operations screen. Feeds without one

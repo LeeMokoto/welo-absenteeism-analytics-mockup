@@ -33,6 +33,7 @@
 import { evaluateAll } from "./alerts.js";
 import { blockers as outcomeBlockers, measureOutcome, summarise } from "./outcomes.js";
 import { approvalBlockers } from "./playbooks.js";
+import { horizonLabel, trackRecord } from "./recommendations.js";
 
 const daysBetween = (from, to) => {
   const a = Date.parse(from);
@@ -60,6 +61,16 @@ export function buildBriefing({
   suppressionThreshold = 5,
   asOf = new Date().toISOString().slice(0, 10),
   tenant = null,
+  // The agents' proposals, examples and this browser's own.
+  proposals = [],
+  // Finished proposals as the Reviewer measured them (review.js).
+  measurements = [],
+  // The Planner's triggers (plannerTriggers.js), worked out on the server.
+  triggers = [],
+  // The staffing cost headline (staffingCost.js summary), where the tenant
+  // has one, and its 90-day value at risk by department.
+  staffingCost = null,
+  riskByDepartment = [],
 } = {}) {
   /* --- Needs a person ---------------------------------------------------- */
 
@@ -94,6 +105,31 @@ export function buildBriefing({
         .filter((s) => !tasks.some((t) => t.playbook_id === p.id && t.instruction === String(s.action || "").trim() && t.status !== "Cancelled"))
         .map((s) => ({ playbook: p.title, playbook_id: p.id, owner: s.owner, horizon: s.horizon })),
     );
+
+  /* --- Proposals waiting on a person ---------------------------------------- */
+  const proposalsAwaiting = (proposals || [])
+    .filter((r) => r.status === "Drafted")
+    .map((r) => ({
+      id: r.id,
+      title: r.title,
+      horizon: horizonLabel(r.horizon),
+      net_rand: r.predicted?.net_rand ?? null,
+      waiting_days: daysBetween(r.created, asOf),
+    }))
+    .sort((a, b) => (b.waiting_days || 0) - (a.waiting_days || 0));
+  const outcomesAwaiting = (measurements || []).map((m) =>
+    m.ok
+      ? {
+          id: m.proposal.id,
+          title: m.proposal.title,
+          cohort: m.cohort.cohort,
+          predicted_saving_rand: m.predicted_saving_rand,
+          measured_saving_rand: m.measured_saving_rand,
+          delivered_share: m.delivered_share,
+          shortfall_rand: m.shortfall_rand,
+        }
+      : { id: m.id, title: m.title, reasons: m.reasons },
+  );
 
   /* --- What the rules noticed -------------------------------------------- */
 
@@ -155,6 +191,23 @@ export function buildBriefing({
 
   const sent = tasks.filter((t) => t.status !== "Cancelled");
 
+  /* --- Risk ahead ------------------------------------------------------- */
+  const fired = (triggers || []).filter((t) => t.fired);
+  const risk = {
+    triggers_fired: fired.map((t) => ({ label: t.label, reason: t.reason, horizon: horizonLabel(t.horizon) })),
+    value_at_risk_90d: staffingCost?.next_90_days?.value_at_risk_rand || null,
+    from: staffingCost?.next_90_days?.from || null,
+    to: staffingCost?.next_90_days?.to || null,
+    by_department: (riskByDepartment || [])
+      .filter((d) => d.value_at_risk_rand)
+      .map((d) => ({ label: d.label, value_at_risk_rand: d.value_at_risk_rand }))
+      .sort((a, b) => b.value_at_risk_rand.mid - a.value_at_risk_rand.mid),
+    note: staffingCost
+      ? "Value at risk is cover the coming gaps will need plus the revenue they will lose, a forecast and a range. By department: property is not a reporting dimension in this tenant's data yet."
+      : null,
+  };
+  const record = trackRecord(proposals || []);
+
   return {
     as_of: asOf,
     tenant: tenant ? { name: tenant.name, environment: tenant.environment, synthetic: tenant.synthetic } : null,
@@ -164,8 +217,13 @@ export function buildBriefing({
     decisions: {
       playbooks_awaiting_approval: awaitingDecision,
       approved_steps_not_yet_sent: approvedNotSent,
-      count: awaitingDecision.length + approvedNotSent.length,
+      proposals_awaiting_decision: proposalsAwaiting,
+      // Finished proposals whose outcome a person has not yet recorded, with
+      // what the Reviewer measured.
+      outcomes_awaiting_record: outcomesAwaiting,
+      count: awaitingDecision.length + approvedNotSent.length + proposalsAwaiting.length + outcomesAwaiting.length,
     },
+    risk,
 
     attention: {
       rules_firing: firing,
@@ -181,6 +239,20 @@ export function buildBriefing({
     outcomes: {
       measured,
       not_yet_measurable: notYetMeasurable,
+    },
+    proposals: {
+      // Approved and still within its horizon: not among the finished ones.
+      running: (proposals || []).filter(
+        (r) => r.status === "Approved" && !outcomesAwaiting.some((o) => o.id === r.id),
+      ).length,
+      track_record: {
+        closed: record.closed,
+        enough: record.enough,
+        summary: record.summary,
+      },
+      caveat: outcomesAwaiting.length
+        ? "Measured savings are an observed difference against comparable cohorts frozen at approval, not a proven cause."
+        : null,
     },
 
     activity: {
@@ -215,6 +287,7 @@ export function headline(briefing) {
   const d = briefing.decisions?.count || 0;
   const f = (briefing.attention?.rules_firing || []).length;
   const m = (briefing.outcomes?.measured || []).length;
+  const t = (briefing.risk?.triggers_fired || []).length;
 
   const parts = [];
   parts.push(
@@ -222,6 +295,7 @@ export function headline(briefing) {
       ? "Nothing is waiting on a decision"
       : `${d} thing${d === 1 ? "" : "s"} waiting on a person`,
   );
+  if (t) parts.push(`${t} planning trigger${t === 1 ? "" : "s"} due`);
   if (f) parts.push(`${f} alert rule${f === 1 ? "" : "s"} firing`);
   if (m) parts.push(`${m} intervention${m === 1 ? "" : "s"} now measurable`);
   return parts.join(", ") + ".";

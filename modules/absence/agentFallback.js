@@ -158,6 +158,7 @@ function plannerReturnToWork(ctx) {
 
 const ANSWERS = {
   analyst: [
+    { when: /briefing paragraph/i, answer: analystBriefing },
     { when: /concentrat|where.*(exposure|absence|cost)|cost.*where/i, answer: analystConcentration },
     { when: /fatigue|burnout|risk.*cohort|cohort.*risk/i, answer: analystFatigue },
     { when: /leverage|highest|intervention|saving|addressable/i, answer: analystLeverage },
@@ -172,6 +173,46 @@ const ANSWERS = {
     { when: /return to work|rtw|caseload/i, answer: plannerReturnToWork },
   ],
 };
+
+// --- The briefing paragraph -------------------------------------------------
+//
+// The Monday briefing asks the Analyst for one paragraph. Without a key, the
+// same paragraph is assembled from the briefing's own figures and says so.
+
+const rangeText = (r) => (r ? `${rand(r.low)} to ${rand(r.high)}` : "unknown");
+
+function analystBriefing(ctx) {
+  const b = ctx.briefing || {};
+  const w = b.waiting_on_a_person || {};
+  const risk = b.risk_ahead || {};
+  const parts = [`**This week.** ${b.headline || "No headline."}`];
+
+  const proposals = w.proposals || [];
+  if (proposals.length) {
+    parts.push(
+      `${proposals.length} proposal${proposals.length === 1 ? " waits" : "s wait"} for a decision, led by "${proposals[0].title}".`,
+    );
+  }
+  const outcomes = (w.outcomes_to_record || []).filter((o) => !o.reasons);
+  for (const o of outcomes) {
+    const share = o.delivered_share == null ? "" : ` ${Math.round(o.delivered_share * 100)}% of its prediction`;
+    const short = o.shortfall_rand > 0 ? `, short by ${rand(o.shortfall_rand)}` : "";
+    parts.push(`"${o.title}" has finished and measures at ${rangeText(o.measured_saving_rand)}:${share}${short}. Its outcome is waiting to be recorded.`);
+  }
+  if (risk.value_at_risk_90d) {
+    const top = (risk.by_department || [])[0];
+    parts.push(
+      `Ahead, ${rangeText(risk.value_at_risk_90d)} is at risk over the next 90 days${top ? `, most of it in ${top.label} (${rangeText(top.value_at_risk_rand)})` : ""}.`,
+    );
+  }
+  const fired = risk.triggers_fired || [];
+  if (fired.length) {
+    parts.push(`Planning triggers due: ${fired.map((t) => t.label).join("; ")}.`);
+  }
+  if (b.track_record?.summary) parts.push(b.track_record.summary);
+  if (b.caveat) parts.push(b.caveat);
+  return parts.join(" ");
+}
 
 // --- Reviewer ----------------------------------------------------------------
 //

@@ -1,7 +1,9 @@
 import BriefingScreen from "@/modules/control-centre/screens/BriefingScreen";
 import { guard } from "@/lib/platform/guard";
-import { PERMISSIONS } from "@/lib/platform/roles";
+import { PERMISSIONS, can } from "@/lib/platform/roles";
 import { getCohortSeries, getPortfolio, getTenantManifest } from "@/lib/platform/tenantContext";
+import { plannerTriggers } from "@/modules/absence/plannerTriggers";
+import { hasStaffingCost, summary } from "@/modules/absence/staffingCost";
 
 export const metadata = { title: "Briefing | Control centre | Welo" };
 export const dynamic = "force-dynamic";
@@ -18,9 +20,14 @@ export const dynamic = "force-dynamic";
 export default async function BriefingPage() {
   const portfolio = await getPortfolio();
   const cohortSeries = await getCohortSeries();
-  await guard(PERMISSIONS.CONTROL_VIEW);
+  const session = await guard(PERMISSIONS.CONTROL_VIEW);
 
   const manifest = await getTenantManifest();
+  const now = new Date();
+  // The week the briefing is for: this week's Monday.
+  const monday = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() - ((now.getUTCDay() + 6) % 7)));
+  const weekOf = monday.toLocaleDateString("en-ZA", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
+  const block = hasStaffingCost(portfolio) ? portfolio.staffing_cost : null;
   return (
     <BriefingScreen
       dimensions={portfolio.cohort_dimensions || []}
@@ -28,7 +35,15 @@ export default async function BriefingPage() {
       series={cohortSeries}
       suppressionThreshold={manifest.suppressionThreshold}
       tenant={manifest.tenant}
-      asOf={new Date().toISOString().slice(0, 10)}
+      asOf={now.toISOString().slice(0, 10)}
+      now={now.toISOString()}
+      weekOf={weekOf}
+      dayRate={portfolio.hr_ops?.assumptions?.day_rate_rand ?? null}
+      triggers={plannerTriggers(portfolio, { today: now })}
+      staffingCost={block ? summary(block) : null}
+      riskByDepartment={block ? block.forecast.by_department : []}
+      agentsAvailable={Boolean(process.env.ANTHROPIC_API_KEY)}
+      canAskAgents={can(session, PERMISSIONS.USE_AGENTS)}
     />
   );
 }
