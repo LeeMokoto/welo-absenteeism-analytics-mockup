@@ -24,11 +24,11 @@ export const AGENTS = {
       "What is the highest leverage move available",
     ],
   },
-  coordinator: {
-    id: "coordinator",
-    roleTag: "COVER AND ROSTER COORDINATOR",
+  planner: {
+    id: "planner",
+    roleTag: "PLANNER",
     description:
-      "Turns the predicted cover gap, overtime load and return-to-work caseload into concrete staffing actions. Cohort level only, never an individual.",
+      "Turns priced risk into proposals for a person to approve: what to change before next week's roster goes out, for the month ahead, or for the season. Prices each one and says how. Cohorts and departments only, never an individual.",
     chips: [
       "Where does the cover gap land hardest over the next 90 days",
       "Which cohorts carry the heaviest overtime load",

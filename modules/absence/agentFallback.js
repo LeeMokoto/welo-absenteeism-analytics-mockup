@@ -99,9 +99,9 @@ function analystLeverage(ctx) {
     .join("\n\n");
 }
 
-// --- Coordinator -----------------------------------------------------------
+// --- Planner -----------------------------------------------------------
 
-function coordinatorCoverGap(ctx) {
+function plannerCoverGap(ctx) {
   const h = ctx.headline || {};
   const cover = ctx.cover || {};
   const top = byDesc(ctx.by_cohort, "cover_gap_days_90d");
@@ -122,7 +122,7 @@ function coordinatorCoverGap(ctx) {
     .join("\n\n");
 }
 
-function coordinatorOvertime(ctx) {
+function plannerOvertime(ctx) {
   const cover = ctx.cover || {};
   const top = byDesc(ctx.by_cohort, "overtime_mean_14d");
   const lead = top[0];
@@ -139,7 +139,7 @@ function coordinatorOvertime(ctx) {
     .join("\n\n");
 }
 
-function coordinatorReturnToWork(ctx) {
+function plannerReturnToWork(ctx) {
   const r = ctx.return_to_work || {};
   const top = byDesc(ctx.by_cohort, "rtw_caseload")[0];
 
@@ -162,10 +162,10 @@ const ANSWERS = {
     { when: /fatigue|burnout|risk.*cohort|cohort.*risk/i, answer: analystFatigue },
     { when: /leverage|highest|intervention|saving|addressable/i, answer: analystLeverage },
   ],
-  coordinator: [
-    { when: /cover gap|gap.*(hard|land)|where.*gap|90 days|ninety days/i, answer: coordinatorCoverGap },
-    { when: /overtime|relief|roster load/i, answer: coordinatorOvertime },
-    { when: /return to work|rtw|caseload/i, answer: coordinatorReturnToWork },
+  planner: [
+    { when: /cover gap|gap.*(hard|land)|where.*gap|90 days|ninety days/i, answer: plannerCoverGap },
+    { when: /overtime|relief|roster load/i, answer: plannerOvertime },
+    { when: /return to work|rtw|caseload/i, answer: plannerReturnToWork },
   ],
 };
 

@@ -63,7 +63,7 @@ export function exampleRecommendations(context) {
     ...buildRecommendation(
       draft,
       {
-        agent: "coordinator",
+        agent: "planner",
         requestedBy: EXAMPLE_REQUESTER,
         dataVersion: "example",
         trace: [

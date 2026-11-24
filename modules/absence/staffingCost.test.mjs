@@ -115,7 +115,7 @@ test("a tenant without the block gets the empty state, not a crash", () => {
 });
 
 test("both agents can read the staffing cost", () => {
-  for (const agent of ["analyst", "coordinator"]) {
+  for (const agent of ["analyst", "planner"]) {
     assert.ok(toolsFor(agent).some((t) => t.name === "read_staffing_cost"), agent);
   }
 });

@@ -13,7 +13,7 @@ import { portfolio } from "./data/portfolio.js";
 */
 
 const session = (role) => ({ email: `${role}@example.com`, role, permissions: ROLES[role].permissions });
-const ctx = (role, extra = {}) => ({ portfolio, session: session(role), agent: "coordinator", trace: [], drafts: [], ...extra });
+const ctx = (role, extra = {}) => ({ portfolio, session: session(role), agent: "planner", trace: [], drafts: [], ...extra });
 const use = (name, input = {}) => ({ type: "tool_use", id: "t1", name, input });
 
 const draft = {
@@ -21,17 +21,18 @@ const draft = {
   title: "Cap consecutive shifts for high-intensity operations",
   rationale: "The highest absence per head sits with the heaviest roster.",
   target: [{ dimension: "cohort_load", cohort: "High-intensity ops" }],
+  horizon: "season",
   predicted: { saving_rand: 250000, cost_rand: 40000, basis: "Scenario run on fewer consecutive shifts.", horizon_days: 90 },
 };
 
-test("only the coordinator can draft; the analyst reads", () => {
-  assert.ok(toolsFor("coordinator").some((t) => t.name === "draft_recommendation"));
+test("only the planner can draft; the analyst reads", () => {
+  assert.ok(toolsFor("planner").some((t) => t.name === "draft_recommendation"));
   assert.ok(!toolsFor("analyst").some((t) => t.name === "draft_recommendation"));
   assert.deepEqual(toolsFor("case"), []);
 });
 
 test("no tool approves anything", () => {
-  for (const agent of ["analyst", "coordinator"]) {
+  for (const agent of ["analyst", "planner"]) {
     for (const t of toolsFor(agent)) assert.ok(!/approve|decide|book|send|dispatch/.test(t.name), t.name);
   }
 });
@@ -144,4 +145,22 @@ test("check_roster returns counts by department, never a staff reference, and sa
   assert.equal(out.available, true);
   assert.match(out.roster, /Example roster/);
   assert.ok(out.by_department.length > 0);
+});
+
+
+test("a draft must say its horizon, and the horizon must match its days", () => {
+  const c = ctx("analyst");
+  const { horizon, ...noHorizon } = draft;
+  const missing = runTool([draftRecommendation], use("draft_recommendation", noHorizon), c);
+  assert.equal(missing.is_error, true, "a draft without a horizon was accepted");
+  const wrong = runTool([draftRecommendation], use("draft_recommendation", { ...draft, horizon: "week" }), c);
+  assert.equal(wrong.is_error, true);
+  assert.match(wrong.content, /next week proposal runs 1 to 14 days/i);
+  const ok = runTool(
+    [draftRecommendation],
+    use("draft_recommendation", { ...draft, horizon: "week", predicted: { ...draft.predicted, horizon_days: 7 } }),
+    c,
+  );
+  assert.equal(JSON.parse(ok.content).status, "Drafted");
+  assert.equal(c.drafts.at(-1).horizon, "week");
 });

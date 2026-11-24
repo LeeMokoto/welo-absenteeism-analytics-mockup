@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 
 import { AGENTS, AGENT_IDS } from "./agentMeta.js";
-import { buildAnalystContext, buildCoordinatorContext } from "./context.js";
+import { buildAnalystContext, buildPlannerContext } from "./context.js";
 import { canAnswer, fallbackAnswer, refusal, NOT_A_MODEL } from "./agentFallback.js";
 import { portfolio } from "./data/portfolio.js";
 
@@ -18,7 +18,7 @@ import { portfolio } from "./data/portfolio.js";
 */
 
 const analyst = () => buildAnalystContext(portfolio);
-const coordinator = () => buildCoordinatorContext(portfolio);
+const planner = () => buildPlannerContext(portfolio);
 
 // --- The grounding carries nothing the screen withholds ---------------------
 
@@ -34,17 +34,17 @@ test("a suppressed cohort never reaches the analyst grounding", () => {
   assert.ok(ctx.suppression.withheld_cohorts >= 1, "the agent was not told one was withheld");
 });
 
-test("a suppressed cohort never reaches the coordinator grounding", () => {
+test("a suppressed cohort never reaches the planner grounding", () => {
   const feed = structuredClone(portfolio);
   feed.hr_ops.by_cohort = [...feed.hr_ops.by_cohort, SUPPRESSED];
-  const ctx = buildCoordinatorContext(feed);
+  const ctx = buildPlannerContext(feed);
 
   assert.ok(!JSON.stringify(ctx).includes("Tiny crew"));
   assert.equal(ctx.suppression.withheld_cohorts, 1);
 });
 
 test("the grounding carries no individual records, because the module has none", () => {
-  for (const ctx of [analyst(), coordinator()]) {
+  for (const ctx of [analyst(), planner()]) {
     const blob = JSON.stringify(ctx).toLowerCase();
     for (const field of ["employee_id", "employeeid", "first_name", "surname", "id_number"]) {
       assert.ok(!blob.includes(field), `grounding carried ${field}`);
@@ -52,7 +52,7 @@ test("the grounding carries no individual records, because the module has none",
   }
 });
 
-test("attendance measures are withheld from the coordinator on purpose", () => {
+test("attendance measures are withheld from the planner on purpose", () => {
   /*
     Absence frequency and Bradford are on the operations screen, where the copy
     says they size a support caseload and are not used for attendance
@@ -60,7 +60,7 @@ test("attendance measures are withheld from the coordinator on purpose", () => {
     most often, and the obvious next question turns them into a list of people
     to speak to.
   */
-  const ctx = coordinator();
+  const ctx = planner();
 
   /*
     Checked over the data, not the whole payload. The payload also carries a
@@ -84,7 +84,7 @@ test("attendance measures are withheld from the coordinator on purpose", () => {
 
 test("every figure the agent gets is labelled modelled or indicative", () => {
   assert.match(analyst().note, /modelled|indicative/i);
-  assert.match(coordinator().note, /modelled|indicative/i);
+  assert.match(planner().note, /modelled|indicative/i);
   // The saving in particular, which is the figure most likely to be quoted.
   assert.match(analyst().addressable_saving_basis, /projected|never measured/i);
 });
@@ -100,7 +100,7 @@ test("every suggested question has a fallback answer", () => {
 });
 
 test("each fallback answer is built from the real grounding and names figures", () => {
-  const ctx = { analyst: analyst(), coordinator: coordinator() };
+  const ctx = { analyst: analyst(), planner: planner() };
   for (const id of AGENT_IDS) {
     for (const chip of AGENTS[id].chips) {
       const text = fallbackAnswer(id, chip, ctx[id]);
@@ -129,12 +129,12 @@ test("a disciplinary question is not answered by the fallback", () => {
     "Is this absence genuine",
   ]) {
     assert.equal(fallbackAnswer("analyst", q, analyst()), null, `answered: ${q}`);
-    assert.equal(fallbackAnswer("coordinator", q, coordinator()), null, `answered: ${q}`);
+    assert.equal(fallbackAnswer("planner", q, planner()), null, `answered: ${q}`);
   }
 });
 
 test("no fallback answer names a person or an employee key", () => {
-  const ctx = { analyst: analyst(), coordinator: coordinator() };
+  const ctx = { analyst: analyst(), planner: planner() };
   for (const id of AGENT_IDS) {
     for (const chip of AGENTS[id].chips) {
       const text = (fallbackAnswer(id, chip, ctx[id]) || "").toLowerCase();

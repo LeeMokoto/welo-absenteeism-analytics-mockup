@@ -189,7 +189,7 @@
     return lines.join('\n');
   };
 
-  F.coordinator = function (q, d) {
+  F.planner = function (q, d) {
     d = d || {};
     var hh = d.headline || {}, cov = d.cover || {}, fr = d.frequency || {}, rtw = d.return_to_work || {};
     var lines = ['Cover and roster read (built-in summary, no live AI configured)', ''];

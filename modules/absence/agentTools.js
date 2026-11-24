@@ -8,15 +8,15 @@
   over a payload the browser sent.
 
   Which agent gets which tools is decided here too. The analyst reads. The
-  coordinator reads and may draft a recommendation, because cover and roster
+  planner reads and may draft a recommendation, because cover and roster
   actions are its job. Neither can approve anything: there is no approving
   tool, by design, and the drafting tool's output says a person decides.
 */
 
 import { defineTool } from "../../lib/platform/agentTools.js";
 import { PERMISSIONS } from "../../lib/platform/roles.js";
-import { buildAnalystContext, buildCoordinatorContext } from "./context.js";
-import { buildRecommendation, KIND_KEYS, MAX_HORIZON_DAYS, trackRecord } from "../control-centre/recommendations.js";
+import { buildAnalystContext, buildPlannerContext } from "./context.js";
+import { buildRecommendation, HORIZON_KEYS, KIND_KEYS, MAX_HORIZON_DAYS, trackRecord } from "../control-centre/recommendations.js";
 import { TARGETABLE_BY_DEFAULT } from "../control-centre/targeting.js";
 import { GRAINS, demandView, hasDemand } from "./demand.js";
 import { departmentView, hasStaffingCost, summary } from "./staffingCost.js";
@@ -97,7 +97,7 @@ export const readCover = defineTool({
   description:
     "Operational cover figures: predicted cover-gap days and cover cost over 90 days, overtime load, return-to-work caseload, by operational-load cohort and, where the tenant has them, by department, with the day rate and cover assumptions they rest on. Attendance-frequency measures are not available.",
   permission: PERMISSIONS.USE_AGENTS,
-  run: (_input, ctx) => buildCoordinatorContext(portfolioOf(ctx)),
+  run: (_input, ctx) => buildPlannerContext(portfolioOf(ctx)),
 });
 
 export const readTrackRecord = defineTool({
@@ -111,12 +111,13 @@ export const readTrackRecord = defineTool({
 export const draftRecommendation = defineTool({
   name: "draft_recommendation",
   description:
-    "Draft one priced action for a person to approve or reject. Target cohorts, never people. State what it saves, what it costs, how the saving was worked out and over how many days. The draft is not approved, booked or sent.",
+    "Draft one priced action for a person to approve or reject. Target cohorts, never people. Say which horizon it is for (week: before next week's roster goes out, 1 to 14 days; month: the month ahead, 15 to 62 days; season: 63 to 365 days), what it saves, what it costs, how the saving was worked out and over how many days. The draft is not approved, booked or sent.",
   permission: PERMISSIONS.CONTROL_CREATE,
   input_schema: {
     type: "object",
     properties: {
       kind: { type: "string", enum: KIND_KEYS },
+      horizon: { type: "string", enum: HORIZON_KEYS },
       title: { type: "string" },
       rationale: { type: "string" },
       target: {
@@ -140,7 +141,7 @@ export const draftRecommendation = defineTool({
         required: ["saving_rand", "cost_rand", "basis", "horizon_days"],
       },
     },
-    required: ["kind", "title", "rationale", "target", "predicted"],
+    required: ["kind", "horizon", "title", "rationale", "target", "predicted"],
     additionalProperties: false,
   },
   run: (input, ctx) => {
@@ -291,11 +292,11 @@ const READ_TOOLS = [
 
 /*
   `canDraft` is whether this tenant has somewhere to put a draft: the control
-  centre. With it off, the coordinator still reads and advises, and the model is
+  centre. With it off, the planner still reads and advises, and the model is
   never offered a tool whose output would go nowhere.
 */
 export function toolsFor(agent, { canDraft = true } = {}) {
-  if (agent === "coordinator") return canDraft ? [...READ_TOOLS, draftRecommendation] : READ_TOOLS;
+  if (agent === "planner") return canDraft ? [...READ_TOOLS, draftRecommendation] : READ_TOOLS;
   if (agent === "analyst") return READ_TOOLS;
   return [];
 }

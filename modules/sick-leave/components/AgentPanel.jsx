@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { CurrencyAgentNote, Money } from "@/components/platform/Currency";
 import { saveDrafts } from "@/modules/control-centre/recommendationStore";
@@ -37,6 +37,10 @@ export default function AgentPanel({
   context,
   available,
   endpoint = "/api/sick-leave/agent",
+  // { question, nonce }: ask this question now, as if typed. Used by a card
+  // beside the panel (the Planner's triggers) to put its question to the
+  // agent; a new nonce asks again even when the question is the same.
+  request = null,
 }) {
   const [question, setQuestion] = useState("");
   const [loading, setLoading] = useState(false);
@@ -96,6 +100,14 @@ export default function AgentPanel({
       setLoading(false);
     }
   }
+
+  useEffect(() => {
+    if (!request?.question) return;
+    setQuestion(request.question);
+    ask(request.question);
+    // Only a new request asks; ask itself changes on every render.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [request?.nonce]);
 
   return (
     <div className="card">

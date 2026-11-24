@@ -36,7 +36,7 @@ const good = () => ({
   },
 });
 
-const meta = { agent: "coordinator", requestedBy: "prospect@example.com", dataVersion: "run-1", trace: [] };
+const meta = { agent: "planner", requestedBy: "prospect@example.com", dataVersion: "run-1", trace: [] };
 const at = (iso) => new Date(iso);
 
 // --- What a draft may say ----------------------------------------------------
@@ -94,7 +94,7 @@ test("the horizon is a whole number of days within a year", () => {
 test("a built record is drafted by the agent, for the requester, with the net figure", () => {
   const rec = buildRecommendation(good(), { ...meta, trace: [{ tool: "read_cover", input: {}, ok: true, ms: 3 }] }, context);
   assert.equal(rec.status, "Drafted");
-  assert.deepEqual(rec.drafted_by, { kind: "agent", agent: "coordinator" });
+  assert.deepEqual(rec.drafted_by, { kind: "agent", agent: "planner" });
   assert.equal(rec.requested_by, "prospect@example.com");
   assert.equal(rec.predicted.net_rand, 120000);
   assert.deepEqual(rec.provenance, [{ tool: "read_cover", input: {}, ok: true }]);
@@ -197,4 +197,15 @@ test("drafts and rejections count toward the decision tally, not the outcome", (
   assert.equal(t.closed, 1);
   assert.equal(t.rejected, 1);
   assert.equal(t.approved, 1);
+});
+
+
+test("a proposal's horizon is the band its days fall in, unless it says one", async () => {
+  const { horizonFor, HORIZONS } = await import("./recommendations.js");
+  assert.equal(horizonFor(7), "week");
+  assert.equal(horizonFor(30), "month");
+  assert.equal(horizonFor(120), "season");
+  assert.equal(horizonFor(0), null);
+  // The bands meet without a gap or an overlap.
+  for (let i = 1; i < HORIZONS.length; i++) assert.equal(HORIZONS[i].min, HORIZONS[i - 1].max + 1);
 });

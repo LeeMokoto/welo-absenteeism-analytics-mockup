@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import SectionHeader from "@/modules/sick-leave/components/SectionHeader";
 import { Money, useCurrency } from "@/components/platform/Currency";
-import { decisionBlockers, KINDS, MIN_CLOSED_FOR_TRACK_RECORD, trackRecord } from "../recommendations";
+import { decisionBlockers, horizonLabel, KINDS, MIN_CLOSED_FOR_TRACK_RECORD, trackRecord } from "../recommendations";
 import { applyUpdate, exampleRecommendations, listRecommendations } from "../recommendationStore";
 
 /*
@@ -229,6 +229,7 @@ function ProposalCard({ rec, session, canApprove, canCreate, labelFor, today, on
       </div>
       <div className="caption">
         {kind}
+        {horizonLabel(rec.horizon) ? <> · {horizonLabel(rec.horizon)}</> : null}
         {rec.example ? " · Example" : ""}
       </div>
 

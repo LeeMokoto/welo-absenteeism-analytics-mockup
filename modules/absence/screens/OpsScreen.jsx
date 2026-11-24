@@ -3,9 +3,10 @@ import Metric from "@/modules/sick-leave/components/Metric";
 import { num, pct } from "@/modules/sick-leave/format";
 import { CurrencyName, CurrencyNote, Money } from "@/components/platform/Currency";
 import { suppressionLabel, suppressionReason } from "../suppression";
-import AgentPanel from "@/modules/sick-leave/components/AgentPanel";
 import { AGENTS } from "../agentMeta";
-import { buildCoordinatorContext } from "../context";
+import { buildPlannerContext } from "../context";
+import PlannerSection from "../components/PlannerSection";
+import { hasThresholds, plannerTriggers } from "../plannerTriggers";
 
 /*
   Absence HR and operations, ported from the standalone dashboard.
@@ -20,7 +21,7 @@ import { buildCoordinatorContext } from "../context";
   pipeline; see the module guardrails and the note in the screen.
 */
 
-export default function AbsenceOpsScreen({ portfolio, agentsAvailable = false }) {
+export default function AbsenceOpsScreen({ portfolio, agentsAvailable = false, today = new Date() }) {
   const ops = portfolio.hr_ops || {};
   const h = ops.headline || {};
   const cover = ops.cover || {};
@@ -150,15 +151,21 @@ export default function AbsenceOpsScreen({ portfolio, agentsAvailable = false })
         />
       ) : null}
 
+      {/* The Planner, and the triggers that say when it is due. Worked out on
+          the server from this tenant's data and today's date. */}
       <div className="section">
-        <AgentPanel
-          agent={AGENTS.coordinator.id}
-          roleTag={AGENTS.coordinator.roleTag}
-          description={AGENTS.coordinator.description}
-          chips={AGENTS.coordinator.chips}
-          available={agentsAvailable}
-          context={buildCoordinatorContext(portfolio)}
-          endpoint="/api/absence/agent"
+        <PlannerSection
+          triggers={plannerTriggers(portfolio, { today })}
+          hasThresholds={hasThresholds(portfolio)}
+          agent={{
+            agent: AGENTS.planner.id,
+            roleTag: AGENTS.planner.roleTag,
+            description: AGENTS.planner.description,
+            chips: AGENTS.planner.chips,
+            available: agentsAvailable,
+            context: buildPlannerContext(portfolio),
+            endpoint: "/api/absence/agent",
+          }}
         />
       </div>
 

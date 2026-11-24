@@ -63,6 +63,15 @@ _AGENT_SYSTEM: Dict[str, str] = {
     name: _GUARDRAILS + "\n\n" + role for name, role in _PROMPTS["roles"].items()
 }
 
+# Former names that still resolve, so a caller built against them keeps
+# working: the Cover Coordinator became the Planner.
+_ALIASES: Dict[str, str] = dict(_PROMPTS.get("aliases", {}))
+
+
+def resolve_agent(agent: str) -> str:
+    """The agent's current name, following a former name to its successor."""
+    return _ALIASES.get(agent, agent)
+
 _MAX_TOKENS = 1500
 
 
@@ -171,7 +180,7 @@ class AgentService:
 
     def _system_for(self, agent: str) -> str:
         try:
-            return _AGENT_SYSTEM[agent]
+            return _AGENT_SYSTEM[resolve_agent(agent)]
         except KeyError:
             raise AgentUnavailable(f"Unknown agent '{agent}'.") from None
 

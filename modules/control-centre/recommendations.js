@@ -63,6 +63,29 @@ export const MIN_CLOSED_FOR_TRACK_RECORD = 5;
 // A horizon long enough to measure and short enough to remember why.
 export const MAX_HORIZON_DAYS = 365;
 
+/*
+  The Planner's horizons. One agent plans at every timescale, and the horizon
+  is an input to what it reads and drafts rather than a separate agent: next
+  week before the roster goes out, the month ahead, or the season. Each covers
+  a band of days, so a draft that says "next week" over 90 days is refused.
+*/
+export const HORIZONS = [
+  { key: "week", label: "Next week", min: 1, max: 14 },
+  { key: "month", label: "Month ahead", min: 15, max: 62 },
+  { key: "season", label: "Season", min: 63, max: MAX_HORIZON_DAYS },
+];
+export const HORIZON_KEYS = HORIZONS.map((h) => h.key);
+
+/* The horizon a number of days falls in. */
+export function horizonFor(days) {
+  const h = HORIZONS.find((x) => days >= x.min && days <= x.max);
+  return h ? h.key : null;
+}
+
+export function horizonLabel(key) {
+  return HORIZONS.find((h) => h.key === key)?.label || null;
+}
+
 function textProblems(text, where) {
   const errors = [];
   for (const hit of individualReferenceIn(text)) {
@@ -106,6 +129,13 @@ export function validateRecommendation(draft, context = {}) {
   }
   if (!Number.isInteger(p.horizon_days) || p.horizon_days < 1 || p.horizon_days > MAX_HORIZON_DAYS) {
     errors.push(`predicted.horizon_days must be a whole number of days from 1 to ${MAX_HORIZON_DAYS}.`);
+  } else if (d.horizon !== undefined && d.horizon !== null) {
+    const h = HORIZONS.find((x) => x.key === d.horizon);
+    if (!h) {
+      errors.push(`horizon must be one of: ${HORIZON_KEYS.join(", ")}.`);
+    } else if (p.horizon_days < h.min || p.horizon_days > h.max) {
+      errors.push(`A ${h.label.toLowerCase()} proposal runs ${h.min} to ${h.max} days; this one says ${p.horizon_days}.`);
+    }
   }
 
   errors.push(...textProblems(d.title, "The title"));
@@ -136,6 +166,8 @@ export function buildRecommendation(draft, { agent, requestedBy, dataVersion, tr
     kind: draft.kind,
     title: draft.title.trim(),
     rationale: draft.rationale.trim(),
+    // The horizon the Planner was asked about, or the one its days fall in.
+    horizon: draft.horizon || horizonFor(draft.predicted.horizon_days),
     target: draft.target.map(({ dimension, cohort }) => ({ dimension, cohort })),
     predicted: {
       saving_rand: Math.round(p.saving_rand),

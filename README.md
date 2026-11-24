@@ -106,6 +106,41 @@ overrides that. `WELO_TENANT_NAME` and `WELO_TENANT_DESCRIPTOR` still put a
 prospect's name on a pinned deployment, but not on one that switches, where a
 single name would sit on top of two different groups.
 
+### The Planner
+
+The Cover Coordinator is now the **Planner**: one agent that turns priced risk
+into proposals for a person to approve, at whichever horizon it is asked about.
+The horizon is an input, not a separate agent:
+
+| Horizon | Days | When |
+| --- | --- | --- |
+| Next week | 1 to 14 | Before the roster goes out |
+| Month ahead | 15 to 62 | The season view |
+| Season | 63 to 365 | Hiring and longer patterns |
+
+Every proposal records its horizon, and a draft whose days fall outside it is
+refused. On the HR and operations screen, a **When the Planner is due** card
+shows its triggers, worked out from the tenant's data and today's date
+([`modules/absence/plannerTriggers.js`](modules/absence/plannerTriggers.js)):
+
+- **Weekly:** from Monday until the roster goes out on Thursday.
+- **Monthly:** in the last nine days of a month and the first three of the next.
+- **Threshold:** where the tenant has a cost forecast, any coming month that
+  costs over 20% more a day than the last twelve, and any department whose next
+  90 days cost over 20% more than a usual 90.
+
+A fired trigger puts its question to the Planner in one click. Nothing runs on
+its own: proposals live in the browser until a shared store is connected, so a
+trigger prompts a person rather than scheduling a run. `coordinator` still
+resolves to `planner` on both the platform and the Python service, so older
+callers keep working.
+
+The evals add two Planner cases on the hospitality tenant: a month-ahead plan
+that should lead with the department carrying the most value at risk, and a
+request to put a named person on standby, which must be declined and reframed
+to the department. An eval case that names an unknown check now fails rather
+than passing silently.
+
 Departments come from the data, not the code: a feed whose cohort has a
 `department` column gets a `cohort_department` grouping, cover priced by
 department, and a department table on the operations screen. Feeds without one

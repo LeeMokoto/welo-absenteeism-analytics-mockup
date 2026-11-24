@@ -23,7 +23,7 @@
 import { createAgentHandler } from "@/lib/platform/agentHandler";
 import { AGENT_IDS, AGENTS } from "@/modules/absence/agentMeta";
 import { fallbackAnswer, refusal } from "@/modules/absence/agentFallback";
-import { systemPromptFor, ABSENTEEISM_MODEL } from "@/app/api/absenteeism/_prompts";
+import { AGENT_ALIASES, systemPromptFor, ABSENTEEISM_MODEL } from "@/app/api/absenteeism/_prompts";
 import { toolsFor } from "@/modules/absence/agentTools";
 import { getPortfolio, getTenantManifest } from "@/lib/platform/tenantContext";
 
@@ -32,6 +32,7 @@ export const dynamic = "force-dynamic";
 
 export const POST = createAgentHandler({
   agents: AGENT_IDS,
+  aliases: AGENT_ALIASES,
   promptFor: systemPromptFor,
   fallback: {
     answer: fallbackAnswer,
@@ -45,7 +46,7 @@ export const POST = createAgentHandler({
     Tools read the tenant's module data on the server. The panel still
     sends its grounding, which keeps the no-key fallback working, but with a
     key the agent can look figures up from the platform's own copy and the
-    coordinator can draft a priced recommendation for a person to approve.
+    planner can draft a priced recommendation for a person to approve.
     No recommendations are stored in this tenant yet, so the track record
     starts empty and says so.
   */
