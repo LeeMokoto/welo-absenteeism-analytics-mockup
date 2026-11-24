@@ -99,8 +99,29 @@ test("every suggested question has a fallback answer", () => {
   }
 });
 
-test("each fallback answer is built from the real grounding and names figures", () => {
-  const ctx = { analyst: analyst(), planner: planner() };
+async function reviewer() {
+  const { readFileSync } = await import("node:fs");
+  const { fileURLToPath } = await import("node:url");
+  const { exampleRecommendations } = await import("../control-centre/recommendationStore.js");
+  const { finishedProposals, measureProposal } = await import("../control-centre/review.js");
+  const series = JSON.parse(
+    readFileSync(fileURLToPath(new URL("../../model/data/outputs/cohort_series.json", import.meta.url)), "utf8"),
+  );
+  const now = new Date("2026-11-24T09:00:00Z");
+  const recs = exampleRecommendations({ dimensions: portfolio.cohort_dimensions, cohorts: portfolio.cohorts });
+  const finished = finishedProposals(recs, now).map((v) =>
+    measureProposal(recs.find((r) => r.id === v.id), {
+      series,
+      cohorts: portfolio.cohorts,
+      dayRate: portfolio.hr_ops.assumptions.day_rate_rand,
+      now,
+    }),
+  );
+  return { finished };
+}
+
+test("each fallback answer is built from the real grounding and names figures", async () => {
+  const ctx = { analyst: analyst(), planner: planner(), reviewer: await reviewer() };
   for (const id of AGENT_IDS) {
     for (const chip of AGENTS[id].chips) {
       const text = fallbackAnswer(id, chip, ctx[id]);
@@ -153,9 +174,12 @@ test("the fallback degrades to 'unknown' rather than inventing a figure", () => 
 
 // --- The module contract matches what is actually mounted -------------------
 
-test("the module declares the agents that exist, and not the one that does not", async () => {
+test("every agent the route serves is declared by a module, and the case agent by none here", async () => {
   const { default: absenceModule } = await import("./module.js");
-  assert.deepEqual([...absenceModule.agents].sort(), [...AGENT_IDS].sort());
+  const { default: controlCentre } = await import("../control-centre/module.js");
+  const declared = new Set([...absenceModule.agents, ...controlCentre.agents]);
+  for (const id of AGENT_IDS) assert.ok(declared.has(id), `${id} is served but no module declares it`);
+  for (const id of absenceModule.agents) assert.ok(AGENT_IDS.includes(id), `${id} is declared but not served`);
   assert.ok(!absenceModule.agents.includes("case"), "the case agent is declared but has no case view here");
 });
 

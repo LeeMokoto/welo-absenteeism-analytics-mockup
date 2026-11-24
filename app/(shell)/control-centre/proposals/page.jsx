@@ -1,7 +1,9 @@
 import ProposalsScreen from "@/modules/control-centre/screens/ProposalsScreen";
 import { guard } from "@/lib/platform/guard";
 import { PERMISSIONS, can } from "@/lib/platform/roles";
-import { getPortfolio } from "@/lib/platform/tenantContext";
+import { currentTenant, getCohortSeries, getPortfolio } from "@/lib/platform/tenantContext";
+import { exampleRecommendations } from "@/modules/control-centre/recommendationStore";
+import { finishedProposals, measureProposal } from "@/modules/control-centre/review";
 
 export const metadata = { title: "Proposals | Control centre | Welo" };
 export const dynamic = "force-dynamic";
@@ -19,6 +21,23 @@ export const dynamic = "force-dynamic";
 export default async function ProposalsPage() {
   const portfolio = await getPortfolio();
   const session = await guard(PERMISSIONS.CONTROL_VIEW);
+  const tenant = await currentTenant();
+  const series = await getCohortSeries();
+  const now = new Date();
+
+  // The Reviewer's grounding: this tenant's finished examples, measured here
+  // with the same fixed code its tools use. A browser's own finished
+  // proposals are measured by the tools when the Reviewer runs.
+  const examples = exampleRecommendations({ tenant, dimensions: portfolio.cohort_dimensions, cohorts: portfolio.cohorts });
+  const finished = finishedProposals(examples, now).map(({ id, title }) => {
+    const m = measureProposal(examples.find((r) => r.id === id), {
+      series,
+      cohorts: portfolio.cohorts,
+      dayRate: portfolio.hr_ops?.assumptions?.day_rate_rand,
+      now,
+    });
+    return m.ok ? m : { ok: false, id, title, reasons: m.reasons };
+  });
 
   return (
     <ProposalsScreen
@@ -29,7 +48,9 @@ export default async function ProposalsPage() {
       agentsAvailable={Boolean(process.env.ANTHROPIC_API_KEY)}
       dimensions={portfolio.cohort_dimensions || []}
       cohorts={portfolio.cohorts || {}}
-      today={new Date().toISOString()}
+      today={now.toISOString()}
+      tenant={tenant}
+      review={{ finished }}
     />
   );
 }

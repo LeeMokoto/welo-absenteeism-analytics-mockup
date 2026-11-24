@@ -141,6 +141,42 @@ request to put a named person on standby, which must be declined and reframed
 to the department. An eval case that names an unknown check now fails rather
 than passing silently.
 
+### The Reviewer
+
+The **Reviewer** is the Planner's other half. The Planner prices an action
+before it runs; the Reviewer measures it after, on the Proposals screen, and
+drafts the outcome for a person to check and record through the same close
+route a person would use. Three rules keep it a measurement rather than a
+second opinion ([`modules/control-centre/review.js`](modules/control-centre/review.js)):
+
+- **It sees the prediction, not the reasoning.** Its tools hand it a
+  proposal's target, horizon and predicted saving and cost, and never the
+  rationale, the basis or what the Planner read. The browser's proposals go to
+  the server beside the question, not inside the model's grounding.
+- **Comparators are frozen at approval.** Approving a proposal now records the
+  other cohorts of its dimension, the rule the control centre already applies
+  to interventions. The Reviewer measures against those and refuses to choose
+  comparators after the fact.
+- **The method is fixed code.** The cohort's change in absent days per head a
+  year across the proposal's start, against the frozen comparators, priced at
+  the tenant's day rate over the cohort and the horizon. The range runs across
+  comparators one at a time. The shortfall against the prediction is computed
+  in code, so the agent quotes it rather than doing arithmetic.
+
+It never reviews a proposal it drafted, and it only drafts: the outcome fills
+in the proposal's form, labelled, and a person with the create permission
+records it.
+
+Each tenant ships a finished proposal for it to measure. For hospitality that
+is a Kitchen roster fix (short rests down 80%, late finishes down 30%), which
+the hospitality cohort series now simulates from April 2026 in place of the
+industrial overtime change. It was predicted to save R2.4m and measures at
+R1.1m to R1.9m, 63% of the prediction, so the demo shows the Reviewer reporting
+a shortfall plainly. The base series is unchanged.
+
+A **reviewer_shortfall** eval checks that a live Reviewer says the proposal
+fell short, with the measured figures, and does not dress it as a success.
+
 Departments come from the data, not the code: a feed whose cohort has a
 `department` column gets a `cohort_department` grouping, cover priced by
 department, and a department table on the operations screen. Feeds without one

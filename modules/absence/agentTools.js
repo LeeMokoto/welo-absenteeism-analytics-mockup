@@ -22,6 +22,7 @@ import { GRAINS, demandView, hasDemand } from "./demand.js";
 import { departmentView, hasStaffingCost, summary } from "./staffingCost.js";
 import { checkRoster } from "./roster.js";
 import { rosterGroups, sampleRoster } from "./sampleRoster.js";
+import { draftOutcome, finishedProposals, measureProposal, REVIEWER } from "../control-centre/review.js";
 
 /*
   Each readable grouping, with the dimension key a recommendation targets it
@@ -291,6 +292,98 @@ const READ_TOOLS = [
 ];
 
 /*
+  The Reviewer's tools. It sees each finished proposal's prediction and not
+  the reasoning behind it (review.js, blindView), measures it with fixed code,
+  and drafts the outcome for a person to check and record. The proposals come
+  from the tool context: the tenant's examples plus whatever the browser sent,
+  each checked by the route before it gets here.
+*/
+const nowOf = (ctx) => (ctx.now ? new Date(ctx.now) : new Date());
+const proposalById = (ctx, id) => (ctx.recommendations || []).find((r) => r.id === id) || null;
+const measureContext = (ctx) => {
+  const portfolio = portfolioOf(ctx);
+  return {
+    series: ctx.series || null,
+    cohorts: portfolio.cohorts || {},
+    dayRate: portfolio.hr_ops?.assumptions?.day_rate_rand,
+    now: nowOf(ctx),
+  };
+};
+
+export const readFinishedProposals = defineTool({
+  name: "read_finished_proposals",
+  description:
+    "The approved proposals whose horizon has passed and whose outcome is not yet recorded. Each gives its target, horizon, dates and the predicted saving and cost. Not the reasoning behind the prediction: measure, do not grade the argument.",
+  permission: PERMISSIONS.USE_AGENTS,
+  input_schema: { type: "object", properties: {}, additionalProperties: false },
+  run: (_input, ctx) => {
+    const finished = finishedProposals(ctx.recommendations || [], nowOf(ctx));
+    return {
+      count: finished.length,
+      proposals: finished,
+      note: finished.length ? undefined : "No approved proposal has finished its horizon without an outcome.",
+    };
+  },
+});
+
+export const measureProposalTool = defineTool({
+  name: "measure_proposal",
+  description:
+    "Measure one finished proposal: its cohort's change in absent days per head a year across its start, against the comparator cohorts frozen when it was approved, priced at the tenant's day rate over the cohort and the horizon. Returns the measured saving as a low, mid and high range beside the prediction. An observed difference, not a proven cause.",
+  permission: PERMISSIONS.USE_AGENTS,
+  input_schema: {
+    type: "object",
+    properties: { id: { type: "string", description: "A proposal id from read_finished_proposals." } },
+    required: ["id"],
+    additionalProperties: false,
+  },
+  run: ({ id }, ctx) => {
+    const rec = proposalById(ctx, id);
+    if (!rec) return { ok: false, reasons: ["no proposal with that id"] };
+    return measureProposal(rec, measureContext(ctx));
+  },
+});
+
+export const draftOutcomeTool = defineTool({
+  name: "draft_outcome",
+  description:
+    "Draft the outcome of one finished proposal for a person to check and record: the delivered saving in Rand (a loss is negative) and how it was measured. Use the measured mid figure unless you say why not. Nothing is recorded; a person records it.",
+  permission: PERMISSIONS.CONTROL_CREATE,
+  input_schema: {
+    type: "object",
+    properties: {
+      id: { type: "string" },
+      saving_rand: { type: "number" },
+      basis: { type: "string", description: "How the saving was measured, in words." },
+    },
+    required: ["id", "saving_rand", "basis"],
+    additionalProperties: false,
+  },
+  run: ({ id, saving_rand, basis }, ctx) => {
+    const rec = proposalById(ctx, id);
+    if (!rec) throw new Error("No proposal with that id.");
+    const measured = measureProposal(rec, measureContext(ctx));
+    if (!measured.ok) throw new Error(`It cannot be measured: ${measured.reasons.join("; ")}.`);
+    const outcome = draftOutcome(rec, {
+      saving_rand,
+      basis,
+      measured,
+      requestedBy: ctx.session?.email,
+      now: nowOf(ctx),
+    });
+    if (Array.isArray(ctx.outcomes)) ctx.outcomes.push(outcome);
+    return {
+      id: outcome.id,
+      saving_rand: outcome.saving_rand,
+      predicted_saving_rand: outcome.predicted_saving_rand,
+      next: "Drafted only. A person checks it and records it on the proposal.",
+    };
+  },
+});
+
+const REVIEW_TOOLS = [readFinishedProposals, measureProposalTool, readTrackRecord];
+
+/*
   `canDraft` is whether this tenant has somewhere to put a draft: the control
   centre. With it off, the planner still reads and advises, and the model is
   never offered a tool whose output would go nowhere.
@@ -298,5 +391,6 @@ const READ_TOOLS = [
 export function toolsFor(agent, { canDraft = true } = {}) {
   if (agent === "planner") return canDraft ? [...READ_TOOLS, draftRecommendation] : READ_TOOLS;
   if (agent === "analyst") return READ_TOOLS;
+  if (agent === REVIEWER) return canDraft ? [...REVIEW_TOOLS, draftOutcomeTool] : REVIEW_TOOLS;
   return [];
 }

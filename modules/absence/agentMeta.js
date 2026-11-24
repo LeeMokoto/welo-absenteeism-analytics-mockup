@@ -37,4 +37,20 @@ export const AGENTS = {
   },
 };
 
+/*
+  The Reviewer lives on the Proposals screen rather than in this module's
+  screens, but it is served by the same route, so it is declared here with the
+  others.
+*/
+AGENTS.reviewer = {
+  id: "reviewer",
+  roleTag: "REVIEWER",
+  description:
+    "Measures finished proposals against comparable cohorts and drafts each outcome for a person to record. Sees what was predicted, not why, and says plainly when a proposal delivered less than it promised.",
+  chips: [
+    "Review the finished proposals",
+    "Which finished proposal delivered least against its prediction",
+  ],
+};
+
 export const AGENT_IDS = Object.keys(AGENTS);

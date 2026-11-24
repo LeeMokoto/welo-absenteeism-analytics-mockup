@@ -25,6 +25,7 @@ import { PERMISSIONS, can } from "@/lib/platform/roles";
 import { carriesIndividual } from "@/modules/control-centre/store";
 import { validateRecommendation, decide, closeWithActual } from "@/modules/control-centre/recommendations";
 import { getPortfolio } from "@/lib/platform/tenantContext";
+import { freezeComparators } from "@/modules/control-centre/outcomes";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -69,6 +70,9 @@ export async function POST(request) {
             note: body.note,
             session,
             hasApprovePermission: can(session, PERMISSIONS.CONTROL_APPROVE),
+            // Frozen at approval for the Reviewer to measure against later.
+            comparators:
+              (rec.target || []).length === 1 ? freezeComparators(rec.target[0], portfolio.cohorts) : undefined,
           })
         : closeWithActual(rec, { saving_rand: body.saving_rand, basis: body.basis });
     return Response.json({ recommendation: updated });

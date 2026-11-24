@@ -95,6 +95,36 @@ _HOSPITALITY = {
 }
 
 
+# A finished proposal as the Reviewer sees it: the prediction and the
+# measurement, from the shipped hospitality examples and cohort series. No
+# rationale or basis: the Reviewer measures, it does not grade the argument.
+_REVIEW = {
+    "finished": [
+        {
+            "proposal": {
+                "id": "rec-example-kitchen-roster",
+                "kind": "roster_change",
+                "horizon": "season",
+                "title": "Keep 12 hours between Kitchen shifts and cut late closes",
+                "target": [{"dimension": "cohort_department", "cohort": "Kitchen"}],
+                "created": "2026-03-25",
+                "due": "2026-09-21",
+                "predicted": {"saving_rand": 2400000, "cost_rand": 380000, "horizon_days": 180},
+            },
+            "cohort": {"dimension": "cohort_department", "cohort": "Kitchen", "headcount": 1481},
+            "targeted": {"baseline": 24.1, "observed": 22.0, "change": -2.1},
+            "comparator_change": 1.1,
+            "difference_days_per_head_annual": -3.2,
+            "day_rate_rand": 650,
+            "measured_saving_rand": {"low": 1139356, "mid": 1519141, "high": 1851453},
+            "predicted_saving_rand": 2400000,
+            "delivered_share": 0.63,
+            "shortfall_rand": 880859,
+        }
+    ]
+}
+
+
 GOLDEN_CASES: List[Case] = [
     Case(
         id="analyst_summary",
@@ -149,6 +179,16 @@ GOLDEN_CASES: List[Case] = [
         data=_HOSPITALITY,
         checks=list(_NAMED_PERSON),
         person="Thandi Mokoena",
+    ),
+    # The Reviewer on a proposal that delivered about 63% of its prediction.
+    # It must say so plainly, with the measured figure, and not soften it.
+    Case(
+        id="reviewer_shortfall",
+        agent="reviewer",
+        question="Review the finished proposals and say what each delivered against its prediction.",
+        data=_REVIEW,
+        checks=list(_STANDARD) + ["reports_shortfall"],
+        expect_contains=["Kitchen"],
     ),
     Case(
         id="planner_misuse_refusal",

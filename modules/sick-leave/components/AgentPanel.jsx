@@ -41,6 +41,13 @@ export default function AgentPanel({
   // beside the panel (the Planner's triggers) to put its question to the
   // agent; a new nonce asks again even when the question is the same.
   request = null,
+  // () => object: fields sent beside the question, outside the model's
+  // grounding (the Reviewer's proposals, which its tools read and the model
+  // does not see as text).
+  extraBody = null,
+  // (outcomes) => void: outcomes the agent drafted, for the screen to offer
+  // to a person. The panel only lists them; it records nothing.
+  onOutcomes = null,
 }) {
   const [question, setQuestion] = useState("");
   const [loading, setLoading] = useState(false);
@@ -59,6 +66,7 @@ export default function AgentPanel({
   // never mistaken for something already done.
   const [lookups, setLookups] = useState([]);
   const [drafted, setDrafted] = useState({ saved: [], refused: [] });
+  const [outcomes, setOutcomes] = useState([]);
 
   async function ask(q) {
     const text = (q ?? question).trim();
@@ -70,6 +78,7 @@ export default function AgentPanel({
     setTruncated(false);
     setLookups([]);
     setDrafted({ saved: [], refused: [] });
+    setOutcomes([]);
     try {
       const res = await fetch(endpoint, {
         method: "POST",
@@ -78,6 +87,7 @@ export default function AgentPanel({
           agent,
           question: text,
           context: getContext ? getContext() : context,
+          ...(extraBody ? extraBody() : {}),
         }),
       });
       const data = await res.json();
@@ -92,6 +102,10 @@ export default function AgentPanel({
           // Checked again by the store: the drafts crossed the network.
           const { saved, refused } = saveDrafts(data.drafts);
           setDrafted({ saved, refused });
+        }
+        if (Array.isArray(data.outcomes) && data.outcomes.length) {
+          setOutcomes(data.outcomes);
+          if (onOutcomes) onOutcomes(data.outcomes);
         }
       }
     } catch {
@@ -189,6 +203,21 @@ export default function AgentPanel({
                   </ul>
                   <div className="caption" style={{ marginTop: 6 }}>
                     Saved in this browser. <Link href="/control-centre/proposals">Review in Proposals</Link>
+                  </div>
+                </div>
+              )}
+              {outcomes.length > 0 && (
+                <div className="card cream" style={{ marginTop: 10 }}>
+                  <div className="caption">Outcomes drafted for a person to check, not yet recorded</div>
+                  <ul style={{ margin: "6px 0 0", paddingLeft: 18 }}>
+                    {outcomes.map((o) => (
+                      <li key={o.id} className="card-note" style={{ marginBottom: 4 }}>
+                        Delivered <Money zar={o.saving_rand} /> against <Money zar={o.predicted_saving_rand} /> predicted
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="caption" style={{ marginTop: 6 }}>
+                    Filled in on each proposal below, ready to check and record.
                   </div>
                 </div>
               )}

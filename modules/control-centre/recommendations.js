@@ -206,7 +206,7 @@ export function decisionBlockers(rec, session, { hasApprovePermission } = {}) {
   return blockers;
 }
 
-export function decide(rec, { decision, note, session, hasApprovePermission, now = new Date() }) {
+export function decide(rec, { decision, note, session, hasApprovePermission, comparators, now = new Date() }) {
   if (decision !== "Approved" && decision !== "Rejected") {
     throw new Error("decision must be Approved or Rejected.");
   }
@@ -221,6 +221,10 @@ export function decide(rec, { decision, note, session, hasApprovePermission, now
     ...rec,
     status: decision,
     decision: { decision, by: session.email, role: session.role, note: String(note || "").trim() || null, at: now.toISOString() },
+    // The cohorts an approved proposal will be measured against, chosen now,
+    // before anyone knows the answer, and never changed. The same rule the
+    // control centre applies to interventions (outcomes.js).
+    ...(decision === "Approved" && Array.isArray(comparators) ? { comparators: [...comparators] } : {}),
   };
 }
 

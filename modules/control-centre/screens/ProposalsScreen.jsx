@@ -5,7 +5,9 @@ import Link from "next/link";
 import SectionHeader from "@/modules/sick-leave/components/SectionHeader";
 import { Money, useCurrency } from "@/components/platform/Currency";
 import { decisionBlockers, horizonLabel, KINDS, MIN_CLOSED_FOR_TRACK_RECORD, trackRecord } from "../recommendations";
-import { applyUpdate, exampleRecommendations, listRecommendations } from "../recommendationStore";
+import { applyUpdate, exampleRecommendations, listRecommendations, localRecommendations } from "../recommendationStore";
+import AgentPanel from "@/modules/sick-leave/components/AgentPanel";
+import { AGENTS } from "@/modules/absence/agentMeta";
 
 /*
   Proposals.
@@ -54,8 +56,15 @@ export default function ProposalsScreen({
   dimensions,
   cohorts,
   today,
+  tenant = null,
+  // The tenant's finished examples, measured on the server: the Reviewer's
+  // grounding, and what its no-key summary reads.
+  review = { finished: [] },
 }) {
-  const context = useMemo(() => ({ dimensions, cohorts }), [dimensions, cohorts]);
+  const context = useMemo(() => ({ tenant, dimensions, cohorts }), [tenant, dimensions, cohorts]);
+  // Outcomes the Reviewer drafted, by proposal id. Offered on each card for a
+  // person to check and record; held here only, so a reload starts clean.
+  const [outcomeDrafts, setOutcomeDrafts] = useState({});
   // Examples first, so the server render and the first client render match.
   // Whatever this browser holds is read after mount.
   const [recs, setRecs] = useState(() => exampleRecommendations(context));
@@ -104,18 +113,39 @@ export default function ProposalsScreen({
               <>Your role can ask the agents questions, but drafting a proposal needs the create permission.</>
             ) : agentsAvailable ? (
               <>
-                Ask the Cover Coordinator on the <Link href="/absence/operations">Operations</Link> screen to
-                draft one. It reads the cover figures, prices the action and saves the draft here.
+                Ask the Planner on the <Link href="/absence/operations">HR and operations</Link> screen to
+                draft one. It reads the cover and cost figures, prices the action and saves the draft here.
               </>
             ) : (
               <>
-                No agent key is configured in this deployment, so the Cover Coordinator answers from built-in
-                summaries and cannot draft. The examples below show the full cycle.
+                No agent key is configured in this deployment, so the Planner answers from built-in summaries
+                and cannot draft. The examples below show the full cycle.
               </>
             )}
           </p>
         </div>
       </div>
+
+      {canAskAgents ? (
+        <div className="section">
+          <AgentPanel
+            agent={AGENTS.reviewer.id}
+            roleTag={AGENTS.reviewer.roleTag}
+            description={AGENTS.reviewer.description}
+            chips={AGENTS.reviewer.chips}
+            available={agentsAvailable}
+            context={review}
+            endpoint="/api/absence/agent"
+            // This browser's own proposals, sent beside the question for the
+            // Reviewer's tools. Not part of the grounding, so the model never
+            // reads a proposal's reasoning as text.
+            extraBody={() => ({ proposals: localRecommendations() })}
+            onOutcomes={(list) =>
+              setOutcomeDrafts((prev) => ({ ...prev, ...Object.fromEntries(list.map((o) => [o.id, o])) }))
+            }
+          />
+        </div>
+      ) : null}
 
       <div className="section grid grid-2">
         {recs.map((r) => (
@@ -127,6 +157,7 @@ export default function ProposalsScreen({
             canCreate={canCreate}
             labelFor={labelFor}
             today={today}
+            outcomeDraft={outcomeDrafts[r.id] || null}
             onUpdated={() => setRevision((n) => n + 1)}
           />
         ))}
@@ -194,7 +225,7 @@ async function send(body) {
   }
 }
 
-function ProposalCard({ rec, session, canApprove, canCreate, labelFor, today, onUpdated }) {
+function ProposalCard({ rec, session, canApprove, canCreate, labelFor, today, outcomeDraft, onUpdated }) {
   const [note, setNote] = useState("");
   const [problem, setProblem] = useState("");
   const [busy, setBusy] = useState(false);
@@ -315,7 +346,7 @@ function ProposalCard({ rec, session, canApprove, canCreate, labelFor, today, on
         )}
 
         {rec.status === "Approved" ? (
-          <Outcome rec={rec} due={due} today={today} canCreate={canCreate} busy={busy} onSend={act} />
+          <Outcome rec={rec} due={due} today={today} canCreate={canCreate} busy={busy} draft={outcomeDraft} onSend={act} />
         ) : null}
 
         {rec.status === "Closed" ? <Delivered rec={rec} /> : null}
@@ -326,11 +357,20 @@ function ProposalCard({ rec, session, canApprove, canCreate, labelFor, today, on
   );
 }
 
-function Outcome({ rec, due, today, canCreate, busy, onSend }) {
+function Outcome({ rec, due, today, canCreate, busy, draft, onSend }) {
   const { code, rate, name, note } = useCurrency();
   const [amount, setAmount] = useState("");
   const [basis, setBasis] = useState("");
   const [problem, setProblem] = useState("");
+
+  // A Reviewer's draft fills the form for a person to check. The amount is
+  // shown in the display currency, like anything typed here.
+  useEffect(() => {
+    if (!draft) return;
+    const shown = code === "USD" ? draft.saving_rand / (Number(rate?.zarPerUsd) || 1) : draft.saving_rand;
+    setAmount(String(Math.round(shown)));
+    setBasis(draft.basis);
+  }, [draft, code, rate]);
 
   if (new Date(today) < due) {
     return (
@@ -368,6 +408,17 @@ function Outcome({ rec, due, today, canCreate, busy, onSend }) {
   return (
     <div style={{ marginTop: 12 }}>
       <div className="caption">Record the outcome</div>
+      {draft ? (
+        <div className="indicative" style={{ marginTop: 6 }}>
+          Drafted by the Reviewer from the comparison with frozen comparators
+          {draft.range ? (
+            <>
+              {" "}(measured <Money zar={draft.range.low} compact /> to <Money zar={draft.range.high} compact />)
+            </>
+          ) : null}
+          . Check it before recording.
+        </div>
+      ) : null}
       <input
         className="cc-input"
         inputMode="decimal"

@@ -25,7 +25,9 @@ import { AGENT_IDS, AGENTS } from "@/modules/absence/agentMeta";
 import { fallbackAnswer, refusal } from "@/modules/absence/agentFallback";
 import { AGENT_ALIASES, systemPromptFor, ABSENTEEISM_MODEL } from "@/app/api/absenteeism/_prompts";
 import { toolsFor } from "@/modules/absence/agentTools";
-import { getPortfolio, getTenantManifest } from "@/lib/platform/tenantContext";
+import { currentTenant, getCohortSeries, getPortfolio, getTenantManifest } from "@/lib/platform/tenantContext";
+import { exampleRecommendations } from "@/modules/control-centre/recommendationStore";
+import { acceptProposals } from "@/modules/control-centre/review";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -47,11 +49,27 @@ export const POST = createAgentHandler({
     sends its grounding, which keeps the no-key fallback working, but with a
     key the agent can look figures up from the platform's own copy and the
     planner can draft a priced recommendation for a person to approve.
-    No recommendations are stored in this tenant yet, so the track record
-    starts empty and says so.
+    Proposals live in the browser, so the panel sends this browser's records
+    beside the question and the tools read them with the tenant's examples.
   */
   toolsFor: async (agent) => toolsFor(agent, { canDraft: (await getTenantManifest()).modules.controlCentre }),
   // The tenant the request is for, resolved per request, so an agent never
   // looks up one group's figures while the shell shows another's name.
-  toolContext: async () => ({ portfolio: await getPortfolio(), recommendations: [] }),
+  toolContext: async ({ body }) => {
+    const portfolio = await getPortfolio();
+    const context = {
+      tenant: await currentTenant(),
+      dimensions: portfolio.cohort_dimensions,
+      cohorts: portfolio.cohorts,
+    };
+    return {
+      portfolio,
+      // The proposals the agents may read: this tenant's examples, overlaid
+      // with the browser's own records, each checked before it is trusted.
+      // Sent beside the question, never inside the model's grounding, so the
+      // Reviewer reads predictions through its tools and not the reasoning.
+      recommendations: acceptProposals(exampleRecommendations(context), body?.proposals, context),
+      series: await getCohortSeries(),
+    };
+  },
 });

@@ -33,7 +33,7 @@ def test_available_with_key():
 
 def test_agents_listed():
     svc = AgentService(api_key="sk-ant-test-key")
-    assert set(svc.agents) == {"analyst", "case", "planner", "playbook"}
+    assert set(svc.agents) == {"analyst", "case", "planner", "playbook", "reviewer"}
 
 
 def test_unknown_agent_raises():
