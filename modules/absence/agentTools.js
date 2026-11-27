@@ -8,20 +8,21 @@
   over a payload the browser sent.
 
   Which agent gets which tools is decided here too. The analyst reads. The
-  coordinator reads and may draft a recommendation, because cover and roster
+  planner reads and may draft a recommendation, because cover and roster
   actions are its job. Neither can approve anything: there is no approving
   tool, by design, and the drafting tool's output says a person decides.
 */
 
 import { defineTool } from "../../lib/platform/agentTools.js";
 import { PERMISSIONS } from "../../lib/platform/roles.js";
-import { buildAnalystContext, buildCoordinatorContext } from "./context.js";
-import { buildRecommendation, KIND_KEYS, MAX_HORIZON_DAYS, trackRecord } from "../control-centre/recommendations.js";
+import { buildAnalystContext, buildPlannerContext } from "./context.js";
+import { buildRecommendation, HORIZON_KEYS, KIND_KEYS, MAX_HORIZON_DAYS, trackRecord } from "../control-centre/recommendations.js";
 import { TARGETABLE_BY_DEFAULT } from "../control-centre/targeting.js";
 import { GRAINS, demandView, hasDemand } from "./demand.js";
 import { departmentView, hasStaffingCost, summary } from "./staffingCost.js";
 import { checkRoster } from "./roster.js";
 import { rosterGroups, sampleRoster } from "./sampleRoster.js";
+import { draftOutcome, finishedProposals, measureProposal, REVIEWER } from "../control-centre/review.js";
 
 /*
   Each readable grouping, with the dimension key a recommendation targets it
@@ -97,7 +98,7 @@ export const readCover = defineTool({
   description:
     "Operational cover figures: predicted cover-gap days and cover cost over 90 days, overtime load, return-to-work caseload, by operational-load cohort and, where the tenant has them, by department, with the day rate and cover assumptions they rest on. Attendance-frequency measures are not available.",
   permission: PERMISSIONS.USE_AGENTS,
-  run: (_input, ctx) => buildCoordinatorContext(portfolioOf(ctx)),
+  run: (_input, ctx) => buildPlannerContext(portfolioOf(ctx)),
 });
 
 export const readTrackRecord = defineTool({
@@ -111,12 +112,13 @@ export const readTrackRecord = defineTool({
 export const draftRecommendation = defineTool({
   name: "draft_recommendation",
   description:
-    "Draft one priced action for a person to approve or reject. Target cohorts, never people. State what it saves, what it costs, how the saving was worked out and over how many days. The draft is not approved, booked or sent.",
+    "Draft one priced action for a person to approve or reject. Target cohorts, never people. Say which horizon it is for (week: before next week's roster goes out, 1 to 14 days; month: the month ahead, 15 to 62 days; season: 63 to 365 days), what it saves, what it costs, how the saving was worked out and over how many days. The draft is not approved, booked or sent.",
   permission: PERMISSIONS.CONTROL_CREATE,
   input_schema: {
     type: "object",
     properties: {
       kind: { type: "string", enum: KIND_KEYS },
+      horizon: { type: "string", enum: HORIZON_KEYS },
       title: { type: "string" },
       rationale: { type: "string" },
       target: {
@@ -140,7 +142,7 @@ export const draftRecommendation = defineTool({
         required: ["saving_rand", "cost_rand", "basis", "horizon_days"],
       },
     },
-    required: ["kind", "title", "rationale", "target", "predicted"],
+    required: ["kind", "horizon", "title", "rationale", "target", "predicted"],
     additionalProperties: false,
   },
   run: (input, ctx) => {
@@ -290,12 +292,105 @@ const READ_TOOLS = [
 ];
 
 /*
+  The Reviewer's tools. It sees each finished proposal's prediction and not
+  the reasoning behind it (review.js, blindView), measures it with fixed code,
+  and drafts the outcome for a person to check and record. The proposals come
+  from the tool context: the tenant's examples plus whatever the browser sent,
+  each checked by the route before it gets here.
+*/
+const nowOf = (ctx) => (ctx.now ? new Date(ctx.now) : new Date());
+const proposalById = (ctx, id) => (ctx.recommendations || []).find((r) => r.id === id) || null;
+const measureContext = (ctx) => {
+  const portfolio = portfolioOf(ctx);
+  return {
+    series: ctx.series || null,
+    cohorts: portfolio.cohorts || {},
+    dayRate: portfolio.hr_ops?.assumptions?.day_rate_rand,
+    now: nowOf(ctx),
+  };
+};
+
+export const readFinishedProposals = defineTool({
+  name: "read_finished_proposals",
+  description:
+    "The approved proposals whose horizon has passed and whose outcome is not yet recorded. Each gives its target, horizon, dates and the predicted saving and cost. Not the reasoning behind the prediction: measure, do not grade the argument.",
+  permission: PERMISSIONS.USE_AGENTS,
+  input_schema: { type: "object", properties: {}, additionalProperties: false },
+  run: (_input, ctx) => {
+    const finished = finishedProposals(ctx.recommendations || [], nowOf(ctx));
+    return {
+      count: finished.length,
+      proposals: finished,
+      note: finished.length ? undefined : "No approved proposal has finished its horizon without an outcome.",
+    };
+  },
+});
+
+export const measureProposalTool = defineTool({
+  name: "measure_proposal",
+  description:
+    "Measure one finished proposal: its cohort's change in absent days per head a year across its start, against the comparator cohorts frozen when it was approved, priced at the tenant's day rate over the cohort and the horizon. Returns the measured saving as a low, mid and high range beside the prediction. An observed difference, not a proven cause.",
+  permission: PERMISSIONS.USE_AGENTS,
+  input_schema: {
+    type: "object",
+    properties: { id: { type: "string", description: "A proposal id from read_finished_proposals." } },
+    required: ["id"],
+    additionalProperties: false,
+  },
+  run: ({ id }, ctx) => {
+    const rec = proposalById(ctx, id);
+    if (!rec) return { ok: false, reasons: ["no proposal with that id"] };
+    return measureProposal(rec, measureContext(ctx));
+  },
+});
+
+export const draftOutcomeTool = defineTool({
+  name: "draft_outcome",
+  description:
+    "Draft the outcome of one finished proposal for a person to check and record: the delivered saving in Rand (a loss is negative) and how it was measured. Use the measured mid figure unless you say why not. Nothing is recorded; a person records it.",
+  permission: PERMISSIONS.CONTROL_CREATE,
+  input_schema: {
+    type: "object",
+    properties: {
+      id: { type: "string" },
+      saving_rand: { type: "number" },
+      basis: { type: "string", description: "How the saving was measured, in words." },
+    },
+    required: ["id", "saving_rand", "basis"],
+    additionalProperties: false,
+  },
+  run: ({ id, saving_rand, basis }, ctx) => {
+    const rec = proposalById(ctx, id);
+    if (!rec) throw new Error("No proposal with that id.");
+    const measured = measureProposal(rec, measureContext(ctx));
+    if (!measured.ok) throw new Error(`It cannot be measured: ${measured.reasons.join("; ")}.`);
+    const outcome = draftOutcome(rec, {
+      saving_rand,
+      basis,
+      measured,
+      requestedBy: ctx.session?.email,
+      now: nowOf(ctx),
+    });
+    if (Array.isArray(ctx.outcomes)) ctx.outcomes.push(outcome);
+    return {
+      id: outcome.id,
+      saving_rand: outcome.saving_rand,
+      predicted_saving_rand: outcome.predicted_saving_rand,
+      next: "Drafted only. A person checks it and records it on the proposal.",
+    };
+  },
+});
+
+const REVIEW_TOOLS = [readFinishedProposals, measureProposalTool, readTrackRecord];
+
+/*
   `canDraft` is whether this tenant has somewhere to put a draft: the control
-  centre. With it off, the coordinator still reads and advises, and the model is
+  centre. With it off, the planner still reads and advises, and the model is
   never offered a tool whose output would go nowhere.
 */
 export function toolsFor(agent, { canDraft = true } = {}) {
-  if (agent === "coordinator") return canDraft ? [...READ_TOOLS, draftRecommendation] : READ_TOOLS;
+  if (agent === "planner") return canDraft ? [...READ_TOOLS, draftRecommendation] : READ_TOOLS;
   if (agent === "analyst") return READ_TOOLS;
+  if (agent === REVIEWER) return canDraft ? [...REVIEW_TOOLS, draftOutcomeTool] : REVIEW_TOOLS;
   return [];
 }

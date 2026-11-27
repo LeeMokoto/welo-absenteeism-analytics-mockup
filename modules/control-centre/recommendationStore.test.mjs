@@ -41,7 +41,7 @@ const draft = () =>
       target: [{ dimension: "cohort_load", cohort: "Standard ops" }],
       predicted: { saving_rand: 50000, cost_rand: 20000, basis: "Cover-gap days at the cover-day rate.", horizon_days: 30 },
     },
-    { agent: "coordinator", requestedBy: "sipho.dlamini@example.com", dataVersion: "run" },
+    { agent: "planner", requestedBy: "sipho.dlamini@example.com", dataVersion: "run" },
     context,
   );
 

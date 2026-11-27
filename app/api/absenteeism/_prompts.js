@@ -13,13 +13,17 @@ import prompts from "@/model/welo_inference/agent_prompts.json";
 
 export const ABSENTEEISM_AGENT_IDS = Object.keys(prompts.roles);
 
+// Former names that still resolve: the Cover Coordinator became the Planner.
+export const AGENT_ALIASES = prompts.aliases || {};
+export const resolveAgent = (agent) => AGENT_ALIASES[agent] || agent;
+
 // Matches the Python service default (WELO_AGENT_MODEL) so the two deployments
 // answer alike; override per environment with WELO_AGENT_MODEL on Vercel.
 export const ABSENTEEISM_MODEL =
   process.env.WELO_AGENT_MODEL || "claude-opus-5-5";
 
 export function systemPromptFor(agent) {
-  const role = prompts.roles[agent];
+  const role = prompts.roles[resolveAgent(agent)];
   if (!role) return null;
   return prompts.guardrails + "\n\n" + role;
 }

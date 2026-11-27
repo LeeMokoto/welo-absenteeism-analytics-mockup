@@ -35,7 +35,7 @@ export const absenceModule = {
     It was listed here, with all three mounted on nothing at all, which made
     the module contract advertise a capability the screens did not have.
   */
-  agents: ["analyst", "coordinator"],
+  agents: ["analyst", "planner"],
   guardrails: [
     "Cohorts under the tenant threshold carry no figures and render as n<5.",
     "Complementary suppression: where one cohort is suppressed, a second is withheld, so the first cannot be recovered by subtracting the visible rows from a published total.",

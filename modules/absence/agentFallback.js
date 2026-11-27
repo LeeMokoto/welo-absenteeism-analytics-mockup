@@ -103,9 +103,9 @@ function analystLeverage(ctx) {
     .join("\n\n");
 }
 
-// --- Coordinator -----------------------------------------------------------
+// --- Planner -----------------------------------------------------------
 
-function coordinatorCoverGap(ctx) {
+function plannerCoverGap(ctx) {
   const h = ctx.headline || {};
   const cover = ctx.cover || {};
   const top = byDesc(ctx.by_cohort, "cover_gap_days_90d");
@@ -126,7 +126,7 @@ function coordinatorCoverGap(ctx) {
     .join("\n\n");
 }
 
-function coordinatorOvertime(ctx) {
+function plannerOvertime(ctx) {
   const cover = ctx.cover || {};
   const top = byDesc(ctx.by_cohort, "overtime_mean_14d");
   const lead = top[0];
@@ -143,7 +143,7 @@ function coordinatorOvertime(ctx) {
     .join("\n\n");
 }
 
-function coordinatorReturnToWork(ctx) {
+function plannerReturnToWork(ctx) {
   const r = ctx.return_to_work || {};
   const top = byDesc(ctx.by_cohort, "rtw_caseload")[0];
 
@@ -162,16 +162,99 @@ function coordinatorReturnToWork(ctx) {
 
 const ANSWERS = {
   analyst: [
+    { when: /briefing paragraph/i, answer: analystBriefing },
     { when: /concentrat|where.*(exposure|absence|cost)|cost.*where/i, answer: analystConcentration },
     { when: /fatigue|burnout|risk.*cohort|cohort.*risk/i, answer: analystFatigue },
     { when: /leverage|highest|intervention|saving|addressable/i, answer: analystLeverage },
   ],
-  coordinator: [
-    { when: /cover gap|gap.*(hard|land)|where.*gap|90 days|ninety days/i, answer: coordinatorCoverGap },
-    { when: /overtime|relief|roster load/i, answer: coordinatorOvertime },
-    { when: /return to work|rtw|caseload/i, answer: coordinatorReturnToWork },
+  reviewer: [
+    { when: /least|worst|shortfall|below|under/i, answer: reviewerLeast },
+    { when: /review|finished|delivered|outcome|measure/i, answer: reviewerFinished },
+  ],
+  planner: [
+    { when: /cover gap|gap.*(hard|land)|where.*gap|90 days|ninety days/i, answer: plannerCoverGap },
+    { when: /overtime|relief|roster load/i, answer: plannerOvertime },
+    { when: /return to work|rtw|caseload/i, answer: plannerReturnToWork },
   ],
 };
+
+// --- The briefing paragraph -------------------------------------------------
+//
+// The Monday briefing asks the Analyst for one paragraph. Without a key, the
+// same paragraph is assembled from the briefing's own figures and says so.
+
+const rangeText = (r) => (r ? `${rand(r.low)} to ${rand(r.high)}` : "unknown");
+
+function analystBriefing(ctx) {
+  const b = ctx.briefing || {};
+  const w = b.waiting_on_a_person || {};
+  const risk = b.risk_ahead || {};
+  const parts = [`**This week.** ${b.headline || "No headline."}`];
+
+  const proposals = w.proposals || [];
+  if (proposals.length) {
+    parts.push(
+      `${proposals.length} proposal${proposals.length === 1 ? " waits" : "s wait"} for a decision, led by "${proposals[0].title}".`,
+    );
+  }
+  const outcomes = (w.outcomes_to_record || []).filter((o) => !o.reasons);
+  for (const o of outcomes) {
+    const share = o.delivered_share == null ? "" : ` ${Math.round(o.delivered_share * 100)}% of its prediction`;
+    const short = o.shortfall_rand > 0 ? `, short by ${rand(o.shortfall_rand)}` : "";
+    parts.push(`"${o.title}" has finished and measures at ${rangeText(o.measured_saving_rand)}:${share}${short}. Its outcome is waiting to be recorded.`);
+  }
+  if (risk.value_at_risk_90d) {
+    const top = (risk.by_department || [])[0];
+    parts.push(
+      `Ahead, ${rangeText(risk.value_at_risk_90d)} is at risk over the next 90 days${top ? `, most of it in ${top.label} (${rangeText(top.value_at_risk_rand)})` : ""}.`,
+    );
+  }
+  const fired = risk.triggers_fired || [];
+  if (fired.length) {
+    parts.push(`Planning triggers due: ${fired.map((t) => t.label).join("; ")}.`);
+  }
+  if (b.track_record?.summary) parts.push(b.track_record.summary);
+  if (b.caveat) parts.push(b.caveat);
+  return parts.join(" ");
+}
+
+// --- Reviewer ----------------------------------------------------------------
+//
+// The Reviewer's measurement is fixed code, so its summary can carry the real
+// figures: the grounding is each finished proposal's measurement, computed on
+// the server. What the summary cannot do is draft an outcome; that needs the
+// model and the drafting tool.
+
+const signedDays = (n) => (n == null ? "unknown" : `${n > 0 ? "+" : ""}${Math.round(n * 10) / 10}`);
+
+function reviewOne(m) {
+  if (!m.ok) return `**${m.title || "A finished proposal"}** cannot be measured: ${(m.reasons || []).join("; ")}.`;
+  const r = m.measured_saving_rand;
+  const pred = m.predicted_saving_rand;
+  const delivered = m.delivered_share;
+  const short = m.shortfall_rand > 0;
+  return [
+    `**${m.proposal.title}** (${m.cohort.cohort}, ${m.proposal.predicted.horizon_days} days).`,
+    `Predicted ${rand(pred)}. Measured ${rand(r.low)} to ${rand(r.high)}, mid ${rand(r.mid)}: ${delivered == null ? "no prediction to compare with" : `${Math.round(delivered * 100)}% of the prediction`}${short ? `, short of it by ${rand(m.shortfall_rand)}` : ""}.`,
+    `${m.cohort.cohort} moved ${signedDays(m.targeted?.change)} absent days per head a year across its start, against ${signedDays(m.comparator_change)} for the comparators frozen at approval.`,
+  ].join(" ");
+}
+
+function reviewerFinished(ctx) {
+  const items = ctx.finished || [];
+  if (!items.length) return "**Nothing to review.** No approved proposal has finished its horizon without an outcome.";
+  return [
+    ...items.map(reviewOne),
+    "An observed difference against comparable cohorts, not a proven cause. A person checks each figure and records it on the proposal.",
+  ].join("\n\n");
+}
+
+function reviewerLeast(ctx) {
+  const measured = (ctx.finished || []).filter((m) => m.ok && m.delivered_share != null);
+  if (!measured.length) return reviewerFinished(ctx);
+  const least = [...measured].sort((a, b) => a.delivered_share - b.delivered_share)[0];
+  return [reviewOne(least), "An observed difference, not a proven cause."].join("\n\n");
+}
 
 export function canAnswer(agent, question) {
   return (ANSWERS[agent] || []).some((a) => a.when.test(String(question || "")));

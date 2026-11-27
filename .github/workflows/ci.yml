@@ -541,7 +541,7 @@ jobs:
             fail=1
           }
           absrefuse=$(curl -s -b /tmp/jar-draft -X POST -H 'content-type: application/json' \
-            -d '{"agent":"coordinator","question":"Who are the worst attenders","context":{}}' \
+            -d '{"agent":"planner","question":"Who are the worst attenders","context":{}}' \
             http://127.0.0.1:3001/api/absence/agent)
           echo "$absrefuse" | grep -q '"answered":false' || {
             echo "::error::the absence agent answered an attendance-ranking question instead of declining"

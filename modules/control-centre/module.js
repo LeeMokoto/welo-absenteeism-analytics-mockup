@@ -25,7 +25,7 @@ export const controlCentreModule = {
     { href: "/control-centre/briefing", label: "Briefing" },
     { href: "/control-centre/proposals", label: "Proposals" },
   ],
-  agents: ["playbook", "coordinator"],
+  agents: ["playbook", "planner", "reviewer"],
   guardrails: [
     "Every record refers to a cohort. No record carries an employee key, and the store strips individual fields rather than trusting its callers.",
     "Targeting is stricter than reporting: at most two dimensions, never a protected attribute, never condition data.",

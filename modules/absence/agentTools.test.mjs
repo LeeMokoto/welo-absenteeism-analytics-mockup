@@ -13,7 +13,7 @@ import { portfolio } from "./data/portfolio.js";
 */
 
 const session = (role) => ({ email: `${role}@example.com`, role, permissions: ROLES[role].permissions });
-const ctx = (role, extra = {}) => ({ portfolio, session: session(role), agent: "coordinator", trace: [], drafts: [], ...extra });
+const ctx = (role, extra = {}) => ({ portfolio, session: session(role), agent: "planner", trace: [], drafts: [], ...extra });
 const use = (name, input = {}) => ({ type: "tool_use", id: "t1", name, input });
 
 const draft = {
@@ -21,17 +21,18 @@ const draft = {
   title: "Cap consecutive shifts for high-intensity operations",
   rationale: "The highest absence per head sits with the heaviest roster.",
   target: [{ dimension: "cohort_load", cohort: "High-intensity ops" }],
+  horizon: "season",
   predicted: { saving_rand: 250000, cost_rand: 40000, basis: "Scenario run on fewer consecutive shifts.", horizon_days: 90 },
 };
 
-test("only the coordinator can draft; the analyst reads", () => {
-  assert.ok(toolsFor("coordinator").some((t) => t.name === "draft_recommendation"));
+test("only the planner can draft; the analyst reads", () => {
+  assert.ok(toolsFor("planner").some((t) => t.name === "draft_recommendation"));
   assert.ok(!toolsFor("analyst").some((t) => t.name === "draft_recommendation"));
   assert.deepEqual(toolsFor("case"), []);
 });
 
 test("no tool approves anything", () => {
-  for (const agent of ["analyst", "coordinator"]) {
+  for (const agent of ["analyst", "planner"]) {
     for (const t of toolsFor(agent)) assert.ok(!/approve|decide|book|send|dispatch/.test(t.name), t.name);
   }
 });
@@ -182,4 +183,63 @@ test("check_roster returns counts by department, never a staff reference, and sa
   assert.equal(out.available, true);
   assert.match(out.roster, /Example roster/);
   assert.ok(out.by_department.length > 0);
+});
+
+
+test("a draft must say its horizon, and the horizon must match its days", () => {
+  const c = ctx("analyst");
+  const { horizon, ...noHorizon } = draft;
+  const missing = runTool([draftRecommendation], use("draft_recommendation", noHorizon), c);
+  assert.equal(missing.is_error, true, "a draft without a horizon was accepted");
+  const wrong = runTool([draftRecommendation], use("draft_recommendation", { ...draft, horizon: "week" }), c);
+  assert.equal(wrong.is_error, true);
+  assert.match(wrong.content, /next week proposal runs 1 to 14 days/i);
+  const ok = runTool(
+    [draftRecommendation],
+    use("draft_recommendation", { ...draft, horizon: "week", predicted: { ...draft.predicted, horizon_days: 7 } }),
+    c,
+  );
+  assert.equal(JSON.parse(ok.content).status, "Drafted");
+  assert.equal(c.drafts.at(-1).horizon, "week");
+});
+
+test("the Reviewer reads, measures and drafts outcomes, and never drafts a proposal", () => {
+  const names = toolsFor("reviewer").map((t) => t.name);
+  for (const n of ["read_finished_proposals", "measure_proposal", "draft_outcome"]) assert.ok(names.includes(n), n);
+  assert.ok(!names.includes("draft_recommendation"));
+  assert.ok(!toolsFor("reviewer", { canDraft: false }).some((t) => t.name === "draft_outcome"));
+  assert.ok(!toolsFor("planner").some((t) => t.name === "draft_outcome"));
+});
+
+test("the Reviewer's tools, end to end on the shipped examples", async () => {
+  const { readFileSync, existsSync } = await import("node:fs");
+  const { fileURLToPath } = await import("node:url");
+  const { exampleRecommendations } = await import("../control-centre/recommendationStore.js");
+  const seriesPath = fileURLToPath(new URL("../../model/data/outputs/cohort_series.json", import.meta.url));
+  if (!existsSync(seriesPath)) return;
+  const series = JSON.parse(readFileSync(seriesPath, "utf8"));
+  const recs = exampleRecommendations({ dimensions: portfolio.cohort_dimensions, cohorts: portfolio.cohorts });
+  const now = "2026-11-24T09:00:00Z";
+  const c = ctx("analyst", { agent: "reviewer", recommendations: recs, series, now, outcomes: [] });
+  const tools = toolsFor("reviewer");
+
+  const read = JSON.parse(runTool(tools, use("read_finished_proposals", {}), c).content);
+  assert.ok(read.count >= 1);
+  const text = JSON.stringify(read);
+  assert.ok(!/"rationale"|"basis"|"provenance"/.test(text), "the Reviewer was shown the reasoning");
+
+  const id = read.proposals[0].id;
+  const m = JSON.parse(runTool(tools, use("measure_proposal", { id }), c).content);
+  assert.equal(m.ok, true);
+
+  const drafted = runTool(tools, use("draft_outcome", { id, saving_rand: m.measured_saving_rand.mid, basis: "Frozen comparators." }), c);
+  assert.equal(drafted.is_error, undefined);
+  assert.equal(c.outcomes.length, 1);
+  assert.equal(c.outcomes[0].drafted_by.agent, "reviewer");
+
+  // A role that may not close proposals may not draft an outcome either.
+  const approver = ctx("approver", { agent: "reviewer", recommendations: recs, series, now, outcomes: [] });
+  const refused = runTool(tools, use("draft_outcome", { id, saving_rand: 1, basis: "x" }), approver);
+  assert.equal(refused.is_error, true);
+  assert.equal(approver.outcomes.length, 0);
 });

@@ -25,6 +25,7 @@
 
 import { buildRecommendation, closeWithActual, decide } from "./recommendations.js";
 import { carriesIndividual } from "./store.js";
+import { freezeComparators } from "./outcomes.js";
 import { storageKey } from "../../lib/platform/tenantScope.js";
 
 const LOCAL_KEY = "welo.control-centre.recommendations.v1";
@@ -58,15 +59,26 @@ function writeLocal(records) {
 const EXAMPLE_REQUESTER = "sipho.dlamini@example.com";
 const EXAMPLE_APPROVER = { email: "naledi.khumalo@example.com", role: "approver", permissions: [] };
 
-export function exampleRecommendations(context) {
-  const make = (id, draft, created) => ({
+/*
+  The shipped examples, per tenant. Each set shows the whole cycle: a draft
+  waiting for a decision, approved proposals still running, one finished and
+  waiting for the Reviewer, closed ones that feed the track record, and a
+  rejection with its reason. Approved examples carry comparators frozen at
+  approval, as the route does, so the Reviewer can measure them.
+*/
+export function exampleRecommendations(context = {}) {
+  return context.tenant === "hospitality" ? hospitalityExamples(context) : baseExamples(context);
+}
+
+function exampleHelpers(context) {
+  const make = (id, draft, created, trace) => ({
     ...buildRecommendation(
       draft,
       {
-        agent: "coordinator",
+        agent: "planner",
         requestedBy: EXAMPLE_REQUESTER,
         dataVersion: "example",
-        trace: [
+        trace: trace || [
           { tool: "read_cover", input: {}, ok: true },
           { tool: "read_cohorts", input: { dimension: "operational_load" }, ok: true },
         ],
@@ -78,7 +90,21 @@ export function exampleRecommendations(context) {
     example: true,
   });
   const approve = (rec, at, note) =>
-    decide(rec, { decision: "Approved", note, session: EXAMPLE_APPROVER, hasApprovePermission: true, now: new Date(at) });
+    decide(rec, {
+      decision: "Approved",
+      note,
+      session: EXAMPLE_APPROVER,
+      hasApprovePermission: true,
+      comparators: rec.target.length === 1 ? freezeComparators(rec.target[0], context.cohorts) : undefined,
+      now: new Date(at),
+    });
+  const reject = (rec, at, note) =>
+    decide(rec, { decision: "Rejected", note, session: EXAMPLE_APPROVER, hasApprovePermission: true, now: new Date(at) });
+  return { make, approve, reject };
+}
+
+function baseExamples(context) {
+  const { make, approve } = exampleHelpers(context);
 
   const standby = make(
     "rec-example-standby",
@@ -186,6 +212,148 @@ export function exampleRecommendations(context) {
       hasApprovePermission: true,
       now: new Date("2026-11-11T09:00:00Z"),
     }),
+    // Finished and waiting for the Reviewer: the roster change the cohort
+    // series simulates from April.
+    approve(
+      make(
+        "rec-example-hours",
+        {
+          kind: "roster_change",
+          horizon: "season",
+          title: "Cut overtime and cap consecutive shifts in high-intensity operations",
+          rationale:
+            "The highest-load cohort carries the most overtime and the longest runs of shifts, and both feed the fatigue the model reads.",
+          target: [{ dimension: "cohort_load", cohort: "High-intensity ops" }],
+          predicted: {
+            saving_rand: 2600000,
+            cost_rand: 900000,
+            basis: "What-if run with overtime down 28% and consecutive shifts capped at 8, at the day rate over the season.",
+            horizon_days: 180,
+          },
+        },
+        "2026-03-25T08:00:00Z",
+      ),
+      "2026-03-26T10:00:00Z",
+      "Agreed with the shift managers from April.",
+    ),
+  ].map((r) => ({ ...r, example: true }));
+}
+
+/*
+  The hospitality group. Departments throughout, priced at its own day rate.
+  The Kitchen roster fix is the change the hospitality cohort series simulates
+  from April, so the Reviewer has a real difference to measure; it was
+  predicted to save more than the data shows, which is the case worth seeing.
+*/
+function hospitalityExamples(context) {
+  const { make, approve, reject } = exampleHelpers(context);
+  const trace = [
+    { tool: "read_staffing_cost", input: {}, ok: true },
+    { tool: "read_cohorts", input: { dimension: "department" }, ok: true },
+  ];
+
+  const kitchen = make(
+    "rec-example-kitchen-roster",
+    {
+      kind: "roster_change",
+      horizon: "season",
+      title: "Keep 12 hours between Kitchen shifts and cut late closes",
+      rationale:
+        "The Kitchen has the most short rests and late finishes of any department, and an uncovered Kitchen shift loses the most revenue.",
+      target: [{ dimension: "cohort_department", cohort: "Kitchen" }],
+      predicted: {
+        saving_rand: 2400000,
+        cost_rand: 380000,
+        basis: "What-if run with short rests removed and late finishes halved, at the day rate over the season. Cost is the extra closing cover.",
+        horizon_days: 180,
+      },
+    },
+    "2026-03-25T08:00:00Z",
+    trace,
+  );
+  const easter = make(
+    "rec-example-easter-cover",
+    {
+      kind: "cover_booking",
+      horizon: "month",
+      title: "Pre-book front desk agency cover for the Easter weekend",
+      rationale: "Front office absence rises over long weekends, when occupancy is highest and late booking costs most.",
+      target: [{ dimension: "cohort_department", cohort: "Front office" }],
+      predicted: {
+        saving_rand: 70000,
+        cost_rand: 28000,
+        basis: "Last Easter's uncovered front desk shifts at the late-booking agency rate, against the early rate.",
+        horizon_days: 30,
+      },
+    },
+    "2026-03-10T08:00:00Z",
+    trace,
+  );
+  const pool = make(
+    "rec-example-room-pool",
+    {
+      kind: "hiring_plan",
+      horizon: "season",
+      title: "Build a casual room attendant pool for the December peak",
+      rationale: "Housekeeping is forecast to cost more than usual over the next 90 days, and agency room attendants are scarce in December.",
+      target: [{ dimension: "cohort_department", cohort: "Housekeeping" }],
+      predicted: {
+        saving_rand: 610000,
+        cost_rand: 240000,
+        basis: "Forecast short Housekeeping shifts over 90 days at the cover rate, less the cost of recruiting and training the pool.",
+        horizon_days: 90,
+      },
+    },
+    "2026-11-05T08:00:00Z",
+    trace,
+  );
+  const floor = make(
+    "rec-example-floor-standby",
+    {
+      kind: "cover_booking",
+      horizon: "month",
+      title: "Standby floor cover for December Friday and Saturday dinners",
+      rationale: "Front of house carries the most value at risk in December, and dinner is the service that runs short most often.",
+      target: [{ dimension: "cohort_department", cohort: "Front of house" }],
+      predicted: {
+        saving_rand: 420000,
+        cost_rand: 160000,
+        basis: "Forecast short dinner shifts on December weekends at the revenue lost per short shift, less the standby cost.",
+        horizon_days: 45,
+      },
+    },
+    "2026-11-20T08:00:00Z",
+    trace,
+  );
+  const fourDay = make(
+    "rec-example-four-day",
+    {
+      kind: "roster_change",
+      horizon: "season",
+      title: "Move Support and admin to a four-day week",
+      rationale: "Support and admin has spare capacity on Fridays and the lowest cover share.",
+      target: [{ dimension: "cohort_department", cohort: "Support and admin" }],
+      predicted: {
+        saving_rand: 95000,
+        cost_rand: 30000,
+        basis: "Friday cover not bought, at the cover rate.",
+        horizon_days: 120,
+      },
+    },
+    "2026-10-02T08:00:00Z",
+    trace,
+  );
+
+  return [
+    floor,
+    approve(pool, "2026-11-06T10:00:00Z", "Start recruiting now; review in February."),
+    approve(kitchen, "2026-03-26T10:00:00Z", "Agreed with the head chefs from April."),
+    closeWithActual(approve(easter, "2026-03-11T10:00:00Z", "Book it."), {
+      saving_rand: 52000,
+      basis: "Agency invoices for the weekend against last Easter's late-booking rates.",
+      now: new Date("2026-05-02T08:00:00Z"),
+    }),
+    reject(fourDay, "2026-10-03T09:00:00Z", "Support and admin covers the front desk on Fridays, so the saving is not real."),
   ].map((r) => ({ ...r, example: true }));
 }
 
@@ -194,6 +362,11 @@ export function exampleRecommendations(context) {
   example's id is that example after a decision taken here, so it replaces the
   shipped one. Newest first.
 */
+/* The records this browser holds, without the shipped examples. */
+export function localRecommendations() {
+  return readLocal();
+}
+
 export function listRecommendations(context) {
   const local = readLocal();
   const ids = new Set(local.map((r) => r.id));

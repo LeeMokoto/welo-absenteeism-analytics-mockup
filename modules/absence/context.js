@@ -23,7 +23,7 @@
 
   An allowlist, not a strip. The first version of this filtered suppressed rows
   and passed the rest of each row through whole, which shipped `mean_bradford`
-  and `freq_trigger` to the coordinator inside every cohort while the payload's
+  and `freq_trigger` to the planner inside every cohort while the payload's
   own note said attendance measures were withheld. A test caught it, but the
   shape was the problem: with a denylist, a field added upstream reaches the
   agent by default and nobody decides that it should.
@@ -60,7 +60,7 @@ const COHORT_FIELDS = [
 ];
 
 /*
-  What an operational cohort row may carry into a coordinator payload.
+  What an operational cohort row may carry into a planner payload.
 
   `freq_trigger` and `mean_bradford` are deliberately not on this list. They
   are attendance measures, widely used punitively, and this platform uses them
@@ -145,7 +145,7 @@ export function buildAnalystContext(portfolio) {
   };
 }
 
-export function buildCoordinatorContext(portfolio) {
+export function buildPlannerContext(portfolio) {
   const ops = portfolio.hr_ops || {};
   const byCohort = reportable(ops.by_cohort, OPS_COHORT_FIELDS);
   const byDepartment = reportable(ops.by_department, OPS_COHORT_FIELDS);

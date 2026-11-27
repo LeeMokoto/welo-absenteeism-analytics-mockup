@@ -98,7 +98,7 @@ class AgentRequest(BaseModel):
 
     ``data`` is the slice of model output the agent should reason over, for
     example the portfolio headline for the analyst, one individual record for
-    the case assistant, or the HR-ops aggregates for the coordinator. It is
+    the case assistant, or the HR-ops aggregates for the planner. It is
     sent verbatim to the model as grounding, so keep it to the relevant slice
     rather than the whole feed.
     """

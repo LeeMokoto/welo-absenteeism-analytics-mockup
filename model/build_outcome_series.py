@@ -73,6 +73,38 @@ INTERVENTION_PERIOD = "2026-04-01"
 INTERVENTION_DIMENSION = "cohort_load"
 INTERVENTION_COHORT = "High-intensity ops"
 
+# What is simulated, by tenant. The base workforce gets an hours change on its
+# heaviest cohort. A hospitality tenant gets the roster fix its own screens
+# price: the Kitchen's short rests between shifts and late finishes, the
+# patterns the roster check flags and the model reads (welo_pipeline/roster.py).
+# Either way it is a change to inputs; the absence that follows is whatever the
+# data-generating process makes of them.
+INTERVENTIONS = {
+    None: {
+        "dimension": INTERVENTION_DIMENSION,
+        "cohort": INTERVENTION_COHORT,
+        "kind": "hours",
+        "mechanism": (
+            "From the intervention period the targeted cohort's overtime falls by 28 percent "
+            "and consecutive shifts are capped at 8. The absence that follows is whatever the "
+            "data-generating process produces from those inputs. No outcome is written in by hand."
+        ),
+    },
+    "hospitality": {
+        "dimension": "cohort_department",
+        "cohort": "Kitchen",
+        "kind": "roster",
+        "short_rest_factor": 0.2,
+        "late_finish_factor": 0.7,
+        "mechanism": (
+            "From the intervention period the Kitchen's short rests between shifts fall by 80 "
+            "percent and its late finishes by 30 percent, the roster fix the roster check prices. "
+            "The absence that follows is whatever the data-generating process produces from those "
+            "inputs. No outcome is written in by hand."
+        ),
+    },
+}
+
 # Winter multiplier on absence, by calendar month. Infection-driven, so it moves
 # absence without moving any feature the model sees, which is exactly why a
 # before-and-after on the targeted cohort alone cannot be trusted.
@@ -184,7 +216,16 @@ def build(sector=None):
         + 0.1 * base_df["number_of_dependents"].to_numpy()
     )
 
-    targeted = cohort_cols[INTERVENTION_DIMENSION] == INTERVENTION_COHORT
+    plan = INTERVENTIONS.get(sector) or INTERVENTIONS[None]
+    targeted = cohort_cols[plan["dimension"]] == plan["cohort"]
+    roster_fixed = roster0
+    if plan["kind"] == "roster":
+        roster_fixed = roster.fatigue_contribution(
+            base_df["short_rest_count_28d"].to_numpy() * plan["short_rest_factor"],
+            base_df["late_finish_share_28d"].to_numpy() * plan["late_finish_factor"],
+            base_df["split_shifts_28d"].to_numpy(),
+            base_df["short_notice_changes_28d"].to_numpy(),
+        )
 
     # --- Walk the periods ---------------------------------------------------
     records = []
@@ -219,12 +260,15 @@ def build(sector=None):
         # The simulated roster change: a consecutive-shift cap and less
         # overtime, for the targeted cohort only, from the intervention period
         # onward. This is the mechanism, not the outcome.
-        if post:
+        roster_now = roster0
+        if post and plan["kind"] == "hours":
             overtime = np.where(targeted, overtime * 0.72, overtime)
             shifts = np.where(targeted, np.minimum(shifts, 8), shifts)
+        if post and plan["kind"] == "roster":
+            roster_now = np.where(targeted, roster_fixed, roster0)
 
         fatigue = _fatigue(
-            sleep, overtime, shifts, leave_gap, workload, rng.normal(0, 6.0, len(base_df)), roster0
+            sleep, overtime, shifts, leave_gap, workload, rng.normal(0, 6.0, len(base_df)), roster_now
         )
         hours = _absence_hours(static, fatigue, workload, rng)
         # Winter sits on top of the model's world, because infection is not in
@@ -297,13 +341,9 @@ def build(sector=None):
         "synthetic": True,
         "simulation": {
             "intervention_period": INTERVENTION_PERIOD,
-            "intervention_dimension": INTERVENTION_DIMENSION,
-            "intervention_cohort": INTERVENTION_COHORT,
-            "mechanism": (
-                "From the intervention period the targeted cohort's overtime falls by 28 percent "
-                "and consecutive shifts are capped at 8. The absence that follows is whatever the "
-                "data-generating process produces from those inputs. No outcome is written in by hand."
-            ),
+            "intervention_dimension": plan["dimension"],
+            "intervention_cohort": plan["cohort"],
+            "mechanism": plan["mechanism"],
             "seasonality": (
                 "A winter multiplier is applied to every cohort for May to September, peaking at "
                 "1.30 in July. Infection-driven, so it moves absence without moving any model "
@@ -324,15 +364,15 @@ def build(sector=None):
     print(f"wrote {path}")
     print(f"  periods: {len(PERIODS)} ({PERIODS[0]} to {PERIODS[-1]}), grain month")
     print("  measure: actual absent days per head, annualised")
-    tgt = series[INTERVENTION_DIMENSION]["cohorts"][INTERVENTION_COHORT]
-    print(f"\n  {INTERVENTION_COHORT} (n={tgt['count']}, membership frozen):")
+    tgt = series[plan["dimension"]]["cohorts"][plan["cohort"]]
+    print(f"\n  {plan['cohort']} (n={tgt['count']}, membership frozen):")
     for p in tgt["periods"]:
         mark = " <- roster change" if p["period_start"] == INTERVENTION_PERIOD else ""
         print(f"    {p['period_start']}  {p['absent_days_per_head_annual']:6.1f} days/head/yr{mark}")
-    for other in series[INTERVENTION_DIMENSION]["cohorts"]:
-        if other == INTERVENTION_COHORT:
+    for other in series[plan["dimension"]]["cohorts"]:
+        if other == plan["cohort"]:
             continue
-        pts = series[INTERVENTION_DIMENSION]["cohorts"][other]["periods"]
+        pts = series[plan["dimension"]]["cohorts"][other]["periods"]
         if not pts:
             continue
         pre = [p["absent_days_per_head_annual"] for p in pts if p["period_start"] < INTERVENTION_PERIOD]
@@ -341,7 +381,7 @@ def build(sector=None):
               f"change {np.mean(post) - np.mean(pre):+.1f}")
     pre = [p["absent_days_per_head_annual"] for p in tgt["periods"] if p["period_start"] < INTERVENTION_PERIOD]
     post = [p["absent_days_per_head_annual"] for p in tgt["periods"] if p["period_start"] >= INTERVENTION_PERIOD]
-    print(f"  {INTERVENTION_COHORT:>20}: pre {np.mean(pre):6.1f}  post {np.mean(post):6.1f}  "
+    print(f"  {plan['cohort']:>20}: pre {np.mean(pre):6.1f}  post {np.mean(post):6.1f}  "
           f"change {np.mean(post) - np.mean(pre):+.1f}")
     return out
 

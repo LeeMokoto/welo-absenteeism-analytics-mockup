@@ -24,17 +24,33 @@ export const AGENTS = {
       "What is the highest leverage move available",
     ],
   },
-  coordinator: {
-    id: "coordinator",
-    roleTag: "COVER AND ROSTER COORDINATOR",
+  planner: {
+    id: "planner",
+    roleTag: "PLANNER",
     description:
-      "Turns the predicted cover gap, overtime load and return-to-work caseload into concrete staffing actions. Cohort level only, never an individual.",
+      "Turns priced risk into proposals for a person to approve: what to change before next week's roster goes out, for the month ahead, or for the season. Prices each one and says how. Cohorts and departments only, never an individual.",
     chips: [
       "Where does the cover gap land hardest over the next 90 days",
       "Which cohorts carry the heaviest overtime load",
       "What does the return to work caseload require",
     ],
   },
+};
+
+/*
+  The Reviewer lives on the Proposals screen rather than in this module's
+  screens, but it is served by the same route, so it is declared here with the
+  others.
+*/
+AGENTS.reviewer = {
+  id: "reviewer",
+  roleTag: "REVIEWER",
+  description:
+    "Measures finished proposals against comparable cohorts and drafts each outcome for a person to record. Sees what was predicted, not why, and says plainly when a proposal delivered less than it promised.",
+  chips: [
+    "Review the finished proposals",
+    "Which finished proposal delivered least against its prediction",
+  ],
 };
 
 export const AGENT_IDS = Object.keys(AGENTS);

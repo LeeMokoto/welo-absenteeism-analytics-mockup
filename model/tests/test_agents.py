@@ -33,7 +33,7 @@ def test_available_with_key():
 
 def test_agents_listed():
     svc = AgentService(api_key="sk-ant-test-key")
-    assert set(svc.agents) == {"analyst", "case", "coordinator", "playbook"}
+    assert set(svc.agents) == {"analyst", "case", "planner", "playbook", "reviewer"}
 
 
 def test_unknown_agent_raises():
@@ -160,3 +160,15 @@ def test_prepare_applies_governance_before_sending():
     assert "email" in report["dropped_fields"]
     assert "employee_id" in report["pseudonymized"]
     assert report["injection_flags"] >= 1
+
+
+def test_the_former_coordinator_name_resolves_to_the_planner():
+    """The Cover Coordinator became the Planner; callers built against the old
+    name keep working rather than getting an unknown-agent error."""
+    from welo_inference.agents import AgentService, resolve_agent
+
+    assert resolve_agent("coordinator") == "planner"
+    assert resolve_agent("analyst") == "analyst"
+    svc = AgentService(api_key=None)
+    assert svc._system_for("coordinator") == svc._system_for("planner")
+    assert "coordinator" not in svc.agents

@@ -106,6 +106,99 @@ overrides that. `WELO_TENANT_NAME` and `WELO_TENANT_DESCRIPTOR` still put a
 prospect's name on a pinned deployment, but not on one that switches, where a
 single name would sit on top of two different groups.
 
+### The Planner
+
+The Cover Coordinator is now the **Planner**: one agent that turns priced risk
+into proposals for a person to approve, at whichever horizon it is asked about.
+The horizon is an input, not a separate agent:
+
+| Horizon | Days | When |
+| --- | --- | --- |
+| Next week | 1 to 14 | Before the roster goes out |
+| Month ahead | 15 to 62 | The season view |
+| Season | 63 to 365 | Hiring and longer patterns |
+
+Every proposal records its horizon, and a draft whose days fall outside it is
+refused. On the HR and operations screen, a **When the Planner is due** card
+shows its triggers, worked out from the tenant's data and today's date
+([`modules/absence/plannerTriggers.js`](modules/absence/plannerTriggers.js)):
+
+- **Weekly:** from Monday until the roster goes out on Thursday.
+- **Monthly:** in the last nine days of a month and the first three of the next.
+- **Threshold:** where the tenant has a cost forecast, any coming month that
+  costs over 20% more a day than the last twelve, and any department whose next
+  90 days cost over 20% more than a usual 90.
+
+A fired trigger puts its question to the Planner in one click. Nothing runs on
+its own: proposals live in the browser until a shared store is connected, so a
+trigger prompts a person rather than scheduling a run. `coordinator` still
+resolves to `planner` on both the platform and the Python service, so older
+callers keep working.
+
+The evals add two Planner cases on the hospitality tenant: a month-ahead plan
+that should lead with the department carrying the most value at risk, and a
+request to put a named person on standby, which must be declined and reframed
+to the department. An eval case that names an unknown check now fails rather
+than passing silently.
+
+### The Reviewer
+
+The **Reviewer** is the Planner's other half. The Planner prices an action
+before it runs; the Reviewer measures it after, on the Proposals screen, and
+drafts the outcome for a person to check and record through the same close
+route a person would use. Three rules keep it a measurement rather than a
+second opinion ([`modules/control-centre/review.js`](modules/control-centre/review.js)):
+
+- **It sees the prediction, not the reasoning.** Its tools hand it a
+  proposal's target, horizon and predicted saving and cost, and never the
+  rationale, the basis or what the Planner read. The browser's proposals go to
+  the server beside the question, not inside the model's grounding.
+- **Comparators are frozen at approval.** Approving a proposal now records the
+  other cohorts of its dimension, the rule the control centre already applies
+  to interventions. The Reviewer measures against those and refuses to choose
+  comparators after the fact.
+- **The method is fixed code.** The cohort's change in absent days per head a
+  year across the proposal's start, against the frozen comparators, priced at
+  the tenant's day rate over the cohort and the horizon. The range runs across
+  comparators one at a time. The shortfall against the prediction is computed
+  in code, so the agent quotes it rather than doing arithmetic.
+
+It never reviews a proposal it drafted, and it only drafts: the outcome fills
+in the proposal's form, labelled, and a person with the create permission
+records it.
+
+Each tenant ships a finished proposal for it to measure. For hospitality that
+is a Kitchen roster fix (short rests down 80%, late finishes down 30%), which
+the hospitality cohort series now simulates from April 2026 in place of the
+industrial overtime change. It was predicted to save R2.4m and measures at
+R1.1m to R1.9m, 63% of the prediction, so the demo shows the Reviewer reporting
+a shortfall plainly. The base series is unchanged.
+
+A **reviewer_shortfall** eval checks that a live Reviewer says the proposal
+fell short, with the measured figures, and does not dress it as a success.
+
+### The Monday briefing
+
+The control centre's briefing is now the **Monday briefing**, for the week it
+opens in. It keeps the briefing's rules (decisions first, cohort level,
+caveats carried in full, nothing sent anywhere) and adds:
+
+- **Waiting on a person:** proposals awaiting a decision, and finished
+  proposals whose outcome is not yet recorded, with what the Reviewer measured
+  against what was predicted and any shortfall.
+- **Risk ahead:** the Planner's triggers that are due, and the next 90 days'
+  value at risk by department. Property is not a reporting dimension in the
+  data yet, so the briefing goes by department, and says so.
+- **One written paragraph,** asked of the Analyst from the briefing's own
+  figures and labelled as written by an agent. Without a key, the same
+  paragraph is assembled from the figures and says it is not a model.
+- **Activity:** proposals running and closed, with the track record's own
+  sentence about whether there are enough to judge.
+
+Proposals and their measurements are worked out in the browser from the
+tenant's examples and its own records, with the same fixed code the Reviewer
+uses, so the briefing cannot say more than the Proposals screen does.
+
 Departments come from the data, not the code: a feed whose cohort has a
 `department` column gets a `cohort_department` grouping, cover priced by
 department, and a department table on the operations screen. Feeds without one
