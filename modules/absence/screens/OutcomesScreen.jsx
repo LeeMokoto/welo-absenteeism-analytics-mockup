@@ -79,8 +79,23 @@ export default function AbsenceOutcomesScreen({ portfolio }) {
           unit="addressable at the benchmark"
         />
       </div>
-      <div className="indicative" style={{ marginTop: 10 }}>
-        Projected, not yet measured. A benchmark reduction applied to the high-risk band.
+      {/* The derivation, in the numbers the feed actually used. It used to say
+          "a benchmark reduction applied to the high-risk band" while the code
+          multiplied total exposure by a bare constant, so the sentence was
+          true of how the figure was once worked out and not of how it was
+          being computed. Reading it off the feed means it cannot drift again. */}
+      <div className="indicative long" style={{ marginTop: 10 }}>
+        Projected, not yet measured.{" "}
+        {h.addressable_reduction != null && h.addressable_band_share != null ? (
+          <>
+            A {pct(h.addressable_reduction * 100, 0)} reduction applied to the high and critical
+            risk bands, which are {pct((h.covered_lives ? (portfolio.covered_cohort?.high_or_critical_count || 0) / h.covered_lives : 0) * 100, 1)}{" "}
+            of covered lives and carry {pct(h.addressable_band_share * 100, 1)} of predicted absent
+            days. That is {pct(h.addressable_share_of_exposure * 100, 1)} of exposure.
+          </>
+        ) : (
+          <>A benchmark reduction applied to the high-risk band.</>
+        )}
       </div>
 
       <div className="section">

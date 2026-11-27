@@ -23,7 +23,8 @@ from typing import Any, Callable, Dict, List, Optional
 # A hospitality day costs R650, not the industrial R1,100. This default only
 # applies to a feed that predates the field.
 RAND_PER_DAY = 1100.0
-ADDRESSABLE = 0.20
+# Matches welo_pipeline.export.ADDRESSABLE_REDUCTION and feed_enrich.ADDRESSABLE.
+ADDRESSABLE = 0.25
 
 
 def day_rate_from_feed(feed: Optional[Dict[str, Any]]) -> float:

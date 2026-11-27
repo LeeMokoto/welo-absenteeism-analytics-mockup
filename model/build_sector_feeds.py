@@ -156,9 +156,11 @@ SECTOR_STAFFING = {
     },
 }
 
-# Same benchmark share of exposure as welo_pipeline.export uses for the
-# headline saving, so only the day rate changes between sectors.
-HEADLINE_ADDRESSABLE_SHARE = 0.042
+# No constant here any more. welo_pipeline.export derives the addressable
+# share from the band that carries the days and records it on the feed, so a
+# sector reprices at its own day rate without inventing a share of its own.
+# A second copy of that number is how the headline and the cohorts drifted
+# onto different benchmarks in the first place.
 
 
 def reprice_headline(feed: dict, day_rate: float) -> None:
@@ -171,7 +173,13 @@ def reprice_headline(feed: dict, day_rate: float) -> None:
     h = feed["headline"]
     exposure = round(h["predicted_absent_days_annual"] * day_rate, 0)
     h["absence_cost_exposure_rand"] = exposure
-    h["projected_addressable_saving_rand"] = round(exposure * HEADLINE_ADDRESSABLE_SHARE, 0)
+    share = h.get("addressable_share_of_exposure")
+    if share is None:
+        raise KeyError(
+            "feed headline has no addressable_share_of_exposure; regenerate the base "
+            "feed with welo_pipeline.export before repricing a sector"
+        )
+    h["projected_addressable_saving_rand"] = round(exposure * share, 0)
 MODELS_DIR = f"{ROOT}/models"
 
 # Reuse the trained model's global importance + metrics (model is unchanged).

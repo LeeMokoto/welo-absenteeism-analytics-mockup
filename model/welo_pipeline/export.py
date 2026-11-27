@@ -18,6 +18,25 @@ import pandas as pd
 HOURS_PER_DAY = 8.0
 ANNUAL_RAND_PER_DAY = 1100.0
 
+"""The benchmark reduction behind every addressable-saving figure.
+
+One constant, because the headline used to disagree with everything under it.
+The headline was a bare ``cost_exposure_rand * 0.042`` while the cohort rows
+and the scenario engine used 0.20, and the screen told the reader the headline
+was "a benchmark reduction applied to the high-risk band" when no band entered
+the arithmetic at all. 0.042 was in fact a 10% reduction on that band, worked
+out once and then hardcoded, so the derivation was lost and the rate silently
+became half the one the rest of the product used.
+
+It is derived here now, so the sentence on screen is true and a change to the
+benchmark moves every figure that rests on it."""
+ADDRESSABLE_REDUCTION = 0.25
+
+# The bands an intervention can actually be aimed at. They are 12.4% of the
+# covered workforce and carry roughly 42% of predicted absent days, which is
+# what makes a reduction on them worth more than its headcount suggests.
+ADDRESSABLE_BANDS = ("Critical", "High")
+
 
 def build_dashboard_feed(
     predictions: pd.DataFrame,
@@ -39,7 +58,18 @@ def build_dashboard_feed(
     headline_days_90d = float(p["predicted_absent_days_90d"].sum().round(0))
     headline_days_annual = float((p["predicted_absent_days_monthly"] * 12).sum().round(0))
     cost_exposure_rand = round(headline_days_annual * ANNUAL_RAND_PER_DAY, 0)
-    addressable_saving_rand = round(cost_exposure_rand * 0.042, 0)
+
+    # The share of predicted absent days carried by the bands an intervention
+    # can be aimed at. Measured, not assumed: a reduction on the high-risk band
+    # is worth its share of days, which is far more than its share of people.
+    days_by_band = p.groupby("predicted_risk_band")["predicted_absent_days_90d"].sum()
+    total_band_days = float(days_by_band.sum())
+    addressable_band_share = round(
+        float(days_by_band.reindex(list(ADDRESSABLE_BANDS)).fillna(0).sum()) / max(1.0, total_band_days),
+        4,
+    )
+    addressable_share = round(addressable_band_share * ADDRESSABLE_REDUCTION, 4)
+    addressable_saving_rand = round(cost_exposure_rand * addressable_share, 0)
 
     queue_cols = [
         "row_id",
@@ -108,6 +138,11 @@ def build_dashboard_feed(
             "predicted_absent_days_annual": headline_days_annual,
             "absence_cost_exposure_rand": cost_exposure_rand,
             "projected_addressable_saving_rand": addressable_saving_rand,
+            # How that figure was reached, so a screen can state it and a
+            # sector feed can reprice it without inventing its own share.
+            "addressable_band_share": addressable_band_share,
+            "addressable_reduction": ADDRESSABLE_REDUCTION,
+            "addressable_share_of_exposure": addressable_share,
             "fatigue_high_or_critical_share": fatigue_summary.get("share_high_or_critical"),
         },
         "risk_distribution": [

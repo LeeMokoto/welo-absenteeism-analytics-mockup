@@ -29,7 +29,11 @@ _PORTFOLIO = {
     "covered_lives": 6000,
     "predicted_absent_days_90d": 19115,
     "cost_exposure_rand_90d": 84108200,
-    "addressable_saving_rand": 3532544,
+    # 10.53% of the exposure above: a 25% reduction on the high and critical
+    # bands, which carry 42.1% of predicted absent days. Kept in step with
+    # welo_pipeline.export.ADDRESSABLE_REDUCTION, or the evals would grade
+    # the agents against a figure the product no longer shows.
+    "addressable_saving_rand": 8856593,
     "fatigue_high_or_critical_share": 0.67,
     "cohorts_by_lens": {
         "Lifestyle risk": [
