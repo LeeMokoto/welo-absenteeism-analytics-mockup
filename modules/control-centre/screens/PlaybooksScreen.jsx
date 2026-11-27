@@ -299,26 +299,43 @@ function Steps({ steps }) {
       </div>
     );
   }
+  /*
+    A list, not a table.
+
+    This was four columns of table.data, which is the numeric table: right
+    aligned, tabular numerals, and white-space: nowrap on every cell. A step is
+    a sentence, so the only cell that could wrap was the one already overridden
+    to whiteSpace normal, and the three that could not set the table's width.
+    Inside a half-width card that came to a 615px table in a 482px space: the
+    step column collapsed to about four characters a line while the measure
+    column ran off the edge of the card and took the page's scroll width with
+    it.
+
+    Widening the columns would only have moved the overflow. The shape was
+    wrong: a plan is a sentence with three pieces of metadata hanging off it,
+    not a row of four comparable values, and nothing here is a figure to be
+    read down a column. So the sentence gets the full width and the metadata
+    sits under it, which fits a narrow card, a wide one, and a phone without
+    any of them being a special case.
+  */
   return (
-    <table className="data" style={{ marginTop: 12 }}>
-      <thead>
-        <tr><th>Step</th><th>Owner</th><th>Horizon</th><th>Measure</th></tr>
-      </thead>
-      <tbody>
-        {steps.map((s, i) => (
-          <tr key={`${i}-${s.action}`}>
-            <td style={{ whiteSpace: "normal" }}>{s.action || <em>missing</em>}</td>
-            <td>{s.owner || <em>missing</em>}</td>
-            <td>{horizonFor(s.horizon)?.label || s.horizon || <em>missing</em>}</td>
-            <td>
+    <ol className="step-list">
+      {steps.map((s, i) => (
+        <li key={`${i}-${s.action}`}>
+          <p className="step-action">{s.action || <em>missing</em>}</p>
+          <div className="step-meta">
+            <span><em>Owner</em>{s.owner || "missing"}</span>
+            <span><em>Horizon</em>{horizonFor(s.horizon)?.label || s.horizon || "missing"}</span>
+            <span>
+              <em>Measure</em>
               {s.measure
                 ? MEASURES.find((m) => m.key === s.measure)?.label || s.measure
                 : "not measured"}
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+            </span>
+          </div>
+        </li>
+      ))}
+    </ol>
   );
 }
 
@@ -520,18 +537,24 @@ function Dispatch({ playbook, intervention, canCreate, onSent }) {
           : "Your role approves tasks and does not send them. Approval permits a task to leave; releasing it belongs to the people doing the work."}
       </p>
 
-      <table className="data" style={{ marginTop: 8 }}>
-        <thead>
-          <tr><th>Step</th><th>Queue</th><th>State</th></tr>
-        </thead>
-        <tbody>
-          {rows.map((row) => (
-            <tr key={row.key}>
-              <td style={{ whiteSpace: "normal" }}>{row.step.action}</td>
-              <td className="caption">{row.destination_label || "none configured"}</td>
-              <td style={{ whiteSpace: "normal" }}>
+      {/* The same shape as Steps above, and for the same reason: the step is a
+          sentence, so a numeric table squeezed it into a column four characters
+          wide while the queue name and the button kept their own. Here the
+          state is also a control rather than a value, which a table column is
+          the wrong place for. */}
+      <ol className="step-list">
+        {rows.map((row) => (
+          <li key={row.key}>
+            <p className="step-action">{row.step.action}</p>
+            <div className="step-meta">
+              <span>
+                <em>Queue</em>
+                {row.destination_label || "none configured"}
+              </span>
+              <span>
+                <em>State</em>
                 {row.existing ? (
-                  <span className="caption">Recorded {row.existing.dispatched_at}</span>
+                  `Recorded ${row.existing.dispatched_at}`
                 ) : row.ok ? (
                   canCreate ? (
                     <button
@@ -542,16 +565,16 @@ function Dispatch({ playbook, intervention, canCreate, onSent }) {
                       {busy === row.key ? "Recording" : "Send"}
                     </button>
                   ) : (
-                    <span className="caption">ready</span>
+                    "ready"
                   )
                 ) : (
-                  <span className="caption">{row.blockers.join("; ")}</span>
+                  row.blockers.join("; ")
                 )}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+              </span>
+            </div>
+          </li>
+        ))}
+      </ol>
 
       {problem ? <div className="indicative" style={{ marginTop: 10 }}>{problem}</div> : null}
 

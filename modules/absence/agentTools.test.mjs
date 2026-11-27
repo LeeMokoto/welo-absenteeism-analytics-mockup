@@ -104,8 +104,29 @@ test("a draft built from read_cohorts' key passes, where the reading name was re
   assert.equal(refused.is_error, true);
 });
 
+/*
+  Both no-such-data cases below build a tenant that lacks the grouping instead
+  of leaning on the live feed to lack it.
+
+  They used to pass the real portfolio, which worked only while the industrial
+  tenant happened to have no departments and no demand block. The day it got
+  both, two tests that are about the empty case started asserting against a
+  populated one and failed, having never been wrong about the behaviour. A test
+  for the absent case has to construct the absence.
+*/
+const without = (...keys) => {
+  const out = { ...portfolio, cohorts: { ...portfolio.cohorts } };
+  for (const k of keys) {
+    delete out[k];
+    delete out.cohorts[k];
+  }
+  out.cohort_dimensions = (portfolio.cohort_dimensions || []).filter((d) => !keys.includes(d.key));
+  return out;
+};
+
 test("a tenant with no departments says so rather than returning an empty grouping as if it were data", () => {
-  const r = JSON.parse(runTool([readCohorts], use("read_cohorts", { dimension: "department" }), ctx("analyst")).content);
+  const c = { ...ctx("analyst"), portfolio: without("cohort_department") };
+  const r = JSON.parse(runTool([readCohorts], use("read_cohorts", { dimension: "department" }), c).content);
   assert.equal(r.target_dimension, null);
   assert.match(r.targeting, /no such grouping/);
 });
@@ -131,9 +152,26 @@ test("a tenant with departments gets them, with the key a draft targets them by"
 });
 
 test("read_demand says plainly when a tenant has no demand data", () => {
-  const r = JSON.parse(runTool(toolsFor("analyst"), use("read_demand", { grain: "week" }), ctx("analyst")).content);
+  const c = { ...ctx("analyst"), portfolio: without("demand") };
+  const r = JSON.parse(runTool(toolsFor("analyst"), use("read_demand", { grain: "week" }), c).content);
   assert.equal(r.available, false);
   assert.match(r.note, /no demand data/);
+});
+
+test("read_demand reads the requested grain, and says the demand is a benchmark", () => {
+  const r = JSON.parse(runTool(toolsFor("analyst"), use("read_demand", { grain: "week" }), ctx("analyst")).content);
+  assert.equal(r.available, true, "the industrial tenant has departments and a demand block");
+  assert.equal(r.grain, "week");
+  assert.equal(r.rows.length, 7, "a week has seven points");
+  // `pressure` is the named points, not a flag per row. They have to agree:
+  // an agent that reads the summary and an agent that reads the rows must not
+  // be able to reach different answers about which days are under pressure.
+  const flagged = r.rows.filter((x) => x.pressure).map((x) => x.label);
+  assert.deepEqual(r.pressure, flagged);
+  // The figure and the caveat travel together: an agent handed a demand curve
+  // with no provenance will describe it as the tenant's own trading data.
+  assert.equal(r.basis.indicative, true);
+  assert.match(r.basis.source, /not the tenant's data/);
 });
 
 test("check_roster returns counts by department, never a staff reference, and says the roster is an example", () => {

@@ -489,6 +489,13 @@ window.WELO_FEED = {
       "blurb": "Smoking and alcohol load; together the top SHAP driver of predicted absence.",
       "protected": false,
       "min_cohort": 5
+    },
+    {
+      "key": "cohort_department",
+      "label": "Department",
+      "blurb": "Where people work, in the tenant's own department names. Comes from the tenant's data rather than the model.",
+      "protected": false,
+      "min_cohort": 5
     }
   ],
   "cohorts": {
@@ -500,7 +507,7 @@ window.WELO_FEED = {
         "predicted_absent_days_90d": 9850.0,
         "predicted_absent_days_annual": 39399.0,
         "cost_exposure_rand": 43339428.0,
-        "addressable_saving_rand": 3792195,
+        "addressable_saving_rand": 3792196.0,
         "absent_days_per_head_annual": 19.4,
         "high_or_critical_count": 446,
         "high_or_critical_share": 0.2197,
@@ -519,7 +526,7 @@ window.WELO_FEED = {
         "predicted_absent_days_90d": 3612.0,
         "predicted_absent_days_annual": 14447.0,
         "cost_exposure_rand": 15892008.0,
-        "addressable_saving_rand": 1390558,
+        "addressable_saving_rand": 1390558.0,
         "absent_days_per_head_annual": 11.6,
         "high_or_critical_count": 131,
         "high_or_critical_share": 0.1051,
@@ -538,7 +545,7 @@ window.WELO_FEED = {
         "predicted_absent_days_90d": 4688.0,
         "predicted_absent_days_annual": 18751.0,
         "cost_exposure_rand": 20626452.0,
-        "addressable_saving_rand": 1804944,
+        "addressable_saving_rand": 1804945.0,
         "absent_days_per_head_annual": 7.4,
         "high_or_critical_count": 138,
         "high_or_critical_share": 0.0547,
@@ -559,7 +566,7 @@ window.WELO_FEED = {
         "predicted_absent_days_90d": 7053.0,
         "predicted_absent_days_annual": 28210.0,
         "cost_exposure_rand": 31030692.0,
-        "addressable_saving_rand": 2715219,
+        "addressable_saving_rand": 2715220.0,
         "absent_days_per_head_annual": 22.2,
         "high_or_critical_count": 322,
         "high_or_critical_share": 0.2529,
@@ -578,7 +585,7 @@ window.WELO_FEED = {
         "predicted_absent_days_90d": 7987.0,
         "predicted_absent_days_annual": 31947.0,
         "cost_exposure_rand": 35141436.0,
-        "addressable_saving_rand": 3074957,
+        "addressable_saving_rand": 3074956.0,
         "absent_days_per_head_annual": 12.2,
         "high_or_critical_count": 325,
         "high_or_critical_share": 0.1237,
@@ -597,7 +604,7 @@ window.WELO_FEED = {
         "predicted_absent_days_90d": 2998.0,
         "predicted_absent_days_annual": 11993.0,
         "cost_exposure_rand": 13191816.0,
-        "addressable_saving_rand": 1154287,
+        "addressable_saving_rand": 1154288.0,
         "absent_days_per_head_annual": 6.6,
         "high_or_critical_count": 67,
         "high_or_critical_share": 0.037,
@@ -616,7 +623,7 @@ window.WELO_FEED = {
         "predicted_absent_days_90d": 112.0,
         "predicted_absent_days_annual": 449.0,
         "cost_exposure_rand": 493944.0,
-        "addressable_saving_rand": 43235,
+        "addressable_saving_rand": 43236.0,
         "absent_days_per_head_annual": 5.2,
         "high_or_critical_count": 1,
         "high_or_critical_share": 0.0115,
@@ -637,7 +644,7 @@ window.WELO_FEED = {
         "predicted_absent_days_90d": 2133.0,
         "predicted_absent_days_annual": 8532.0,
         "cost_exposure_rand": 9385728.0,
-        "addressable_saving_rand": 821327,
+        "addressable_saving_rand": 821328.0,
         "absent_days_per_head_annual": 8.3,
         "high_or_critical_count": 68,
         "high_or_critical_share": 0.066,
@@ -656,7 +663,7 @@ window.WELO_FEED = {
         "predicted_absent_days_90d": 6467.0,
         "predicted_absent_days_annual": 25870.0,
         "cost_exposure_rand": 28456956.0,
-        "addressable_saving_rand": 2489872,
+        "addressable_saving_rand": 2489872.0,
         "absent_days_per_head_annual": 11.1,
         "high_or_critical_count": 258,
         "high_or_critical_share": 0.1111,
@@ -675,7 +682,7 @@ window.WELO_FEED = {
         "predicted_absent_days_90d": 6574.0,
         "predicted_absent_days_annual": 26296.0,
         "cost_exposure_rand": 28925820.0,
-        "addressable_saving_rand": 2531105,
+        "addressable_saving_rand": 2531106.0,
         "absent_days_per_head_annual": 14.0,
         "high_or_critical_count": 271,
         "high_or_critical_share": 0.1441,
@@ -694,7 +701,7 @@ window.WELO_FEED = {
         "predicted_absent_days_90d": 2975.0,
         "predicted_absent_days_annual": 11899.0,
         "cost_exposure_rand": 13089384.0,
-        "addressable_saving_rand": 1145395,
+        "addressable_saving_rand": 1145394.0,
         "absent_days_per_head_annual": 21.0,
         "high_or_critical_count": 118,
         "high_or_critical_share": 0.2085,
@@ -715,7 +722,7 @@ window.WELO_FEED = {
         "predicted_absent_days_90d": 1455.0,
         "predicted_absent_days_annual": 5820.0,
         "cost_exposure_rand": 6402132.0,
-        "addressable_saving_rand": 560179,
+        "addressable_saving_rand": 560179.0,
         "absent_days_per_head_annual": 12.0,
         "high_or_critical_count": 55,
         "high_or_critical_share": 0.1132,
@@ -734,7 +741,7 @@ window.WELO_FEED = {
         "predicted_absent_days_90d": 5289.0,
         "predicted_absent_days_annual": 21158.0,
         "cost_exposure_rand": 23273448.0,
-        "addressable_saving_rand": 2036345,
+        "addressable_saving_rand": 2036346.0,
         "absent_days_per_head_annual": 13.0,
         "high_or_critical_count": 208,
         "high_or_critical_share": 0.128,
@@ -753,7 +760,7 @@ window.WELO_FEED = {
         "predicted_absent_days_90d": 6966.0,
         "predicted_absent_days_annual": 27863.0,
         "cost_exposure_rand": 30649212.0,
-        "addressable_saving_rand": 2681903,
+        "addressable_saving_rand": 2681902.0,
         "absent_days_per_head_annual": 12.5,
         "high_or_critical_count": 268,
         "high_or_critical_share": 0.1203,
@@ -772,7 +779,7 @@ window.WELO_FEED = {
         "predicted_absent_days_90d": 4440.0,
         "predicted_absent_days_annual": 17757.0,
         "cost_exposure_rand": 19533096.0,
-        "addressable_saving_rand": 1709273,
+        "addressable_saving_rand": 1709273.0,
         "absent_days_per_head_annual": 12.1,
         "high_or_critical_count": 184,
         "high_or_critical_share": 0.1259,
@@ -793,7 +800,7 @@ window.WELO_FEED = {
         "predicted_absent_days_90d": 4790.0,
         "predicted_absent_days_annual": 19161.0,
         "cost_exposure_rand": 21076968.0,
-        "addressable_saving_rand": 1844277,
+        "addressable_saving_rand": 1844277.0,
         "absent_days_per_head_annual": 29.2,
         "high_or_critical_count": 213,
         "high_or_critical_share": 0.3247,
@@ -812,7 +819,7 @@ window.WELO_FEED = {
         "predicted_absent_days_90d": 6634.0,
         "predicted_absent_days_annual": 26537.0,
         "cost_exposure_rand": 29190348.0,
-        "addressable_saving_rand": 2554231,
+        "addressable_saving_rand": 2554232.0,
         "absent_days_per_head_annual": 16.8,
         "high_or_critical_count": 301,
         "high_or_critical_share": 0.1905,
@@ -831,7 +838,7 @@ window.WELO_FEED = {
         "predicted_absent_days_90d": 3014.0,
         "predicted_absent_days_annual": 12054.0,
         "cost_exposure_rand": 13259664.0,
-        "addressable_saving_rand": 1160258,
+        "addressable_saving_rand": 1160259.0,
         "absent_days_per_head_annual": 11.4,
         "high_or_critical_count": 130,
         "high_or_critical_share": 0.1224,
@@ -850,7 +857,7 @@ window.WELO_FEED = {
         "predicted_absent_days_90d": 3712.0,
         "predicted_absent_days_annual": 14846.0,
         "cost_exposure_rand": 16330908.0,
-        "addressable_saving_rand": 1428931,
+        "addressable_saving_rand": 1428931.0,
         "absent_days_per_head_annual": 5.9,
         "high_or_critical_count": 71,
         "high_or_critical_share": 0.0284,
@@ -860,6 +867,122 @@ window.WELO_FEED = {
           "High": 63,
           "Medium": 523,
           "Low": 1908
+        }
+      }
+    ],
+    "cohort_department": [
+      {
+        "key": "Production operations",
+        "label": "Production operations",
+        "count": 1400,
+        "predicted_absent_days_90d": 6231.0,
+        "predicted_absent_days_annual": 24923.0,
+        "cost_exposure_rand": 27415344.0,
+        "addressable_saving_rand": 2398862.0,
+        "absent_days_per_head_annual": 17.8,
+        "high_or_critical_count": 265,
+        "high_or_critical_share": 0.1893,
+        "mean_fatigue": 66.2,
+        "risk_counts": {
+          "Critical": 94,
+          "High": 171,
+          "Medium": 469,
+          "Low": 666
+        }
+      },
+      {
+        "key": "Plant and processing",
+        "label": "Plant and processing",
+        "count": 1263,
+        "predicted_absent_days_90d": 4017.0,
+        "predicted_absent_days_annual": 16068.0,
+        "cost_exposure_rand": 17675064.0,
+        "addressable_saving_rand": 1546599.0,
+        "absent_days_per_head_annual": 12.7,
+        "high_or_critical_count": 176,
+        "high_or_critical_share": 0.1394,
+        "mean_fatigue": 58.8,
+        "risk_counts": {
+          "Critical": 57,
+          "High": 119,
+          "Medium": 363,
+          "Low": 724
+        }
+      },
+      {
+        "key": "Engineering and maintenance",
+        "label": "Engineering and maintenance",
+        "count": 924,
+        "predicted_absent_days_90d": 2999.0,
+        "predicted_absent_days_annual": 11995.0,
+        "cost_exposure_rand": 13194852.0,
+        "addressable_saving_rand": 1154607.0,
+        "absent_days_per_head_annual": 13.0,
+        "high_or_critical_count": 112,
+        "high_or_critical_share": 0.1212,
+        "mean_fatigue": 60.1,
+        "risk_counts": {
+          "Critical": 35,
+          "High": 77,
+          "Medium": 278,
+          "Low": 534
+        }
+      },
+      {
+        "key": "Site services",
+        "label": "Site services",
+        "count": 906,
+        "predicted_absent_days_90d": 1969.0,
+        "predicted_absent_days_annual": 7876.0,
+        "cost_exposure_rand": 8663820.0,
+        "addressable_saving_rand": 758165.0,
+        "absent_days_per_head_annual": 8.7,
+        "high_or_critical_count": 66,
+        "high_or_critical_share": 0.0728,
+        "mean_fatigue": 51.8,
+        "risk_counts": {
+          "Critical": 14,
+          "High": 52,
+          "Medium": 209,
+          "Low": 631
+        }
+      },
+      {
+        "key": "Logistics and materials",
+        "label": "Logistics and materials",
+        "count": 862,
+        "predicted_absent_days_90d": 2145.0,
+        "predicted_absent_days_annual": 8579.0,
+        "cost_exposure_rand": 9436680.0,
+        "addressable_saving_rand": 825702.0,
+        "absent_days_per_head_annual": 10.0,
+        "high_or_critical_count": 74,
+        "high_or_critical_share": 0.0858,
+        "mean_fatigue": 53.9,
+        "risk_counts": {
+          "Critical": 18,
+          "High": 56,
+          "Medium": 207,
+          "Low": 581
+        }
+      },
+      {
+        "key": "Support and admin",
+        "label": "Support and admin",
+        "count": 445,
+        "predicted_absent_days_90d": 789.0,
+        "predicted_absent_days_annual": 3156.0,
+        "cost_exposure_rand": 3472128.0,
+        "addressable_saving_rand": 303765.0,
+        "absent_days_per_head_annual": 7.1,
+        "high_or_critical_count": 22,
+        "high_or_critical_share": 0.0494,
+        "mean_fatigue": 46.6,
+        "risk_counts": {
+          "Critical": 5,
+          "High": 17,
+          "Medium": 88,
+          "Low": 335
         }
       }
     ]
@@ -67590,20 +67713,28 @@ window.WELO_FEED = {
         "Light duty": 0.3
       },
       "spell_length_days": 4.0,
-      "leave_gap_days": 180
+      "leave_gap_days": 180,
+      "cover_share_by_department": {
+        "Production operations": 0.95,
+        "Plant and processing": 0.92,
+        "Engineering and maintenance": 0.6,
+        "Logistics and materials": 0.65,
+        "Site services": 0.55,
+        "Support and admin": 0.25
+      }
     },
     "headline": {
       "covered_lives": 5800,
       "absence_rate": 0.0544,
-      "cover_gap_days_90d": 12800.0,
-      "backfill_cost_rand_90d": 17919458.0,
+      "cover_gap_days_90d": 14089.0,
+      "backfill_cost_rand_90d": 19724336.0,
       "rtw_caseload": 715,
       "freq_trigger_count": 1438
     },
     "cover": {
       "predicted_absent_days_90d": 18150.0,
-      "cover_gap_days_90d": 12800.0,
-      "backfill_cost_rand_90d": 17919458.0,
+      "cover_gap_days_90d": 14089.0,
+      "backfill_cost_rand_90d": 19724336.0,
       "overtime_mean_14d": 19.1,
       "overtime_high_share": 0.096,
       "overtime_annual_hours": 2888081.0
@@ -67649,8 +67780,8 @@ window.WELO_FEED = {
         "key": "High-intensity ops",
         "label": "High-intensity ops",
         "count": 2030,
-        "cover_gap_days_90d": 8865.0,
-        "backfill_cost_rand_90d": 12410824.0,
+        "cover_gap_days_90d": 8361.0,
+        "backfill_cost_rand_90d": 11705241.0,
         "overtime_mean_14d": 28.8,
         "rtw_caseload": 446,
         "long_leave_gap": 322,
@@ -67661,8 +67792,8 @@ window.WELO_FEED = {
         "key": "Standard ops",
         "label": "Standard ops",
         "count": 1247,
-        "cover_gap_days_90d": 2528.0,
-        "backfill_cost_rand_90d": 3539603.0,
+        "cover_gap_days_90d": 2792.0,
+        "backfill_cost_rand_90d": 3908172.0,
         "overtime_mean_14d": 17.3,
         "rtw_caseload": 131,
         "long_leave_gap": 203,
@@ -67673,14 +67804,1892 @@ window.WELO_FEED = {
         "key": "Light duty",
         "label": "Light duty",
         "count": 2523,
-        "cover_gap_days_90d": 1406.0,
-        "backfill_cost_rand_90d": 1969031.0,
+        "cover_gap_days_90d": 2936.0,
+        "backfill_cost_rand_90d": 4110923.0,
         "overtime_mean_14d": 12.2,
         "rtw_caseload": 138,
         "long_leave_gap": 436,
         "freq_trigger": 322,
         "mean_bradford": 455.0
       }
+    ],
+    "by_department": [
+      {
+        "key": "Production operations",
+        "label": "Production operations",
+        "count": 1400,
+        "cover_gap_days_90d": 5919.0,
+        "backfill_cost_rand_90d": 8286977.0,
+        "overtime_mean_14d": 25.7,
+        "rtw_caseload": 265,
+        "long_leave_gap": 224,
+        "freq_trigger": 500,
+        "mean_bradford": 4343.0
+      },
+      {
+        "key": "Plant and processing",
+        "label": "Plant and processing",
+        "count": 1263,
+        "cover_gap_days_90d": 3696.0,
+        "backfill_cost_rand_90d": 5174076.0,
+        "overtime_mean_14d": 19.2,
+        "rtw_caseload": 176,
+        "long_leave_gap": 219,
+        "freq_trigger": 331,
+        "mean_bradford": 2116.0
+      },
+      {
+        "key": "Engineering and maintenance",
+        "label": "Engineering and maintenance",
+        "count": 924,
+        "cover_gap_days_90d": 1799.0,
+        "backfill_cost_rand_90d": 2519143.0,
+        "overtime_mean_14d": 21.3,
+        "rtw_caseload": 112,
+        "long_leave_gap": 158,
+        "freq_trigger": 247,
+        "mean_bradford": 1858.0
+      },
+      {
+        "key": "Site services",
+        "label": "Site services",
+        "count": 906,
+        "cover_gap_days_90d": 1083.0,
+        "backfill_cost_rand_90d": 1516330.0,
+        "overtime_mean_14d": 14.1,
+        "rtw_caseload": 66,
+        "long_leave_gap": 154,
+        "freq_trigger": 150,
+        "mean_bradford": 586.0
+      },
+      {
+        "key": "Logistics and materials",
+        "label": "Logistics and materials",
+        "count": 862,
+        "cover_gap_days_90d": 1394.0,
+        "backfill_cost_rand_90d": 1951659.0,
+        "overtime_mean_14d": 15.7,
+        "rtw_caseload": 74,
+        "long_leave_gap": 134,
+        "freq_trigger": 160,
+        "mean_bradford": 1131.0
+      },
+      {
+        "key": "Support and admin",
+        "label": "Support and admin",
+        "count": 445,
+        "cover_gap_days_90d": 197.0,
+        "backfill_cost_rand_90d": 276150.0,
+        "overtime_mean_14d": 10.0,
+        "rtw_caseload": 22,
+        "long_leave_gap": 72,
+        "freq_trigger": 50,
+        "mean_bradford": 389.0
+      }
     ]
+  },
+  "demand": {
+    "measure": {
+      "label": "Production output and despatch volume",
+      "source": "Benchmark pattern for the sector, not the tenant's data",
+      "indicative": true,
+      "note": "Demand is a benchmark pattern for the sector until the tenant's own trading data is connected. Expected absence is the model's rate for each department, spread across the calendar by a seasonal pattern. Both are illustrative."
+    },
+    "pressure_rule": {
+      "demand_share_of_peak_at_least": 0.8,
+      "absence_above": "the department's own yearly average"
+    },
+    "labels": {
+      "year": [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec"
+      ],
+      "month": [
+        "1-5",
+        "6-10",
+        "11-15",
+        "16-20",
+        "21-24",
+        "25-28",
+        "29-31"
+      ],
+      "week": [
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat",
+        "Sun"
+      ],
+      "day": [
+        "06h",
+        "08h",
+        "10h",
+        "12h",
+        "14h",
+        "16h",
+        "18h",
+        "20h",
+        "22h"
+      ]
+    },
+    "grain_labels": {
+      "year": "Month of the year",
+      "month": "Days of the month",
+      "week": "Day of the week",
+      "day": "Time of day"
+    },
+    "overall": {
+      "absence_rate_annual": 0.0544,
+      "grains": {
+        "year": {
+          "demand": [
+            0.72,
+            0.92,
+            0.96,
+            0.9,
+            0.94,
+            0.88,
+            0.9,
+            0.95,
+            0.97,
+            0.98,
+            1.0,
+            0.6
+          ],
+          "absence_rate": [
+            0.061,
+            0.0512,
+            0.0517,
+            0.0539,
+            0.0555,
+            0.0621,
+            0.0642,
+            0.0599,
+            0.0523,
+            0.0506,
+            0.0517,
+            0.0555
+          ],
+          "pressure": [
+            false,
+            false,
+            false,
+            false,
+            true,
+            true,
+            true,
+            true,
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        "month": {
+          "demand": [
+            0.78,
+            0.84,
+            0.88,
+            0.9,
+            0.95,
+            1.0,
+            0.96
+          ],
+          "absence_rate": [
+            0.0593,
+            0.0534,
+            0.0523,
+            0.0523,
+            0.0534,
+            0.0577,
+            0.0572
+          ],
+          "pressure": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            true,
+            true
+          ]
+        },
+        "week": {
+          "demand": [
+            0.96,
+            1.0,
+            1.0,
+            0.98,
+            0.94,
+            0.55,
+            0.35
+          ],
+          "absence_rate": [
+            0.0664,
+            0.0523,
+            0.0506,
+            0.0517,
+            0.0555,
+            0.0572,
+            0.0544
+          ],
+          "pressure": [
+            true,
+            false,
+            false,
+            false,
+            true,
+            false,
+            false
+          ]
+        },
+        "day": {
+          "demand": [
+            0.88,
+            1.0,
+            0.96,
+            0.8,
+            0.92,
+            0.95,
+            0.85,
+            0.7,
+            0.6
+          ],
+          "absence_rate": [
+            0.0577,
+            0.0534,
+            0.0517,
+            0.0528,
+            0.0539,
+            0.0555,
+            0.0588,
+            0.0621,
+            0.061
+          ],
+          "pressure": [
+            true,
+            false,
+            false,
+            false,
+            false,
+            true,
+            true,
+            false,
+            false
+          ]
+        }
+      }
+    },
+    "departments": [
+      {
+        "label": "Production operations",
+        "count": 1400,
+        "absence_rate_annual": 0.0774,
+        "grains": {
+          "year": {
+            "demand": [
+              0.72,
+              0.92,
+              0.96,
+              0.9,
+              0.94,
+              0.88,
+              0.9,
+              0.95,
+              0.97,
+              0.98,
+              1.0,
+              0.6
+            ],
+            "absence_rate": [
+              0.0867,
+              0.0727,
+              0.0735,
+              0.0766,
+              0.0789,
+              0.0882,
+              0.0913,
+              0.0851,
+              0.0743,
+              0.072,
+              0.0735,
+              0.0789
+            ],
+            "pressure": [
+              false,
+              false,
+              false,
+              false,
+              true,
+              true,
+              true,
+              true,
+              false,
+              false,
+              false,
+              false
+            ]
+          },
+          "month": {
+            "demand": [
+              0.78,
+              0.84,
+              0.88,
+              0.9,
+              0.95,
+              1.0,
+              0.96
+            ],
+            "absence_rate": [
+              0.0844,
+              0.0758,
+              0.0743,
+              0.0743,
+              0.0758,
+              0.082,
+              0.0813
+            ],
+            "pressure": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              true,
+              true
+            ]
+          },
+          "week": {
+            "demand": [
+              0.96,
+              1.0,
+              1.0,
+              0.98,
+              0.94,
+              0.55,
+              0.35
+            ],
+            "absence_rate": [
+              0.0944,
+              0.0743,
+              0.072,
+              0.0735,
+              0.0789,
+              0.0813,
+              0.0774
+            ],
+            "pressure": [
+              true,
+              false,
+              false,
+              false,
+              true,
+              false,
+              false
+            ]
+          },
+          "day": {
+            "demand": [
+              0.88,
+              1.0,
+              0.96,
+              0.8,
+              0.92,
+              0.95,
+              0.85,
+              0.7,
+              0.6
+            ],
+            "absence_rate": [
+              0.082,
+              0.0758,
+              0.0735,
+              0.0751,
+              0.0766,
+              0.0789,
+              0.0836,
+              0.0882,
+              0.0867
+            ],
+            "pressure": [
+              true,
+              false,
+              false,
+              false,
+              false,
+              true,
+              true,
+              false,
+              false
+            ]
+          }
+        }
+      },
+      {
+        "label": "Plant and processing",
+        "count": 1263,
+        "absence_rate_annual": 0.0552,
+        "grains": {
+          "year": {
+            "demand": [
+              0.72,
+              0.92,
+              0.96,
+              0.9,
+              0.94,
+              0.88,
+              0.9,
+              0.95,
+              0.97,
+              0.98,
+              1.0,
+              0.6
+            ],
+            "absence_rate": [
+              0.0618,
+              0.0519,
+              0.0525,
+              0.0547,
+              0.0563,
+              0.0629,
+              0.0652,
+              0.0607,
+              0.053,
+              0.0514,
+              0.0525,
+              0.0563
+            ],
+            "pressure": [
+              false,
+              false,
+              false,
+              false,
+              true,
+              true,
+              true,
+              true,
+              false,
+              false,
+              false,
+              false
+            ]
+          },
+          "month": {
+            "demand": [
+              0.78,
+              0.84,
+              0.88,
+              0.9,
+              0.95,
+              1.0,
+              0.96
+            ],
+            "absence_rate": [
+              0.0602,
+              0.0541,
+              0.053,
+              0.053,
+              0.0541,
+              0.0585,
+              0.058
+            ],
+            "pressure": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              true,
+              true
+            ]
+          },
+          "week": {
+            "demand": [
+              0.96,
+              1.0,
+              1.0,
+              0.98,
+              0.94,
+              0.55,
+              0.35
+            ],
+            "absence_rate": [
+              0.0674,
+              0.053,
+              0.0514,
+              0.0525,
+              0.0563,
+              0.058,
+              0.0552
+            ],
+            "pressure": [
+              true,
+              false,
+              false,
+              false,
+              true,
+              false,
+              false
+            ]
+          },
+          "day": {
+            "demand": [
+              0.88,
+              1.0,
+              0.96,
+              0.8,
+              0.92,
+              0.95,
+              0.85,
+              0.7,
+              0.6
+            ],
+            "absence_rate": [
+              0.0585,
+              0.0541,
+              0.0525,
+              0.0536,
+              0.0547,
+              0.0563,
+              0.0596,
+              0.0629,
+              0.0618
+            ],
+            "pressure": [
+              true,
+              false,
+              false,
+              false,
+              false,
+              true,
+              true,
+              false,
+              false
+            ]
+          }
+        }
+      },
+      {
+        "label": "Engineering and maintenance",
+        "count": 924,
+        "absence_rate_annual": 0.0565,
+        "grains": {
+          "year": {
+            "demand": [
+              1.0,
+              0.7,
+              0.65,
+              0.72,
+              0.68,
+              0.85,
+              0.88,
+              0.7,
+              0.66,
+              0.64,
+              0.7,
+              0.95
+            ],
+            "absence_rate": [
+              0.0633,
+              0.0531,
+              0.0537,
+              0.056,
+              0.0577,
+              0.0644,
+              0.0667,
+              0.0622,
+              0.0543,
+              0.0526,
+              0.0537,
+              0.0577
+            ],
+            "pressure": [
+              true,
+              false,
+              false,
+              false,
+              false,
+              true,
+              true,
+              false,
+              false,
+              false,
+              false,
+              true
+            ]
+          },
+          "month": {
+            "demand": [
+              0.78,
+              0.84,
+              0.88,
+              0.9,
+              0.95,
+              1.0,
+              0.96
+            ],
+            "absence_rate": [
+              0.0616,
+              0.0554,
+              0.0543,
+              0.0543,
+              0.0554,
+              0.0599,
+              0.0593
+            ],
+            "pressure": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              true,
+              true
+            ]
+          },
+          "week": {
+            "demand": [
+              0.95,
+              1.0,
+              0.98,
+              0.95,
+              0.9,
+              0.7,
+              0.6
+            ],
+            "absence_rate": [
+              0.069,
+              0.0543,
+              0.0526,
+              0.0537,
+              0.0577,
+              0.0593,
+              0.0565
+            ],
+            "pressure": [
+              true,
+              false,
+              false,
+              false,
+              true,
+              false,
+              false
+            ]
+          },
+          "day": {
+            "demand": [
+              0.88,
+              1.0,
+              0.96,
+              0.8,
+              0.92,
+              0.95,
+              0.85,
+              0.7,
+              0.6
+            ],
+            "absence_rate": [
+              0.0599,
+              0.0554,
+              0.0537,
+              0.0548,
+              0.056,
+              0.0577,
+              0.061,
+              0.0644,
+              0.0633
+            ],
+            "pressure": [
+              true,
+              false,
+              false,
+              false,
+              false,
+              true,
+              true,
+              false,
+              false
+            ]
+          }
+        }
+      },
+      {
+        "label": "Site services",
+        "count": 906,
+        "absence_rate_annual": 0.0378,
+        "grains": {
+          "year": {
+            "demand": [
+              0.72,
+              0.92,
+              0.96,
+              0.9,
+              0.94,
+              0.88,
+              0.9,
+              0.95,
+              0.97,
+              0.98,
+              1.0,
+              0.6
+            ],
+            "absence_rate": [
+              0.0424,
+              0.0356,
+              0.0359,
+              0.0374,
+              0.0386,
+              0.0431,
+              0.0446,
+              0.0416,
+              0.0363,
+              0.0352,
+              0.0359,
+              0.0386
+            ],
+            "pressure": [
+              false,
+              false,
+              false,
+              false,
+              true,
+              true,
+              true,
+              true,
+              false,
+              false,
+              false,
+              false
+            ]
+          },
+          "month": {
+            "demand": [
+              0.78,
+              0.84,
+              0.88,
+              0.9,
+              0.95,
+              1.0,
+              0.96
+            ],
+            "absence_rate": [
+              0.0412,
+              0.0371,
+              0.0363,
+              0.0363,
+              0.0371,
+              0.0401,
+              0.0397
+            ],
+            "pressure": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              true,
+              true
+            ]
+          },
+          "week": {
+            "demand": [
+              0.96,
+              1.0,
+              1.0,
+              0.98,
+              0.94,
+              0.55,
+              0.35
+            ],
+            "absence_rate": [
+              0.0461,
+              0.0363,
+              0.0352,
+              0.0359,
+              0.0386,
+              0.0397,
+              0.0378
+            ],
+            "pressure": [
+              true,
+              false,
+              false,
+              false,
+              true,
+              false,
+              false
+            ]
+          },
+          "day": {
+            "demand": [
+              0.88,
+              1.0,
+              0.96,
+              0.8,
+              0.92,
+              0.95,
+              0.85,
+              0.7,
+              0.6
+            ],
+            "absence_rate": [
+              0.0401,
+              0.0371,
+              0.0359,
+              0.0367,
+              0.0374,
+              0.0386,
+              0.0409,
+              0.0431,
+              0.0424
+            ],
+            "pressure": [
+              true,
+              false,
+              false,
+              false,
+              false,
+              true,
+              true,
+              false,
+              false
+            ]
+          }
+        }
+      },
+      {
+        "label": "Logistics and materials",
+        "count": 862,
+        "absence_rate_annual": 0.0435,
+        "grains": {
+          "year": {
+            "demand": [
+              0.72,
+              0.92,
+              0.96,
+              0.9,
+              0.94,
+              0.88,
+              0.9,
+              0.95,
+              0.97,
+              0.98,
+              1.0,
+              0.6
+            ],
+            "absence_rate": [
+              0.0487,
+              0.0409,
+              0.0413,
+              0.043,
+              0.0443,
+              0.0496,
+              0.0513,
+              0.0478,
+              0.0417,
+              0.0404,
+              0.0413,
+              0.0443
+            ],
+            "pressure": [
+              false,
+              false,
+              false,
+              false,
+              true,
+              true,
+              true,
+              true,
+              false,
+              false,
+              false,
+              false
+            ]
+          },
+          "month": {
+            "demand": [
+              0.78,
+              0.84,
+              0.88,
+              0.9,
+              0.95,
+              1.0,
+              0.96
+            ],
+            "absence_rate": [
+              0.0474,
+              0.0426,
+              0.0417,
+              0.0417,
+              0.0426,
+              0.0461,
+              0.0457
+            ],
+            "pressure": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              true,
+              true
+            ]
+          },
+          "week": {
+            "demand": [
+              0.7,
+              0.8,
+              0.88,
+              0.95,
+              1.0,
+              0.65,
+              0.3
+            ],
+            "absence_rate": [
+              0.053,
+              0.0417,
+              0.0404,
+              0.0413,
+              0.0443,
+              0.0457,
+              0.0435
+            ],
+            "pressure": [
+              false,
+              false,
+              false,
+              false,
+              true,
+              false,
+              false
+            ]
+          },
+          "day": {
+            "demand": [
+              0.6,
+              0.85,
+              0.95,
+              0.9,
+              1.0,
+              0.92,
+              0.7,
+              0.45,
+              0.3
+            ],
+            "absence_rate": [
+              0.0461,
+              0.0426,
+              0.0413,
+              0.0422,
+              0.043,
+              0.0443,
+              0.047,
+              0.0496,
+              0.0487
+            ],
+            "pressure": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              true,
+              false,
+              false,
+              false
+            ]
+          }
+        }
+      },
+      {
+        "label": "Support and admin",
+        "count": 445,
+        "absence_rate_annual": 0.0309,
+        "grains": {
+          "year": {
+            "demand": [
+              0.72,
+              0.92,
+              0.96,
+              0.9,
+              0.94,
+              0.88,
+              0.9,
+              0.95,
+              0.97,
+              0.98,
+              1.0,
+              0.6
+            ],
+            "absence_rate": [
+              0.0346,
+              0.029,
+              0.0293,
+              0.0306,
+              0.0315,
+              0.0352,
+              0.0364,
+              0.034,
+              0.0296,
+              0.0287,
+              0.0293,
+              0.0315
+            ],
+            "pressure": [
+              false,
+              false,
+              false,
+              false,
+              true,
+              true,
+              true,
+              true,
+              false,
+              false,
+              false,
+              false
+            ]
+          },
+          "month": {
+            "demand": [
+              0.78,
+              0.84,
+              0.88,
+              0.9,
+              0.95,
+              1.0,
+              0.96
+            ],
+            "absence_rate": [
+              0.0336,
+              0.0303,
+              0.0296,
+              0.0296,
+              0.0303,
+              0.0327,
+              0.0324
+            ],
+            "pressure": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              true,
+              true
+            ]
+          },
+          "week": {
+            "demand": [
+              1.0,
+              1.0,
+              0.98,
+              0.95,
+              0.88,
+              0.15,
+              0.05
+            ],
+            "absence_rate": [
+              0.0377,
+              0.0296,
+              0.0287,
+              0.0293,
+              0.0315,
+              0.0324,
+              0.0309
+            ],
+            "pressure": [
+              true,
+              false,
+              false,
+              false,
+              true,
+              false,
+              false
+            ]
+          },
+          "day": {
+            "demand": [
+              0.2,
+              0.85,
+              1.0,
+              0.95,
+              0.9,
+              0.75,
+              0.25,
+              0.1,
+              0.05
+            ],
+            "absence_rate": [
+              0.0327,
+              0.0303,
+              0.0293,
+              0.0299,
+              0.0306,
+              0.0315,
+              0.0333,
+              0.0352,
+              0.0346
+            ],
+            "pressure": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ]
+          }
+        }
+      }
+    ],
+    "withheld_departments": 0
+  },
+  "staffing_cost": {
+    "measure": {
+      "revenue_label": "Production output value",
+      "indicative": true,
+      "source": "Synthetic trading and attendance history, generated for this tenant",
+      "note": "The history is synthetic until the tenant's attendance, trading and agency invoice data is connected. Cover spend is what cover cost. Lost revenue is an estimate, shown as a range: each short-staffed service is compared with fully staffed services like it. Departments whose short shifts do not show up in revenue are counted, not priced."
+    },
+    "method": {
+      "match_on": [
+        "property",
+        "service",
+        "weekday or weekend"
+      ],
+      "window_days": 90,
+      "demand_tolerance": 0.1,
+      "min_matches": 5,
+      "range_percentiles": [
+        10,
+        90
+      ],
+      "unmatched_short_services": 8,
+      "matched_short_services": 3885
+    },
+    "assumptions": {
+      "cover_rate_per_shift_rand": 1400.0,
+      "day_rate_rand": 1100.0,
+      "cover_premium_rand": 300.0,
+      "cover_share_by_department": {
+        "Production operations": 0.95,
+        "Plant and processing": 0.92,
+        "Engineering and maintenance": 0.6,
+        "Site services": 0.55,
+        "Logistics and materials": 0.65,
+        "Support and admin": 0.25
+      },
+      "properties": 4,
+      "revenue_departments": [
+        "Production operations",
+        "Plant and processing"
+      ]
+    },
+    "window": {
+      "start": "2024-11",
+      "end": "2026-10",
+      "months": 24
+    },
+    "history": [
+      {
+        "month": "2024-11",
+        "cover_spend_rand": 7046200.0,
+        "lost_revenue_rand": {
+          "low": 173034.0,
+          "mid": 4205407.0,
+          "high": 7181289.0
+        },
+        "short_shifts": 1449,
+        "covered_shifts": 5033,
+        "scheduled_shifts": 122743
+      },
+      {
+        "month": "2024-12",
+        "cover_spend_rand": 5525800.0,
+        "lost_revenue_rand": {
+          "low": -783629.0,
+          "mid": 724666.0,
+          "high": 2517202.0
+        },
+        "short_shifts": 1317,
+        "covered_shifts": 3947,
+        "scheduled_shifts": 94572
+      },
+      {
+        "month": "2025-01",
+        "cover_spend_rand": 6805400.0,
+        "lost_revenue_rand": {
+          "low": -36419.0,
+          "mid": 2250414.0,
+          "high": 4227251.0
+        },
+        "short_shifts": 1586,
+        "covered_shifts": 4861,
+        "scheduled_shifts": 106311
+      },
+      {
+        "month": "2025-02",
+        "cover_spend_rand": 6340600.0,
+        "lost_revenue_rand": {
+          "low": 991014.0,
+          "mid": 3707051.0,
+          "high": 6304975.0
+        },
+        "short_shifts": 1288,
+        "covered_shifts": 4529,
+        "scheduled_shifts": 108907
+      },
+      {
+        "month": "2025-03",
+        "cover_spend_rand": 7078400.0,
+        "lost_revenue_rand": {
+          "low": 3299911.0,
+          "mid": 6218396.0,
+          "high": 9738687.0
+        },
+        "short_shifts": 1520,
+        "covered_shifts": 5056,
+        "scheduled_shifts": 121680
+      },
+      {
+        "month": "2025-04",
+        "cover_spend_rand": 6890800.0,
+        "lost_revenue_rand": {
+          "low": 3330983.0,
+          "mid": 5773261.0,
+          "high": 8452259.0
+        },
+        "short_shifts": 1438,
+        "covered_shifts": 4922,
+        "scheduled_shifts": 116380
+      },
+      {
+        "month": "2025-05",
+        "cover_spend_rand": 7674800.0,
+        "lost_revenue_rand": {
+          "low": 1611321.0,
+          "mid": 4924798.0,
+          "high": 7795980.0
+        },
+        "short_shifts": 1556,
+        "covered_shifts": 5482,
+        "scheduled_shifts": 122699
+      },
+      {
+        "month": "2025-06",
+        "cover_spend_rand": 7929600.0,
+        "lost_revenue_rand": {
+          "low": 2937845.0,
+          "mid": 5570741.0,
+          "high": 8082677.0
+        },
+        "short_shifts": 1596,
+        "covered_shifts": 5664,
+        "scheduled_shifts": 112289
+      },
+      {
+        "month": "2025-07",
+        "cover_spend_rand": 8505000.0,
+        "lost_revenue_rand": {
+          "low": 2870826.0,
+          "mid": 5821793.0,
+          "high": 8882066.0
+        },
+        "short_shifts": 1751,
+        "covered_shifts": 6075,
+        "scheduled_shifts": 121074
+      },
+      {
+        "month": "2025-08",
+        "cover_spend_rand": 8029000.0,
+        "lost_revenue_rand": {
+          "low": 8171598.0,
+          "mid": 10844705.0,
+          "high": 14032293.0
+        },
+        "short_shifts": 1662,
+        "covered_shifts": 5735,
+        "scheduled_shifts": 120996
+      },
+      {
+        "month": "2025-09",
+        "cover_spend_rand": 7133000.0,
+        "lost_revenue_rand": {
+          "low": 3285319.0,
+          "mid": 6077838.0,
+          "high": 9543120.0
+        },
+        "short_shifts": 1474,
+        "covered_shifts": 5095,
+        "scheduled_shifts": 121467
+      },
+      {
+        "month": "2025-10",
+        "cover_spend_rand": 7306600.0,
+        "lost_revenue_rand": {
+          "low": 2888454.0,
+          "mid": 5714690.0,
+          "high": 8617805.0
+        },
+        "short_shifts": 1463,
+        "covered_shifts": 5219,
+        "scheduled_shifts": 127662
+      },
+      {
+        "month": "2025-11",
+        "cover_spend_rand": 7018200.0,
+        "lost_revenue_rand": {
+          "low": -2749812.0,
+          "mid": 511635.0,
+          "high": 3877875.0
+        },
+        "short_shifts": 1402,
+        "covered_shifts": 5013,
+        "scheduled_shifts": 120087
+      },
+      {
+        "month": "2025-12",
+        "cover_spend_rand": 5618200.0,
+        "lost_revenue_rand": {
+          "low": 2793337.0,
+          "mid": 4480998.0,
+          "high": 6230629.0
+        },
+        "short_shifts": 1369,
+        "covered_shifts": 4013,
+        "scheduled_shifts": 96284
+      },
+      {
+        "month": "2026-01",
+        "cover_spend_rand": 6794200.0,
+        "lost_revenue_rand": {
+          "low": 3382044.0,
+          "mid": 5574302.0,
+          "high": 7715518.0
+        },
+        "short_shifts": 1524,
+        "covered_shifts": 4853,
+        "scheduled_shifts": 104896
+      },
+      {
+        "month": "2026-02",
+        "cover_spend_rand": 6104000.0,
+        "lost_revenue_rand": {
+          "low": 1584153.0,
+          "mid": 4480232.0,
+          "high": 7362931.0
+        },
+        "short_shifts": 1264,
+        "covered_shifts": 4360,
+        "scheduled_shifts": 108676
+      },
+      {
+        "month": "2026-03",
+        "cover_spend_rand": 7232400.0,
+        "lost_revenue_rand": {
+          "low": 4534307.0,
+          "mid": 7785789.0,
+          "high": 11093395.0
+        },
+        "short_shifts": 1475,
+        "covered_shifts": 5166,
+        "scheduled_shifts": 123240
+      },
+      {
+        "month": "2026-04",
+        "cover_spend_rand": 7033600.0,
+        "lost_revenue_rand": {
+          "low": 1469566.0,
+          "mid": 3971875.0,
+          "high": 6934174.0
+        },
+        "short_shifts": 1446,
+        "covered_shifts": 5024,
+        "scheduled_shifts": 116536
+      },
+      {
+        "month": "2026-05",
+        "cover_spend_rand": 7313600.0,
+        "lost_revenue_rand": {
+          "low": 4068287.0,
+          "mid": 6911724.0,
+          "high": 9811376.0
+        },
+        "short_shifts": 1524,
+        "covered_shifts": 5224,
+        "scheduled_shifts": 120216
+      },
+      {
+        "month": "2026-06",
+        "cover_spend_rand": 7806400.0,
+        "lost_revenue_rand": {
+          "low": 7294131.0,
+          "mid": 9843767.0,
+          "high": 12620533.0
+        },
+        "short_shifts": 1591,
+        "covered_shifts": 5576,
+        "scheduled_shifts": 114448
+      },
+      {
+        "month": "2026-07",
+        "cover_spend_rand": 8526000.0,
+        "lost_revenue_rand": {
+          "low": -877894.0,
+          "mid": 2578224.0,
+          "high": 5540628.0
+        },
+        "short_shifts": 1745,
+        "covered_shifts": 6090,
+        "scheduled_shifts": 121112
+      },
+      {
+        "month": "2026-08",
+        "cover_spend_rand": 8206800.0,
+        "lost_revenue_rand": {
+          "low": 4898554.0,
+          "mid": 7646458.0,
+          "high": 10690993.0
+        },
+        "short_shifts": 1615,
+        "covered_shifts": 5862,
+        "scheduled_shifts": 120913
+      },
+      {
+        "month": "2026-09",
+        "cover_spend_rand": 7175000.0,
+        "lost_revenue_rand": {
+          "low": 3380759.0,
+          "mid": 6745263.0,
+          "high": 10672726.0
+        },
+        "short_shifts": 1453,
+        "covered_shifts": 5125,
+        "scheduled_shifts": 121869
+      },
+      {
+        "month": "2026-10",
+        "cover_spend_rand": 7274400.0,
+        "lost_revenue_rand": {
+          "low": 1788604.0,
+          "mid": 5003235.0,
+          "high": 8722485.0
+        },
+        "short_shifts": 1400,
+        "covered_shifts": 5196,
+        "scheduled_shifts": 125932
+      }
+    ],
+    "last_12_months": {
+      "months": [
+        "2025-11",
+        "2026-10"
+      ],
+      "cover_spend_rand": 86102800.0,
+      "lost_revenue_rand": {
+        "low": 52334407.0,
+        "mid": 65690413.0,
+        "high": 78985434.0
+      },
+      "total_rand": {
+        "low": 138437207.0,
+        "mid": 151793213.0,
+        "high": 165088234.0
+      }
+    },
+    "by_department": [
+      {
+        "label": "Production operations",
+        "scheduled_shifts": 334816,
+        "short_shifts": 1308,
+        "covered_shifts": 25613,
+        "cover_spend_rand": 35858200.0,
+        "priced": true,
+        "lost_revenue_rand": {
+          "low": 19649601.0,
+          "mid": 27588650.0,
+          "high": 35727192.0
+        },
+        "lost_revenue_per_short_shift_rand": {
+          "low": 17870.0,
+          "mid": 21604.0,
+          "high": 25461.0
+        }
+      },
+      {
+        "label": "Plant and processing",
+        "scheduled_shifts": 302098,
+        "short_shifts": 1381,
+        "covered_shifts": 16043,
+        "cover_spend_rand": 22460200.0,
+        "priced": true,
+        "lost_revenue_rand": {
+          "low": 30167855.0,
+          "mid": 38632951.0,
+          "high": 45748222.0
+        },
+        "lost_revenue_per_short_shift_rand": {
+          "low": 21460.0,
+          "mid": 25457.0,
+          "high": 28949.0
+        }
+      },
+      {
+        "label": "Engineering and maintenance",
+        "scheduled_shifts": 223833,
+        "short_shifts": 5336,
+        "covered_shifts": 8087,
+        "cover_spend_rand": 11321800.0,
+        "priced": false,
+        "indicator": {
+          "label": "Planned jobs deferred",
+          "value": 21344,
+          "per_short_shift": 4,
+          "basis": "An inference: no published norm for jobs per artisan shift",
+          "unpriced": true
+        }
+      },
+      {
+        "label": "Logistics and materials",
+        "scheduled_shifts": 206343,
+        "short_shifts": 3242,
+        "covered_shifts": 6056,
+        "cover_spend_rand": 8478400.0,
+        "priced": false,
+        "indicator": {
+          "label": "Loads not moved",
+          "value": 9726,
+          "per_short_shift": 3,
+          "basis": "An inference, from a crew moving roughly a dozen loads a shift",
+          "unpriced": true
+        }
+      },
+      {
+        "label": "Site services",
+        "scheduled_shifts": 219365,
+        "short_shifts": 3929,
+        "covered_shifts": 4835,
+        "cover_spend_rand": 6769000.0,
+        "priced": false,
+        "indicator": {
+          "label": "Service shifts run short",
+          "value": 3929,
+          "per_short_shift": 1,
+          "basis": "One per short shift",
+          "unpriced": true
+        }
+      },
+      {
+        "label": "Support and admin",
+        "scheduled_shifts": 107754,
+        "short_shifts": 2612,
+        "covered_shifts": 868,
+        "cover_spend_rand": 1215200.0,
+        "priced": false,
+        "indicator": {
+          "label": "Admin shifts run short",
+          "value": 2612,
+          "per_short_shift": 1,
+          "basis": "One per short shift",
+          "unpriced": true
+        }
+      }
+    ],
+    "by_service": [
+      {
+        "label": "Day shift",
+        "services": 1460,
+        "short_services": 738,
+        "short_share": 0.5055,
+        "lost_revenue_rand": {
+          "low": 20450312.0,
+          "mid": 29862733.0,
+          "high": 39531259.0
+        }
+      },
+      {
+        "label": "Afternoon shift",
+        "services": 1460,
+        "short_services": 658,
+        "short_share": 0.4507,
+        "lost_revenue_rand": {
+          "low": 12728367.0,
+          "mid": 21225515.0,
+          "high": 28446826.0
+        }
+      },
+      {
+        "label": "Night shift",
+        "services": 1460,
+        "short_services": 546,
+        "short_share": 0.374,
+        "lost_revenue_rand": {
+          "low": 11659333.0,
+          "mid": 15572244.0,
+          "high": 19482633.0
+        }
+      }
+    ],
+    "forecast": {
+      "start": "2026-11-01",
+      "end": "2027-01-29",
+      "days": 90,
+      "months": [
+        {
+          "month": "2026-11",
+          "days": 30,
+          "short_shifts": {
+            "low": 1253.0,
+            "mid": 1424.0,
+            "high": 1629.0
+          },
+          "cover_spend_rand": {
+            "low": 6367900.0,
+            "mid": 7157500.0,
+            "high": 8231720.0
+          },
+          "lost_revenue_rand": {
+            "low": 4470948.0,
+            "mid": 5608452.0,
+            "high": 6765553.0
+          },
+          "value_at_risk_rand": {
+            "low": 10893336.0,
+            "mid": 12757383.0,
+            "high": 14696013.0
+          }
+        },
+        {
+          "month": "2026-12",
+          "days": 31,
+          "short_shifts": {
+            "low": 1199.0,
+            "mid": 1362.0,
+            "high": 1567.0
+          },
+          "cover_spend_rand": {
+            "low": 4866400.0,
+            "mid": 5544000.0,
+            "high": 6342280.0
+          },
+          "lost_revenue_rand": {
+            "low": 3012260.0,
+            "mid": 3747575.0,
+            "high": 4565378.0
+          },
+          "value_at_risk_rand": {
+            "low": 8051058.0,
+            "mid": 9263119.0,
+            "high": 10698096.0
+          }
+        },
+        {
+          "month": "2027-01",
+          "days": 29,
+          "short_shifts": {
+            "low": 1285.0,
+            "mid": 1460.0,
+            "high": 1696.0
+          },
+          "cover_spend_rand": {
+            "low": 5648580.0,
+            "mid": 6433700.0,
+            "high": 7356160.0
+          },
+          "lost_revenue_rand": {
+            "low": 3689244.0,
+            "mid": 4537224.0,
+            "high": 5583376.0
+          },
+          "value_at_risk_rand": {
+            "low": 9513243.0,
+            "mid": 11067511.0,
+            "high": 12688396.0
+          }
+        }
+      ],
+      "total": {
+        "short_shifts": {
+          "low": 3753.0,
+          "mid": 4242.0,
+          "high": 4860.0
+        },
+        "cover_spend_rand": {
+          "low": 16937760.0,
+          "mid": 19137300.0,
+          "high": 21970340.0
+        },
+        "lost_revenue_rand": {
+          "low": 11319015.0,
+          "mid": 13905647.0,
+          "high": 16766720.0
+        },
+        "value_at_risk_rand": {
+          "low": 28563382.0,
+          "mid": 33067362.0,
+          "high": 38149635.0
+        }
+      },
+      "by_department": [
+        {
+          "label": "Production operations",
+          "priced": true,
+          "short_shifts": {
+            "low": 252.0,
+            "mid": 291.0,
+            "high": 339.0
+          },
+          "cover_spend_rand": {
+            "low": 6805400.0,
+            "mid": 7730100.0,
+            "high": 8855980.0
+          },
+          "lost_revenue_rand": {
+            "low": 5024266.0,
+            "mid": 6287883.0,
+            "high": 7627083.0
+          },
+          "value_at_risk_rand": {
+            "low": 12013943.0,
+            "mid": 14047115.0,
+            "high": 16219436.0
+          }
+        },
+        {
+          "label": "Plant and processing",
+          "priced": true,
+          "short_shifts": {
+            "low": 260.0,
+            "mid": 299.0,
+            "high": 347.0
+          },
+          "cover_spend_rand": {
+            "low": 4256840.0,
+            "mid": 4816700.0,
+            "high": 5560380.0
+          },
+          "lost_revenue_rand": {
+            "low": 6048970.0,
+            "mid": 7594777.0,
+            "high": 9182119.0
+          },
+          "value_at_risk_rand": {
+            "low": 10453849.0,
+            "mid": 12451619.0,
+            "high": 14535652.0
+          }
+        },
+        {
+          "label": "Engineering and maintenance",
+          "priced": false,
+          "short_shifts": {
+            "low": 1157.0,
+            "mid": 1315.0,
+            "high": 1518.0
+          },
+          "cover_spend_rand": {
+            "low": 2450840.0,
+            "mid": 2781800.0,
+            "high": 3216080.0
+          },
+          "lost_revenue_rand": null,
+          "value_at_risk_rand": {
+            "low": 2450840.0,
+            "mid": 2781800.0,
+            "high": 3216080.0
+          }
+        },
+        {
+          "label": "Logistics and materials",
+          "priced": false,
+          "short_shifts": {
+            "low": 603.0,
+            "mid": 698.0,
+            "high": 803.0
+          },
+          "cover_spend_rand": {
+            "low": 1597260.0,
+            "mid": 1814400.0,
+            "high": 2084740.0
+          },
+          "lost_revenue_rand": null,
+          "value_at_risk_rand": {
+            "low": 1597260.0,
+            "mid": 1814400.0,
+            "high": 2084740.0
+          }
+        },
+        {
+          "label": "Site services",
+          "priced": false,
+          "short_shifts": {
+            "low": 860.0,
+            "mid": 973.0,
+            "high": 1117.0
+          },
+          "cover_spend_rand": {
+            "low": 1450400.0,
+            "mid": 1673000.0,
+            "high": 1915620.0
+          },
+          "lost_revenue_rand": null,
+          "value_at_risk_rand": {
+            "low": 1450400.0,
+            "mid": 1673000.0,
+            "high": 1915620.0
+          }
+        },
+        {
+          "label": "Support and admin",
+          "priced": false,
+          "short_shifts": {
+            "low": 575.0,
+            "mid": 664.0,
+            "high": 762.0
+          },
+          "cover_spend_rand": {
+            "low": 257600.0,
+            "mid": 306600.0,
+            "high": 359940.0
+          },
+          "lost_revenue_rand": null,
+          "value_at_risk_rand": {
+            "low": 257600.0,
+            "mid": 306600.0,
+            "high": 359940.0
+          }
+        }
+      ],
+      "basis": "Shifts rostered to the demand pattern, absences at the model's rate for each department (allowing the rate to be off by about 10%), simulated 400 times; each run's short shifts priced with one draw of the revenue lost per short shift from the history."
+    },
+    "validation": {
+      "synthetic_only": true,
+      "note": "The history is generated, so the true loss is known. This is how close the method came; on a client's data there is no true loss to compare with, and this check is not shown.",
+      "true_lost_revenue_rand": 128708612.0,
+      "estimated_lost_revenue_rand": {
+        "low": 110439020.0,
+        "mid": 128024392.0,
+        "high": 145137987.0
+      },
+      "recovered_share": 0.995,
+      "months_true_within_range": 19,
+      "months": 24
+    }
   }
 };

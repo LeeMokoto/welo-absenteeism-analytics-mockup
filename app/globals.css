@@ -301,6 +301,72 @@ button {
 }
 
 /* Tables */
+/*
+  A plan step: a sentence, with its owner, horizon and measure under it.
+
+  This exists because table.data was being used for it. That table is the
+  numeric one (right aligned, tabular numerals, white-space: nowrap), so a
+  table of sentences could only set its width from the cells that refused to
+  wrap, and overflowed whatever held it. Steps are not figures and do not read
+  down a column, so they are not a table.
+
+  The metadata is an auto-fit grid rather than three fixed columns: at card
+  width it takes one or two per line, at full width three, and on a phone one.
+  No breakpoint, and nothing here has a minimum width that can exceed its
+  container.
+*/
+.step-list {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+  counter-reset: step;
+}
+.step-list > li {
+  counter-increment: step;
+  padding: 12px 0 12px 26px;
+  border-bottom: 1px solid var(--line-soft);
+  position: relative;
+}
+.step-list > li:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+.step-list > li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: 13px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-mute);
+}
+.step-action {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.step-meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(118px, 1fr));
+  gap: 4px 14px;
+  margin-top: 8px;
+}
+.step-meta > span {
+  font-size: 12px;
+  line-height: 1.45;
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+.step-meta em {
+  display: block;
+  font-family: var(--mono);
+  font-style: normal;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-mute);
+}
+
 table.data {
   width: 100%;
   border-collapse: collapse;
