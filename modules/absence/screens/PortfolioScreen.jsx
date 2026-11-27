@@ -46,7 +46,14 @@ export default function AbsencePortfolioScreen({ portfolio, lens = "cohort_load"
         <Metric
           label="High or critical fatigue"
           value={pct((h.fatigue_high_or_critical_share || 0) * 100, 0)}
-          unit="share of covered lives"
+          unit="share of covered lives, fatigue band"
+          hover={
+            <>
+              The fatigue and burnout scale, not the absence risk bands below. A cohort can
+              run hot on fatigue and still be a low absence risk, and the two are counted
+              separately.
+            </>
+          }
         />
       </div>
       <div className="indicative" style={{ marginTop: 10 }}>
@@ -56,7 +63,10 @@ export default function AbsencePortfolioScreen({ portfolio, lens = "cohort_load"
       <div className="section grid grid-2">
         <div className="card">
           <div className="card-title">Risk distribution</div>
-          <p className="card-note">Share of the covered workforce in each predicted band.</p>
+          <p className="card-note">
+            Share of the covered workforce in each predicted absence risk band. A different
+            scale from the fatigue band in the tile above.
+          </p>
           <div style={{ display: "grid", gap: 8 }}>
             {bands.map((b) => (
               <div key={b.band} className="condition-row">
@@ -84,7 +94,7 @@ export default function AbsencePortfolioScreen({ portfolio, lens = "cohort_load"
             <tbody>
               <tr><td>Scored individuals</td><td>{num(portfolio.covered_cohort?.count)}</td></tr>
               <tr><td>Predicted absent days, 90d</td><td>{num(portfolio.covered_cohort?.predicted_absent_days_90d)}</td></tr>
-              <tr><td>High or critical</td><td>{num(portfolio.covered_cohort?.high_or_critical_count)}</td></tr>
+              <tr><td>High or critical absence risk</td><td>{num(portfolio.covered_cohort?.high_or_critical_count)}</td></tr>
               <tr><td>Suppression threshold</td><td>{threshold}</td></tr>
             </tbody>
           </table>
@@ -130,7 +140,7 @@ export default function AbsencePortfolioScreen({ portfolio, lens = "cohort_load"
               <tr>
                 <th>Cohort</th>
                 <th>Covered</th>
-                <th>High or critical</th>
+                <th>High or critical risk</th>
                 <th>Days / head / yr</th>
                 <th>Exposure</th>
                 <th>Mean fatigue</th>

@@ -80,7 +80,7 @@ export default function CohortsScreen({ portfolio }) {
                   >
                     {pct((c.high_or_critical_share || 0) * 100, 1)}
                   </div>
-                  <div className="caption">high / critical</div>
+                  <div className="caption">high / critical risk</div>
                 </div>
               </div>
 
@@ -108,7 +108,7 @@ export default function CohortsScreen({ portfolio }) {
               <tr>
                 <th>Cohort</th>
                 <th>Covered</th>
-                <th>High or critical</th>
+                <th>High or critical risk</th>
                 <th>Days / head / yr</th>
                 <th>Days, 90d</th>
                 <th>Exposure</th>
