@@ -14,7 +14,7 @@ RAND_PER_DAY = 1100.0
 # The benchmark reduction, the same one welo_pipeline.export applies to the
 # headline. Kept equal on purpose: the headline ran at half this rate for a
 # while and nothing caught it, because the two were written down separately.
-ADDRESSABLE = 0.25            # benchmark reduction on attributable absence
+ADDRESSABLE = 0.35            # benchmark reduction on attributable absence
 WORK_DAYS_YR = 230.0
 COVER_PREMIUM = 300.0
 COVER_SHARE = {"High-intensity ops": 0.90, "Standard ops": 0.70, "Light duty": 0.30}

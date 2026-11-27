@@ -83,18 +83,35 @@ export default function AbsenceOutcomesScreen({ portfolio }) {
           "a benchmark reduction applied to the high-risk band" while the code
           multiplied total exposure by a bare constant, so the sentence was
           true of how the figure was once worked out and not of how it was
-          being computed. Reading it off the feed means it cannot drift again. */}
+          being computed. Reading it off the feed means it cannot drift again.
+
+          Two shapes, because the pipeline supports two bases and the wrong
+          sentence for a basis is worse than no sentence. On a band basis the
+          figures are worth stating: a minority of people carrying most of the
+          days is the whole argument for targeting them. On a whole-workforce
+          basis there is nothing to state, since the share is all of it, and
+          printing "100% of covered lives carry 100% of the days" would be
+          arithmetic with nothing in it. Which one renders is decided by the
+          feed's own basis field, so the screen cannot claim a targeting the
+          pipeline did not do. */}
       <div className="indicative long" style={{ marginTop: 10 }}>
         Projected, not yet measured.{" "}
-        {h.addressable_reduction != null && h.addressable_band_share != null ? (
+        {h.addressable_reduction == null ? (
+          <>A benchmark reduction applied to predicted absence.</>
+        ) : h.addressable_basis === "covered_workforce" ? (
+          <>
+            A {pct(h.addressable_reduction * 100, 0)} reduction in predicted absence across all{" "}
+            {num(h.covered_lives)} covered lives, which is{" "}
+            {pct(h.addressable_share_of_exposure * 100, 1)} of exposure. A benchmark applied to the
+            whole workforce, not a result read off the risk bands.
+          </>
+        ) : (
           <>
             A {pct(h.addressable_reduction * 100, 0)} reduction applied to the high and critical
             risk bands, which are {pct((h.covered_lives ? (portfolio.covered_cohort?.high_or_critical_count || 0) / h.covered_lives : 0) * 100, 1)}{" "}
             of covered lives and carry {pct(h.addressable_band_share * 100, 1)} of predicted absent
             days. That is {pct(h.addressable_share_of_exposure * 100, 1)} of exposure.
           </>
-        ) : (
-          <>A benchmark reduction applied to the high-risk band.</>
         )}
       </div>
 

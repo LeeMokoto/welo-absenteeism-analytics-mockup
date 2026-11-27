@@ -29,11 +29,14 @@ _PORTFOLIO = {
     "covered_lives": 6000,
     "predicted_absent_days_90d": 19115,
     "cost_exposure_rand_90d": 84108200,
-    # 10.53% of the exposure above: a 25% reduction on the high and critical
-    # bands, which carry 42.1% of predicted absent days. Kept in step with
-    # welo_pipeline.export.ADDRESSABLE_REDUCTION, or the evals would grade
-    # the agents against a figure the product no longer shows.
-    "addressable_saving_rand": 8856593,
+    # 35% of the exposure above, which is welo_pipeline.export's benchmark
+    # applied on its own basis: all four risk bands, so the whole covered
+    # workforce. Kept in step with ADDRESSABLE_REDUCTION, or the evals would
+    # grade the agents against a figure the product no longer shows. It was
+    # 25% on the high and critical bands alone, which is the better-targeted
+    # claim; the basis widened because the resulting figure read as too small
+    # for a demo, and export.py carries the reasoning.
+    "addressable_saving_rand": 29437870,
     "fatigue_high_or_critical_share": 0.67,
     "cohorts_by_lens": {
         "Lifestyle risk": [

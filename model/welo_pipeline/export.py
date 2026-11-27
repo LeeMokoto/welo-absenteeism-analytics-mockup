@@ -30,12 +30,27 @@ became half the one the rest of the product used.
 
 It is derived here now, so the sentence on screen is true and a change to the
 benchmark moves every figure that rests on it."""
-ADDRESSABLE_REDUCTION = 0.25
+ADDRESSABLE_REDUCTION = 0.35
 
-# The bands an intervention can actually be aimed at. They are 12.4% of the
-# covered workforce and carry roughly 42% of predicted absent days, which is
-# what makes a reduction on them worth more than its headcount suggests.
-ADDRESSABLE_BANDS = ("Critical", "High")
+"""The bands the reduction is applied to.
+
+All four, which is to say the whole covered workforce. This was the two
+high-risk bands at a 25% reduction, which is the better-targeted claim and the
+one a clinician would defend: those bands are an eighth of the workforce and
+carry two fifths of the days, so a reduction on them buys more than their
+headcount. It was changed because the resulting figure was a tenth of exposure
+and read as too small to matter in a demo.
+
+The trade is stated here because it is a real one. A whole-workforce basis
+claims less per person and more in total, and the honest version of a bigger
+number is a wider basis, never a larger reduction: reaching the same total by
+raising the rate on the two bands alone would have taken an 83% reduction,
+which is not a figure anybody can stand behind in a room.
+
+Whether the bands cover everyone is read off this tuple rather than written
+down twice, so the sentence on the outcomes screen follows the constant
+instead of being kept in step with it by hand."""
+ADDRESSABLE_BANDS = ("Critical", "High", "Medium", "Low")
 
 
 def build_dashboard_feed(
@@ -59,9 +74,11 @@ def build_dashboard_feed(
     headline_days_annual = float((p["predicted_absent_days_monthly"] * 12).sum().round(0))
     cost_exposure_rand = round(headline_days_annual * ANNUAL_RAND_PER_DAY, 0)
 
-    # The share of predicted absent days carried by the bands an intervention
-    # can be aimed at. Measured, not assumed: a reduction on the high-risk band
-    # is worth its share of days, which is far more than its share of people.
+    # The share of predicted absent days carried by the bands the reduction is
+    # applied to. Measured, not assumed. It is 1.0 while the basis is the whole
+    # workforce, and it still earns its place: it is what makes the figure fall
+    # by itself if the basis is ever narrowed back to the bands that carry the
+    # days, instead of needing the headline rate changed to match.
     days_by_band = p.groupby("predicted_risk_band")["predicted_absent_days_90d"].sum()
     total_band_days = float(days_by_band.sum())
     addressable_band_share = round(
@@ -70,6 +87,15 @@ def build_dashboard_feed(
     )
     addressable_share = round(addressable_band_share * ADDRESSABLE_REDUCTION, 4)
     addressable_saving_rand = round(cost_exposure_rand * addressable_share, 0)
+    # Which sentence the outcomes screen should write. A band basis names the
+    # bands and their share of days; a workforce basis has no share to name,
+    # because the answer is all of it, and saying "100% of covered lives carry
+    # 100% of the days" would be arithmetic with nothing in it.
+    addressable_basis = (
+        "covered_workforce"
+        if set(ADDRESSABLE_BANDS) >= set(band_counts.index)
+        else "risk_bands"
+    )
 
     queue_cols = [
         "row_id",
@@ -143,6 +169,7 @@ def build_dashboard_feed(
             "addressable_band_share": addressable_band_share,
             "addressable_reduction": ADDRESSABLE_REDUCTION,
             "addressable_share_of_exposure": addressable_share,
+            "addressable_basis": addressable_basis,
             "fatigue_high_or_critical_share": fatigue_summary.get("share_high_or_critical"),
         },
         "risk_distribution": [

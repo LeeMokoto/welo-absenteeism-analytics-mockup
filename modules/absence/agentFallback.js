@@ -92,8 +92,12 @@ function analystLeverage(ctx) {
     top
       ? `**Where to start.** ${top.label} carries the largest addressable share at ${rand(top.addressable_saving_rand)}, and it is also where the cover gap and the overtime land, so one roster change touches both the absence and the backfill cost.`
       : "",
-    `**What the saving is not.** It is a benchmark reduction applied to the high-risk band. Nothing has been measured, nothing is attributable to an intervention, and no cohort has been through a before and after. The control centre is where a claim like that becomes testable, against comparators frozen before the result is known.`,
-    ctx.addressable_saving_basis ? "" : "",
+    // The basis comes from the payload, not from this file. Two copies of a
+    // sentence about how a figure was derived means one of them is wrong after
+    // the next pipeline change, and the fallback is the copy nobody rereads.
+    `**What the saving is not.** ${
+      ctx.addressable_saving_basis || "A benchmark reduction, projected and never measured."
+    } No cohort has been through a before and after. The control centre is where a claim like that becomes testable, against comparators frozen before the result is known.`,
   ]
     .filter(Boolean)
     .join("\n\n");

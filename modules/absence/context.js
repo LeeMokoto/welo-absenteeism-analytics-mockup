@@ -78,6 +78,28 @@ const OPS_COHORT_FIELDS = [
   "long_leave_gap",
 ];
 
+/*
+  How the projected saving was reached, in words, for an agent.
+
+  The figure on its own is the dangerous shape: an agent asked "where does the
+  saving come from" will answer, and with nothing to answer from it will
+  reconstruct a derivation that sounds right. So the basis travels with the
+  number, and it is derived from the feed's own fields so that widening or
+  narrowing the basis upstream rewrites this sentence rather than leaving it
+  stale. The last clause is not decoration. It is the one claim the platform
+  makes about this figure that a buyer should hold it to.
+*/
+function savingBasis(h) {
+  const never = "Projected, never measured, and not attributable to any intervention.";
+  if (h.addressable_reduction == null) return `A benchmark reduction applied to predicted absence. ${never}`;
+  const rate = `${Math.round(h.addressable_reduction * 100)}%`;
+  const where =
+    h.addressable_basis === "covered_workforce"
+      ? "across the whole covered workforce"
+      : "to the high and critical risk bands";
+  return `A ${rate} benchmark reduction in predicted absence ${where}. ${never}`;
+}
+
 export function buildAnalystContext(portfolio) {
   const h = portfolio.headline || {};
   const cohorts = reportable((portfolio.cohorts || {}).cohort_load, COHORT_FIELDS);
@@ -110,11 +132,16 @@ export function buildAnalystContext(portfolio) {
     cohorts_by_fatigue_band: fatigue.shown,
     cohorts_by_lifestyle_risk: lifestyle.shown,
     ...(hasDepartments ? { cohorts_by_department: department.shown } : {}),
-    // The saving is a benchmark applied to the high-risk band, not an outcome.
-    // The agent is told that here as well as in its prompt, because a figure
-    // and its caveat should travel together.
-    addressable_saving_basis:
-      "A benchmark reduction applied to the high-risk band. Projected, never measured, and not attributable to any intervention.",
+    // The saving is a benchmark, not an outcome. The agent is told that here as
+    // well as in its prompt, because a figure and its caveat should travel
+    // together: asked where the saving comes from, an agent that has only the
+    // number will reach for a plausible derivation and invent one.
+    //
+    // Which benchmark is read off the feed rather than written here. A hand
+    // written sentence outlives the pipeline change it describes, and this one
+    // already did once: it claimed a reduction on the high-risk band for
+    // several weeks after the basis had widened to the whole workforce.
+    addressable_saving_basis: savingBasis(h),
   };
 }
 

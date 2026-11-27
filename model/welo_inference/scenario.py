@@ -24,7 +24,7 @@ from typing import Any, Callable, Dict, List, Optional
 # applies to a feed that predates the field.
 RAND_PER_DAY = 1100.0
 # Matches welo_pipeline.export.ADDRESSABLE_REDUCTION and feed_enrich.ADDRESSABLE.
-ADDRESSABLE = 0.25
+ADDRESSABLE = 0.35
 
 
 def day_rate_from_feed(feed: Optional[Dict[str, Any]]) -> float:
