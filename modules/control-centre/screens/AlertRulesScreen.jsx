@@ -62,7 +62,7 @@ export default function AlertRulesScreen({ dimensions, cohorts, suppressionThres
         <Stat label="Firing now" value={num(firingCount)} />
         <Stat label="Cohorts not evaluated" value={num(skippedCount)} />
       </div>
-      <div className="indicative" style={{ marginTop: 10 }}>
+      <div className="indicative long" style={{ marginTop: 10 }}>
         Evaluated against the current feed. A rule never names a cohort under the threshold, so a
         rule across a whole dimension will skip the cohorts it cannot report on, and says how many.
       </div>
@@ -121,7 +121,7 @@ export default function AlertRulesScreen({ dimensions, cohorts, suppressionThres
               ))}
             </tbody>
           </table>
-          <div className="indicative" style={{ marginTop: 10 }}>
+          <div className="indicative long" style={{ marginTop: 10 }}>
             A rule is scoped with the same rules as an intervention target: never a protected
             attribute, never condition data.
           </div>

@@ -1,5 +1,6 @@
 "use client";
 
+import { caveatClass } from "@/lib/platform/caveat";
 import { useEffect, useState } from "react";
 import SectionHeader from "@/modules/sick-leave/components/SectionHeader";
 import { buildBriefing, headline } from "../briefing";
@@ -98,7 +99,7 @@ export default function BriefingScreen({ dimensions, cohorts, series, suppressio
               ) : null}
 
               {d.approved_steps_not_yet_sent.length ? (
-                <div className="indicative" style={{ marginTop: 12 }}>
+                <div className="indicative long" style={{ marginTop: 12 }}>
                   {d.approved_steps_not_yet_sent.length} approved step
                   {d.approved_steps_not_yet_sent.length === 1 ? " has" : "s have"} not been sent to a
                   queue yet. An approved plan nobody released is a decision that changed nothing.
@@ -130,7 +131,7 @@ export default function BriefingScreen({ dimensions, cohorts, series, suppressio
             </table>
           )}
           {a.skipped_note ? (
-            <div className="indicative" style={{ marginTop: 10 }}>{a.skipped_note}</div>
+            <div className={caveatClass(a.skipped_note)} style={{ marginTop: 10 }}>{a.skipped_note}</div>
           ) : null}
         </div>
 
@@ -146,7 +147,7 @@ export default function BriefingScreen({ dimensions, cohorts, series, suppressio
             </tbody>
           </table>
           {data.activity.tasks_note ? (
-            <div className="indicative" style={{ marginTop: 10 }}>{data.activity.tasks_note}</div>
+            <div className={caveatClass(data.activity.tasks_note)} style={{ marginTop: 10 }}>{data.activity.tasks_note}</div>
           ) : null}
         </div>
       </div>
@@ -168,7 +169,7 @@ export default function BriefingScreen({ dimensions, cohorts, series, suppressio
                 ) : null}
                 {/* Carried in full. A briefing is forwarded and pasted, so the
                     caveat travels inside it. */}
-                <div className="indicative" style={{ marginTop: 8 }}>{m.caveat}</div>
+                <div className={caveatClass(m.caveat)} style={{ marginTop: 8 }}>{m.caveat}</div>
                 <div className="caption" style={{ marginTop: 6 }}>{m.provenance}</div>
               </div>
             ))
@@ -208,7 +209,7 @@ export default function BriefingScreen({ dimensions, cohorts, series, suppressio
       ) : null}
 
       <div className="section">
-        <div className="indicative">{data.footer.level}</div>
+        <div className={caveatClass(data.footer.level)}>{data.footer.level}</div>
       </div>
     </section>
   );

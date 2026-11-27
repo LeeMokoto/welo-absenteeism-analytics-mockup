@@ -112,6 +112,25 @@ button {
   text-transform: uppercase;
   color: var(--ink-faint);
 }
+/*
+  The same caveat, when it runs to sentences rather than a marker.
+
+  Uppercase mono at 10.5px with 0.1em tracking is right for three words and
+  unreadable for three sentences: the control centre carries a 304-character
+  causation caveat that set as five full-width lines of capitals. That caveat
+  is the most important sentence on the screen, so it was also the least
+  readable thing on it.
+
+  Still mono and still faint, so it reads as the same kind of note; sentence
+  case, normal tracking and a line height that lets the eye find the next line.
+*/
+.indicative.long {
+  font-size: 11.5px;
+  letter-spacing: 0;
+  text-transform: none;
+  line-height: 1.55;
+  max-width: 78ch;
+}
 
 /* The red uppercase eyebrow the live dashboard uses above a section */
 .eyebrow {
@@ -185,11 +204,27 @@ button {
   display: grid;
   gap: 16px;
 }
+/*
+  Content grids size each card to its own content.
+
+  Without this they inherit align-items: stretch, so every card in a row grows
+  to match the tallest one beside it. Where the two hold comparable content
+  that looks tidy; where one holds a sentence and the other holds a measured
+  outcome with four caveats, it leaves the short card as a mostly empty box.
+  Measured on the control centre: 313px of empty card on Interventions, 275px
+  on Playbooks, 257px on Proposals.
+
+  grid-4 is left stretching. It carries the headline stat tiles, which hold one
+  number each and are the same height anyway, and a row of tiles with a ragged
+  bottom edge reads worse than one without.
+*/
 .grid-2 {
   grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
 }
 .grid-3 {
   grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: start;
 }
 .grid-4 {
   grid-template-columns: repeat(4, minmax(0, 1fr));

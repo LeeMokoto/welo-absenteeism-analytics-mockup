@@ -1,5 +1,6 @@
 "use client";
 
+import { caveatClass } from "@/lib/platform/caveat";
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import SectionHeader from "@/modules/sick-leave/components/SectionHeader";
@@ -87,7 +88,7 @@ export default function ProposalsScreen({
         ))}
       </div>
 
-      <div className="indicative" style={{ marginTop: 10 }}>
+      <div className="indicative long" style={{ marginTop: 10 }}>
         An agent drafts and a person decides. No agent can approve, book or send anything, and the
         person who asked for a draft cannot approve it. Proposals made in this walkthrough are held in
         this browser only; the ones marked as examples ship with the demo.
@@ -168,7 +169,7 @@ function TrackRecord({ record }) {
           </tr>
         </tbody>
       </table>
-      <div className="indicative" style={{ marginTop: 10 }}>
+      <div className="indicative long" style={{ marginTop: 10 }}>
         A delivered saving is an observed difference against comparable cohorts, not proof the action
         caused it.
       </div>
@@ -404,7 +405,7 @@ function Delivered({ rec }) {
         Predicted <Money zar={rec.predicted.saving_rand} />, delivered <Money zar={rec.actual.saving_rand} />
         {ratio == null ? "." : `, ${ratio}% of the prediction.`} {rec.actual.basis}
       </p>
-      <div className="indicative">An observed difference against comparable cohorts, not proof the action caused it.</div>
+      <div className="indicative long">An observed difference against comparable cohorts, not proof the action caused it.</div>
     </div>
   );
 }

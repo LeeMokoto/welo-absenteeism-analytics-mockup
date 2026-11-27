@@ -1,5 +1,6 @@
 "use client";
 
+import { caveatClass } from "@/lib/platform/caveat";
 import { useEffect, useMemo, useState } from "react";
 import SectionHeader from "@/modules/sick-leave/components/SectionHeader";
 import { num } from "@/modules/sick-leave/format";
@@ -86,7 +87,7 @@ export default function InterventionsScreen({
         ))}
       </div>
 
-      <div className="indicative" style={{ marginTop: 10 }}>
+      <div className="indicative long" style={{ marginTop: 10 }}>
         The actions store is mocked in this tenant. Records you create are held in this browser
         only: they survive navigation, and they are gone for the next visitor. Nothing here is
         filed anywhere.
@@ -149,7 +150,7 @@ export default function InterventionsScreen({
               ))}
             </tbody>
           </table>
-          <div className="indicative" style={{ marginTop: 10 }}>
+          <div className="indicative long" style={{ marginTop: 10 }}>
             Age is reported at a higher minimum cohort size than the other dimensions, and is not
             available for targeting at any size.
           </div>
@@ -407,7 +408,7 @@ function Outcome({ record, series }) {
 
   if (!said) {
     return (
-      <div className="indicative" style={{ marginTop: 14 }}>
+      <div className={caveatClass(`Not measurable yet: ${why.join("; ")}.`)} style={{ marginTop: 14 }}>
         Not measurable yet: {why.join("; ")}.
       </div>
     );
@@ -437,7 +438,7 @@ function Outcome({ record, series }) {
         </div>
       ) : null}
 
-      <div className="indicative" style={{ marginTop: 10 }}>{said.caveat}</div>
+      <div className={caveatClass(said.caveat)} style={{ marginTop: 10 }}>{said.caveat}</div>
       <div className="caption" style={{ marginTop: 8 }}>{said.provenance}</div>
     </div>
   );

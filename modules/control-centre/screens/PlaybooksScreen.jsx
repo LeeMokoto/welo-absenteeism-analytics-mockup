@@ -1,5 +1,6 @@
 "use client";
 
+import { caveatClass } from "@/lib/platform/caveat";
 import { useEffect, useMemo, useState } from "react";
 import SectionHeader from "@/modules/sick-leave/components/SectionHeader";
 import {
@@ -82,7 +83,7 @@ export default function PlaybooksScreen({ session, canCreate, canApprove, agents
         ))}
       </div>
 
-      <div className="indicative" style={{ marginTop: 10 }}>
+      <div className="indicative long" style={{ marginTop: 10 }}>
         The agent proposes and a person decides. Nothing here is a decision taken by the model:
         POPIA section 71 restricts decisions based solely on automated processing, and the
         approver is never the drafter. Playbooks drafted in this walkthrough are held in this
@@ -250,7 +251,7 @@ function Proposal({ result, onKeep }) {
         it, and that person cannot be whoever drafted it.
       </p>
       {result.notice ? (
-        <div className="indicative" style={{ marginBottom: 12 }}>{result.notice}</div>
+        <div className={caveatClass(result.notice)} style={{ marginBottom: 12 }}>{result.notice}</div>
       ) : null}
 
       <Steps steps={proposal.steps} />
@@ -444,7 +445,7 @@ function PlaybookCard({ playbook, intervention, session, canApprove, canCreate, 
         <div className="card cream" style={{ marginTop: 14 }}>
           <div className="caption">Measured</div>
           <p className="card-note" style={{ marginTop: 6, marginBottom: 6 }}>{outcome.text}</p>
-          <div className="indicative">{outcome.caveat}</div>
+          <div className={caveatClass(outcome.caveat)}>{outcome.caveat}</div>
         </div>
       ) : null}
     </div>
